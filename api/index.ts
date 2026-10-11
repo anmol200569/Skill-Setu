@@ -1,4 +1,20 @@
 import type { IncomingMessage, ServerResponse } from 'http';
+import path from 'path';
+
+// Ensure @skill-setu/shared resolves in Vercel serverless environment
+try {
+  const Module = require('module');
+  const originalResolveFilename = Module._resolveFilename;
+  const sharedDistPath = path.resolve(__dirname, '../packages/shared/dist/index.js');
+  Module._resolveFilename = function (request: string, parent: any, isMain: boolean, options: any) {
+    if (request === '@skill-setu/shared') {
+      return sharedDistPath;
+    }
+    return originalResolveFilename.call(this, request, parent, isMain, options);
+  };
+} catch {
+  // Ignored if module hook not allowed
+}
 
 let appInstance: any = null;
 
