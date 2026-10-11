@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-let prismaInstance: PrismaClient;
+let prismaInstance: PrismaClient | null = null;
 
 export function getPrismaClient(): PrismaClient {
   if (!prismaInstance) {
@@ -11,4 +11,10 @@ export function getPrismaClient(): PrismaClient {
   return prismaInstance;
 }
 
-export const prisma = getPrismaClient();
+// Lazy proxy: only instantiate PrismaClient when a database method/model is accessed
+export const prisma: PrismaClient = new Proxy({} as PrismaClient, {
+  get(_target, prop) {
+    const client = getPrismaClient();
+    return (client as any)[prop];
+  }
+});

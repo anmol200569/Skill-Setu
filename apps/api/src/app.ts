@@ -53,8 +53,17 @@ export function createApp(): Application {
   // General Rate Limiting
   app.use(generalRateLimiter);
 
+  // Normalize paths for Vercel Serverless Function rewrites
+  app.use((req, _res, next) => {
+    const matchedPath = req.headers['x-matched-path'] as string;
+    if (matchedPath && (req.url === '/' || req.url === '/api')) {
+      req.url = matchedPath;
+    }
+    next();
+  });
+
   // Health Check
-  app.get('/health', (_req: Request, res: Response) => {
+  app.get(['/health', '/api/health', '/api/v1/health'], (_req: Request, res: Response) => {
     res.json({
       status: 'healthy',
       platform: 'Skill Setu API',
@@ -125,6 +134,9 @@ export function createApp(): Application {
 
   // Mount Versioned API Routes
   app.use(config.apiPrefix, v1Router);
+  if (config.apiPrefix !== '/v1') {
+    app.use('/v1', v1Router);
+  }
 
   // 404 Route Catch-All
   app.use((_req: Request, res: Response) => {
