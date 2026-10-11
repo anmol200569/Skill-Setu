@@ -1,0 +1,75 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "assessments": "Assessments",
+    "courses": "Course Catalogue",
+    "learningPath": "Learning Path",
+    "quizzes": "AI Quizzes",
+    "profile": "Profile",
+    "admin": "Admin Studio",
+    "login": "Log In",
+    "signup": "Get Started",
+    "logout": "Log Out"
+  },
+  "landing": {
+    "badge": "AI-Powered Skill Intelligence Platform",
+    "title": "Bridge the gap between who you are and who you want to become.",
+    "subtitle": "Assess verified competencies, map precision skill gaps for target careers, discover curated courses, and generate mastery quizzes from your study material.",
+    "ctaStart": "Start Skill Diagnostic",
+    "ctaExplore": "Explore Roles & Courses",
+    "statsLearners": "Active Learners",
+    "statsCurated": "Curated Free Tracks",
+    "statsAccuracy": "Gap Precision"
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "readinessTitle": "Target Career Readiness",
+    "readinessSubtitle": "Combined score based on diagnostic evaluations and self-assessment",
+    "topGapsTitle": "Ranked Skill Gaps",
+    "recommendedCoursesTitle": "Recommended for Your Gap Priority",
+    "learningPathProgress": "Learning Path Progress",
+    "recentActivity": "Recent Activity",
+    "suggestedActions": "Suggested Next Actions",
+    "hoursStudied": "Hours Logged",
+    "coursesDone": "Completed Courses",
+    "quizzesAttempted": "Quizzes Attempted",
+    "avgScore": "Average Quiz Score"
+  },
+  "quiz": {
+    "title": "AI Quiz Generator",
+    "subtitle": "Transform lecture notes, slides, or documents into diagnostic quizzes",
+    "uploadTab": "Upload Document",
+    "pasteTab": "Paste Study Material",
+    "promptTab": "Topic Prompt",
+    "uploadPrompt": "Upload PDF, PPTX, DOCX, or TXT (Max 10 MB)",
+    "generateButton": "Generate AI Quiz",
+    "generating": "Analyzing material & crafting questions...",
+    "downloadPdf": "Download Quiz PDF",
+    "attemptButton": "Take Quiz",
+    "submitQuiz": "Submit Answers",
+    "scoreLabel": "Your Score",
+    "weakTopicsTitle": "Recommended Topic Reviews"
+  },
+  "assessment": {
+    "title": "Diagnostic Competency Assessment",
+    "subtitle": "Test your practical knowledge with verified scoring",
+    "questionOf": "Question {{current}} of {{total}}",
+    "submit": "Submit Assessment",
+    "reviewScore": "Assessment Result",
+    "verifiedLevel": "Assessed Proficiency Level",
+    "timeSpent": "Time Spent"
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "next": "Next Step",
+    "back": "Previous",
+    "required": "Required",
+    "optional": "Optional",
+    "free": "Free",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced"
+  }
+}

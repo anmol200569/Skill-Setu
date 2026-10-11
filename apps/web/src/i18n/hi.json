@@ -1,0 +1,75 @@
+{
+  "nav": {
+    "dashboard": "डैशबोर्ड",
+    "assessments": "कौशल मूल्यांकन",
+    "courses": "पाठ्यक्रम सूची",
+    "learningPath": "लर्निंग पाथ",
+    "quizzes": "AI क्विज़",
+    "profile": "प्रोफ़ाइल",
+    "admin": "व्यवस्थापक स्टूडियो",
+    "login": "लॉग इन",
+    "signup": "शुरू करें",
+    "logout": "लॉग आउट"
+  },
+  "landing": {
+    "badge": "AI-संचालित कौशल खुफिया और शिक्षण मंच",
+    "title": "आप जहां हैं और जहां पहुंचना चाहते हैं, उसके बीच का सेतु।",
+    "subtitle": "अपनी वास्तविक दक्षताओं का मूल्यांकन करें, लक्षित करियर के लिए कौशल अंतराल की पहचान करें, और अपनी अध्ययन सामग्री से क्विज़ तैयार करें।",
+    "ctaStart": "कौशल मूल्यांकन शुरू करें",
+    "ctaExplore": "रोल्स और पाठ्यक्रम देखें",
+    "statsLearners": "सक्रिय शिक्षार्थी",
+    "statsCurated": "मुफ्त पाठ्यक्रम",
+    "statsAccuracy": "कौशल सटीकता"
+  },
+  "dashboard": {
+    "welcome": "नमस्ते",
+    "readinessTitle": "करियर तत्परता स्कोर",
+    "readinessSubtitle": "नैदानिक परीक्षणों और स्व-मूल्यांकन पर आधारित संयुक्त स्कोर",
+    "topGapsTitle": "प्राथमिकता कौशल अंतराल",
+    "recommendedCoursesTitle": "आपके लिए अनुशंसित पाठ्यक्रम",
+    "learningPathProgress": "सीखने की प्रगति",
+    "recentActivity": "हाल की गतिविधि",
+    "suggestedActions": "सुझाए गए अगले कदम",
+    "hoursStudied": "अध्ययन के घंटे",
+    "coursesDone": "पूर्ण पाठ्यक्रम",
+    "quizzesAttempted": "क्विज़ प्रयास",
+    "avgScore": "औसत क्विज़ स्कोर"
+  },
+  "quiz": {
+    "title": "AI क्विज़ जनरेटर",
+    "subtitle": "अपने नोट्स, स्लाइड्स या दस्तावेज़ों को इंटरैक्टिव क्विज़ में बदलें",
+    "uploadTab": "दस्तावेज़ अपलोड करें",
+    "pasteTab": "अध्ययन सामग्री पेस्ट करें",
+    "promptTab": "विषय प्रॉम्प्ट",
+    "uploadPrompt": "PDF, PPTX, DOCX, या TXT अपलोड करें (अधिकतम 10 MB)",
+    "generateButton": "AI क्विज़ बनाएं",
+    "generating": "सामग्री का विश्लेषण किया जा रहा है...",
+    "downloadPdf": "क्विज़ PDF डाउनलोड करें",
+    "attemptButton": "क्विज़ शुरू करें",
+    "submitQuiz": "उत्तर सबमिट करें",
+    "scoreLabel": "आपका स्कोर",
+    "weakTopicsTitle": "कमजोर विषयों की समीक्षा"
+  },
+  "assessment": {
+    "title": "नैदानिक कौशल मूल्यांकन",
+    "subtitle": "सत्यापित स्कोरिंग के साथ अपने व्यावहारिक ज्ञान का परीक्षण करें",
+    "questionOf": "प्रश्न {{current}} / {{total}}",
+    "submit": "मूल्यांकन सबमिट करें",
+    "reviewScore": "मूल्यांकन परिणाम",
+    "verifiedLevel": "आकलित दक्षता स्तर",
+    "timeSpent": "बिताया गया समय"
+  },
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "save": "परिवर्तन सहेजें",
+    "cancel": "रद्द करें",
+    "next": "अगला",
+    "back": "पिछला",
+    "required": "अनिवार्य",
+    "optional": "वैकल्पिक",
+    "free": "मुफ्त",
+    "beginner": "शुरुआती",
+    "intermediate": "मध्यम",
+    "advanced": "उन्नत"
+  }
+}

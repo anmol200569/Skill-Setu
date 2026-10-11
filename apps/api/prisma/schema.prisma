@@ -1,0 +1,411 @@
+// Prisma Schema for Skill Setu Platform
+// PostgreSQL database with Supabase integration and vector compatibility
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  learner
+  admin
+  trainer
+}
+
+enum CurrentStatus {
+  student
+  job_seeker
+  employed
+  career_changer
+}
+
+enum SkillPriority {
+  must_have
+  good_to_have
+  optional
+}
+
+enum QuestionType {
+  single_mcq
+  multi_mcq
+  true_false
+}
+
+enum DifficultyLevel {
+  beginner
+  intermediate
+  advanced
+}
+
+enum EnrollmentStatus {
+  not_started
+  in_progress
+  completed
+}
+
+model User {
+  id                 String              @id // Matches Supabase Auth user UUID
+  email              String              @unique
+  role               UserRole            @default(learner)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  profile            Profile?
+  userSkills         UserSkill[]
+  assessmentAttempts AssessmentAttempt[]
+  enrollments        Enrollment[]
+  learningPaths      LearningPath[]
+  quizzesCreated     Quiz[]              @relation("QuizCreator")
+  quizAttempts       QuizAttempt[]
+  uploads            Upload[]
+  chatMessages       ChatMessage[]
+
+  @@index([email])
+}
+
+model Profile {
+  id                  String        @id @default(uuid())
+  userId              String        @unique
+  user                User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName            String
+  education           String
+  experienceYears     Int           @default(0)
+  currentStatus       CurrentStatus @default(student)
+  currentRole         String?
+  targetRoleId        String?
+  targetRole          Role?         @relation(fields: [targetRoleId], references: [id], onDelete: SetNull)
+  careerGoals         String?
+  preferredLanguage   String        @default("en") // 'en' or 'hi'
+  weeklyStudyHours    Int           @default(10)
+  learningPreferences Json          @default("[]") // string array as JSON
+  isOnboarded         Boolean       @default(false)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+
+  @@index([userId])
+}
+
+model Domain {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  name        String
+  description String
+  icon        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  skills      Skill[]
+}
+
+model Skill {
+  id          String   @id @default(uuid())
+  domainId    String
+  domain      Domain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  code        String   @unique
+  name        String
+  description String
+  category    String   @default("Technical")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  roleRequirements    RoleSkillRequirement[]
+  userSkills          UserSkill[]
+  assessmentQuestions AssessmentQuestion[]
+  assessmentAttempts  AssessmentAttempt[]
+  courseSkills        CourseSkill[]
+
+  @@index([domainId])
+}
+
+model Role {
+  id             String                 @id @default(uuid())
+  code           String                 @unique
+  title          String
+  description    String
+  industryDemand String                 @default("High")
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+
+  skillsRequired RoleSkillRequirement[]
+  profiles       Profile[]
+  learningPaths  LearningPath[]
+}
+
+model RoleSkillRequirement {
+  id                  String        @id @default(uuid())
+  roleId              String
+  role                Role          @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  skillId             String
+  skill               Skill         @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  requiredProficiency Int           @default(3) // 1 to 5
+  priority            SkillPriority @default(must_have)
+  weight              Float         @default(1.0)
+
+  @@unique([roleId, skillId])
+  @@index([roleId])
+  @@index([skillId])
+}
+
+model UserSkill {
+  id                String    @id @default(uuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillId           String
+  skill             Skill     @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  selfAssessedLevel Int       @default(1) // 1 to 5
+  verifiedScore     Float?    // 1 to 5
+  effectiveScore    Float     @default(1.0)
+  confidenceLevel   Float     @default(50.0)
+  lastAssessedAt    DateTime?
+  updatedAt         DateTime  @updatedAt
+
+  @@unique([userId, skillId])
+  @@index([userId])
+  @@index([skillId])
+}
+
+model Assessment {
+  id               String               @id @default(uuid())
+  skillId          String
+  title            String
+  description      String
+  timeLimitMinutes Int                  @default(15)
+  difficulty       DifficultyLevel      @default(intermediate)
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+
+  questions        AssessmentQuestion[]
+}
+
+model AssessmentQuestion {
+  id             String          @id @default(uuid())
+  assessmentId   String?
+  assessment     Assessment?     @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  skillId        String
+  skill          Skill           @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  questionText   String
+  type           QuestionType    @default(single_mcq)
+  difficulty     DifficultyLevel @default(intermediate)
+  options        Json            // Array of { id, text }
+  correctAnswers Json            // Array of string option IDs
+  explanation    String
+  createdAt      DateTime        @default(now())
+
+  answers        AssessmentAnswer[]
+
+  @@index([skillId])
+  @@index([assessmentId])
+}
+
+model AssessmentAttempt {
+  id               String             @id @default(uuid())
+  userId           String
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillId          String
+  skill            Skill              @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  targetRoleId     String?
+  score            Float              // 0 to 100
+  assessedLevel    Int                // 1 to 5
+  totalQuestions   Int
+  correctQuestions Int
+  startedAt        DateTime           @default(now())
+  completedAt      DateTime?
+
+  answers          AssessmentAnswer[]
+
+  @@index([userId])
+  @@index([skillId])
+}
+
+model AssessmentAnswer {
+  id               String             @id @default(uuid())
+  attemptId        String
+  attempt          AssessmentAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId       String
+  question         AssessmentQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedOptions  Json               // string array
+  isCorrect        Boolean
+  timeSpentSeconds Int                @default(0)
+
+  @@index([attemptId])
+}
+
+model Course {
+  id             String        @id @default(uuid())
+  title          String
+  provider       String        // Microsoft Learn, Google Cloud Skills Boost, freeCodeCamp, NPTEL
+  destinationUrl String
+  skillsCovered  Json          // string array of skill names or IDs
+  difficulty     String        @default("Beginner")
+  estimatedHours Int           @default(10)
+  language       String        @default("English")
+  isFree         Boolean       @default(true)
+  rating         Float?
+  ratingSource   String?
+  description    String
+  thumbnailUrl   String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  courseSkills   CourseSkill[]
+  enrollments    Enrollment[]
+  learningPathItems LearningPathItem[]
+
+  @@index([provider])
+}
+
+model CourseSkill {
+  id       String @id @default(uuid())
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  skillId  String
+  skill    Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([courseId, skillId])
+  @@index([courseId])
+  @@index([skillId])
+}
+
+model Enrollment {
+  id              String           @id @default(uuid())
+  userId          String
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId        String
+  course          Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  status          EnrollmentStatus @default(not_started)
+  progressPercent Int              @default(0)
+  enrolledAt      DateTime         @default(now())
+  completedAt     DateTime?
+
+  @@unique([userId, courseId])
+  @@index([userId])
+}
+
+model LearningPath {
+  id                  String             @id @default(uuid())
+  userId              String
+  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  targetRoleId        String
+  targetRole          Role               @relation(fields: [targetRoleId], references: [id], onDelete: Cascade)
+  totalEstimatedHours Int                @default(0)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+
+  items               LearningPathItem[]
+
+  @@index([userId])
+}
+
+model LearningPathItem {
+  id             String           @id @default(uuid())
+  learningPathId String
+  learningPath   LearningPath     @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
+  courseId       String
+  course         Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  stepOrder      Int
+  reason         String
+  status         EnrollmentStatus @default(not_started)
+
+  @@index([learningPathId])
+}
+
+model Upload {
+  id               String   @id @default(uuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  originalFilename String
+  storedFilename   String
+  mimeType         String
+  sizeBytes        Int
+  extractedText    String
+  createdAt        DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Quiz {
+  id             String          @id @default(uuid())
+  creatorId      String
+  creator        User            @relation("QuizCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  title          String
+  description    String
+  sourceType     String          @default("pasted_text") // uploaded_document, pasted_text, topic_prompt
+  sourceFilename String?
+  isPublished    Boolean         @default(true)
+  questionCount  Int             @default(5)
+  difficulty     DifficultyLevel @default(intermediate)
+  language       String          @default("en")
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  questions      QuizQuestion[]
+  attempts       QuizAttempt[]
+
+  @@index([creatorId])
+  @@index([isPublished])
+}
+
+model QuizQuestion {
+  id             String          @id @default(uuid())
+  quizId         String
+  quiz           Quiz            @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  questionText   String
+  type           QuestionType    @default(single_mcq)
+  difficulty     DifficultyLevel @default(intermediate)
+  options        Json            // Array of { id, text }
+  correctAnswers Json            // Array of string IDs
+  explanation    String
+  topicTag       String
+  orderIndex     Int             @default(0)
+
+  answers        QuizAttemptAnswer[]
+
+  @@index([quizId])
+}
+
+model QuizAttempt {
+  id                  String              @id @default(uuid())
+  quizId              String
+  quiz                Quiz                @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  userId              String
+  user                User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scorePercentage     Float
+  totalQuestions      Int
+  correctAnswersCount Int
+  timeSpentSeconds    Int                 @default(0)
+  submittedAt         DateTime            @default(now())
+
+  answers             QuizAttemptAnswer[]
+
+  @@index([quizId])
+  @@index([userId])
+}
+
+model QuizAttemptAnswer {
+  id              String       @id @default(uuid())
+  attemptId       String
+  attempt         QuizAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId      String
+  question        QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedOptions Json         // string array
+  isCorrect       Boolean
+
+  @@index([attemptId])
+}
+
+model ChatMessage {
+  id             String   @id @default(uuid())
+  conversationId String
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String   // 'user' | 'assistant' | 'system'
+  content        String
+  createdAt      DateTime @default(now())
+
+  @@index([userId, conversationId])
+}

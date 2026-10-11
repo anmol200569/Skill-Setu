@@ -1,0 +1,192 @@
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { User, Session } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase';
+import { apiClient } from '../lib/api';
+import { UserRole, UserProfile } from '@skill-setu/shared';
+
+interface AuthContextType {
+  user: User | null;
+  session: Session | null;
+  role: UserRole;
+  profile: UserProfile | null;
+  isLoading: boolean;
+  signInWithEmail: (email: string, password: string) => Promise<void>;
+  signUpWithEmail: (email: string, password: string, fullName: string, role?: 'learner' | 'trainer') => Promise<{ needsEmailVerification: boolean }>;
+  signInWithGoogle: () => Promise<void>;
+  signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
+  updatePassword: (password: string) => Promise<void>;
+  refreshProfile: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [role, setRole] = useState<UserRole>('learner');
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const fetchBackendUserAndProfile = async () => {
+    try {
+      const data = await apiClient<{ user: { role: UserRole }; profile: UserProfile | null }>('/auth/me');
+      if (data?.user) {
+        setRole(data.user.role || 'learner');
+      }
+      if (data?.profile) {
+        setProfile(data.profile);
+      }
+    } catch (err: any) {
+      console.warn('Could not fetch backend profile sync:', err.message);
+    }
+  };
+
+  useEffect(() => {
+    let mounted = true;
+
+    // Check current active session
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      if (!mounted) return;
+      setSession(currentSession);
+      setUser(currentSession?.user ?? null);
+
+      if (currentSession?.user) {
+        fetchBackendUserAndProfile().finally(() => {
+          if (mounted) setIsLoading(false);
+        });
+      } else {
+        setIsLoading(false);
+      }
+    });
+
+    // Listen to Auth State Changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
+      if (!mounted) return;
+      setSession(newSession);
+      setUser(newSession?.user ?? null);
+
+      if (newSession?.user) {
+        await fetchBackendUserAndProfile();
+      } else {
+        setProfile(null);
+        setRole('learner');
+      }
+      setIsLoading(false);
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const signInWithEmail = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    if (error) {
+      if (error.message.includes('Invalid login credentials')) {
+        throw new Error('Invalid email or password. Please verify your credentials.');
+      }
+      if (error.message.includes('Email not confirmed')) {
+        throw new Error('Please verify your email address before logging in.');
+      }
+      throw error;
+    }
+    await fetchBackendUserAndProfile();
+  };
+
+  const signUpWithEmail = async (
+    email: string,
+    password: string,
+    fullName: string,
+    requestedRole: 'learner' | 'trainer' = 'learner'
+  ) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          fullName,
+          role: requestedRole
+        },
+        emailRedirectTo: `${window.location.origin}/auth/callback`
+      }
+    });
+
+    if (error) {
+      if (error.message.includes('User already registered')) {
+        throw new Error('An account with this email address already exists. Please log in.');
+      }
+      throw error;
+    }
+
+    const needsEmailVerification = !data.session;
+    return { needsEmailVerification };
+  };
+
+  const signInWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`
+      }
+    });
+    if (error) throw error;
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setSession(null);
+    setProfile(null);
+    setRole('learner');
+  };
+
+  const resetPassword = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`
+    });
+    if (error) throw error;
+  };
+
+  const updatePassword = async (password: string) => {
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) throw error;
+  };
+
+  const refreshProfile = async () => {
+    await fetchBackendUserAndProfile();
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        session,
+        role,
+        profile,
+        isLoading,
+        signInWithEmail,
+        signUpWithEmail,
+        signInWithGoogle,
+        signOut,
+        resetPassword,
+        updatePassword,
+        refreshProfile
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}

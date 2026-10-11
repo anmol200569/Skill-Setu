@@ -1,0 +1,31 @@
+{
+  "name": "skill-setu",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Skill Setu - AI Skill Intelligence & Learning Platform",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "dev:web": "npm run dev --workspace=@skill-setu/web",
+    "dev:api": "npm run dev --workspace=@skill-setu/api",
+    "build": "npm run build --workspaces --if-present",
+    "build:shared": "npm run build --workspace=@skill-setu/shared",
+    "build:api": "npm run build --workspace=@skill-setu/api",
+    "build:web": "npm run build --workspace=@skill-setu/web",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "prisma:generate": "npm run prisma:generate --workspace=@skill-setu/api",
+    "prisma:seed": "npm run prisma:seed --workspace=@skill-setu/api",
+    "prisma:migrate": "npm run prisma:migrate --workspace=@skill-setu/api"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
