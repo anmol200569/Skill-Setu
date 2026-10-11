@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
+import { supabase, formatAuthError } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
@@ -71,7 +71,7 @@ export function AuthCallbackPage() {
       } catch (err: any) {
         if (!isCancelled) {
           console.error('OAuth Callback processing error:', err);
-          setErrorMessage(err.message || 'Failed to complete authentication. Please try again.');
+          setErrorMessage(formatAuthError(err));
         }
       }
     }

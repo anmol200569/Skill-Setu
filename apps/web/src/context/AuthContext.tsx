@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { apiClient } from '../lib/api';
 import { UserRole, UserProfile } from '@skill-setu/shared';
 
@@ -45,6 +45,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     let mounted = true;
 
+    if (!isSupabaseConfigured) {
+      setIsLoading(false);
+      return;
+    }
+
     // Check current active session
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
       if (!mounted) return;
@@ -58,6 +63,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } else {
         setIsLoading(false);
       }
+    }).catch((err) => {
+      console.warn('Supabase getSession failed:', err);
+      if (mounted) setIsLoading(false);
     });
 
     // Listen to Auth State Changes
@@ -82,6 +90,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const signInWithEmail = async (email: string, password: string) => {
+    if (!isSupabaseConfigured) {
+      throw new Error(
+        'Supabase is not configured on this deployment. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your Vercel Project Settings and redeploy.'
+      );
+    }
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password
@@ -104,6 +117,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     fullName: string,
     requestedRole: 'learner' | 'trainer' = 'learner'
   ) => {
+    if (!isSupabaseConfigured) {
+      throw new Error(
+        'Supabase is not configured on this deployment. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your Vercel Project Settings and redeploy.'
+      );
+    }
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -128,6 +146,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signInWithGoogle = async () => {
+    if (!isSupabaseConfigured) {
+      throw new Error(
+        'Google OAuth requires Supabase configuration. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your Vercel Project Settings, and enable the Google provider in Supabase Dashboard.'
+      );
+    }
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -138,7 +161,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    if (isSupabaseConfigured) {
+      await supabase.auth.signOut();
+    }
     setUser(null);
     setSession(null);
     setProfile(null);
@@ -146,6 +171,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const resetPassword = async (email: string) => {
+    if (!isSupabaseConfigured) {
+      throw new Error('Supabase is not configured. Please set environment variables.');
+    }
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`
     });
@@ -153,6 +181,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const updatePassword = async (password: string) => {
+    if (!isSupabaseConfigured) {
+      throw new Error('Supabase is not configured. Please set environment variables.');
+    }
     const { error } = await supabase.auth.updateUser({ password });
     if (error) throw error;
   };

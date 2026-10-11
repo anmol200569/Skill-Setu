@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuth } from '../context/AuthContext';
+import { formatAuthError, isSupabaseConfigured } from '../lib/supabase';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Eye, EyeOff, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react';
@@ -83,7 +84,7 @@ export function SignupPage() {
         navigate('/onboarding');
       }
     } catch (err: any) {
-      setAuthError(err.message || 'Signup failed. Please try again.');
+      setAuthError(formatAuthError(err));
     } finally {
       setIsSubmitting(false);
     }
@@ -103,7 +104,7 @@ export function SignupPage() {
       await signInWithGoogle();
     } catch (err: any) {
       clearTimeout(guardTimeout);
-      setAuthError(err.message || 'Google sign-up failed. Please verify provider settings.');
+      setAuthError(formatAuthError(err));
       setIsGoogleSubmitting(false);
     }
   };
@@ -151,6 +152,18 @@ export function SignupPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4">
         <div className="bg-card py-8 px-6 shadow-md border border-border rounded-xl sm:px-10">
+          {!isSupabaseConfigured && (
+            <div className="mb-6 p-3.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 text-xs flex items-start gap-2.5">
+              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-600 dark:text-amber-400" />
+              <div className="space-y-1">
+                <p className="font-semibold">Supabase Configuration Required</p>
+                <p className="leading-relaxed">
+                  Authentication requires <code className="bg-amber-500/20 px-1 py-0.5 rounded font-mono">VITE_SUPABASE_URL</code> and <code className="bg-amber-500/20 px-1 py-0.5 rounded font-mono">VITE_SUPABASE_ANON_KEY</code>. Please configure them in your Vercel Project Settings.
+                </p>
+              </div>
+            </div>
+          )}
+
           {authError && (
             <div className="mb-6 p-3.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-start gap-2.5">
               <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />

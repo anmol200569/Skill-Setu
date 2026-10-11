@@ -1,17 +1,24 @@
-import { supabase } from './supabase';
+import { supabase, isSupabaseConfigured } from './supabase';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
 
 export async function getAuthHeaders(): Promise<HeadersInit> {
-  const { data: { session } } = await supabase.auth.getSession();
-  const token = session?.access_token;
-
   const headers: Record<string, string> = {
     'Content-Type': 'application/json'
   };
 
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+  if (!isSupabaseConfigured) {
+    return headers;
+  }
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    const token = session?.access_token;
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+  } catch (err) {
+    console.warn('Could not retrieve Supabase session for auth headers:', err);
   }
 
   return headers;
