@@ -13,8 +13,8 @@ export const config = {
   databaseUrl: process.env.DATABASE_URL || '',
   directUrl: process.env.DIRECT_URL || '',
   supabase: {
-    url: process.env.SUPABASE_URL || 'https://placeholder.supabase.co',
-    anonKey: process.env.SUPABASE_ANON_KEY || 'placeholder-anon-key',
+    url: process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co',
+    anonKey: process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key',
     serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-service-key',
     jwtSecret: process.env.SUPABASE_JWT_SECRET || ''
   },
