@@ -40,14 +40,32 @@ export function SignupPage() {
     formState: { errors }
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
+    mode: 'onTouched',
+    reValidateMode: 'onChange',
     defaultValues: {
+      fullName: '',
+      email: '',
+      password: '',
       role: 'learner'
     }
   });
 
+  // Reset loading state when navigating back via browser bfcache
+  React.useEffect(() => {
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        setIsGoogleSubmitting(false);
+        setIsSubmitting(false);
+      }
+    };
+    window.addEventListener('pageshow', handlePageShow);
+    return () => window.removeEventListener('pageshow', handlePageShow);
+  }, []);
+
   const selectedRole = watch('role');
 
   const onSubmit = async (data: SignupFormValues) => {
+    if (isSubmitting || isGoogleSubmitting) return;
     setAuthError(null);
     setIsSubmitting(true);
     try {
@@ -72,12 +90,20 @@ export function SignupPage() {
   };
 
   const handleGoogleSignUp = async () => {
+    if (isGoogleSubmitting || isSubmitting) return;
     setAuthError(null);
     setIsGoogleSubmitting(true);
+
+    const guardTimeout = setTimeout(() => {
+      setIsGoogleSubmitting(false);
+      setAuthError('Google sign-up request timed out. Please try again.');
+    }, 12000);
+
     try {
       await signInWithGoogle();
     } catch (err: any) {
-      setAuthError(err.message || 'Google sign-in failed');
+      clearTimeout(guardTimeout);
+      setAuthError(err.message || 'Google sign-up failed. Please verify provider settings.');
       setIsGoogleSubmitting(false);
     }
   };
@@ -188,9 +214,10 @@ export function SignupPage() {
               />
               <button
                 type="button"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-8 text-muted-foreground hover:text-foreground"
-                tabIndex={-1}
+                className="absolute right-3 top-8.5 text-muted-foreground hover:text-foreground p-1 rounded focus:outline-none focus:ring-1 focus:ring-[#C2410C]"
+                tabIndex={0}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -200,6 +227,7 @@ export function SignupPage() {
               type="submit"
               className="w-full mt-2 font-semibold"
               isLoading={isSubmitting}
+              disabled={isSubmitting || isGoogleSubmitting}
             >
               Create Account
             </Button>

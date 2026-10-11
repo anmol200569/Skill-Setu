@@ -26,25 +26,7 @@ import { QuizManagerPage } from './pages/admin/QuizManagerPage';
 // Guards
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { PublicOnlyRoute } from './components/layout/PublicOnlyRoute';
-
-// OAuth Callback handler
-function AuthCallback() {
-  React.useEffect(() => {
-    // Small timeout to allow Supabase to persist session tokens from URL hash
-    setTimeout(() => {
-      window.location.href = '/dashboard';
-    }, 500);
-  }, []);
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center space-y-2">
-        <div className="w-8 h-8 border-4 border-[#C2410C] border-t-transparent rounded-full animate-spin mx-auto" />
-        <p className="text-xs text-muted-foreground">Authenticating session with provider...</p>
-      </div>
-    </div>
-  );
-}
+import { AuthCallbackPage } from './pages/AuthCallbackPage';
 
 export function App() {
   return (
@@ -69,7 +51,7 @@ export function App() {
       />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
-      <Route path="/auth/callback" element={<AuthCallback />} />
+      <Route path="/auth/callback" element={<AuthCallbackPage />} />
 
       {/* Onboarding Wizard */}
       <Route

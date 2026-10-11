@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { supabaseAdmin } from '../lib/supabase';
+import { supabaseAuth } from '../lib/supabase';
 import { prisma } from '../lib/prisma';
 import { config } from '../config';
 import { UserRole } from '@skill-setu/shared';
@@ -55,7 +55,8 @@ export async function authenticate(
   }
 
   try {
-    const { data: { user: supabaseUser }, error } = await supabaseAdmin.auth.getUser(token);
+    // Verify user JWT with Supabase Auth SDK using anon client
+    const { data: { user: supabaseUser }, error } = await supabaseAuth.auth.getUser(token);
 
     if (error || !supabaseUser) {
       res.status(401).json({

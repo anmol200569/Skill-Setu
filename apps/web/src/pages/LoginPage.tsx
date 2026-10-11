@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,7 +9,11 @@ import { Input } from '../components/ui/Input';
 import { Eye, EyeOff, AlertCircle, ArrowLeft } from 'lucide-react';
 
 const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
+  email: z
+    .string()
+    .trim()
+    .min(1, 'Email address is required')
+    .email('Please enter a valid email address'),
   password: z.string().min(1, 'Password is required')
 });
 
@@ -31,10 +35,41 @@ export function LoginPage() {
     handleSubmit,
     formState: { errors }
   } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema)
+    resolver: zodResolver(loginSchema),
+    mode: 'onTouched',
+    reValidateMode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: ''
+    }
   });
 
+  // Extract any OAuth or redirect error from URL parameters
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const errorParam =
+      searchParams.get('error_description') ||
+      searchParams.get('error') ||
+      searchParams.get('message');
+    if (errorParam) {
+      setAuthError(decodeURIComponent(errorParam.replace(/\+/g, ' ')));
+    }
+  }, [location.search]);
+
+  // Reset loading state when navigating back via browser bfcache
+  useEffect(() => {
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        setIsGoogleSubmitting(false);
+        setIsSubmitting(false);
+      }
+    };
+    window.addEventListener('pageshow', handlePageShow);
+    return () => window.removeEventListener('pageshow', handlePageShow);
+  }, []);
+
   const onSubmit = async (data: LoginFormValues) => {
+    if (isSubmitting || isGoogleSubmitting) return;
     setAuthError(null);
     setIsSubmitting(true);
     try {
@@ -48,12 +83,22 @@ export function LoginPage() {
   };
 
   const handleGoogleSignIn = async () => {
+    if (isGoogleSubmitting || isSubmitting) return;
     setAuthError(null);
     setIsGoogleSubmitting(true);
+
+    // Guard timeout to prevent permanent button spinning if navigation is blocked
+    const guardTimeout = setTimeout(() => {
+      setIsGoogleSubmitting(false);
+      setAuthError('Google sign-in request timed out. Please try again.');
+    }, 12000);
+
     try {
       await signInWithGoogle();
+      // Browser navigation to Supabase/Google will unload page
     } catch (err: any) {
-      setAuthError(err.message || 'Google sign-in failed');
+      clearTimeout(guardTimeout);
+      setAuthError(err.message || 'Google sign-in failed. Please verify provider settings.');
       setIsGoogleSubmitting(false);
     }
   };
@@ -89,7 +134,7 @@ export function LoginPage() {
               id="email"
               type="email"
               label="Email Address"
-              placeholder="you@domain.com"
+              placeholder="name@example.com"
               autoComplete="email"
               error={errors.email?.message}
               {...register('email')}
@@ -100,16 +145,17 @@ export function LoginPage() {
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 label="Password"
-                placeholder="••••••••"
+                placeholder="Enter your password"
                 autoComplete="current-password"
                 error={errors.password?.message}
                 {...register('password')}
               />
               <button
                 type="button"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-8 text-muted-foreground hover:text-foreground"
-                tabIndex={-1}
+                className="absolute right-3 top-8.5 text-muted-foreground hover:text-foreground p-1 rounded focus:outline-none focus:ring-1 focus:ring-[#C2410C]"
+                tabIndex={0}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -128,6 +174,7 @@ export function LoginPage() {
               type="submit"
               className="w-full mt-2 font-semibold"
               isLoading={isSubmitting}
+              disabled={isSubmitting || isGoogleSubmitting}
             >
               Sign In
             </Button>

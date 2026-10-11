@@ -52,7 +52,7 @@ export function extractJsonFromText<T>(text: string): T {
 }
 
 /**
- * Generate completion via Gemini with fallback/mock for tests and offline usage
+ * Generate completion via Gemini with explicit error handling and timeout
  */
 export async function generateGeminiCompletion(
   prompt: string,
@@ -61,8 +61,8 @@ export async function generateGeminiCompletion(
 ): Promise<string> {
   const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST === 'true';
 
-  if (!genAI || isTest) {
-    // Return realistic fallback response when API key is not configured or in test mode
+  // In automated test suites, provide deterministic fixtures
+  if (isTest) {
     if (prompt.includes('generate a structured quiz') || prompt.includes('quiz questions')) {
       return JSON.stringify({
         quizTitle: 'Knowledge Assessment Quiz',
@@ -116,8 +116,14 @@ export async function generateGeminiCompletion(
       return 'Based on your diagnostic evaluations, your core strengths lie in fundamental programming concepts. However, to meet the target requirements for this role, you should prioritize bridging gaps in Advanced SQL query optimization and System Design fundamentals. Completing the recommended courses in these two areas will improve your readiness score by up to 28%.';
     }
 
-    // Default chat assistant mock
     return `Hello! As your Skill Setu AI Learning Assistant, I am here to help you bridge your target role skill gaps. Focus on your top-priority gaps first by completing hands-on projects and diagnostic quizzes. Let me know which topic you would like to explore today!`;
+  }
+
+  // In production and development environments, never fabricate fallback responses
+  if (!genAI || !config.gemini.apiKey || config.gemini.apiKey === 'your-gemini-api-key') {
+    throw new Error(
+      'GEMINI_API_KEY is not configured on the server. Please configure GEMINI_API_KEY in the Vercel Project Settings or server environment.'
+    );
   }
 
   try {
@@ -130,11 +136,31 @@ export async function generateGeminiCompletion(
       systemInstruction: systemInstruction || 'You are Skill Setu AI, an expert technical mentor and skill intelligence assistant.'
     });
 
-    const result = await model.generateContent(prompt);
+    // Enforce 25-second timeout on AI inference
+    const result = await Promise.race([
+      model.generateContent(prompt),
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Gemini API inference timed out after 25s')), 25000)
+      )
+    ]);
+
     const response = await result.response;
-    return response.text();
+    const text = response.text();
+    if (!text || text.trim().length === 0) {
+      throw new Error('Gemini API returned an empty response.');
+    }
+    return text;
   } catch (error: any) {
     console.error('Gemini API call failed:', error.message);
+    if (error.message?.includes('429') || error.message?.includes('quota') || error.message?.includes('RESOURCE_EXHAUSTED')) {
+      throw new Error('Gemini API quota exceeded or rate limit reached. Please verify your Google AI Studio plan.');
+    }
+    if (error.message?.includes('API_KEY_INVALID') || error.message?.includes('API key not valid')) {
+      throw new Error('Invalid GEMINI_API_KEY. Please verify your key at https://aistudio.google.com/apikey.');
+    }
+    if (error.message?.includes('503') || error.message?.includes('UNAVAILABLE')) {
+      throw new Error('Gemini AI service is temporarily unavailable. Please retry shortly.');
+    }
     throw new Error(`AI service failure: ${error.message}`);
   }
 }
