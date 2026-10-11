@@ -263,6 +263,9 @@ npm run test
 | **Prisma database connection error** | If running offline, test mode automatically mocks external databases. For live runs, ensure your Supabase connection string is valid and URL-encoded. |
 | **Gemini API quota or missing key** | When `GEMINI_API_KEY` is not provided or in test mode, the built-in fallback intelligence engine generates realistic mock quizzes and responses. |
 
+
+
+
 ---
 
 ## License & Credits
