@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -18,7 +18,7 @@ export function createApp(): Application {
   );
 
   // CORS Configuration
-  const isProduction = config.env === 'production';
+  const isProduction = config.env === 'production' || process.env.NODE_ENV === 'production';
   const vercelProdUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? (process.env.VERCEL_PROJECT_PRODUCTION_URL.startsWith('http')
         ? process.env.VERCEL_PROJECT_PRODUCTION_URL
@@ -29,42 +29,39 @@ export function createApp(): Application {
     new Set([config.corsOrigin, vercelProdUrl].filter(Boolean))
   );
 
-  const developmentOrigins = [
-    config.corsOrigin,
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'http://127.0.0.1:5173'
-  ];
+  const corsMiddleware = cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
 
-  app.use(
-    cors({
-      origin: (origin, callback) => {
-        // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
-        if (!origin) {
+      if (isProduction) {
+        if (productionOrigins.includes(origin)) {
           callback(null, true);
-          return;
-        }
-
-        if (isProduction) {
-          if (productionOrigins.includes(origin)) {
-            callback(null, true);
-          } else {
-            callback(new Error(`CORS blocked: Origin ${origin} is not allowed in production`));
-          }
         } else {
-          // Development/test
-          if (developmentOrigins.includes(origin) || origin.startsWith('http://localhost:')) {
-            callback(null, true);
-          } else {
-            callback(null, true);
-          }
+          callback(new Error(`CORS blocked: Origin ${origin} is not allowed in production`));
         }
-      },
-      credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-    })
-  );
+      } else {
+        // Development/test: allow all origins
+        callback(null, true);
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  });
+
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    corsMiddleware(req, res, (err) => {
+      if (err) {
+        res.status(403).json({ error: 'Forbidden origin' });
+        return;
+      }
+      next();
+    });
+  });
 
   // Request Logging
   if (config.env !== 'test') {

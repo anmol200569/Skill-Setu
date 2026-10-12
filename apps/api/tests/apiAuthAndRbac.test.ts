@@ -81,5 +81,36 @@ describe('API Authentication, Authorization & Route Protection', () => {
       process.env.NODE_ENV = originalEnv;
     }
   });
+
+  it('returns HTTP 403 { error: "Forbidden origin" } when CORS blocks unauthorized origin in production', async () => {
+    const originalEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'production';
+    try {
+      const prodApp = createApp();
+      const res = await request(prodApp)
+        .get('/health')
+        .set('Origin', 'https://unauthorized-malicious-site.com');
+      expect(res.status).toBe(403);
+      expect(res.body).toEqual({ error: 'Forbidden origin' });
+    } finally {
+      process.env.NODE_ENV = originalEnv;
+    }
+  });
+
+  it('allows authorized production origin in production', async () => {
+    const originalEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'production';
+    try {
+      const prodApp = createApp();
+      const res = await request(prodApp)
+        .get('/health')
+        .set('Origin', 'https://skill-setu.vercel.app');
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe('healthy');
+    } finally {
+      process.env.NODE_ENV = originalEnv;
+    }
+  });
 });
+
 

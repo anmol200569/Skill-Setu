@@ -8,6 +8,11 @@ export function errorHandler(
 ): void {
   console.error('API Error:', err);
 
+  if (err && err.message && err.message.includes('CORS blocked')) {
+    res.status(403).json({ error: 'Forbidden origin' });
+    return;
+  }
+
   const status = err.status || err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
 
