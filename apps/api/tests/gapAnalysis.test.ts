@@ -88,6 +88,11 @@ describe('Skill Gap Analysis & Readiness Engine', () => {
 
   it('returns explicit not_started state with null readiness when user has no target role', async () => {
     const { analyzeLearnerSkillGaps } = await import('../src/services/gapAnalysisEngine');
+    const { prisma } = await import('../src/lib/prisma');
+    const { vi } = await import('vitest');
+
+    vi.spyOn(prisma.profile, 'findUnique').mockResolvedValue(null);
+
     const result = await analyzeLearnerSkillGaps('user-without-target-role', '');
     expect(result.status).toBe('not_started');
     expect(result.overallReadinessScore).toBeNull();
