@@ -23,6 +23,9 @@ if (isProduction) {
   if (!serviceKey || serviceKey.includes('placeholder')) {
     throw new Error('FATAL: SUPABASE_SERVICE_ROLE_KEY environment variable is required in production and cannot be a placeholder.');
   }
+  if (!process.env.INITIAL_ADMIN_EMAIL) {
+    throw new Error('FATAL: INITIAL_ADMIN_EMAIL environment variable is required in production and has no default.');
+  }
 }
 
 export const config = {
@@ -49,5 +52,7 @@ export const config = {
     model: process.env.GEMINI_MODEL || '',
     timeoutMs: parseInt(process.env.GEMINI_TIMEOUT_MS || '45000', 10)
   },
-  initialAdminEmail: process.env.INITIAL_ADMIN_EMAIL || 'admin@skillsetu.dev'
+  initialAdminEmail: isProduction
+    ? process.env.INITIAL_ADMIN_EMAIL!
+    : (process.env.INITIAL_ADMIN_EMAIL || 'admin@skillsetu.dev')
 };
