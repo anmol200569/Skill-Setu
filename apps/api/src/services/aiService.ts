@@ -52,6 +52,28 @@ export function extractJsonFromText<T>(text: string): T {
 }
 
 /**
+ * Validates the configured Gemini model name. Throws if missing or using retired models.
+ */
+export function validateAndGetGeminiModel(customModel?: string): string {
+  const modelName = (customModel !== undefined ? customModel : config.gemini.model || '').trim();
+
+  if (!modelName) {
+    throw new Error(
+      'GEMINI_MODEL environment variable is required but missing. Please configure GEMINI_MODEL (e.g. gemini-3.8-flash) in your environment.'
+    );
+  }
+
+  // Never fall back to gemini-1.5-*, 2.0-*, or 2.5-* (retired or retiring)
+  if (/^gemini-(?:1\.5|2\.0|2\.5)/i.test(modelName)) {
+    throw new Error(
+      `Configured GEMINI_MODEL "${modelName}" is retired or deprecated. Please configure an active model such as gemini-3.8-flash.`
+    );
+  }
+
+  return modelName;
+}
+
+/**
  * Generate completion via Gemini with explicit error handling and timeout
  */
 export async function generateGeminiCompletion(
@@ -59,6 +81,9 @@ export async function generateGeminiCompletion(
   systemInstruction?: string,
   temperature: number = 0.2
 ): Promise<string> {
+  // Validate model name from configuration
+  const modelName = validateAndGetGeminiModel();
+
   const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST === 'true';
 
   // In automated test suites, provide deterministic fixtures
@@ -128,10 +153,10 @@ export async function generateGeminiCompletion(
 
   try {
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: modelName,
       generationConfig: {
         temperature,
-        maxOutputTokens: 2048
+        maxOutputTokens: 8192
       },
       systemInstruction: systemInstruction || 'You are Skill Setu AI, an expert technical mentor and skill intelligence assistant.'
     });

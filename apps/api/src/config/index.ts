@@ -19,7 +19,8 @@ export const config = {
     jwtSecret: process.env.SUPABASE_JWT_SECRET || ''
   },
   gemini: {
-    apiKey: process.env.GEMINI_API_KEY || ''
+    apiKey: process.env.GEMINI_API_KEY || '',
+    model: process.env.GEMINI_MODEL || ''
   },
   initialAdminEmail: process.env.INITIAL_ADMIN_EMAIL || 'admin@skillsetu.dev'
 };

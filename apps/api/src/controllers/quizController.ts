@@ -67,7 +67,17 @@ export async function uploadStudyMaterial(req: Request, res: Response): Promise<
 export async function generateQuiz(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
   const userRole = req.user!.role;
-  const validated = quizGenerateInputSchema.parse(req.body);
+
+  let validated;
+  try {
+    validated = quizGenerateInputSchema.parse(req.body);
+  } catch (err: any) {
+    res.status(400).json({
+      error: 'ValidationError',
+      message: err.errors ? err.errors.map((e: any) => `${e.path.join('.') || 'input'}: ${e.message}`).join(', ') : (err.message || 'Invalid quiz parameters')
+    });
+    return;
+  }
 
   try {
     const quiz = await generateAndSaveQuiz({

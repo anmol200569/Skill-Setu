@@ -3,7 +3,7 @@ import {
   aiGeneratedQuizOutputSchema,
   UserRole
 } from '@skill-setu/shared';
-import { generateGeminiCompletion, extractJsonFromText } from './aiService';
+import { generateGeminiCompletion, extractJsonFromText, sanitizePromptInput } from './aiService';
 import { chunkText } from './fileExtractionService';
 
 export interface GenerateQuizParams {
@@ -20,9 +20,13 @@ export interface GenerateQuizParams {
 }
 
 export async function generateAndSaveQuiz(params: GenerateQuizParams) {
-  // Chunk input if it's long study material
-  const chunks = chunkText(params.topicOrText, 5000);
-  const primaryMaterial = chunks[0];
+  // Sanitize prompt inputs to defend against prompt injection
+  const sanitizedTitle = sanitizePromptInput(params.title);
+  const sanitizedTopicOrText = sanitizePromptInput(params.topicOrText);
+
+  // Chunk input if it's long study material and use up to a sensible cap (3 chunks ~15,000 chars)
+  const chunks = chunkText(sanitizedTopicOrText, 5000);
+  const primaryMaterial = chunks.slice(0, 3).join('\n\n---\n\n');
 
   const languagePrompt = params.language === 'hi'
     ? 'Output the quiz content entirely in Hindi (Devanagari script).'
@@ -37,7 +41,7 @@ You must output valid JSON ONLY, without any extraneous commentary.`;
   const prompt = `Analyze the following learning material and generate a structured quiz.
 
 Parameters:
-- Title: "${params.title}"
+- Title: "${sanitizedTitle}"
 - Question Count: ${params.questionCount}
 - Difficulty Level: ${params.difficulty}
 - Language: ${languagePrompt}
@@ -48,7 +52,7 @@ ${primaryMaterial}
 
 JSON Output Format Specification:
 {
-  "quizTitle": "${params.title}",
+  "quizTitle": "${sanitizedTitle}",
   "description": "Comprehensive diagnostic quiz assessing key topics from the material.",
   "questions": [
     {
@@ -97,7 +101,7 @@ JSON Output Format Specification:
   const createdQuiz = await prisma.quiz.create({
     data: {
       creatorId: params.creatorId,
-      title: parsedQuizOutput.quizTitle || params.title,
+      title: parsedQuizOutput.quizTitle || sanitizedTitle || params.title,
       description: parsedQuizOutput.description || 'AI-generated technical assessment',
       sourceType: params.sourceType,
       sourceFilename: params.sourceFilename,
