@@ -1,299 +1,569 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/layout/Navbar';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
-import { useTranslation } from 'react-i18next';
 import {
   Sparkles,
   ArrowRight,
   Target,
   BookOpen,
-  FileText,
   BrainCircuit,
   Award,
   CheckCircle2,
-  TrendingUp,
-  Cpu
+  Code2,
+  BarChart3,
+  Cloud,
+  ShieldCheck,
+  Users,
+  Kanban,
+  HelpCircle,
+  Clock,
+  Layers,
+  ChevronDown,
+  RotateCcw,
+  Compass,
+  GraduationCap
 } from 'lucide-react';
-import {
-  Radar,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  ResponsiveContainer
-} from 'recharts';
 
-const sampleRadarData = [
-  { skill: 'TypeScript', current: 2, required: 4 },
-  { skill: 'React Architecture', current: 3, required: 4 },
-  { skill: 'Node.js APIs', current: 2.5, required: 4 },
-  { skill: 'System Design', current: 1.5, required: 3 },
-  { skill: 'SQL & Database', current: 3.5, required: 4 },
-  { skill: 'App Security', current: 2, required: 3 }
+const domainCardsData = [
+  {
+    icon: Code2,
+    code: 'prog-soft-dev',
+    name: 'Programming & Software Development',
+    description: 'ECMAScript runtime, TypeScript typing, React architecture, Node.js APIs, and relational modeling.',
+    skillsCount: 6,
+    questionsCount: 60
+  },
+  {
+    icon: BarChart3,
+    code: 'data-analytics',
+    name: 'Data & Analytics',
+    description: 'Advanced SQL window functions, exploratory data analysis with Pandas, and executive storytelling.',
+    skillsCount: 4,
+    questionsCount: 40
+  },
+  {
+    icon: Cloud,
+    code: 'cloud-devops',
+    name: 'Cloud & DevOps',
+    description: 'Containers, Kubernetes orchestration, AWS cloud architecture, and CI/CD automation pipelines.',
+    skillsCount: 4,
+    questionsCount: 40
+  },
+  {
+    icon: Sparkles,
+    code: 'ai-ml',
+    name: 'AI & Machine Learning',
+    description: 'Machine learning fundamentals, LLM prompt engineering, RAG vector search, and PyTorch training.',
+    skillsCount: 4,
+    questionsCount: 40
+  },
+  {
+    icon: ShieldCheck,
+    code: 'cybersecurity',
+    name: 'Cybersecurity & Digital Safety',
+    description: 'OWASP Top 10 web vulnerabilities, OAuth 2.0 / JWT identity, and zero-trust network defenses.',
+    skillsCount: 3,
+    questionsCount: 30
+  },
+  {
+    icon: Users,
+    code: 'communication-leadership',
+    name: 'Communication & Leadership',
+    description: 'Technical writing, architectural RFCs, stakeholder alignment, and agile code review culture.',
+    skillsCount: 3,
+    questionsCount: 30
+  },
+  {
+    icon: Kanban,
+    code: 'product-management',
+    name: 'Product & Project Management',
+    description: 'Product discovery, PRD authoring, North Star metrics, cohort retention, and UX design thinking.',
+    skillsCount: 3,
+    questionsCount: 30
+  }
+];
+
+const howItWorksSteps = [
+  {
+    number: '01',
+    title: 'Assess',
+    desc: 'Complete focused diagnostic assessments covering genuine workplace code scenarios and architecture dilemmas.'
+  },
+  {
+    number: '02',
+    title: 'Score',
+    desc: 'Receive calibrated 1.0 to 5.0 proficiency scores derived from objective testing and self-assessment rubrics.'
+  },
+  {
+    number: '03',
+    title: 'Skill Graph',
+    desc: 'View an instant radar visualization highlighting must-have role requirements versus your current proficiencies.'
+  },
+  {
+    number: '04',
+    title: 'Learn',
+    desc: 'Follow curated, step-by-step pathways assembled exclusively from verified free resources from Microsoft, Google, and CS50.'
+  },
+  {
+    number: '05',
+    title: 'Practice',
+    desc: 'Generate interactive revision quizzes from course materials or notes using our integrated AI study assistant.'
+  },
+  {
+    number: '06',
+    title: 'Re-Score',
+    desc: 'Retake diagnostic modules as you complete courses to watch your quantified qualification score increase.'
+  }
+];
+
+const faqItems = [
+  {
+    question: 'Does Skill Setu guarantee a job, placement, or interview?',
+    answer: 'No. Skill Setu is an educational benchmarking and skill gap diagnostics tool, not a recruitment agency, staffing firm, or placement bootcamp. We help you systematically uncover where your technical skills fall short of industry role benchmarks and connect you with free curricula to bridge those gaps. Hiring decisions depend on employers, market dynamics, and your independent project portfolio.'
+  },
+  {
+    question: 'How are diagnostic questions scored and evaluated?',
+    answer: 'Every diagnostic assessment calculates a score using verified competency frameworks on a 1.0 to 5.0 scale. Option orders are shuffled on every attempt to eliminate positional bias, and questions feature explanations for both correct choices and common misconceptions.'
+  },
+  {
+    question: 'Are the recommended learning paths genuinely free?',
+    answer: 'Yes. Our catalog indexes over 60 verified courses from open educational providers including Microsoft Learn, Google Cloud Skills Boost, freeCodeCamp, CS50, and NPTEL. You will never encounter a paywall inside our recommended course pathways.'
+  },
+  {
+    question: 'Can I change my target career role after signing up?',
+    answer: 'Yes. You can change or compare target roles at any time in your profile dashboard. Switching roles automatically re-computes your readiness score and reprioritizes your course suggestions.'
+  }
 ];
 
 export function LandingPage() {
-  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  // Inline 3-Step Mini Wizard State
+  const [selectedRole, setSelectedRole] = useState('fullstack-dev');
+  const [selectedLevel, setSelectedLevel] = useState('intermediate');
+  const [selectedHours, setSelectedHours] = useState('6-10');
+  const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
+
+  const handleFinishWizard = () => {
+    const pathwayData = {
+      role: selectedRole,
+      level: selectedLevel,
+      hours: selectedHours
+    };
+    try {
+      localStorage.setItem('skill_setu_pathway', JSON.stringify(pathwayData));
+    } catch (_) {}
+
+    navigate(`/signup?role=${encodeURIComponent(selectedRole)}&level=${encodeURIComponent(selectedLevel)}&hours=${encodeURIComponent(selectedHours)}`);
+  };
+
+  const scrollToWizard = () => {
+    const el = document.getElementById('pathway-wizard');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
+    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 px-4 sm:px-6 max-w-7xl mx-auto w-full">
-        <div className="flex flex-col items-center text-center space-y-6 max-w-4xl mx-auto">
+      {/* Hero Section: ONE Promise, ONE Button */}
+      <section className="relative overflow-hidden pt-16 pb-20 md:pt-24 md:pb-28 px-4 sm:px-6 max-w-7xl mx-auto w-full">
+        <div className="flex flex-col items-center text-center max-w-3xl mx-auto space-y-6">
           <Badge variant="default" className="px-3.5 py-1 text-xs uppercase tracking-wider font-semibold">
             <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-            {t('landing.badge')}
+            Open Technical Skill Intelligence
           </Badge>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-foreground leading-[1.1]">
-            {t('landing.title')}
+          <h1 className="text-4xl sm:text-6xl font-serif font-bold tracking-tight text-foreground leading-[1.12]">
+            Know exactly where your technical skills stand—and close the gap with structured, free learning.
           </h1>
 
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl font-normal leading-relaxed">
-            {t('landing.subtitle')}
+          <p className="text-base sm:text-lg text-muted-foreground font-normal leading-relaxed max-w-2xl">
+            Objective diagnostic assessments mapped to real industry competencies. Discover your verified proficiency, benchmark against role requirements, and follow curated open-source courses.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
-            <Link to="/signup">
-              <Button size="lg" className="w-full sm:w-auto px-8 text-base shadow-md font-semibold">
-                {t('landing.ctaStart')}
+          <div className="pt-2">
+            <Button
+              size="lg"
+              onClick={scrollToWizard}
+              className="px-8 py-6 text-base font-semibold shadow-md bg-[#C2410C] hover:bg-[#9A3412] text-white"
+            >
+              Configure Your Pathway
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Inline 3-Step Mini Wizard */}
+        <div id="pathway-wizard" className="mt-16 sm:mt-20 max-w-4xl mx-auto">
+          <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-8">
+            <div className="border-b border-border pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C]">
+                  Step-by-Step Setup
+                </span>
+                <h2 className="text-xl sm:text-2xl font-serif font-bold text-foreground mt-0.5">
+                  Plan Your Diagnostic Pathway in 30 Seconds
+                </h2>
+              </div>
+              <span className="text-xs text-muted-foreground self-start sm:self-auto">
+                No credit card • Answers carry into signup
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Wizard Step 1: Target Role */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  <span className="w-5 h-5 rounded-full bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center font-bold">1</span>
+                  Select Target Role
+                </div>
+                <div className="space-y-2">
+                  {[
+                    { id: 'fullstack-dev', label: 'Full-Stack Developer' },
+                    { id: 'data-analyst', label: 'Data Analyst' },
+                    { id: 'cloud-engineer', label: 'Cloud & DevOps Engineer' },
+                    { id: 'ml-engineer', label: 'Machine Learning Engineer' },
+                    { id: 'appsec-engineer', label: 'Application Security' }
+                  ].map((role) => (
+                    <button
+                      key={role.id}
+                      type="button"
+                      onClick={() => setSelectedRole(role.id)}
+                      className={`w-full text-left px-3.5 py-2.5 rounded-lg border text-sm transition-colors ${
+                        selectedRole === role.id
+                          ? 'border-[#C2410C] bg-[#C2410C]/5 font-semibold text-foreground'
+                          : 'border-border bg-background hover:bg-secondary/40 text-muted-foreground'
+                      }`}
+                    >
+                      {role.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Wizard Step 2: Current Level */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  <span className="w-5 h-5 rounded-full bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center font-bold">2</span>
+                  Self-Assessed Level
+                </div>
+                <div className="space-y-2">
+                  {[
+                    { id: 'beginner', label: 'Foundational / Beginner', sub: 'Starting from core basics' },
+                    { id: 'intermediate', label: 'Intermediate Developer', sub: '1-3 years practical coding' },
+                    { id: 'advanced', label: 'Senior / Transitioning', sub: 'Solid base, targeting gaps' }
+                  ].map((lvl) => (
+                    <button
+                      key={lvl.id}
+                      type="button"
+                      onClick={() => setSelectedLevel(lvl.id)}
+                      className={`w-full text-left px-3.5 py-2.5 rounded-lg border text-sm transition-colors ${
+                        selectedLevel === lvl.id
+                          ? 'border-[#C2410C] bg-[#C2410C]/5 font-semibold text-foreground'
+                          : 'border-border bg-background hover:bg-secondary/40 text-muted-foreground'
+                      }`}
+                    >
+                      <div className="text-foreground font-medium">{lvl.label}</div>
+                      <div className="text-xs text-muted-foreground">{lvl.sub}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Wizard Step 3: Weekly Commitment */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  <span className="w-5 h-5 rounded-full bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center font-bold">3</span>
+                  Weekly Commitment
+                </div>
+                <div className="space-y-2">
+                  {[
+                    { id: '3-5', label: '3 to 5 hours / week', sub: 'Consistent light pace' },
+                    { id: '6-10', label: '6 to 10 hours / week', sub: 'Recommended standard' },
+                    { id: '11-15', label: '11 to 15 hours / week', sub: 'Accelerated study' },
+                    { id: '15+', label: '15+ hours / week', sub: 'Immersive focus' }
+                  ].map((hrs) => (
+                    <button
+                      key={hrs.id}
+                      type="button"
+                      onClick={() => setSelectedHours(hrs.id)}
+                      className={`w-full text-left px-3.5 py-2.5 rounded-lg border text-sm transition-colors ${
+                        selectedHours === hrs.id
+                          ? 'border-[#C2410C] bg-[#C2410C]/5 font-semibold text-foreground'
+                          : 'border-border bg-background hover:bg-secondary/40 text-muted-foreground'
+                      }`}
+                    >
+                      <div className="text-foreground font-medium">{hrs.label}</div>
+                      <div className="text-xs text-muted-foreground">{hrs.sub}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border">
+              <div className="text-xs text-muted-foreground flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
+                <span>Ready to initialize your benchmark audit with these selections.</span>
+              </div>
+              <Button
+                onClick={handleFinishWizard}
+                className="w-full sm:w-auto px-6 py-2.5 bg-[#C2410C] hover:bg-[#9A3412] text-white font-semibold shadow-sm"
+              >
+                Continue with This Pathway
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
-            </Link>
-            <Link to="/courses">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto px-6 text-base">
-                {t('landing.ctaExplore')}
-              </Button>
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-3 gap-6 pt-10 border-t border-border/80 w-full max-w-xl text-center">
-            <div>
-              <div className="text-2xl sm:text-3xl font-serif font-bold text-foreground">50+</div>
-              <div className="text-xs text-muted-foreground mt-0.5">{t('landing.statsCurated')}</div>
-            </div>
-            <div>
-              <div className="text-2xl sm:text-3xl font-serif font-bold text-[#C2410C]">1 - 5</div>
-              <div className="text-xs text-muted-foreground mt-0.5">Proficiency Metric</div>
-            </div>
-            <div>
-              <div className="text-2xl sm:text-3xl font-serif font-bold text-foreground">98.4%</div>
-              <div className="text-xs text-muted-foreground mt-0.5">{t('landing.statsAccuracy')}</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Realistic Skill-Gap Report Preview */}
-        <div className="mt-16 sm:mt-24 rounded-2xl border border-border bg-card p-6 sm:p-10 shadow-xl max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between pb-6 border-b border-border gap-4">
-            <div>
-              <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C]">
-                Diagnostic Intelligence Report Preview
-              </span>
-              <h3 className="text-2xl font-serif font-bold text-foreground mt-1">
-                Full-Stack Developer Qualification Audit
-              </h3>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="text-right">
-                <div className="text-xs text-muted-foreground">Overall Readiness</div>
-                <div className="text-2xl font-bold font-serif text-[#C2410C]">68%</div>
-              </div>
-              <div className="h-10 w-10 rounded-full border-4 border-[#C2410C] flex items-center justify-center font-bold text-xs">
-                B+
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-8">
-            {/* Radar Chart */}
-            <div className="lg:col-span-6 flex flex-col items-center justify-center bg-background/50 rounded-xl p-4 border border-border/60">
-              <span className="text-xs font-semibold text-muted-foreground mb-2">
-                Proficiency Competency Mapping (1 to 5 Scale)
-              </span>
-              <div className="w-full h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart data={sampleRadarData}>
-                    <PolarGrid stroke="#D4D0C5" />
-                    <PolarAngleAxis dataKey="skill" tick={{ fill: '#6B6861', fontSize: 11 }} />
-                    <PolarRadiusAxis angle={30} domain={[0, 5]} tick={{ fill: '#6B6861', fontSize: 10 }} />
-                    <Radar name="Current Proficiency" dataKey="current" stroke="#C2410C" fill="#C2410C" fillOpacity={0.4} />
-                    <Radar name="Target Requirement" dataKey="required" stroke="#1A1A18" fill="#1A1A18" fillOpacity={0.15} />
-                  </RadarChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="flex items-center gap-6 text-xs text-muted-foreground mt-2">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 rounded-full bg-[#C2410C]"></span> Current Level
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 rounded-full bg-[#1A1A18]"></span> Role Requirement
-                </span>
-              </div>
-            </div>
-
-            {/* Gap Table & Summary */}
-            <div className="lg:col-span-6 flex flex-col justify-between space-y-4">
-              <div>
-                <h4 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">
-                  Ranked Priority Gaps
-                </h4>
-                <div className="space-y-2.5">
-                  <div className="p-3 rounded-lg border border-border bg-secondary/30 flex items-center justify-between">
-                    <div>
-                      <div className="font-semibold text-sm text-foreground">System Design & Scalability</div>
-                      <div className="text-xs text-muted-foreground">Current: 1.5/5 • Required: 3.0/5</div>
-                    </div>
-                    <Badge variant="critical">Critical Gap (-1.5)</Badge>
-                  </div>
-                  <div className="p-3 rounded-lg border border-border bg-secondary/30 flex items-center justify-between">
-                    <div>
-                      <div className="font-semibold text-sm text-foreground">TypeScript & Advanced Types</div>
-                      <div className="text-xs text-muted-foreground">Current: 2.0/5 • Required: 4.0/5</div>
-                    </div>
-                    <Badge variant="high">High Gap (-2.0)</Badge>
-                  </div>
-                  <div className="p-3 rounded-lg border border-border bg-secondary/30 flex items-center justify-between">
-                    <div>
-                      <div className="font-semibold text-sm text-foreground">OWASP Application Security</div>
-                      <div className="text-xs text-muted-foreground">Current: 2.0/5 • Required: 3.0/5</div>
-                    </div>
-                    <Badge variant="medium">Medium Gap (-1.0)</Badge>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4 rounded-xl border border-[#C2410C]/30 bg-[#C2410C]/5 text-xs text-foreground/90 space-y-1.5">
-                <div className="font-bold flex items-center gap-1.5 text-[#C2410C]">
-                  <BrainCircuit className="w-4 h-4" />
-                  AI Synthesis & Recommendation
-                </div>
-                <p className="leading-relaxed text-muted-foreground">
-                  Your core foundation in relational databases is solid. Completing the recommended System Design Primer track and TypeScript production modules will bridge 78% of your critical role gap.
-                </p>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Feature Pillars */}
-      <section className="py-20 bg-secondary/40 border-y border-border px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">
-              Built for precision learning, not aimless tutorials.
+      {/* Clearly Labelled Sample Result Card */}
+      <section className="py-16 bg-secondary/30 border-y border-border px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto space-y-6">
+          <div className="text-center max-w-xl mx-auto space-y-2">
+            <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C]">
+              What You Will Receive
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-foreground">
+              A Concrete Diagnostic Gap Analysis
             </h2>
-            <p className="text-muted-foreground mt-3 text-base">
-              Skill Setu connects diagnostic testing with verified role benchmarks from leading technology leaders.
+            <p className="text-sm text-muted-foreground">
+              Every learner gets an objective evaluation with verified scores, identified gaps, and exact courses to take.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-6 rounded-xl border border-border bg-card">
-              <div className="w-12 h-12 rounded-lg bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center mb-4">
-                <Target className="w-6 h-6" />
+          <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-border gap-2">
+              <div>
+                <Badge variant="neutral" className="text-xs uppercase tracking-wider font-semibold mb-1">
+                  Sample Result — Illustrative Only
+                </Badge>
+                <h3 className="text-lg font-serif font-bold text-foreground">
+                  Target Role: Full-Stack Developer
+                </h3>
               </div>
-              <h3 className="font-serif font-bold text-lg text-foreground mb-2">Diagnostic Assessments</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Objective evaluations with timed test scenarios and weighted formula scoring to establish genuine skill proficiency.
-              </p>
+              <div className="text-left sm:text-right">
+                <div className="text-xs text-muted-foreground">Estimated Qualification Readiness</div>
+                <div className="text-2xl font-serif font-bold text-[#C2410C]">68% Qualified</div>
+              </div>
             </div>
 
-            <div className="p-6 rounded-xl border border-border bg-card">
-              <div className="w-12 h-12 rounded-lg bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center mb-4">
-                <FileText className="w-6 h-6" />
-              </div>
-              <h3 className="font-serif font-bold text-lg text-foreground mb-2">AI Quiz Generator</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Upload your lecture PDFs, slide decks, or notes. Gemini crafts rigorous MCQs, multi-correct, and True/False tests with instant PDF export.
-              </p>
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Competency Evaluation Summary
+                </div>
+                <div className="space-y-2.5">
+                  <div className="p-3 rounded-lg border border-border bg-background flex items-center justify-between text-xs">
+                    <div>
+                      <div className="font-semibold text-foreground">TypeScript & JavaScript</div>
+                      <div className="text-muted-foreground">Current: 3.5 / 5 • Required: 4.0 / 5</div>
+                    </div>
+                    <Badge variant="default">Minor Gap (-0.5)</Badge>
+                  </div>
 
-            <div className="p-6 rounded-xl border border-border bg-card">
-              <div className="w-12 h-12 rounded-lg bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center mb-4">
-                <BookOpen className="w-6 h-6" />
-              </div>
-              <h3 className="font-serif font-bold text-lg text-foreground mb-2">Curated Free Courses</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Over 50 verified learning paths from Microsoft Learn, freeCodeCamp, NPTEL, and Harvard CS50 mapped specifically to your ranked gaps.
-              </p>
-            </div>
+                  <div className="p-3 rounded-lg border border-border bg-background flex items-center justify-between text-xs">
+                    <div>
+                      <div className="font-semibold text-foreground">System Design & Scalability</div>
+                      <div className="text-muted-foreground">Current: 1.0 / 5 • Required: 3.0 / 5</div>
+                    </div>
+                    <Badge variant="critical">Critical Gap (-2.0)</Badge>
+                  </div>
 
-            <div className="p-6 rounded-xl border border-border bg-card">
-              <div className="w-12 h-12 rounded-lg bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center mb-4">
-                <TrendingUp className="w-6 h-6" />
+                  <div className="p-3 rounded-lg border border-border bg-background flex items-center justify-between text-xs">
+                    <div>
+                      <div className="font-semibold text-foreground">OWASP Application Security</div>
+                      <div className="text-muted-foreground">Current: 2.0 / 5 • Required: 3.0 / 5</div>
+                    </div>
+                    <Badge variant="high">High Gap (-1.0)</Badge>
+                  </div>
+                </div>
               </div>
-              <h3 className="font-serif font-bold text-lg text-foreground mb-2">Adaptive Learning Path</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                A structured, step-by-step roadmap tailored to your weekly available hours, learning style, and target role criteria.
-              </p>
+
+              <div className="space-y-3">
+                <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Targeted Learning Intervention
+                </div>
+                <div className="p-4 rounded-xl border border-border bg-background space-y-3 text-xs">
+                  <div className="flex items-center gap-2 font-semibold text-foreground">
+                    <BookOpen className="w-4 h-4 text-[#C2410C]" />
+                    <span>Top High-Impact Course Recommendations:</span>
+                  </div>
+                  <ul className="space-y-2 text-muted-foreground pl-1">
+                    <li className="flex items-start gap-2">
+                      <span className="font-bold text-[#C2410C]">•</span>
+                      <span><strong>The System Design Primer</strong> (GitHub open syllabus) — Bridges 1.5 score units.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="font-bold text-[#C2410C]">•</span>
+                      <span><strong>OWASP Top 10 Security Fundamentals</strong> (Microsoft Learn) — Free, 4 hours.</span>
+                    </li>
+                  </ul>
+                  <div className="pt-2 border-t border-border/80 text-[11px] text-muted-foreground">
+                    Projected Outcome: Completing these two targeted courses raises estimated readiness to <strong>86%</strong>.
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Target Careers Section */}
+      {/* "How It Works" Loop */}
       <section className="py-20 px-4 sm:px-6 max-w-7xl mx-auto w-full">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <Badge variant="neutral" className="mb-2">Industry Benchmarks</Badge>
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-2">
+          <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C]">
+            Continuous Improvement
+          </span>
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">
-            Target high-impact technology careers
+            The Skill Setu Continuous Growth Loop
           </h2>
-          <p className="text-muted-foreground mt-2">
-            Each role includes verified competency matrices with 1-5 proficiency thresholds.
+          <p className="text-muted-foreground text-sm">
+            A cyclical framework designed to move you from uncertain self-assessments to verified, demonstrable competency.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-xl border border-border bg-card hover:border-[#C2410C]/50 transition-colors">
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="font-serif font-bold text-lg text-foreground">Full-Stack Developer</h4>
-              <Badge variant="high">Very High Demand</Badge>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {howItWorksSteps.map((step) => (
+            <div
+              key={step.number}
+              className="p-6 rounded-2xl border border-border bg-card relative space-y-2 hover:border-[#C2410C]/40 transition-colors"
+            >
+              <div className="text-xs font-mono font-bold text-[#C2410C]">
+                {step.number}
+              </div>
+              <h3 className="font-serif font-bold text-lg text-foreground">
+                {step.title}
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {step.desc}
+              </p>
             </div>
-            <p className="text-xs text-muted-foreground mb-4">
-              TypeScript, React, Node.js, relational schema design, system architecture, and OWASP application security.
+          ))}
+        </div>
+      </section>
+
+      {/* Domain Cards with REAL database counts */}
+      <section className="py-20 bg-secondary/30 border-y border-border px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto space-y-12">
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C]">
+              Comprehensive Curriculum Bank
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">
+              7 Domains, 27 Competencies, 270 Curated Questions
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Real competency models and verified assessment banks currently active in our database.
             </p>
-            <div className="text-xs font-semibold text-[#C2410C]">8 Required Competencies</div>
           </div>
 
-          <div className="p-6 rounded-xl border border-border bg-card hover:border-[#C2410C]/50 transition-colors">
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="font-serif font-bold text-lg text-foreground">Data Analyst</h4>
-              <Badge variant="default">High Demand</Badge>
-            </div>
-            <p className="text-xs text-muted-foreground mb-4">
-              Advanced SQL window functions, exploratory data analysis with Pandas, Power BI executive storytelling, and BI modeling.
-            </p>
-            <div className="text-xs font-semibold text-[#C2410C]">6 Required Competencies</div>
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {domainCardsData.map((d) => {
+              const Icon = d.icon;
+              return (
+                <div
+                  key={d.code}
+                  className="p-6 rounded-2xl border border-border bg-card flex flex-col justify-between space-y-4 hover:border-[#C2410C]/50 transition-colors"
+                >
+                  <div className="space-y-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-serif font-bold text-base text-foreground">
+                        {d.name}
+                      </h3>
+                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                        {d.description}
+                      </p>
+                    </div>
+                  </div>
 
-          <div className="p-6 rounded-xl border border-border bg-card hover:border-[#C2410C]/50 transition-colors">
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="font-serif font-bold text-lg text-foreground">ML Engineer</h4>
-              <Badge variant="critical">Critical Demand</Badge>
-            </div>
-            <p className="text-xs text-muted-foreground mb-4">
-              Python, machine learning mathematics, Generative AI engineering, RAG pipelines, vector databases, and model deployment.
-            </p>
-            <div className="text-xs font-semibold text-[#C2410C]">7 Required Competencies</div>
+                  <div className="pt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
+                    <span>{d.skillsCount} Core Skills</span>
+                    <span className="font-medium text-foreground">{d.questionsCount} Questions</span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
+        </div>
+      </section>
+
+      {/* Honest FAQ (including "no job guarantee") */}
+      <section className="py-20 px-4 sm:px-6 max-w-4xl mx-auto w-full space-y-10">
+        <div className="text-center space-y-2">
+          <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C]">
+            Transparency First
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Clear, honest answers about our methodology, scope, and guarantees.
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          {faqItems.map((item, idx) => {
+            const isOpen = openFaqIdx === idx;
+            return (
+              <div
+                key={idx}
+                className="rounded-xl border border-border bg-card overflow-hidden transition-colors"
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenFaqIdx(isOpen ? null : idx)}
+                  className="w-full text-left px-5 py-4 flex items-center justify-between gap-4 font-serif font-bold text-base text-foreground"
+                >
+                  <span>{item.question}</span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-muted-foreground flex-shrink-0 transition-transform ${
+                      isOpen ? 'transform rotate-180' : ''
+                    }`}
+                  />
+                </button>
+                {isOpen && (
+                  <div className="px-5 pb-5 text-xs text-muted-foreground leading-relaxed border-t border-border/40 pt-3">
+                    {item.answer}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-border bg-card py-10 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <img src="/logo.svg" alt="Skill Setu" className="w-5 h-5 rounded" />
-            <span className="font-serif font-bold text-foreground">Skill Setu</span>
-            <span>— AI Skill Intelligence & Learning Platform</span>
+      <footer className="mt-auto border-t border-border bg-card py-12 px-4 sm:px-6 text-xs text-muted-foreground">
+        <div className="max-w-7xl mx-auto space-y-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <span className="w-6 h-6 rounded bg-[#C2410C] text-white flex items-center justify-center font-serif font-bold text-xs">
+                S
+              </span>
+              <span className="font-serif font-bold text-foreground text-sm">Skill Setu</span>
+              <span>— Open Skill Intelligence & Learning Platform</span>
+            </div>
+            <div className="flex items-center gap-6">
+              <Link to="/courses" className="hover:text-foreground transition-colors">Courses Catalog</Link>
+              <Link to="/login" className="hover:text-foreground transition-colors">Learner Login</Link>
+              <Link to="/signup" className="hover:text-foreground transition-colors">Sign Up</Link>
+            </div>
           </div>
-          <div>Built with Supabase PostgreSQL, Google Gemini AI & React 18</div>
+
+          <div className="border-t border-border/80 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px]">
+            <p>© {new Date().getFullYear()} Skill Setu. Open-source educational diagnostics platform. All course trademarks belong to their respective owners.</p>
+            <p>Fraunces & DM Sans Typography • Terracotta Brand Aesthetic</p>
+          </div>
         </div>
       </footer>
     </div>

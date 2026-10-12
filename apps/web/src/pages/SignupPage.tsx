@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -7,7 +7,21 @@ import { useAuth } from '../context/AuthContext';
 import { formatAuthError, isSupabaseConfigured } from '../lib/supabase';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Eye, EyeOff, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, AlertCircle, CheckCircle2, ArrowLeft, Compass } from 'lucide-react';
+
+const roleLabels: Record<string, string> = {
+  'fullstack-dev': 'Full-Stack Developer',
+  'data-analyst': 'Data Analyst',
+  'cloud-engineer': 'Cloud & DevOps Engineer',
+  'ml-engineer': 'Machine Learning Engineer',
+  'appsec-engineer': 'Application Security'
+};
+
+const levelLabels: Record<string, string> = {
+  beginner: 'Foundational / Beginner',
+  intermediate: 'Intermediate',
+  advanced: 'Senior / Transitioning'
+};
 
 const signupSchema = z.object({
   fullName: z.string().min(2, 'Full name must be at least 2 characters'),
@@ -31,8 +45,10 @@ export function SignupPage() {
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
   const [verificationPending, setVerificationPending] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState('');
+  const [pathwayConfig, setPathwayConfig] = useState<{ role: string; level: string; hours: string } | null>(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const {
     register,
@@ -51,8 +67,31 @@ export function SignupPage() {
     }
   });
 
+  // Extract pathway configuration from query params or localStorage
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const roleParam = searchParams.get('role');
+    const levelParam = searchParams.get('level');
+    const hoursParam = searchParams.get('hours');
+
+    if (roleParam || levelParam || hoursParam) {
+      setPathwayConfig({
+        role: roleParam || 'fullstack-dev',
+        level: levelParam || 'intermediate',
+        hours: hoursParam || '6-10'
+      });
+    } else {
+      try {
+        const saved = localStorage.getItem('skill_setu_pathway');
+        if (saved) {
+          setPathwayConfig(JSON.parse(saved));
+        }
+      } catch (_) {}
+    }
+  }, [location.search]);
+
   // Reset loading state when navigating back via browser bfcache
-  React.useEffect(() => {
+  useEffect(() => {
     const handlePageShow = (event: PageTransitionEvent) => {
       if (event.persisted) {
         setIsGoogleSubmitting(false);
@@ -164,10 +203,20 @@ export function SignupPage() {
             </div>
           )}
 
-          {authError && (
-            <div className="mb-6 p-3.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-start gap-2.5">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-              <span>{authError}</span>
+          {pathwayConfig && (
+            <div className="mb-6 p-4 rounded-xl bg-[#C2410C]/10 border border-[#C2410C]/25 text-xs space-y-1.5">
+              <div className="flex items-center gap-1.5 font-semibold text-[#C2410C]">
+                <Compass className="w-4 h-4 flex-shrink-0" />
+                <span>Selected Pathway Configuration</span>
+              </div>
+              <p className="text-foreground text-[11px] leading-relaxed">
+                Target Role: <strong>{roleLabels[pathwayConfig.role] || pathwayConfig.role}</strong><br />
+                Self-Assessed Level: <strong>{levelLabels[pathwayConfig.level] || pathwayConfig.level}</strong><br />
+                Weekly Commitment: <strong>{pathwayConfig.hours} hrs/week</strong>
+              </p>
+              <p className="text-[10px] text-muted-foreground pt-1 border-t border-[#C2410C]/15">
+                These selections will automatically initialize your diagnostic roadmap upon registration.
+              </p>
             </div>
           )}
 
