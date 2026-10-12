@@ -3,6 +3,7 @@ import {
   aiGeneratedQuizOutputSchema,
   UserRole
 } from '@skill-setu/shared';
+import { config } from '../config';
 import { generateGeminiCompletion, extractJsonFromText, sanitizePromptInput } from './aiService';
 import { chunkText } from './fileExtractionService';
 
@@ -79,11 +80,12 @@ JSON Output Format Specification:
   while (attempts < maxAttempts) {
     attempts++;
     try {
+      const quizTimeout = Math.max(45000, config.gemini.timeoutMs || 45000);
       const responseText = await generateGeminiCompletion(
         prompt,
         systemInstruction,
         attempts === 1 ? 0.2 : 0.4,
-        { responseMimeType: 'application/json', timeoutMs: 55000, thinkingLevel: 'MINIMAL' }
+        { responseMimeType: 'application/json', timeoutMs: quizTimeout, thinkingLevel: 'LOW' }
       );
 
       const parsed = extractJsonFromText<any>(responseText);

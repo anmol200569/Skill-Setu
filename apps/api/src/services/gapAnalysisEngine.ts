@@ -144,30 +144,42 @@ export async function analyzeLearnerSkillGaps(
     roleId = profile?.targetRoleId || undefined;
   }
 
-  // If still no role, find default role (Full-Stack Developer)
-  let role = roleId
-    ? await prisma.role.findUnique({
-        where: { id: roleId },
-        include: {
-          skillsRequired: {
-            include: { skill: { include: { domain: true } } }
-          }
-        }
-      })
-    : null;
-
-  if (!role) {
-    role = await prisma.role.findFirst({
-      include: {
-        skillsRequired: {
-          include: { skill: { include: { domain: true } } }
-        }
-      }
-    });
+  // Never default a target role: return explicit not_started state with no numbers
+  if (!roleId) {
+    return {
+      userId,
+      targetRoleId: null,
+      targetRoleTitle: null,
+      status: 'not_started',
+      overallReadinessScore: null,
+      gaps: [],
+      strengths: [],
+      aiSummaryExplanation: 'Please select a target career role in your profile to initialize skill gap analysis and readiness scoring.',
+      analyzedAt: new Date().toISOString()
+    };
   }
 
+  const role = await prisma.role.findUnique({
+    where: { id: roleId },
+    include: {
+      skillsRequired: {
+        include: { skill: { include: { domain: true } } }
+      }
+    }
+  });
+
   if (!role) {
-    throw new Error('No career roles found in competency framework.');
+    return {
+      userId,
+      targetRoleId: null,
+      targetRoleTitle: null,
+      status: 'not_started',
+      overallReadinessScore: null,
+      gaps: [],
+      strengths: [],
+      aiSummaryExplanation: 'Target career role was not found in the competency framework. Please select a valid role.',
+      analyzedAt: new Date().toISOString()
+    };
   }
 
   // Fetch user skills
@@ -229,6 +241,7 @@ Provide a concise, encouraging 2-3 sentence strategic summary and highlight whic
     userId,
     targetRoleId: role.id,
     targetRoleTitle: role.title,
+    status: 'active',
     overallReadinessScore,
     gaps,
     strengths,

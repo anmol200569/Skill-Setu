@@ -33,17 +33,38 @@ describe('API Authentication, Authorization & Route Protection', () => {
     expect(res.body.error).toBe('Forbidden');
   });
 
-  it('allows administrator to pass RBAC check and validates payload schema', async () => {
-    // Missing required fields -> 400 Bad Request
+  it('rejects unauthenticated request to admin route with 401 Unauthorized', async () => {
     const res = await request(app)
       .post('/api/v1/competency/roles')
-      .set('Authorization', 'Bearer test-admin-token')
       .send({
-        code: 'bad'
-        // Missing title, description, skills
+        code: 'new-role',
+        title: 'New Role',
+        description: 'Testing',
+        skills: []
       });
+    expect(res.status).toBe(401);
+    expect(res.body.error).toBe('Unauthorized');
+  });
 
-    expect(res.status).toBe(400);
-    expect(res.body.error).toBe('ValidationError');
+  it('rejects authenticated non-admin user (other email / learner) on admin route with 403 Forbidden', async () => {
+    const res = await request(app)
+      .post('/api/v1/competency/domains')
+      .set('Authorization', 'Bearer test-learner-token')
+      .send({
+        code: 'unauthorized-domain',
+        name: 'Unauthorized Domain',
+        description: 'Forbidden test'
+      });
+    expect(res.status).toBe(403);
+    expect(res.body.error).toBe('Forbidden');
+  });
+
+  it('confirms /auth/bootstrap-admin route has been removed and returns 404', async () => {
+    const res = await request(app)
+      .post('/api/v1/auth/bootstrap-admin')
+      .send({
+        email: 'attacker@example.com'
+      });
+    expect(res.status).toBe(404);
   });
 });

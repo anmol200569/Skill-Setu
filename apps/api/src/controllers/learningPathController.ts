@@ -6,8 +6,25 @@ import { generateLearningPath } from '../services/recommendationEngine';
 export async function getLearnerLearningPath(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
 
+  const profile = await prisma.profile.findUnique({
+    where: { userId }
+  });
+
+  if (!profile?.targetRoleId) {
+    res.json({
+      status: 'not_started',
+      userId,
+      targetRoleTitle: null,
+      totalEstimatedHours: null,
+      courses: [],
+      createdAt: null,
+      updatedAt: null
+    });
+    return;
+  }
+
   let path = await prisma.learningPath.findFirst({
-    where: { userId },
+    where: { userId, targetRoleId: profile.targetRoleId },
     include: {
       targetRole: true,
       items: {
@@ -18,10 +35,22 @@ export async function getLearnerLearningPath(req: Request, res: Response): Promi
   });
 
   if (!path) {
-    // Generate one automatically based on profile
-    const gapResult = await analyzeLearnerSkillGaps(userId);
+    // Generate one automatically based on profile target role
+    const gapResult = await analyzeLearnerSkillGaps(userId, profile.targetRoleId);
+    if (gapResult.status === 'not_started' || !gapResult.targetRoleId) {
+      res.json({
+        status: 'not_started',
+        userId,
+        targetRoleTitle: null,
+        totalEstimatedHours: null,
+        courses: [],
+        createdAt: null,
+        updatedAt: null
+      });
+      return;
+    }
     const generated = await generateLearningPath(userId, gapResult.targetRoleId, gapResult.gaps);
-    res.json(generated);
+    res.json({ ...generated, status: 'active' });
     return;
   }
 
@@ -35,6 +64,7 @@ export async function getLearnerLearningPath(req: Request, res: Response): Promi
     id: path.id,
     userId: path.userId,
     targetRoleTitle: path.targetRole.title,
+    status: 'active',
     totalEstimatedHours: path.totalEstimatedHours,
     courses: path.items.map((item) => {
       const enr = enrollMap.get(item.courseId);
@@ -58,8 +88,20 @@ export async function regenerateLearningPath(req: Request, res: Response): Promi
 
   try {
     const gapResult = await analyzeLearnerSkillGaps(userId, targetRoleId);
+    if (gapResult.status === 'not_started' || !gapResult.targetRoleId) {
+      res.json({
+        status: 'not_started',
+        userId,
+        targetRoleTitle: null,
+        totalEstimatedHours: null,
+        courses: [],
+        createdAt: null,
+        updatedAt: null
+      });
+      return;
+    }
     const newPath = await generateLearningPath(userId, gapResult.targetRoleId, gapResult.gaps);
-    res.json(newPath);
+    res.json({ ...newPath, status: 'active' });
   } catch (err: any) {
     res.status(500).json({ error: 'LearningPathError', message: err.message });
   }

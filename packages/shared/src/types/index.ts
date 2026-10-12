@@ -127,9 +127,10 @@ export interface SkillGapItem {
 
 export interface SkillGapAnalysisResult {
   userId: string;
-  targetRoleId: string;
-  targetRoleTitle: string;
-  overallReadinessScore: number; // 0 to 100
+  targetRoleId?: string | null;
+  targetRoleTitle?: string | null;
+  status?: 'active' | 'not_started';
+  overallReadinessScore: number | null; // null if not_started
   gaps: SkillGapItem[];
   strengths: { skillId: string; skillName: string; level: number }[];
   aiSummaryExplanation: string;
@@ -162,10 +163,11 @@ export interface CourseRecommendation {
 }
 
 export interface LearningPath {
-  id: string;
+  id?: string | null;
   userId: string;
-  targetRoleTitle: string;
-  totalEstimatedHours: number;
+  targetRoleTitle?: string | null;
+  status?: 'active' | 'not_started';
+  totalEstimatedHours?: number | null;
   courses: {
     step: number;
     courseId: string;
@@ -174,8 +176,8 @@ export interface LearningPath {
     progressPercent: number;
     reason: string;
   }[];
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string | null;
+  updatedAt?: string | null;
 }
 
 export interface QuizQuestionGenerated {

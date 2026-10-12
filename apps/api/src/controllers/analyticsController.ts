@@ -7,27 +7,25 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
   const userId = req.user!.id;
 
   // Run independent Prisma queries and gap analysis concurrently using Promise.all
-  const [profile, gapAnalysis, enrollments, quizAttempts, recentAssessments] = await Promise.all([
+  const [profile, enrollments, quizAttempts, recentAssessments] = await Promise.all([
     // 1. Fetch Profile
     prisma.profile.findUnique({
       where: { userId },
       include: { targetRole: true }
     }),
-    // 2. Run Gap Analysis (now cached and non-blocking)
-    analyzeLearnerSkillGaps(userId),
-    // 3. Enrollments & Course Progress
+    // 2. Enrollments & Course Progress
     prisma.enrollment.findMany({
       where: { userId },
       include: { course: true }
     }),
-    // 4. Quiz Scores History
+    // 3. Quiz Scores History
     prisma.quizAttempt.findMany({
       where: { userId },
       include: { quiz: true },
       orderBy: { submittedAt: 'desc' },
       take: 10
     }),
-    // 5. Recent Assessment Attempts
+    // 4. Recent Assessment Attempts
     prisma.assessmentAttempt.findMany({
       where: { userId },
       include: { skill: true },
@@ -35,6 +33,65 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
       take: 5
     })
   ]);
+
+  const completedCourses = enrollments.filter((e) => e.status === 'completed');
+  const inProgressCourses = enrollments.filter((e) => e.status === 'in_progress');
+  const totalLearningHours = enrollments.reduce((acc, curr) => {
+    if (curr.status === 'completed') return acc + curr.course.estimatedHours;
+    if (curr.status === 'in_progress') return acc + Math.round(curr.course.estimatedHours * (curr.progressPercent / 100));
+    return acc;
+  }, 0);
+
+  const totalQuizzes = quizAttempts.length;
+  const avgQuizScore = totalQuizzes > 0
+    ? Math.round(quizAttempts.reduce((acc, q) => acc + q.scorePercentage, 0) / totalQuizzes)
+    : 0;
+
+  // Never default a target role: return explicit not_started state (no numbers)
+  if (!profile?.targetRoleId) {
+    res.json({
+      profile,
+      status: 'not_started',
+      overallReadiness: null,
+      targetRoleId: null,
+      targetRoleTitle: null,
+      completedCoursesCount: completedCourses.length,
+      inProgressCoursesCount: inProgressCourses.length,
+      totalLearningHours,
+      totalQuizzesAttempted: totalQuizzes,
+      averageQuizScore: avgQuizScore,
+      topGaps: [],
+      strengths: [],
+      aiExplanation: 'Select a target career role to calculate your personalized readiness score and skill gap roadmap.',
+      radarData: [],
+      quizScoreHistory: quizAttempts.map((q) => ({
+        id: q.id,
+        title: q.quiz.title,
+        score: q.scorePercentage,
+        date: q.submittedAt
+      })),
+      recentAssessments: recentAssessments.map((a) => ({
+        id: a.id,
+        skillName: a.skill.name,
+        score: a.score,
+        assessedLevel: a.assessedLevel,
+        completedAt: a.completedAt
+      })),
+      recommendedCourses: [],
+      suggestedNextActions: [
+        {
+          action: 'Choose Target Role',
+          title: 'Select your target career role',
+          description: 'Choose your career role in your profile to initialize readiness analysis and course recommendations.',
+          link: '/profile'
+        }
+      ]
+    });
+    return;
+  }
+
+  // Profile has targetRoleId: run gap analysis for this specific role
+  const gapAnalysis = await analyzeLearnerSkillGaps(userId, profile.targetRoleId);
 
   // Radar Chart Data: top skills with current vs required
   const radarData = gapAnalysis.gaps.slice(0, 6).map((g) => ({
@@ -53,21 +110,6 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
       });
     }
   }
-
-  const completedCourses = enrollments.filter((e) => e.status === 'completed');
-  const inProgressCourses = enrollments.filter((e) => e.status === 'in_progress');
-
-  // Sum estimated hours of completed and in-progress courses
-  const totalLearningHours = enrollments.reduce((acc, curr) => {
-    if (curr.status === 'completed') return acc + curr.course.estimatedHours;
-    if (curr.status === 'in_progress') return acc + Math.round(curr.course.estimatedHours * (curr.progressPercent / 100));
-    return acc;
-  }, 0);
-
-  const totalQuizzes = quizAttempts.length;
-  const avgQuizScore = totalQuizzes > 0
-    ? Math.round(quizAttempts.reduce((acc, q) => acc + q.scorePercentage, 0) / totalQuizzes)
-    : 0;
 
   // 7. Course Recommendations
   const recommendations = await getPersonalizedRecommendations(userId, gapAnalysis.gaps, 4);
@@ -99,7 +141,9 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
 
   res.json({
     profile,
+    status: 'active',
     overallReadiness: gapAnalysis.overallReadinessScore,
+    targetRoleId: profile.targetRoleId,
     targetRoleTitle: gapAnalysis.targetRoleTitle,
     completedCoursesCount: completedCourses.length,
     inProgressCoursesCount: inProgressCourses.length,

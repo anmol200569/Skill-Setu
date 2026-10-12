@@ -9,6 +9,39 @@ interface ProtectedRouteProps {
   allowedRoles?: UserRole[];
 }
 
+export interface ProtectedRouteRedirectParams {
+  user: any;
+  profile: any;
+  role: UserRole;
+  pathname: string;
+  allowedRoles?: UserRole[];
+}
+
+export function getProtectedRouteRedirect({
+  user,
+  profile,
+  role,
+  pathname,
+  allowedRoles
+}: ProtectedRouteRedirectParams): string | null {
+  if (!user) {
+    return '/login';
+  }
+
+  // Redirect to /onboarding when (!profile || !profile.isOnboarded) for learners (not admin/trainer), unless already on /onboarding
+  const isLearner = role === 'learner';
+  if (isLearner && (!profile || !profile.isOnboarded) && pathname !== '/onboarding') {
+    return '/onboarding';
+  }
+
+  // Check role restrictions
+  if (allowedRoles && !allowedRoles.includes(role)) {
+    return '/dashboard';
+  }
+
+  return null;
+}
+
 export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
   const { user, profile, role, isLoading } = useAuth();
   const location = useLocation();
@@ -24,18 +57,19 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     );
   }
 
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
+  const redirectPath = getProtectedRouteRedirect({
+    user,
+    profile,
+    role,
+    pathname: location.pathname,
+    allowedRoles
+  });
 
-  // Force onboarding if profile not onboarded yet (except on onboarding page)
-  if (profile && !profile.isOnboarded && location.pathname !== '/onboarding') {
-    return <Navigate to="/onboarding" replace />;
-  }
-
-  // Check role restrictions
-  if (allowedRoles && !allowedRoles.includes(role)) {
-    return <Navigate to="/dashboard" replace />;
+  if (redirectPath) {
+    if (redirectPath === '/login') {
+      return <Navigate to="/login" state={{ from: location }} replace />;
+    }
+    return <Navigate to={redirectPath} replace />;
   }
 
   return <>{children}</>;

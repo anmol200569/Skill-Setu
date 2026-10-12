@@ -18,7 +18,18 @@ export function createApp(): Application {
   );
 
   // CORS Configuration
-  const allowedOrigins = [
+  const isProduction = config.env === 'production';
+  const vercelProdUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? (process.env.VERCEL_PROJECT_PRODUCTION_URL.startsWith('http')
+        ? process.env.VERCEL_PROJECT_PRODUCTION_URL
+        : `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`)
+    : 'https://skill-setu.vercel.app';
+
+  const productionOrigins = Array.from(
+    new Set([config.corsOrigin, vercelProdUrl].filter(Boolean))
+  );
+
+  const developmentOrigins = [
     config.corsOrigin,
     'http://localhost:5173',
     'http://localhost:3000',
@@ -28,11 +39,25 @@ export function createApp(): Application {
   app.use(
     cors({
       origin: (origin, callback) => {
-        // Allow requests with no origin (mobile apps, curl, server-to-server)
-        if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+        // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+        if (!origin) {
           callback(null, true);
+          return;
+        }
+
+        if (isProduction) {
+          if (productionOrigins.includes(origin)) {
+            callback(null, true);
+          } else {
+            callback(new Error(`CORS blocked: Origin ${origin} is not allowed in production`));
+          }
         } else {
-          callback(null, true); // Dev flexible fallback
+          // Development/test
+          if (developmentOrigins.includes(origin) || origin.startsWith('http://localhost:')) {
+            callback(null, true);
+          } else {
+            callback(null, true);
+          }
         }
       },
       credentials: true,
@@ -81,8 +106,7 @@ export function createApp(): Application {
       endpoints: {
         health: 'GET /health',
         auth: {
-          me: 'GET /api/v1/auth/me',
-          bootstrapAdmin: 'POST /api/v1/auth/bootstrap-admin'
+          me: 'GET /api/v1/auth/me'
         },
         profile: {
           get: 'GET /api/v1/profile',

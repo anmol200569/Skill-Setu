@@ -85,4 +85,14 @@ describe('Skill Gap Analysis & Readiness Engine', () => {
     expect(result.overallReadinessScore).toBeGreaterThanOrEqual(0);
     expect(result.overallReadinessScore).toBeLessThanOrEqual(100);
   });
+
+  it('returns explicit not_started state with null readiness when user has no target role', async () => {
+    const { analyzeLearnerSkillGaps } = await import('../src/services/gapAnalysisEngine');
+    const result = await analyzeLearnerSkillGaps('user-without-target-role', '');
+    expect(result.status).toBe('not_started');
+    expect(result.overallReadinessScore).toBeNull();
+    expect(result.targetRoleId).toBeNull();
+    expect(result.gaps).toEqual([]);
+    expect(result.strengths).toEqual([]);
+  });
 });

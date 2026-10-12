@@ -107,7 +107,8 @@ export async function authenticate(
     }
 
     const email = supabaseUser.email || '';
-    const isInitialAdmin = email.toLowerCase() === config.initialAdminEmail.toLowerCase();
+    const isEmailConfirmed = Boolean(supabaseUser.email_confirmed_at);
+    const isInitialAdmin = isEmailConfirmed && email.toLowerCase() === config.initialAdminEmail.toLowerCase();
 
     // Find or create local user record
     let dbUser = await prisma.user.findUnique({
@@ -128,7 +129,7 @@ export async function authenticate(
         }
       });
     } else if (isInitialAdmin && dbUser.role !== 'admin') {
-      // Upgrade initial admin if email matches
+      // Upgrade initial admin only if email is confirmed and matches initialAdminEmail
       dbUser = await prisma.user.update({
         where: { id: dbUser.id },
         data: { role: 'admin' }

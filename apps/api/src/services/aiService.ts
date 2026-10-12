@@ -167,7 +167,9 @@ export async function generateGeminiCompletion(
     temperature,
     maxOutputTokens: 8192,
     thinkingConfig: {
-      thinkingLevel: options?.thinkingLevel || 'LOW'
+      thinkingLevel: options?.thinkingLevel && options.thinkingLevel !== 'MINIMAL'
+        ? options.thinkingLevel
+        : 'LOW'
     }
   };
 

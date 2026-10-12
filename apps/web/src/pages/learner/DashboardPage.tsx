@@ -54,7 +54,9 @@ export function DashboardPage() {
     );
   }
 
-  const readiness = stats?.overallReadiness ?? 65;
+  const targetRoleId = stats?.targetRoleId ?? stats?.profile?.targetRoleId ?? profile?.targetRoleId;
+  const isNotStarted = stats?.status === 'not_started' || !targetRoleId;
+  const readiness = isNotStarted ? null : stats?.overallReadiness;
   const radarData = stats?.radarData ?? [];
   const topGaps = stats?.topGaps ?? [];
   const recommendations = stats?.recommendedCourses ?? [];
@@ -72,7 +74,16 @@ export function DashboardPage() {
             {t('dashboard.welcome')}, {profile?.fullName || 'Learner'}
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Targeting: <strong className="text-foreground">{stats?.targetRoleTitle || profile?.targetRoleName || 'Target Role'}</strong>
+            Targeting:{' '}
+            <strong className="text-foreground">
+              {isNotStarted ? (
+                <Link to="/profile" className="text-[#C2410C] underline">
+                  Not Selected (Set Target Role in Profile)
+                </Link>
+              ) : (
+                stats?.targetRoleTitle || profile?.targetRoleName || 'Target Role'
+              )}
+            </strong>
           </p>
         </div>
 
@@ -98,7 +109,9 @@ export function DashboardPage() {
           <CardContent className="p-5 flex items-center justify-between">
             <div>
               <div className="text-xs text-muted-foreground">{t('dashboard.readinessTitle')}</div>
-              <div className="text-2xl font-serif font-bold text-[#C2410C] mt-1">{readiness}%</div>
+              <div className="text-2xl font-serif font-bold text-[#C2410C] mt-1">
+                {readiness !== null ? `${readiness}%` : 'Not Started'}
+              </div>
             </div>
             <div className="w-10 h-10 rounded-full bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center">
               <TrendingUp className="w-5 h-5" />

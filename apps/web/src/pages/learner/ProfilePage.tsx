@@ -26,6 +26,12 @@ export function ProfilePage() {
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   useEffect(() => {
+    if (profile?.targetRoleId) {
+      setTargetRoleId(profile.targetRoleId);
+    }
+  }, [profile?.targetRoleId]);
+
+  useEffect(() => {
     apiClient<any[]>('/competency/roles')
       .then((data) => setRoles(data || []))
       .catch((err) => console.warn(err));
@@ -33,6 +39,9 @@ export function ProfilePage() {
     apiClient<any>('/profile')
       .then((data) => {
         setUserSkills(data?.userSkills || []);
+        if (data?.profile?.targetRoleId) {
+          setTargetRoleId(data.profile.targetRoleId);
+        }
       })
       .catch((err) => console.warn(err));
   }, []);
@@ -135,6 +144,7 @@ export function ProfilePage() {
                 onChange={(e) => setTargetRoleId(e.target.value)}
                 className="w-full bg-secondary rounded-lg p-2.5 text-xs border border-border focus:ring-1 focus:ring-[#C2410C]"
               >
+                <option value="">-- Select a Target Role --</option>
                 {roles.map((r) => (
                   <option key={r.id} value={r.id}>
                     {r.title} ({r.industryDemand} Demand)
