@@ -67,8 +67,8 @@ export async function authenticate(
 
   const token = authHeader.split(' ')[1];
 
-  // Automated test mock tokens
-  if (config.env === 'test' || process.env.VITEST === 'true') {
+  // Automated test mock tokens (active ONLY when NODE_ENV === 'test', never in production)
+  if (process.env.NODE_ENV === 'test' && config.env !== 'production') {
     if (token === 'test-admin-token') {
       req.user = { id: 'test-admin-uuid', email: 'admin@skillsetu.dev', role: 'admin' };
       next();

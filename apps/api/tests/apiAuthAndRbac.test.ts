@@ -67,4 +67,19 @@ describe('API Authentication, Authorization & Route Protection', () => {
       });
     expect(res.status).toBe(404);
   });
+
+  it('rejects test-admin-token with 401 Unauthorized when NODE_ENV is production', async () => {
+    const originalEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'production';
+    try {
+      const res = await request(app)
+        .get('/api/v1/profile')
+        .set('Authorization', 'Bearer test-admin-token');
+      expect(res.status).toBe(401);
+      expect(res.body.error).toBe('Unauthorized');
+    } finally {
+      process.env.NODE_ENV = originalEnv;
+    }
+  });
 });
+
