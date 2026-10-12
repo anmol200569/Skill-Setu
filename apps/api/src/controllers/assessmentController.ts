@@ -2,6 +2,18 @@ import { Request, Response } from 'express';
 import { prisma } from '../lib/prisma';
 import { submitAssessmentSchema } from '@skill-setu/shared';
 
+/**
+ * Fisher-Yates array shuffle implementation
+ */
+export function fisherYatesShuffle<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export async function getSkillAssessmentQuestions(req: Request, res: Response): Promise<void> {
   const { skillId } = req.params;
 
@@ -20,7 +32,31 @@ export async function getSkillAssessmentQuestions(req: Request, res: Response): 
     }
   });
 
-  res.json(questions);
+  const servedQuestions = questions.map((q) => {
+    let options = Array.isArray(q.options) ? [...(q.options as any[])] : [];
+
+    // Shuffle option order for single_mcq and multi_mcq using Fisher-Yates
+    // Keep true_false fixed in canonical True/False order
+    if (q.type === 'single_mcq' || q.type === 'multi_mcq') {
+      options = fisherYatesShuffle(options);
+    } else if (q.type === 'true_false') {
+      // Ensure canonical True/False order: True first, False second
+      options = [...options].sort((a, b) => {
+        const aText = (a.text || '').toLowerCase();
+        const bText = (b.text || '').toLowerCase();
+        if (aText === 'true') return -1;
+        if (bText === 'true') return 1;
+        return 0;
+      });
+    }
+
+    return {
+      ...q,
+      options
+    };
+  });
+
+  res.json(servedQuestions);
 }
 
 export async function submitAssessment(req: Request, res: Response): Promise<void> {

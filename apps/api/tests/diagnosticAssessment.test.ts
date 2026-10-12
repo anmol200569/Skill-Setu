@@ -53,6 +53,58 @@ describe('Diagnostic Assessments & Seed Data Suite', () => {
       expect(Array.isArray(res.body)).toBe(true);
       expect(res.body.length).toBe(0);
     });
+
+    it('shuffles option order for single_mcq and multi_mcq while preserving option IDs and canonical true_false order', async () => {
+      const mockQuestions = [
+        {
+          id: 'q-single-mcq',
+          skillId: 'test-skill-uuid',
+          questionText: 'Single MCQ question?',
+          type: 'single_mcq',
+          difficulty: 'intermediate',
+          options: [
+            { id: 'opt1', text: 'Alpha' },
+            { id: 'opt2', text: 'Beta' },
+            { id: 'opt3', text: 'Gamma' },
+            { id: 'opt4', text: 'Delta' }
+          ],
+          explanation: 'Beta is correct.'
+        },
+        {
+          id: 'q-true-false',
+          skillId: 'test-skill-uuid',
+          questionText: 'True/False question?',
+          type: 'true_false',
+          difficulty: 'beginner',
+          options: [
+            { id: 'opt2', text: 'False' },
+            { id: 'opt1', text: 'True' }
+          ],
+          explanation: 'True is correct.'
+        }
+      ];
+
+      vi.spyOn(prisma.assessmentQuestion, 'findMany').mockResolvedValue(mockQuestions as any);
+
+      const res = await request(app)
+        .get('/api/v1/assessment/questions/test-skill-uuid')
+        .set('Authorization', 'Bearer test-learner-token');
+
+      expect(res.status).toBe(200);
+
+      const singleQ = res.body.find((q: any) => q.id === 'q-single-mcq');
+      expect(singleQ).toBeDefined();
+      expect(singleQ.options.length).toBe(4);
+      const singleOptionIds = singleQ.options.map((o: any) => o.id);
+      expect(singleOptionIds.sort()).toEqual(['opt1', 'opt2', 'opt3', 'opt4']);
+
+      // True/false must always maintain canonical True first, False second
+      const tfQ = res.body.find((q: any) => q.id === 'q-true-false');
+      expect(tfQ).toBeDefined();
+      expect(tfQ.options.length).toBe(2);
+      expect(tfQ.options[0].text).toBe('True');
+      expect(tfQ.options[1].text).toBe('False');
+    });
   });
 
   describe('Assessment Scoring Engine', () => {
