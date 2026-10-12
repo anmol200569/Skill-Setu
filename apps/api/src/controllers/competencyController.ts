@@ -13,6 +13,55 @@ export async function getDomains(_req: Request, res: Response): Promise<void> {
   res.json(domains);
 }
 
+export async function getCompetencyStats(_req: Request, res: Response): Promise<void> {
+  try {
+    const domains = await prisma.domain.findMany({
+      include: {
+        skills: {
+          include: {
+            _count: {
+              select: { assessmentQuestions: true }
+            }
+          }
+        }
+      },
+      orderBy: { name: 'asc' }
+    });
+
+    let totalSkills = 0;
+    let totalQuestions = 0;
+
+    const domainStats = domains.map((domain) => {
+      const skillsCount = domain.skills.length;
+      const questionsCount = domain.skills.reduce(
+        (sum, s) => sum + s._count.assessmentQuestions,
+        0
+      );
+      totalSkills += skillsCount;
+      totalQuestions += questionsCount;
+
+      return {
+        id: domain.id,
+        code: domain.code,
+        name: domain.name,
+        description: domain.description,
+        icon: domain.icon,
+        skillsCount,
+        questionsCount
+      };
+    });
+
+    res.json({
+      totalDomains: domains.length,
+      totalSkills,
+      totalQuestions,
+      domains: domainStats
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: 'InternalServerError', message: 'Failed to compute competency stats' });
+  }
+}
+
 export async function getSkills(_req: Request, res: Response): Promise<void> {
   const skills = await prisma.skill.findMany({
     include: {

@@ -15,6 +15,7 @@ const router = Router();
 router.use('/auth', authRoutes);
 router.use('/profile', profileRoutes);
 router.use('/competency', competencyRoutes);
+router.use('/competencies', competencyRoutes);
 router.use('/assessment', assessmentRoutes);
 router.use('/gap-analysis', gapAnalysisRoutes);
 router.use('/courses', courseRoutes);

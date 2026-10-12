@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   getDomains,
+  getCompetencyStats,
   getSkills,
   getRoles,
   getRoleById,
@@ -22,6 +23,7 @@ import { createDomainSchema, createSkillSchema, createRoleSchema } from '@skill-
 const router = Router();
 
 // Public / Learner reads
+router.get('/stats', getCompetencyStats);
 router.get('/domains', getDomains);
 router.get('/skills', getSkills);
 router.get('/roles', getRoles);

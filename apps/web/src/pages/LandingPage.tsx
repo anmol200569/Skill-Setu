@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/layout/Navbar';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
+import { apiClient } from '../lib/api';
 import {
   Sparkles,
   ArrowRight,
@@ -26,63 +27,49 @@ import {
   GraduationCap
 } from 'lucide-react';
 
-const domainCardsData = [
-  {
-    icon: Code2,
-    code: 'prog-soft-dev',
-    name: 'Programming & Software Development',
-    description: 'ECMAScript runtime, TypeScript typing, React architecture, Node.js APIs, and relational modeling.',
-    skillsCount: 6,
-    questionsCount: 60
-  },
-  {
-    icon: BarChart3,
-    code: 'data-analytics',
-    name: 'Data & Analytics',
-    description: 'Advanced SQL window functions, exploratory data analysis with Pandas, and executive storytelling.',
-    skillsCount: 4,
-    questionsCount: 40
-  },
-  {
-    icon: Cloud,
-    code: 'cloud-devops',
-    name: 'Cloud & DevOps',
-    description: 'Containers, Kubernetes orchestration, AWS cloud architecture, and CI/CD automation pipelines.',
-    skillsCount: 4,
-    questionsCount: 40
-  },
-  {
-    icon: Sparkles,
-    code: 'ai-ml',
-    name: 'AI & Machine Learning',
-    description: 'Machine learning fundamentals, LLM prompt engineering, RAG vector search, and PyTorch training.',
-    skillsCount: 4,
-    questionsCount: 40
-  },
-  {
-    icon: ShieldCheck,
-    code: 'cybersecurity',
-    name: 'Cybersecurity & Digital Safety',
-    description: 'OWASP Top 10 web vulnerabilities, OAuth 2.0 / JWT identity, and zero-trust network defenses.',
-    skillsCount: 3,
-    questionsCount: 30
-  },
-  {
-    icon: Users,
-    code: 'communication-leadership',
-    name: 'Communication & Leadership',
-    description: 'Technical writing, architectural RFCs, stakeholder alignment, and agile code review culture.',
-    skillsCount: 3,
-    questionsCount: 30
-  },
-  {
-    icon: Kanban,
-    code: 'product-management',
-    name: 'Product & Project Management',
-    description: 'Product discovery, PRD authoring, North Star metrics, cohort retention, and UX design thinking.',
-    skillsCount: 3,
-    questionsCount: 30
-  }
+interface CompetencyStatsResponse {
+  totalDomains: number;
+  totalSkills: number;
+  totalQuestions: number;
+  domains: Array<{
+    id?: string;
+    code: string;
+    name: string;
+    description?: string;
+    icon?: string | null;
+    skillsCount: number;
+    questionsCount: number;
+  }>;
+}
+
+const domainIconMap: Record<string, any> = {
+  'prog-soft-dev': Code2,
+  'data-analytics': BarChart3,
+  'cloud-devops': Cloud,
+  'ai-ml': Sparkles,
+  'cybersecurity': ShieldCheck,
+  'communication-leadership': Users,
+  'product-management': Kanban
+};
+
+const defaultDomainDescriptions: Record<string, string> = {
+  'prog-soft-dev': 'ECMAScript runtime, TypeScript typing, React architecture, Node.js APIs, and relational modeling.',
+  'data-analytics': 'Advanced SQL window functions, exploratory data analysis with Pandas, and executive storytelling.',
+  'cloud-devops': 'Containers, Kubernetes orchestration, AWS cloud architecture, and CI/CD automation pipelines.',
+  'ai-ml': 'Machine learning fundamentals, LLM prompt engineering, RAG vector search, and PyTorch training.',
+  'cybersecurity': 'OWASP Top 10 web vulnerabilities, OAuth 2.0 / JWT identity, and zero-trust network defenses.',
+  'communication-leadership': 'Technical writing, architectural RFCs, stakeholder alignment, and agile code review culture.',
+  'product-management': 'Product discovery, PRD authoring, North Star metrics, cohort retention, and UX design thinking.'
+};
+
+const fallbackDomains = [
+  { code: 'prog-soft-dev', name: 'Programming & Software Development' },
+  { code: 'data-analytics', name: 'Data & Analytics' },
+  { code: 'cloud-devops', name: 'Cloud & DevOps' },
+  { code: 'ai-ml', name: 'AI & Machine Learning' },
+  { code: 'cybersecurity', name: 'Cybersecurity & Digital Safety' },
+  { code: 'communication-leadership', name: 'Communication & Leadership' },
+  { code: 'product-management', name: 'Product & Project Management' }
 ];
 
 const howItWorksSteps = [
@@ -139,6 +126,36 @@ const faqItems = [
 
 export function LandingPage() {
   const navigate = useNavigate();
+
+  // Dynamic Competency Stats from DB
+  const [stats, setStats] = useState<CompetencyStatsResponse | null>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [statsError, setStatsError] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    apiClient<CompetencyStatsResponse>('/competency/stats')
+      .then((data) => {
+        if (isMounted) {
+          if (data && data.totalDomains > 0) {
+            setStats(data);
+          } else {
+            setStatsError(true);
+          }
+          setStatsLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setStatsError(true);
+          setStatsLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Inline 3-Step Mini Wizard State
   const [selectedRole, setSelectedRole] = useState('fullstack-dev');
@@ -398,11 +415,11 @@ export function LandingPage() {
                   <ul className="space-y-2 text-muted-foreground pl-1">
                     <li className="flex items-start gap-2">
                       <span className="font-bold text-[#C2410C]">•</span>
-                      <span><strong>The System Design Primer</strong> (GitHub open syllabus) — Bridges 1.5 score units.</span>
+                      <span><strong>Designing Azure Infrastructure Solutions (AZ-305)</strong> (Microsoft Learn) — Covers system design and scalability.</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="font-bold text-[#C2410C]">•</span>
-                      <span><strong>OWASP Top 10 Security Fundamentals</strong> (Microsoft Learn) — Free, 4 hours.</span>
+                      <span><strong>Information Security Certification Track</strong> (freeCodeCamp) — Free, 40 hours hands-on security.</span>
                     </li>
                   </ul>
                   <div className="pt-2 border-t border-border/80 text-[11px] text-muted-foreground">
@@ -457,43 +474,98 @@ export function LandingPage() {
               Comprehensive Curriculum Bank
             </span>
             <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">
-              7 Domains, 27 Competencies, 270 Curated Questions
+              {statsLoading
+                ? 'Curated Technical Competencies & Question Banks'
+                : stats && !statsError
+                ? `${stats.totalDomains} Domains, ${stats.totalSkills} Competencies, ${stats.totalQuestions} Curated Questions`
+                : 'Curated Technical Competencies & Question Banks'}
             </h2>
             <p className="text-sm text-muted-foreground">
-              Real competency models and verified assessment banks currently active in our database.
+              Real competency models and verified assessment banks loaded dynamically from our database.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {domainCardsData.map((d) => {
-              const Icon = d.icon;
-              return (
+          {statsLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, idx) => (
                 <div
-                  key={d.code}
-                  className="p-6 rounded-2xl border border-border bg-card flex flex-col justify-between space-y-4 hover:border-[#C2410C]/50 transition-colors"
+                  key={idx}
+                  className="p-6 rounded-2xl border border-border bg-card animate-pulse space-y-4"
                 >
-                  <div className="space-y-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="font-serif font-bold text-base text-foreground">
-                        {d.name}
-                      </h3>
-                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                        {d.description}
-                      </p>
-                    </div>
+                  <div className="w-10 h-10 rounded-xl bg-muted" />
+                  <div className="space-y-2">
+                    <div className="h-4 bg-muted rounded w-3/4" />
+                    <div className="h-3 bg-muted rounded w-full" />
+                    <div className="h-3 bg-muted rounded w-5/6" />
                   </div>
-
-                  <div className="pt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
-                    <span>{d.skillsCount} Core Skills</span>
-                    <span className="font-medium text-foreground">{d.questionsCount} Questions</span>
+                  <div className="pt-3 border-t border-border flex justify-between">
+                    <div className="h-3 bg-muted rounded w-1/4" />
+                    <div className="h-3 bg-muted rounded w-1/4" />
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          ) : stats && !statsError && stats.domains.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {stats.domains.map((d) => {
+                const Icon = domainIconMap[d.code] || Layers;
+                const description = d.description || defaultDomainDescriptions[d.code] || '';
+                return (
+                  <div
+                    key={d.code}
+                    className="p-6 rounded-2xl border border-border bg-card flex flex-col justify-between space-y-4 hover:border-[#C2410C]/50 transition-colors"
+                  >
+                    <div className="space-y-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-serif font-bold text-base text-foreground">
+                          {d.name}
+                        </h3>
+                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                          {description}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
+                      <span>{d.skillsCount} Core Skills</span>
+                      <span className="font-medium text-foreground">{d.questionsCount} Questions</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            /* Safe Fallback: hides numbers if API call fails or returns empty */
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {fallbackDomains.map((d) => {
+                const Icon = domainIconMap[d.code] || Layers;
+                const description = defaultDomainDescriptions[d.code] || '';
+                return (
+                  <div
+                    key={d.code}
+                    className="p-6 rounded-2xl border border-border bg-card flex flex-col justify-between space-y-4 hover:border-[#C2410C]/50 transition-colors"
+                  >
+                    <div className="space-y-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-serif font-bold text-base text-foreground">
+                          {d.name}
+                        </h3>
+                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                          {description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
