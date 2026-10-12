@@ -160,7 +160,7 @@ export async function generateGeminiCompletion(
   }
 
   const ai = getGenAIClient();
-  const timeoutMs = options?.timeoutMs ?? config.gemini.timeoutMs ?? 10000;
+  const timeoutMs = options?.timeoutMs ?? config.gemini.timeoutMs ?? 30000;
 
   const genConfig: any = {
     systemInstruction: systemInstruction || 'You are Skill Setu AI, an expert technical mentor and skill intelligence assistant.',
@@ -191,7 +191,7 @@ export async function generateGeminiCompletion(
     const durationMs = Date.now() - startTime;
     console.log(`[AI] Gemini call succeeded in ${durationMs}ms`);
 
-    const text = response.text;
+    const text = (response as any).text as string | undefined;
     if (!text || text.trim().length === 0) {
       throw new Error('Gemini API returned an empty response.');
     }

@@ -83,7 +83,7 @@ JSON Output Format Specification:
         prompt,
         systemInstruction,
         attempts === 1 ? 0.2 : 0.4,
-        { responseMimeType: 'application/json' }
+        { responseMimeType: 'application/json', timeoutMs: 55000, thinkingLevel: 'MINIMAL' }
       );
 
       const parsed = extractJsonFromText<any>(responseText);
@@ -100,6 +100,10 @@ JSON Output Format Specification:
         throw new Error(`Failed to generate valid quiz JSON: ${err.message}`);
       }
     }
+  }
+
+  if (!parsedQuizOutput) {
+    throw new Error('Failed to generate quiz output after all attempts.');
   }
 
   // Persist Quiz and Questions to Database

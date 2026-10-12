@@ -18,6 +18,38 @@ declare global {
   }
 }
 
+// Short-lived in-memory auth cache to avoid hitting Supabase + Prisma on every request
+const authCache = new Map<string, { user: AuthenticatedUser; expiresAt: number }>();
+const AUTH_CACHE_TTL_MS = 60_000; // 60 seconds
+
+function getCachedUser(token: string): AuthenticatedUser | null {
+  const entry = authCache.get(token);
+  if (!entry) return null;
+  if (Date.now() > entry.expiresAt) {
+    authCache.delete(token);
+    return null;
+  }
+  return entry.user;
+}
+
+function setCachedUser(token: string, user: AuthenticatedUser): void {
+  // Cap cache size to prevent memory leaks in long-running processes
+  if (authCache.size > 500) {
+    const now = Date.now();
+    for (const [key, val] of authCache) {
+      if (now > val.expiresAt) authCache.delete(key);
+    }
+    // If still too large, clear oldest half
+    if (authCache.size > 400) {
+      const keys = Array.from(authCache.keys());
+      for (let i = 0; i < keys.length / 2; i++) {
+        authCache.delete(keys[i]);
+      }
+    }
+  }
+  authCache.set(token, { user, expiresAt: Date.now() + AUTH_CACHE_TTL_MS });
+}
+
 export async function authenticate(
   req: Request,
   res: Response,
@@ -52,6 +84,14 @@ export async function authenticate(
       next();
       return;
     }
+  }
+
+  // Check in-memory cache first — avoids Supabase + Prisma network calls
+  const cached = getCachedUser(token);
+  if (cached) {
+    req.user = cached;
+    next();
+    return;
   }
 
   try {
@@ -95,11 +135,16 @@ export async function authenticate(
       });
     }
 
-    req.user = {
+    const authenticatedUser: AuthenticatedUser = {
       id: dbUser.id,
       email: dbUser.email,
       role: dbUser.role as UserRole
     };
+
+    // Cache to speed up subsequent requests within the same session
+    setCachedUser(token, authenticatedUser);
+
+    req.user = authenticatedUser;
 
     next();
   } catch (err: any) {
@@ -110,3 +155,4 @@ export async function authenticate(
     });
   }
 }
+

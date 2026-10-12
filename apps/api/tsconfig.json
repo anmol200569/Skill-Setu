@@ -6,7 +6,7 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "@skill-setu/shared": ["../../packages/shared/dist/index.d.ts"]
+      "@skill-setu/shared": ["../../packages/shared/dist"]
     }
   },
   "include": ["src/**/*"]

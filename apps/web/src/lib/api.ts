@@ -2,7 +2,12 @@ import { supabase, isSupabaseConfigured } from './supabase';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
 
-export async function getAuthHeaders(): Promise<HeadersInit> {
+// Cache the auth token to avoid calling getSession() on every API request
+let cachedToken: string | null = null;
+let cachedTokenExpiry = 0;
+const TOKEN_CACHE_TTL = 30_000; // 30 seconds
+
+export async function getAuthHeaders(): Promise<Record<string, string>> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json'
   };
@@ -12,16 +17,35 @@ export async function getAuthHeaders(): Promise<HeadersInit> {
   }
 
   try {
+    const now = Date.now();
+    if (cachedToken && now < cachedTokenExpiry) {
+      headers['Authorization'] = `Bearer ${cachedToken}`;
+      return headers;
+    }
+
     const { data: { session } } = await supabase.auth.getSession();
     const token = session?.access_token;
     if (token) {
+      cachedToken = token;
+      cachedTokenExpiry = now + TOKEN_CACHE_TTL;
       headers['Authorization'] = `Bearer ${token}`;
+    } else {
+      cachedToken = null;
+      cachedTokenExpiry = 0;
     }
   } catch (err) {
     console.warn('Could not retrieve Supabase session for auth headers:', err);
   }
 
   return headers;
+}
+
+// Clear cached token on auth state changes (login/logout)
+if (isSupabaseConfigured) {
+  supabase.auth.onAuthStateChange(() => {
+    cachedToken = null;
+    cachedTokenExpiry = 0;
+  });
 }
 
 export async function apiClient<T>(
