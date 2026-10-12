@@ -195,8 +195,8 @@ export function LandingPage() {
             Open Technical Skill Intelligence
           </Badge>
 
-          <h1 className="text-4xl sm:text-6xl font-serif font-bold tracking-tight text-foreground leading-[1.12]">
-            Know exactly where your technical skills stand—and close the gap with structured, free learning.
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-foreground leading-[1.15]">
+            Know your technical skill gaps. Bridge them with structured open learning.
           </h1>
 
           <p className="text-base sm:text-lg text-muted-foreground font-normal leading-relaxed max-w-2xl">
@@ -220,7 +220,7 @@ export function LandingPage() {
           <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-8">
             <div className="border-b border-border pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C]">
+                <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C] dark:text-[#FB923C]">
                   Step-by-Step Setup
                 </span>
                 <h2 className="text-xl sm:text-2xl font-serif font-bold text-foreground mt-0.5">
@@ -236,7 +236,7 @@ export function LandingPage() {
               {/* Wizard Step 1: Target Role */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  <span className="w-5 h-5 rounded-full bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center font-bold">1</span>
+                  <span className="w-5 h-5 rounded-full bg-[#C2410C]/10 text-[#C2410C] dark:bg-[#FB923C]/10 dark:text-[#FB923C] flex items-center justify-center font-bold">1</span>
                   Select Target Role
                 </div>
                 <div className="space-y-2">
@@ -253,7 +253,7 @@ export function LandingPage() {
                       onClick={() => setSelectedRole(role.id)}
                       className={`w-full text-left px-3.5 py-2.5 rounded-lg border text-sm transition-colors ${
                         selectedRole === role.id
-                          ? 'border-[#C2410C] bg-[#C2410C]/5 font-semibold text-foreground'
+                          ? 'border-[#C2410C] dark:border-[#FB923C] bg-[#C2410C]/5 dark:bg-[#FB923C]/10 font-semibold text-foreground'
                           : 'border-border bg-background hover:bg-secondary/40 text-muted-foreground'
                       }`}
                     >
@@ -266,7 +266,7 @@ export function LandingPage() {
               {/* Wizard Step 2: Current Level */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  <span className="w-5 h-5 rounded-full bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center font-bold">2</span>
+                  <span className="w-5 h-5 rounded-full bg-[#C2410C]/10 text-[#C2410C] dark:bg-[#FB923C]/10 dark:text-[#FB923C] flex items-center justify-center font-bold">2</span>
                   Self-Assessed Level
                 </div>
                 <div className="space-y-2">
@@ -281,7 +281,7 @@ export function LandingPage() {
                       onClick={() => setSelectedLevel(lvl.id)}
                       className={`w-full text-left px-3.5 py-2.5 rounded-lg border text-sm transition-colors ${
                         selectedLevel === lvl.id
-                          ? 'border-[#C2410C] bg-[#C2410C]/5 font-semibold text-foreground'
+                          ? 'border-[#C2410C] dark:border-[#FB923C] bg-[#C2410C]/5 dark:bg-[#FB923C]/10 font-semibold text-foreground'
                           : 'border-border bg-background hover:bg-secondary/40 text-muted-foreground'
                       }`}
                     >
@@ -295,7 +295,7 @@ export function LandingPage() {
               {/* Wizard Step 3: Weekly Commitment */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  <span className="w-5 h-5 rounded-full bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center font-bold">3</span>
+                  <span className="w-5 h-5 rounded-full bg-[#C2410C]/10 text-[#C2410C] dark:bg-[#FB923C]/10 dark:text-[#FB923C] flex items-center justify-center font-bold">3</span>
                   Weekly Commitment
                 </div>
                 <div className="space-y-2">
@@ -311,7 +311,7 @@ export function LandingPage() {
                       onClick={() => setSelectedHours(hrs.id)}
                       className={`w-full text-left px-3.5 py-2.5 rounded-lg border text-sm transition-colors ${
                         selectedHours === hrs.id
-                          ? 'border-[#C2410C] bg-[#C2410C]/5 font-semibold text-foreground'
+                          ? 'border-[#C2410C] dark:border-[#FB923C] bg-[#C2410C]/5 dark:bg-[#FB923C]/10 font-semibold text-foreground'
                           : 'border-border bg-background hover:bg-secondary/40 text-muted-foreground'
                       }`}
                     >
@@ -325,7 +325,7 @@ export function LandingPage() {
 
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border">
               <div className="text-xs text-muted-foreground flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 flex-shrink-0" />
                 <span>Ready to initialize your benchmark audit with these selections.</span>
               </div>
               <Button
@@ -344,7 +344,7 @@ export function LandingPage() {
       <section className="py-16 bg-secondary/30 border-y border-border px-4 sm:px-6">
         <div className="max-w-5xl mx-auto space-y-6">
           <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C]">
+            <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C] dark:text-[#FB923C]">
               What You Will Receive
             </span>
             <h2 className="text-2xl sm:text-3xl font-serif font-bold text-foreground">
@@ -367,7 +367,7 @@ export function LandingPage() {
               </div>
               <div className="text-left sm:text-right">
                 <div className="text-xs text-muted-foreground">Estimated Qualification Readiness</div>
-                <div className="text-2xl font-serif font-bold text-[#C2410C]">68% Qualified</div>
+                <div className="text-2xl font-serif font-bold text-[#C2410C] dark:text-[#FB923C]">Readiness 68/100 (Sample)</div>
               </div>
             </div>
 
@@ -409,19 +409,19 @@ export function LandingPage() {
                 </div>
                 <div className="p-4 rounded-xl border border-border bg-background space-y-3 text-xs">
                   <div className="flex items-center gap-2 font-semibold text-foreground">
-                    <BookOpen className="w-4 h-4 text-[#C2410C]" />
+                    <BookOpen className="w-4 h-4 text-[#C2410C] dark:text-[#FB923C]" />
                     <span>Top High-Impact Course Recommendations:</span>
                   </div>
                   <ul className="space-y-3 text-muted-foreground pl-1">
                     <li className="flex items-start gap-2.5">
-                      <span className="font-bold text-[#C2410C] mt-0.5">•</span>
+                      <span className="font-bold text-[#C2410C] dark:text-[#FB923C] mt-0.5">•</span>
                       <div className="space-y-1">
                         <div>
                           <strong className="text-foreground">Designing Azure Infrastructure Solutions (AZ-305)</strong>{' '}
                           <span className="text-xs text-muted-foreground">(Microsoft Learn)</span>
                         </div>
                         <div className="text-[11px] text-muted-foreground flex items-center flex-wrap gap-2">
-                          <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#C2410C]/10 text-[#C2410C] font-semibold">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#C2410C]/10 text-[#C2410C] dark:bg-[#FB923C]/10 dark:text-[#FB923C] font-semibold">
                             Covers: System Design & Scalability (sys-design)
                           </span>
                           <span>Bridges 2.0 score units • 32 hrs</span>
@@ -429,14 +429,14 @@ export function LandingPage() {
                       </div>
                     </li>
                     <li className="flex items-start gap-2.5">
-                      <span className="font-bold text-[#C2410C] mt-0.5">•</span>
+                      <span className="font-bold text-[#C2410C] dark:text-[#FB923C] mt-0.5">•</span>
                       <div className="space-y-1">
                         <div>
                           <strong className="text-foreground">Information Security Certification Track</strong>{' '}
                           <span className="text-xs text-muted-foreground">(freeCodeCamp)</span>
                         </div>
                         <div className="text-[11px] text-muted-foreground flex items-center flex-wrap gap-2">
-                          <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#C2410C]/10 text-[#C2410C] font-semibold">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#C2410C]/10 text-[#C2410C] dark:bg-[#FB923C]/10 dark:text-[#FB923C] font-semibold">
                             Covers: Application Security (OWASP Top 10) (appsec-owasp)
                           </span>
                           <span>Bridges 1.0 score units • 40 hrs</span>
@@ -445,7 +445,7 @@ export function LandingPage() {
                     </li>
                   </ul>
                   <div className="pt-2 border-t border-border/80 text-[11px] text-muted-foreground">
-                    Projected Outcome: Completing these two targeted courses raises estimated readiness to <strong>86%</strong>.
+                    Sample estimate: Completing these two targeted courses raises estimated readiness to <strong>86/100</strong>.
                   </div>
                 </div>
               </div>
@@ -457,7 +457,7 @@ export function LandingPage() {
       {/* "How It Works" Loop */}
       <section className="py-20 px-4 sm:px-6 max-w-7xl mx-auto w-full">
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-2">
-          <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C]">
+          <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C] dark:text-[#FB923C]">
             Continuous Improvement
           </span>
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">
@@ -472,9 +472,9 @@ export function LandingPage() {
           {howItWorksSteps.map((step) => (
             <div
               key={step.number}
-              className="p-6 rounded-2xl border border-border bg-card relative space-y-2 hover:border-[#C2410C]/40 transition-colors"
+              className="p-6 rounded-2xl border border-border bg-card relative space-y-2 hover:border-[#C2410C]/40 dark:hover:border-[#FB923C]/40 transition-colors"
             >
-              <div className="text-xs font-mono font-bold text-[#C2410C]">
+              <div className="text-xs font-mono font-bold text-[#C2410C] dark:text-[#FB923C]">
                 {step.number}
               </div>
               <h3 className="font-serif font-bold text-lg text-foreground">
@@ -492,7 +492,7 @@ export function LandingPage() {
       <section className="py-20 bg-secondary/30 border-y border-border px-4 sm:px-6">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C]">
+            <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C] dark:text-[#FB923C]">
               Comprehensive Curriculum Bank
             </span>
             <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">
@@ -508,84 +508,174 @@ export function LandingPage() {
           </div>
 
           {statsLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 6 }).map((_, idx) => (
-                <div
-                  key={idx}
-                  className="p-6 rounded-2xl border border-border bg-card animate-pulse space-y-4"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-muted" />
-                  <div className="space-y-2">
-                    <div className="h-4 bg-muted rounded w-3/4" />
-                    <div className="h-3 bg-muted rounded w-full" />
-                    <div className="h-3 bg-muted rounded w-5/6" />
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {Array.from({ length: 4 }).map((_, idx) => (
+                  <div
+                    key={idx}
+                    className="p-6 rounded-2xl border border-border bg-card animate-pulse space-y-4"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-muted" />
+                    <div className="space-y-2">
+                      <div className="h-4 bg-muted rounded w-3/4" />
+                      <div className="h-3 bg-muted rounded w-full" />
+                      <div className="h-3 bg-muted rounded w-5/6" />
+                    </div>
+                    <div className="pt-3 border-t border-border flex justify-between">
+                      <div className="h-3 bg-muted rounded w-1/4" />
+                      <div className="h-3 bg-muted rounded w-1/4" />
+                    </div>
                   </div>
-                  <div className="pt-3 border-t border-border flex justify-between">
-                    <div className="h-3 bg-muted rounded w-1/4" />
-                    <div className="h-3 bg-muted rounded w-1/4" />
+                ))}
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:max-w-5xl lg:mx-auto">
+                {Array.from({ length: 3 }).map((_, idx) => (
+                  <div
+                    key={idx}
+                    className="p-6 rounded-2xl border border-border bg-card animate-pulse space-y-4"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-muted" />
+                    <div className="space-y-2">
+                      <div className="h-4 bg-muted rounded w-3/4" />
+                      <div className="h-3 bg-muted rounded w-full" />
+                      <div className="h-3 bg-muted rounded w-5/6" />
+                    </div>
+                    <div className="pt-3 border-t border-border flex justify-between">
+                      <div className="h-3 bg-muted rounded w-1/4" />
+                      <div className="h-3 bg-muted rounded w-1/4" />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           ) : stats && !statsError && stats.domains.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {stats.domains.map((d) => {
-                const Icon = domainIconMap[d.code] || Layers;
-                const description = d.description || defaultDomainDescriptions[d.code] || '';
-                return (
-                  <div
-                    key={d.code}
-                    className="p-6 rounded-2xl border border-border bg-card flex flex-col justify-between space-y-4 hover:border-[#C2410C]/50 transition-colors"
-                  >
-                    <div className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center">
-                        <Icon className="w-5 h-5" />
+            /* 4 + 3 centered layout on desktop, 2 columns on tablet, 1 on mobile */
+            <div className="space-y-6">
+              {/* Row 1: First 4 cards (4 on desktop, 2 on tablet, 1 on mobile) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {stats.domains.slice(0, 4).map((d) => {
+                  const Icon = domainIconMap[d.code] || Layers;
+                  const description = d.description || defaultDomainDescriptions[d.code] || '';
+                  return (
+                    <div
+                      key={d.code}
+                      className="p-6 rounded-2xl border border-border bg-card flex flex-col justify-between space-y-4 hover:border-[#C2410C]/50 dark:hover:border-[#FB923C]/50 transition-colors"
+                    >
+                      <div className="space-y-3">
+                        <div className="w-10 h-10 rounded-xl bg-[#C2410C]/10 text-[#C2410C] dark:bg-[#FB923C]/10 dark:text-[#FB923C] flex items-center justify-center">
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h3 className="font-serif font-bold text-base text-foreground">
+                            {d.name}
+                          </h3>
+                          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                            {description}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="font-serif font-bold text-base text-foreground">
-                          {d.name}
-                        </h3>
-                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                          {description}
-                        </p>
-                      </div>
-                    </div>
 
-                    <div className="pt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
-                      <span>{d.skillsCount} Core Skills</span>
-                      <span className="font-medium text-foreground">{d.questionsCount} Questions</span>
+                      <div className="pt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
+                        <span>{d.skillsCount} Core Skills</span>
+                        <span className="font-medium text-foreground">{d.questionsCount} Questions</span>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+
+              {/* Row 2: Remaining 3 cards (3 centered on desktop, 2 on tablet with 3rd centered, 1 on mobile) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:max-w-5xl lg:mx-auto">
+                {stats.domains.slice(4).map((d, idx) => {
+                  const Icon = domainIconMap[d.code] || Layers;
+                  const description = d.description || defaultDomainDescriptions[d.code] || '';
+                  return (
+                    <div
+                      key={d.code}
+                      className={`p-6 rounded-2xl border border-border bg-card flex flex-col justify-between space-y-4 hover:border-[#C2410C]/50 dark:hover:border-[#FB923C]/50 transition-colors ${
+                        idx === 2 ? 'sm:col-span-2 sm:max-w-md sm:mx-auto sm:w-full lg:col-span-1 lg:max-w-none' : ''
+                      }`}
+                    >
+                      <div className="space-y-3">
+                        <div className="w-10 h-10 rounded-xl bg-[#C2410C]/10 text-[#C2410C] dark:bg-[#FB923C]/10 dark:text-[#FB923C] flex items-center justify-center">
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h3 className="font-serif font-bold text-base text-foreground">
+                            {d.name}
+                          </h3>
+                          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                            {description}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="pt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
+                        <span>{d.skillsCount} Core Skills</span>
+                        <span className="font-medium text-foreground">{d.questionsCount} Questions</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           ) : (
             /* Safe Fallback: hides numbers if API call fails or returns empty */
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {fallbackDomains.map((d) => {
-                const Icon = domainIconMap[d.code] || Layers;
-                const description = defaultDomainDescriptions[d.code] || '';
-                return (
-                  <div
-                    key={d.code}
-                    className="p-6 rounded-2xl border border-border bg-card flex flex-col justify-between space-y-4 hover:border-[#C2410C]/50 transition-colors"
-                  >
-                    <div className="space-y-3">
-                      <div className="w-10 h-10 rounded-xl bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h3 className="font-serif font-bold text-base text-foreground">
-                          {d.name}
-                        </h3>
-                        <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                          {description}
-                        </p>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {fallbackDomains.slice(0, 4).map((d) => {
+                  const Icon = domainIconMap[d.code] || Layers;
+                  const description = defaultDomainDescriptions[d.code] || '';
+                  return (
+                    <div
+                      key={d.code}
+                      className="p-6 rounded-2xl border border-border bg-card flex flex-col justify-between space-y-4 hover:border-[#C2410C]/50 dark:hover:border-[#FB923C]/50 transition-colors"
+                    >
+                      <div className="space-y-3">
+                        <div className="w-10 h-10 rounded-xl bg-[#C2410C]/10 text-[#C2410C] dark:bg-[#FB923C]/10 dark:text-[#FB923C] flex items-center justify-center">
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h3 className="font-serif font-bold text-base text-foreground">
+                            {d.name}
+                          </h3>
+                          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                            {description}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:max-w-5xl lg:mx-auto">
+                {fallbackDomains.slice(4).map((d, idx) => {
+                  const Icon = domainIconMap[d.code] || Layers;
+                  const description = defaultDomainDescriptions[d.code] || '';
+                  return (
+                    <div
+                      key={d.code}
+                      className={`p-6 rounded-2xl border border-border bg-card flex flex-col justify-between space-y-4 hover:border-[#C2410C]/50 dark:hover:border-[#FB923C]/50 transition-colors ${
+                        idx === 2 ? 'sm:col-span-2 sm:max-w-md sm:mx-auto sm:w-full lg:col-span-1 lg:max-w-none' : ''
+                      }`}
+                    >
+                      <div className="space-y-3">
+                        <div className="w-10 h-10 rounded-xl bg-[#C2410C]/10 text-[#C2410C] dark:bg-[#FB923C]/10 dark:text-[#FB923C] flex items-center justify-center">
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h3 className="font-serif font-bold text-base text-foreground">
+                            {d.name}
+                          </h3>
+                          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                            {description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>
@@ -594,7 +684,7 @@ export function LandingPage() {
       {/* Honest FAQ (including "no job guarantee") */}
       <section className="py-20 px-4 sm:px-6 max-w-4xl mx-auto w-full space-y-10">
         <div className="text-center space-y-2">
-          <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C]">
+          <span className="text-xs uppercase tracking-wider font-semibold text-[#C2410C] dark:text-[#FB923C]">
             Transparency First
           </span>
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">
@@ -656,7 +746,6 @@ export function LandingPage() {
 
           <div className="border-t border-border/80 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px]">
             <p>© {new Date().getFullYear()} Skill Setu. Open-source educational diagnostics platform. All course trademarks belong to their respective owners.</p>
-            <p>Fraunces & DM Sans Typography • Terracotta Brand Aesthetic</p>
           </div>
         </div>
       </footer>

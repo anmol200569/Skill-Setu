@@ -265,25 +265,24 @@ export function SignupPage() {
               {...register('email')}
             />
 
-            <div className="relative">
-              <Input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                label="Password"
-                placeholder="At least 8 chars, 1 uppercase, 1 number"
-                error={errors.password?.message}
-                {...register('password')}
-              />
-              <button
-                type="button"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-8.5 text-muted-foreground hover:text-foreground p-1 rounded focus:outline-none focus:ring-1 focus:ring-[#C2410C]"
-                tabIndex={0}
-              >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
+            <Input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              label="Password"
+              placeholder="At least 8 chars, 1 uppercase, 1 number"
+              error={errors.password?.message}
+              {...register('password')}
+              rightElement={
+                <button
+                  type="button"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-muted-foreground hover:text-foreground p-1 rounded focus:outline-none focus:ring-1 focus:ring-[#C2410C] flex items-center justify-center"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              }
+            />
 
             <Button
               type="submit"

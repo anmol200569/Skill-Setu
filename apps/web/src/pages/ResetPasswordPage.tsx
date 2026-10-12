@@ -83,24 +83,24 @@ export function ResetPasswordPage() {
               )}
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    label="New Password"
-                    placeholder="At least 8 chars, 1 uppercase, 1 number"
-                    error={errors.password?.message}
-                    {...register('password')}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-8 text-muted-foreground hover:text-foreground"
-                    tabIndex={-1}
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
+                <Input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  label="New Password"
+                  placeholder="At least 8 chars, 1 uppercase, 1 number"
+                  error={errors.password?.message}
+                  {...register('password')}
+                  rightElement={
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="text-muted-foreground hover:text-foreground p-1 rounded focus:outline-none focus:ring-1 focus:ring-[#C2410C] flex items-center justify-center"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  }
+                />
 
                 <Button
                   type="submit"
