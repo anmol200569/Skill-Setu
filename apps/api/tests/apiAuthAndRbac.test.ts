@@ -1,6 +1,10 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import request from 'supertest';
 import { createApp } from '../src/app';
+import { authenticate } from '../src/middleware/auth';
+import { supabaseAuth } from '../src/lib/supabase';
+import { prisma } from '../src/lib/prisma';
+import { config } from '../src/config';
 
 const app = createApp();
 
@@ -111,6 +115,99 @@ describe('API Authentication, Authorization & Route Protection', () => {
       process.env.NODE_ENV = originalEnv;
     }
   });
+
+  it('does NOT assign admin role to new user if email equals INITIAL_ADMIN_EMAIL but email_confirmed_at is unset', async () => {
+    vi.spyOn(supabaseAuth.auth, 'getUser').mockResolvedValueOnce({
+      data: {
+        user: {
+          id: 'test-unconfirmed-admin-id',
+          email: config.initialAdminEmail,
+          email_confirmed_at: null,
+          user_metadata: {}
+        } as any
+      },
+      error: null
+    });
+
+    vi.spyOn(prisma.user, 'findUnique').mockResolvedValueOnce(null);
+    const createSpy = vi.spyOn(prisma.user, 'create').mockResolvedValueOnce({
+      id: 'test-unconfirmed-admin-id',
+      email: config.initialAdminEmail,
+      role: 'learner',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    } as any);
+
+    const req: any = {
+      headers: {
+        authorization: 'Bearer non-mock-unconfirmed-token'
+      }
+    };
+    const res: any = {
+      status: vi.fn().mockReturnThis(),
+      json: vi.fn()
+    };
+    const next = vi.fn();
+
+    await authenticate(req, res, next);
+
+    expect(next).toHaveBeenCalled();
+    expect(createSpy).toHaveBeenCalledWith({
+      data: {
+        id: 'test-unconfirmed-admin-id',
+        email: config.initialAdminEmail,
+        role: 'learner'
+      }
+    });
+    expect(req.user?.role).toBe('learner');
+  });
+
+  it('assigns admin role to new user when email equals INITIAL_ADMIN_EMAIL and email_confirmed_at is set', async () => {
+    vi.spyOn(supabaseAuth.auth, 'getUser').mockResolvedValueOnce({
+      data: {
+        user: {
+          id: 'test-confirmed-admin-id',
+          email: config.initialAdminEmail,
+          email_confirmed_at: '2026-10-12T12:00:00Z',
+          user_metadata: {}
+        } as any
+      },
+      error: null
+    });
+
+    vi.spyOn(prisma.user, 'findUnique').mockResolvedValueOnce(null);
+    const createSpy = vi.spyOn(prisma.user, 'create').mockResolvedValueOnce({
+      id: 'test-confirmed-admin-id',
+      email: config.initialAdminEmail,
+      role: 'admin',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    } as any);
+
+    const req: any = {
+      headers: {
+        authorization: 'Bearer non-mock-confirmed-token'
+      }
+    };
+    const res: any = {
+      status: vi.fn().mockReturnThis(),
+      json: vi.fn()
+    };
+    const next = vi.fn();
+
+    await authenticate(req, res, next);
+
+    expect(next).toHaveBeenCalled();
+    expect(createSpy).toHaveBeenCalledWith({
+      data: {
+        id: 'test-confirmed-admin-id',
+        email: config.initialAdminEmail,
+        role: 'admin'
+      }
+    });
+    expect(req.user?.role).toBe('admin');
+  });
 });
+
 
 
