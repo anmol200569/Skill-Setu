@@ -64,6 +64,48 @@ export async function uploadStudyMaterial(req: Request, res: Response): Promise<
   }
 }
 
+function extractRetryAfterSeconds(err: any): number | undefined {
+  if (!err) return undefined;
+  if (typeof err.retryAfter === 'number') return err.retryAfter;
+  if (typeof err.retryDelay === 'number') return Math.ceil(err.retryDelay);
+
+  // Check Google RPC RetryInfo
+  if (Array.isArray(err.details)) {
+    const retryInfo = err.details.find((d: any) => d?.['@type']?.includes('RetryInfo'));
+    if (retryInfo?.retryDelay) {
+      const match = String(retryInfo.retryDelay).match(/^(\d+)(?:\.\d+)?s?$/);
+      if (match) return parseInt(match[1], 10);
+    }
+  }
+
+  // Check string match in message
+  const msg = typeof err.message === 'string' ? err.message : '';
+  const delayMatch = msg.match(/"retryDelay"\s*:\s*"(\d+)s?"/i) || msg.match(/retry in (\d+)\s*s/i);
+  if (delayMatch) {
+    return parseInt(delayMatch[1], 10);
+  }
+
+  return undefined;
+}
+
+function isQuotaOrTimeoutError(err: any): boolean {
+  if (!err) return false;
+  const status = err.status || err.statusCode || err.code;
+  if (status === 429 || status === 503) return true;
+
+  const msg = (err.message || '').toLowerCase();
+  return (
+    msg.includes('429') ||
+    msg.includes('quota') ||
+    msg.includes('rate limit') ||
+    msg.includes('resource_exhausted') ||
+    msg.includes('timeout') ||
+    msg.includes('timed out') ||
+    msg.includes('unavailable') ||
+    msg.includes('high demand')
+  );
+}
+
 export async function generateQuiz(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
   const userRole = req.user!.role;
@@ -95,9 +137,25 @@ export async function generateQuiz(req: Request, res: Response): Promise<void> {
 
     res.status(201).json(quiz);
   } catch (err: any) {
+    // Log real provider error server-side only
+    console.error('[QuizGeneration] Gemini provider error:', err);
+
+    if (isQuotaOrTimeoutError(err)) {
+      const retryAfter = extractRetryAfterSeconds(err);
+      if (retryAfter) {
+        res.setHeader('Retry-After', retryAfter.toString());
+      }
+      res.status(503).json({
+        error: 'ServiceUnavailable',
+        message: 'The AI quiz service is busy right now. Please try again in a few minutes.',
+        ...(retryAfter !== undefined ? { retryAfter } : {})
+      });
+      return;
+    }
+
     res.status(500).json({
       error: 'QuizGenerationError',
-      message: err.message || 'Failed to generate quiz with AI model'
+      message: 'Failed to generate quiz. Please try again.'
     });
   }
 }

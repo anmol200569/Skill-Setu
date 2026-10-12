@@ -412,14 +412,36 @@ export function LandingPage() {
                     <BookOpen className="w-4 h-4 text-[#C2410C]" />
                     <span>Top High-Impact Course Recommendations:</span>
                   </div>
-                  <ul className="space-y-2 text-muted-foreground pl-1">
-                    <li className="flex items-start gap-2">
-                      <span className="font-bold text-[#C2410C]">•</span>
-                      <span><strong>Designing Azure Infrastructure Solutions (AZ-305)</strong> (Microsoft Learn) — Covers system design and scalability.</span>
+                  <ul className="space-y-3 text-muted-foreground pl-1">
+                    <li className="flex items-start gap-2.5">
+                      <span className="font-bold text-[#C2410C] mt-0.5">•</span>
+                      <div className="space-y-1">
+                        <div>
+                          <strong className="text-foreground">Designing Azure Infrastructure Solutions (AZ-305)</strong>{' '}
+                          <span className="text-xs text-muted-foreground">(Microsoft Learn)</span>
+                        </div>
+                        <div className="text-[11px] text-muted-foreground flex items-center flex-wrap gap-2">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#C2410C]/10 text-[#C2410C] font-semibold">
+                            Covers: System Design & Scalability (sys-design)
+                          </span>
+                          <span>Bridges 2.0 score units • 32 hrs</span>
+                        </div>
+                      </div>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <span className="font-bold text-[#C2410C]">•</span>
-                      <span><strong>Information Security Certification Track</strong> (freeCodeCamp) — Free, 40 hours hands-on security.</span>
+                    <li className="flex items-start gap-2.5">
+                      <span className="font-bold text-[#C2410C] mt-0.5">•</span>
+                      <div className="space-y-1">
+                        <div>
+                          <strong className="text-foreground">Information Security Certification Track</strong>{' '}
+                          <span className="text-xs text-muted-foreground">(freeCodeCamp)</span>
+                        </div>
+                        <div className="text-[11px] text-muted-foreground flex items-center flex-wrap gap-2">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#C2410C]/10 text-[#C2410C] font-semibold">
+                            Covers: Application Security (OWASP Top 10) (appsec-owasp)
+                          </span>
+                          <span>Bridges 1.0 score units • 40 hrs</span>
+                        </div>
+                      </div>
                     </li>
                   </ul>
                   <div className="pt-2 border-t border-border/80 text-[11px] text-muted-foreground">

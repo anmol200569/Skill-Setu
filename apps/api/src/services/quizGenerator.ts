@@ -93,8 +93,17 @@ JSON Output Format Specification:
       parsedQuizOutput = validated;
       break;
     } catch (err: any) {
-      // Do not retry on timeout
-      if (err.message?.includes('timeout') || err.message?.includes('timed out')) {
+      // Do not retry on timeout or 429 quota exhaustion
+      if (
+        err.status === 429 ||
+        err.statusCode === 429 ||
+        err.message?.includes('timeout') ||
+        err.message?.includes('timed out') ||
+        err.message?.includes('429') ||
+        err.message?.includes('quota') ||
+        err.message?.includes('RESOURCE_EXHAUSTED') ||
+        err.message?.includes('UNAVAILABLE')
+      ) {
         throw err;
       }
       console.warn(`Quiz generation attempt ${attempts} failed validation:`, err.message);

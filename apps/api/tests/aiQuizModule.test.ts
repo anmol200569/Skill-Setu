@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import request from 'supertest';
 import { createApp } from '../src/app';
 import {
@@ -6,6 +6,7 @@ import {
   sanitizePromptInput
 } from '../src/services/aiService';
 import { chunkText } from '../src/services/fileExtractionService';
+import * as quizGenerator from '../src/services/quizGenerator';
 
 const app = createApp();
 
@@ -91,6 +92,55 @@ describe('AI Quiz Module & Gemini Model Configuration', () => {
       expect(res.body.message).toBeDefined();
       expect(typeof res.body.message).toBe('string');
       expect(res.body.message.length).toBeGreaterThan(0);
+    });
+
+    it('returns 503 and user-friendly message without leaking raw provider details when Gemini returns 429', async () => {
+      const quotaErr = new Error('429 Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests');
+      (quotaErr as any).status = 429;
+      (quotaErr as any).retryAfter = 60;
+
+      vi.spyOn(quizGenerator, 'generateAndSaveQuiz').mockRejectedValueOnce(quotaErr);
+
+      const res = await request(app)
+        .post('/api/v1/quizzes/generate')
+        .set('Authorization', 'Bearer test-learner-token')
+        .send({
+          title: 'PostgreSQL Deep Dive',
+          topicOrText: 'Advanced window functions and index structures in PostgreSQL.',
+          questionCount: 5,
+          difficulty: 'intermediate',
+          language: 'en'
+        });
+
+      expect(res.status).toBe(503);
+      expect(res.body.error).toBe('ServiceUnavailable');
+      expect(res.body.message).toBe('The AI quiz service is busy right now. Please try again in a few minutes.');
+      expect(res.body.retryAfter).toBe(60);
+      expect(res.headers['retry-after']).toBe('60');
+
+      // Verify no raw provider error details leaked to client
+      expect(JSON.stringify(res.body)).not.toContain('generativelanguage');
+      expect(JSON.stringify(res.body)).not.toContain('quota');
+    });
+
+    it('returns 503 when Gemini inference times out', async () => {
+      const timeoutErr = new Error('AI service timeout: Inference exceeded 45000ms limit.');
+      vi.spyOn(quizGenerator, 'generateAndSaveQuiz').mockRejectedValueOnce(timeoutErr);
+
+      const res = await request(app)
+        .post('/api/v1/quizzes/generate')
+        .set('Authorization', 'Bearer test-learner-token')
+        .send({
+          title: 'Kubernetes Architecture',
+          topicOrText: 'Cluster ingress and persistent volumes in cloud deployments.',
+          questionCount: 5,
+          difficulty: 'advanced',
+          language: 'en'
+        });
+
+      expect(res.status).toBe(503);
+      expect(res.body.error).toBe('ServiceUnavailable');
+      expect(res.body.message).toBe('The AI quiz service is busy right now. Please try again in a few minutes.');
     });
   });
 });
