@@ -50,5 +50,6 @@ coverage/
 uploads/
 tmp/
 temp/
+scratch/
 
 .vercel
