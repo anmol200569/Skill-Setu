@@ -44,6 +44,7 @@ export function AssessmentsPage() {
   // Active Assessment State
   const [activeSkill, setActiveSkill] = useState<Skill | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [isLoadingQuestions, setIsLoadingQuestions] = useState(false);
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, string[]>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -70,6 +71,8 @@ export function AssessmentsPage() {
     setCurrentQuestionIdx(0);
     setSelectedAnswers({});
     setAssessmentResult(null);
+    setQuestions([]);
+    setIsLoadingQuestions(true);
     setIsModalOpen(true);
 
     try {
@@ -77,6 +80,9 @@ export function AssessmentsPage() {
       setQuestions(q || []);
     } catch (err: any) {
       console.warn('Could not load questions:', err);
+      setQuestions([]);
+    } finally {
+      setIsLoadingQuestions(false);
     }
   };
 
@@ -249,10 +255,23 @@ export function AssessmentsPage() {
         title={activeSkill ? `Diagnostic: ${activeSkill.name}` : 'Assessment'}
         className="max-w-2xl"
       >
-        {questions.length === 0 ? (
+        {isLoadingQuestions ? (
           <div className="py-12 text-center text-sm text-muted-foreground space-y-2">
             <Loader2 className="w-6 h-6 animate-spin text-[#C2410C] mx-auto" />
             <p>Loading curated diagnostic questions...</p>
+          </div>
+        ) : questions.length === 0 ? (
+          <div className="py-12 text-center text-sm text-muted-foreground space-y-3">
+            <HelpCircle className="w-10 h-10 text-muted-foreground/50 mx-auto" />
+            <h3 className="font-semibold text-foreground text-base">No Questions Available</h3>
+            <p className="text-xs max-w-sm mx-auto text-muted-foreground">
+              There are currently no diagnostic questions configured for {activeSkill?.name || 'this skill'}. Please check back later or explore other skills.
+            </p>
+            <div className="pt-2">
+              <Button variant="outline" size="sm" onClick={() => setIsModalOpen(false)}>
+                Close
+              </Button>
+            </div>
           </div>
         ) : assessmentResult ? (
           /* Result View */

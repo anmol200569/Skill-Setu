@@ -164,7 +164,39 @@ export async function seedDatabase() {
   }
   console.log(`✅ Seeded ${curatedCoursesData.length} curated courses.`);
 
-  // 4. Seed Diagnostic Assessment Questions
+  // Cleanup obsolete courses that are not in curatedCoursesData and have no user enrollments or learning path items
+  const validCourseIds = new Set(
+    curatedCoursesData.map((c) =>
+      c.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+    )
+  );
+
+  const existingCourses = await prisma.course.findMany({
+    select: {
+      id: true,
+      _count: {
+        select: {
+          enrollments: true,
+          learningPathItems: true
+        }
+      }
+    }
+  });
+
+  let removedCount = 0;
+  for (const course of existingCourses) {
+    if (!validCourseIds.has(course.id)) {
+      if (course._count.enrollments === 0 && course._count.learningPathItems === 0) {
+        await prisma.course.delete({ where: { id: course.id } });
+        removedCount++;
+      }
+    }
+  }
+  if (removedCount > 0) {
+    console.log(`🧹 Cleaned up ${removedCount} obsolete unreferenced courses.`);
+  }
+
+  // 4. Seed Diagnostic Assessment Questions (Idempotent)
   for (const q of diagnosticQuestionsData) {
     const skillId = skillCodeToIdMap.get(q.skillCode);
     if (skillId) {
@@ -180,6 +212,17 @@ export async function seedDatabase() {
           data: {
             skillId: skillId,
             questionText: q.questionText,
+            type: q.type as any,
+            difficulty: q.difficulty as any,
+            options: q.options,
+            correctAnswers: q.correctAnswers,
+            explanation: q.explanation
+          }
+        });
+      } else {
+        await prisma.assessmentQuestion.update({
+          where: { id: existing.id },
+          data: {
             type: q.type as any,
             difficulty: q.difficulty as any,
             options: q.options,

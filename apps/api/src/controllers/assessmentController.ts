@@ -7,6 +7,7 @@ export async function getSkillAssessmentQuestions(req: Request, res: Response): 
 
   const questions = await prisma.assessmentQuestion.findMany({
     where: { skillId },
+    take: 10,
     select: {
       id: true,
       skillId: true,
