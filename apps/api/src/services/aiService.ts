@@ -1,10 +1,18 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenAI } from '@google/genai';
 import { config } from '../config';
 
-let genAI: GoogleGenerativeAI | null = null;
+let aiClient: GoogleGenAI | null = null;
 
-if (config.gemini.apiKey && config.gemini.apiKey !== 'your-gemini-api-key') {
-  genAI = new GoogleGenerativeAI(config.gemini.apiKey);
+function getGenAIClient(): GoogleGenAI {
+  if (!aiClient) {
+    if (!config.gemini.apiKey || config.gemini.apiKey === 'your-gemini-api-key') {
+      throw new Error(
+        'GEMINI_API_KEY is not configured on the server. Please configure GEMINI_API_KEY in the Vercel Project Settings or server environment.'
+      );
+    }
+    aiClient = new GoogleGenAI({ apiKey: config.gemini.apiKey });
+  }
+  return aiClient;
 }
 
 /**
@@ -73,13 +81,20 @@ export function validateAndGetGeminiModel(customModel?: string): string {
   return modelName;
 }
 
+export interface GeminiCompletionOptions {
+  responseMimeType?: string;
+  timeoutMs?: number;
+  thinkingLevel?: 'MINIMAL' | 'LOW' | 'MEDIUM' | 'HIGH';
+}
+
 /**
  * Generate completion via Gemini with explicit error handling and timeout
  */
 export async function generateGeminiCompletion(
   prompt: string,
   systemInstruction?: string,
-  temperature: number = 0.2
+  temperature: number = 0.2,
+  options?: GeminiCompletionOptions
 ): Promise<string> {
   // Validate model name from configuration
   const modelName = validateAndGetGeminiModel();
@@ -144,39 +159,49 @@ export async function generateGeminiCompletion(
     return `Hello! As your Skill Setu AI Learning Assistant, I am here to help you bridge your target role skill gaps. Focus on your top-priority gaps first by completing hands-on projects and diagnostic quizzes. Let me know which topic you would like to explore today!`;
   }
 
-  // In production and development environments, never fabricate fallback responses
-  if (!genAI || !config.gemini.apiKey || config.gemini.apiKey === 'your-gemini-api-key') {
-    throw new Error(
-      'GEMINI_API_KEY is not configured on the server. Please configure GEMINI_API_KEY in the Vercel Project Settings or server environment.'
-    );
+  const ai = getGenAIClient();
+  const timeoutMs = options?.timeoutMs ?? config.gemini.timeoutMs ?? 10000;
+
+  const genConfig: any = {
+    systemInstruction: systemInstruction || 'You are Skill Setu AI, an expert technical mentor and skill intelligence assistant.',
+    temperature,
+    maxOutputTokens: 8192,
+    thinkingConfig: {
+      thinkingLevel: options?.thinkingLevel || 'LOW'
+    }
+  };
+
+  if (options?.responseMimeType) {
+    genConfig.responseMimeType = options.responseMimeType;
   }
 
+  const startTime = Date.now();
   try {
-    const model = genAI.getGenerativeModel({
-      model: modelName,
-      generationConfig: {
-        temperature,
-        maxOutputTokens: 8192
-      },
-      systemInstruction: systemInstruction || 'You are Skill Setu AI, an expert technical mentor and skill intelligence assistant.'
-    });
-
-    // Enforce 25-second timeout on AI inference
-    const result = await Promise.race([
-      model.generateContent(prompt),
+    const response = await Promise.race([
+      ai.models.generateContent({
+        model: modelName,
+        contents: prompt,
+        config: genConfig
+      }),
       new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error('Gemini API inference timed out after 25s')), 25000)
+        setTimeout(() => reject(new Error(`Gemini API inference timed out after ${timeoutMs}ms`)), timeoutMs)
       )
     ]);
 
-    const response = await result.response;
-    const text = response.text();
+    const durationMs = Date.now() - startTime;
+    console.log(`[AI] Gemini call succeeded in ${durationMs}ms`);
+
+    const text = response.text;
     if (!text || text.trim().length === 0) {
       throw new Error('Gemini API returned an empty response.');
     }
     return text;
   } catch (error: any) {
-    console.error('Gemini API call failed:', error.message);
+    const durationMs = Date.now() - startTime;
+    console.error(`[AI] Gemini call failed after ${durationMs}ms`);
+    if (error.message?.includes('timed out')) {
+      throw new Error(`AI service timeout: Inference exceeded ${timeoutMs}ms limit.`);
+    }
     if (error.message?.includes('429') || error.message?.includes('quota') || error.message?.includes('RESOURCE_EXHAUSTED')) {
       throw new Error('Gemini API quota exceeded or rate limit reached. Please verify your Google AI Studio plan.');
     }

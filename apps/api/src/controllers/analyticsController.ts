@@ -6,16 +6,37 @@ import { getPersonalizedRecommendations } from '../services/recommendationEngine
 export async function getLearnerDashboardStats(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
 
-  // 1. Fetch Profile
-  const profile = await prisma.profile.findUnique({
-    where: { userId },
-    include: { targetRole: true }
-  });
+  // Run independent Prisma queries and gap analysis concurrently using Promise.all
+  const [profile, gapAnalysis, enrollments, quizAttempts, recentAssessments] = await Promise.all([
+    // 1. Fetch Profile
+    prisma.profile.findUnique({
+      where: { userId },
+      include: { targetRole: true }
+    }),
+    // 2. Run Gap Analysis (now cached and non-blocking)
+    analyzeLearnerSkillGaps(userId),
+    // 3. Enrollments & Course Progress
+    prisma.enrollment.findMany({
+      where: { userId },
+      include: { course: true }
+    }),
+    // 4. Quiz Scores History
+    prisma.quizAttempt.findMany({
+      where: { userId },
+      include: { quiz: true },
+      orderBy: { submittedAt: 'desc' },
+      take: 10
+    }),
+    // 5. Recent Assessment Attempts
+    prisma.assessmentAttempt.findMany({
+      where: { userId },
+      include: { skill: true },
+      orderBy: { startedAt: 'desc' },
+      take: 5
+    })
+  ]);
 
-  // 2. Run Gap Analysis
-  const gapAnalysis = await analyzeLearnerSkillGaps(userId);
-
-  // 3. Radar Chart Data: top skills with current vs required
+  // Radar Chart Data: top skills with current vs required
   const radarData = gapAnalysis.gaps.slice(0, 6).map((g) => ({
     skill: g.skillName,
     current: g.currentLevel,
@@ -33,12 +54,6 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
     }
   }
 
-  // 4. Enrollments & Course Progress
-  const enrollments = await prisma.enrollment.findMany({
-    where: { userId },
-    include: { course: true }
-  });
-
   const completedCourses = enrollments.filter((e) => e.status === 'completed');
   const inProgressCourses = enrollments.filter((e) => e.status === 'in_progress');
 
@@ -49,26 +64,10 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
     return acc;
   }, 0);
 
-  // 5. Quiz Scores History
-  const quizAttempts = await prisma.quizAttempt.findMany({
-    where: { userId },
-    include: { quiz: true },
-    orderBy: { submittedAt: 'desc' },
-    take: 10
-  });
-
   const totalQuizzes = quizAttempts.length;
   const avgQuizScore = totalQuizzes > 0
     ? Math.round(quizAttempts.reduce((acc, q) => acc + q.scorePercentage, 0) / totalQuizzes)
     : 0;
-
-  // 6. Recent Assessment Attempts
-  const recentAssessments = await prisma.assessmentAttempt.findMany({
-    where: { userId },
-    include: { skill: true },
-    orderBy: { startedAt: 'desc' },
-    take: 5
-  });
 
   // 7. Course Recommendations
   const recommendations = await getPersonalizedRecommendations(userId, gapAnalysis.gaps, 4);

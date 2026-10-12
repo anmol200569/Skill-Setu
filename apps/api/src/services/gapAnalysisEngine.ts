@@ -1,6 +1,33 @@
+import crypto from 'crypto';
 import { prisma } from '../lib/prisma';
 import { SkillGapItem, SkillGapAnalysisResult } from '@skill-setu/shared';
 import { generateGeminiCompletion } from './aiService';
+
+interface CachedSummary {
+  summary: string;
+  cachedAt: number;
+}
+
+// In-memory cache for generated AI summaries keyed by user ID + gap signature hash
+const summaryCache = new Map<string, CachedSummary>();
+const SUMMARY_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+export function clearSummaryCache(): void {
+  summaryCache.clear();
+}
+
+export function computeGapStateHash(userId: string, roleId: string, readiness: number, gaps: SkillGapItem[]): string {
+  const serialized = `${userId}:${roleId}:${readiness}:${gaps.map((g) => `${g.skillId}:${g.gap}:${g.priority}`).join('|')}`;
+  return crypto.createHash('md5').update(serialized).digest('hex');
+}
+
+export function getFallbackSkillSummary(roleTitle: string, readiness: number, gaps: SkillGapItem[]): string {
+  if (gaps.length === 0) {
+    return `Your readiness for ${roleTitle} is ${readiness}%. You currently meet the target proficiency across all evaluated skills. Keep practicing to maintain your edge.`;
+  }
+  const topGapNames = gaps.slice(0, 2).map((g) => g.skillName).join(' and ');
+  return `Your readiness for ${roleTitle} is ${readiness}%. Prioritize addressing your top skill gaps (${topGapNames}) to rapidly improve role qualification.`;
+}
 
 export interface RawSkillInput {
   skillId: string;
@@ -168,18 +195,34 @@ export async function analyzeLearnerSkillGaps(
     formattedUserSkills
   );
 
-  // Generate concise AI explanation
+  // Generate or retrieve cached AI explanation
+  const gapHash = computeGapStateHash(userId, role.id, overallReadinessScore, gaps);
+  const cacheKey = `${userId}:${role.id}:${gapHash}`;
+  const cached = summaryCache.get(cacheKey);
+
   let aiSummary = '';
-  try {
-    const topGapNames = gaps.slice(0, 3).map((g) => `${g.skillName} (Gap: ${g.gap}, Priority: ${g.priority})`).join(', ');
-    const prompt = `Explain the key skill gaps for a learner targeting the role "${role.title}".
+  if (cached && Date.now() - cached.cachedAt < SUMMARY_CACHE_TTL_MS) {
+    aiSummary = cached.summary;
+  } else {
+    try {
+      const topGapNames = gaps.slice(0, 3).map((g) => `${g.skillName} (Gap: ${g.gap}, Priority: ${g.priority})`).join(', ');
+      const prompt = `Explain the key skill gaps for a learner targeting the role "${role.title}".
 Overall readiness score: ${overallReadinessScore}%.
 Top skill gaps: ${topGapNames || 'None, learner meets current requirements'}.
 Provide a concise, encouraging 2-3 sentence strategic summary and highlight which gap to bridge first.`;
 
-    aiSummary = await generateGeminiCompletion(prompt);
-  } catch (err) {
-    aiSummary = `Your readiness for ${role.title} is ${overallReadinessScore}%. Prioritize addressing your top skill gaps (${gaps.slice(0, 2).map(g => g.skillName).join(' and ')}) to rapidly improve role qualification.`;
+      // Non-blocking 3.5s timeout with LOW thinking so dashboard never hangs
+      aiSummary = await generateGeminiCompletion(prompt, undefined, 0.2, {
+        timeoutMs: 3500,
+        thinkingLevel: 'LOW'
+      });
+
+      // Cache the result for subsequent instant loads
+      summaryCache.set(cacheKey, { summary: aiSummary, cachedAt: Date.now() });
+    } catch (err) {
+      // Fallback template summary on timeout or API unavailability
+      aiSummary = getFallbackSkillSummary(role.title, overallReadinessScore, gaps);
+    }
   }
 
   return {

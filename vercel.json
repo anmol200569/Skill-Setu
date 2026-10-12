@@ -5,7 +5,8 @@
   "outputDirectory": "apps/web/dist",
   "functions": {
     "api/index.ts": {
-      "includeFiles": "packages/shared/**"
+      "includeFiles": "packages/shared/**",
+      "maxDuration": 60
     }
   },
   "rewrites": [

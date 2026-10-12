@@ -82,7 +82,8 @@ JSON Output Format Specification:
       const responseText = await generateGeminiCompletion(
         prompt,
         systemInstruction,
-        attempts === 1 ? 0.2 : 0.4
+        attempts === 1 ? 0.2 : 0.4,
+        { responseMimeType: 'application/json' }
       );
 
       const parsed = extractJsonFromText<any>(responseText);
@@ -90,6 +91,10 @@ JSON Output Format Specification:
       parsedQuizOutput = validated;
       break;
     } catch (err: any) {
+      // Do not retry on timeout
+      if (err.message?.includes('timeout') || err.message?.includes('timed out')) {
+        throw err;
+      }
       console.warn(`Quiz generation attempt ${attempts} failed validation:`, err.message);
       if (attempts >= maxAttempts) {
         throw new Error(`Failed to generate valid quiz JSON: ${err.message}`);

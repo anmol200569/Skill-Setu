@@ -20,7 +20,8 @@ export const config = {
   },
   gemini: {
     apiKey: process.env.GEMINI_API_KEY || '',
-    model: process.env.GEMINI_MODEL || ''
+    model: process.env.GEMINI_MODEL || '',
+    timeoutMs: parseInt(process.env.GEMINI_TIMEOUT_MS || '10000', 10)
   },
   initialAdminEmail: process.env.INITIAL_ADMIN_EMAIL || 'admin@skillsetu.dev'
 };
