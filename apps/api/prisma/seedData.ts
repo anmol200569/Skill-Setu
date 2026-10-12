@@ -174,380 +174,989 @@ export const rolesData = [
 ];
 
 export const curatedCoursesData = [
-  // 1 to 10: Programming & Software Development
   {
-    title: 'TypeScript in 50 Lessons & Production Practices',
-    provider: 'freeCodeCamp',
-    destinationUrl: 'https://www.freecodecamp.org/news/learn-typescript-beginners-guide/',
-    skillsCovered: ['ts-js'],
-    difficulty: 'Intermediate',
-    estimatedHours: 12,
-    language: 'English',
-    isFree: true,
-    rating: 4.8,
-    ratingSource: 'freeCodeCamp Community',
-    description: 'Comprehensive walkthrough of TypeScript utility types, generics, strict null checks, and modern configuration.'
+    "title": "CS50x: Introduction to Computer Science",
+    "provider": "CS50",
+    "destinationUrl": "https://cs50.harvard.edu/x/",
+    "skillsCovered": [
+      "python",
+      "sql-db"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 40,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.9,
+    "ratingSource": "Harvard Online",
+    "description": "An introduction to the intellectual enterprises of computer science and the art of programming."
   },
   {
-    title: 'Full Stack Open — Deep Dive Into Modern Web Development',
-    provider: 'University of Helsinki',
-    destinationUrl: 'https://fullstackopen.com/en/',
-    skillsCovered: ['ts-js', 'react', 'nodejs', 'sql-db'],
-    difficulty: 'Intermediate',
-    estimatedHours: 65,
-    language: 'English',
-    isFree: true,
-    rating: 4.9,
-    ratingSource: 'Course Platform Reviews',
-    description: 'Gold-standard open curriculum covering React, Redux, Node.js, Express, REST APIs, GraphQL, and TypeScript.'
+    "title": "CS50's Introduction to Programming with Python",
+    "provider": "CS50",
+    "destinationUrl": "https://cs50.harvard.edu/python/",
+    "skillsCovered": [
+      "python"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 35,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.9,
+    "ratingSource": "Harvard Online",
+    "description": "Learn Python fundamentals, functions, variables, conditionals, loops, exceptions, libraries, unit tests, and file I/O."
   },
   {
-    title: 'React Documentation & Official Interactive Tutorials',
-    provider: 'React.dev',
-    destinationUrl: 'https://react.dev/learn',
-    skillsCovered: ['react'],
-    difficulty: 'Beginner',
-    estimatedHours: 15,
-    language: 'English',
-    isFree: true,
-    rating: 4.9,
-    ratingSource: 'Official Docs Benchmark',
-    description: 'Learn modern React with pure functional components, hooks, suspense, state preservation, and custom hooks.'
+    "title": "CS50's Web Programming with Python and JavaScript",
+    "provider": "CS50",
+    "destinationUrl": "https://cs50.harvard.edu/web/",
+    "skillsCovered": [
+      "ts-js",
+      "react",
+      "python",
+      "sql-db"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 45,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.9,
+    "ratingSource": "Harvard Online",
+    "description": "Dive deeper into the design and implementation of web apps with Python, JavaScript, React, and SQL."
   },
   {
-    title: 'CS50x: Introduction to Computer Science',
-    provider: 'Harvard / edX',
-    destinationUrl: 'https://cs50.harvard.edu/x/',
-    skillsCovered: ['python', 'sql-db'],
-    difficulty: 'Beginner',
-    estimatedHours: 40,
-    language: 'English',
-    isFree: true,
-    rating: 4.9,
-    ratingSource: 'Class Central Top Rated',
-    description: 'Legendary introductory course on algorithmic thinking, memory management, data structures, and web foundations.'
+    "title": "CS50's Introduction to Databases with SQL",
+    "provider": "CS50",
+    "destinationUrl": "https://cs50.harvard.edu/sql/",
+    "skillsCovered": [
+      "sql-db",
+      "adv-sql"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 30,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.9,
+    "ratingSource": "Harvard Online",
+    "description": "Learn relational database modeling, normalization, indexing, transactions, and advanced queries with SQLite and PostgreSQL."
   },
   {
-    title: 'Node.js & Express API Development Track',
-    provider: 'freeCodeCamp',
-    destinationUrl: 'https://www.freecodecamp.org/learn/back-end-development-and-apis/',
-    skillsCovered: ['nodejs'],
-    difficulty: 'Beginner',
-    estimatedHours: 20,
-    language: 'English',
-    isFree: true,
-    rating: 4.7,
-    ratingSource: 'freeCodeCamp Reviews',
-    description: 'Hands-on projects building REST endpoints, routing, middleware, URL shorteners, and authentication services.'
+    "title": "CS50's Introduction to Artificial Intelligence with Python",
+    "provider": "CS50",
+    "destinationUrl": "https://cs50.harvard.edu/ai/",
+    "skillsCovered": [
+      "ml-foundations",
+      "python"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 40,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Harvard Online",
+    "description": "Explores concepts and algorithms at the foundation of modern artificial intelligence, machine learning, and neural networks."
   },
   {
-    title: 'Relational Database Design and SQL Mastery',
-    provider: 'Microsoft Learn',
-    destinationUrl: 'https://learn.microsoft.com/en-us/training/paths/query-data-with-transact-sql/',
-    skillsCovered: ['sql-db', 'adv-sql'],
-    difficulty: 'Intermediate',
-    estimatedHours: 16,
-    language: 'English',
-    isFree: true,
-    rating: 4.8,
-    ratingSource: 'Microsoft Learn Feedback',
-    description: 'Master joins, aggregations, subqueries, indices, execution plans, and data integrity constraints.'
+    "title": "CS50's Introduction to Cybersecurity",
+    "provider": "CS50",
+    "destinationUrl": "https://cs50.harvard.edu/cybersecurity/",
+    "skillsCovered": [
+      "appsec-owasp",
+      "netsec-threat"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 25,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Harvard Online",
+    "description": "Learn how to secure accounts, data, devices, and systems against threats, recognizing vulnerabilities and defense-in-depth."
   },
   {
-    title: 'Modern Python Programming for Developers (हिंदी & English)',
-    provider: 'NPTEL',
-    destinationUrl: 'https://nptel.ac.in/courses/106106145',
-    skillsCovered: ['python'],
-    difficulty: 'Beginner',
-    estimatedHours: 30,
-    language: 'Bilingual',
-    isFree: true,
-    rating: 4.7,
-    ratingSource: 'NPTEL Swayam Portal',
-    description: 'In-depth Python programming taught by IIT Madras faculty covering idioms, OOP, modules, and testing.'
+    "title": "CS50's Understanding Technology",
+    "provider": "CS50",
+    "destinationUrl": "https://cs50.harvard.edu/technology/",
+    "skillsCovered": [
+      "netsec-threat",
+      "tech-writing"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 20,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.7,
+    "ratingSource": "Harvard Online",
+    "description": "Demystifies hardware, the Internet, multimedia, security, programming, and web technology for everyday professionals."
   },
   {
-    title: 'System Design Primer & Architectural Patterns',
-    provider: 'GitHub Open Source',
-    destinationUrl: 'https://github.com/donnemartin/system-design-primer',
-    skillsCovered: ['sys-design'],
-    difficulty: 'Advanced',
-    estimatedHours: 25,
-    language: 'English',
-    isFree: true,
-    rating: 4.9,
-    ratingSource: 'GitHub 270k+ Stars',
-    description: 'Learn how to design large-scale distributed architectures, load balancing, replication, CAP theorem, and CDN caching.'
-  },
-
-  // 9 to 18: Data & Analytics
-  {
-    title: 'Advanced SQL for Data Analysts & BI Engineers',
-    provider: 'Microsoft Learn',
-    destinationUrl: 'https://learn.microsoft.com/en-us/training/modules/optimize-query-performance-sql-server/',
-    skillsCovered: ['adv-sql', 'bi-modeling'],
-    difficulty: 'Intermediate',
-    estimatedHours: 14,
-    language: 'English',
-    isFree: true,
-    rating: 4.8,
-    ratingSource: 'Microsoft Learn',
-    description: 'Window functions, analytical ranking, cumulative sums, index optimization, and semantic data models.'
+    "title": "CS50 for Business Professionals",
+    "provider": "CS50",
+    "destinationUrl": "https://cs50.harvard.edu/business/",
+    "skillsCovered": [
+      "stakeholder-mgt",
+      "prod-discovery",
+      "user-research"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 20,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Harvard Online",
+    "description": "CS50's adaptation for business leaders, managers, and product founders making high-stakes technological decisions."
   },
   {
-    title: 'Data Visualization and Executive Storytelling with Power BI',
-    provider: 'Microsoft Learn',
-    destinationUrl: 'https://learn.microsoft.com/en-us/training/paths/create-use-analytics-reports-power-bi/',
-    skillsCovered: ['data-vis', 'bi-modeling'],
-    difficulty: 'Beginner',
-    estimatedHours: 18,
-    language: 'English',
-    isFree: true,
-    rating: 4.7,
-    ratingSource: 'Microsoft Learn',
-    description: 'Build interactive dashboards, DAX measures, data relationships, and impactful executive summaries.'
+    "title": "JavaScript Algorithms and Data Structures",
+    "provider": "freeCodeCamp",
+    "destinationUrl": "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures-v8/",
+    "skillsCovered": [
+      "ts-js"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 50,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.9,
+    "ratingSource": "freeCodeCamp Curriculum",
+    "description": "Learn JavaScript fundamentals, ES6+ features, functional programming, OOP, and algorithm problem-solving."
   },
   {
-    title: 'Applied Data Analysis with Pandas & Python',
-    provider: 'freeCodeCamp',
-    destinationUrl: 'https://www.freecodecamp.org/learn/data-analysis-with-python/',
-    skillsCovered: ['eda-pandas', 'python'],
-    difficulty: 'Intermediate',
-    estimatedHours: 22,
-    language: 'English',
-    isFree: true,
-    rating: 4.8,
-    ratingSource: 'freeCodeCamp',
-    description: 'Numpy, Pandas, Matplotlib, and Seaborn for data wrangling, cleaning missing values, and statistical exploration.'
+    "title": "Front End Development Libraries",
+    "provider": "freeCodeCamp",
+    "destinationUrl": "https://www.freecodecamp.org/learn/front-end-development-libraries/",
+    "skillsCovered": [
+      "react",
+      "ts-js",
+      "user-research"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 40,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "freeCodeCamp Curriculum",
+    "description": "Build responsive UI applications using React, Redux, state management, components, and design systems."
   },
   {
-    title: 'Data Science & Visual Analytics (Hindi Explained)',
-    provider: 'NPTEL',
-    destinationUrl: 'https://nptel.ac.in/courses/106105151',
-    skillsCovered: ['data-vis', 'eda-pandas'],
-    difficulty: 'Intermediate',
-    estimatedHours: 28,
-    language: 'Hindi',
-    isFree: true,
-    rating: 4.6,
-    ratingSource: 'NPTEL India',
-    description: 'Statistical foundation for data analysis and visualization presented with Hindi commentary and English notes.'
+    "title": "Back End Development and APIs",
+    "provider": "freeCodeCamp",
+    "destinationUrl": "https://www.freecodecamp.org/learn/back-end-development-and-apis/",
+    "skillsCovered": [
+      "nodejs",
+      "sql-db"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 40,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "freeCodeCamp Curriculum",
+    "description": "Build backend microservices and RESTful APIs using Node.js, Express, MongoDB, and Mongoose."
   },
   {
-    title: 'Data Modeling & Dimensional Warehousing Essentials',
-    provider: 'Google Cloud Skills Boost',
-    destinationUrl: 'https://www.cloudskillsboost.google/course_templates/14',
-    skillsCovered: ['bi-modeling', 'adv-sql'],
-    difficulty: 'Intermediate',
-    estimatedHours: 12,
-    language: 'English',
-    isFree: true,
-    rating: 4.8,
-    ratingSource: 'Google Cloud Skills Boost',
-    description: 'Star schemas, slowly changing dimensions, BigQuery query optimization, and metric definitions.'
-  },
-
-  // 19 to 26: Cloud & DevOps
-  {
-    title: 'Docker for Beginners to Production Workflows',
-    provider: 'freeCodeCamp',
-    destinationUrl: 'https://www.freecodecamp.org/news/the-docker-handbook/',
-    skillsCovered: ['docker-k8s'],
-    difficulty: 'Beginner',
-    estimatedHours: 10,
-    language: 'English',
-    isFree: true,
-    rating: 4.9,
-    ratingSource: 'freeCodeCamp Handbook',
-    description: 'Containers, Dockerfiles, multi-stage builds, volumes, Docker Compose networking, and container image hardening.'
+    "title": "Scientific Computing with Python",
+    "provider": "freeCodeCamp",
+    "destinationUrl": "https://www.freecodecamp.org/learn/scientific-computing-with-python/",
+    "skillsCovered": [
+      "python"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 35,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "freeCodeCamp Curriculum",
+    "description": "Master Python core algorithms, data structures, strings, files, tuples, and object-oriented paradigms."
   },
   {
-    title: 'Kubernetes Fundamentals and Cluster Architecture',
-    provider: 'Google Cloud Skills Boost',
-    destinationUrl: 'https://www.cloudskillsboost.google/course_templates/2',
-    skillsCovered: ['k8s-orch', 'docker-k8s'],
-    difficulty: 'Intermediate',
-    estimatedHours: 16,
-    language: 'English',
-    isFree: true,
-    rating: 4.8,
-    ratingSource: 'Google Cloud Training',
-    description: 'Deploying pods, services, ingress, horizontal pod autoscaling, config maps, and rolling zero-downtime updates.'
+    "title": "Data Analysis with Python",
+    "provider": "freeCodeCamp",
+    "destinationUrl": "https://www.freecodecamp.org/learn/data-analysis-with-python/",
+    "skillsCovered": [
+      "eda-pandas",
+      "data-vis",
+      "product-analytics"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 30,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "freeCodeCamp Curriculum",
+    "description": "Clean, transform, and analyze datasets with NumPy, Pandas, Matplotlib, and Seaborn for business insights."
   },
   {
-    title: 'AWS Cloud Practitioner & Architecting on AWS',
-    provider: 'AWS Skill Builder',
-    destinationUrl: 'https://explore.skillbuilder.aws/learn/course/external/view/elearning/134/aws-cloud-practitioner-essentials',
-    skillsCovered: ['aws-cloud'],
-    difficulty: 'Beginner',
-    estimatedHours: 14,
-    language: 'English',
-    isFree: true,
-    rating: 4.8,
-    ratingSource: 'AWS Skill Builder',
-    description: 'Core AWS cloud services: EC2, S3, RDS, DynamoDB, VPC, IAM, serverless Lambda, and cost optimization.'
+    "title": "Machine Learning with Python",
+    "provider": "freeCodeCamp",
+    "destinationUrl": "https://www.freecodecamp.org/learn/machine-learning-with-python/",
+    "skillsCovered": [
+      "ml-foundations",
+      "pytorch-tf"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 45,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "freeCodeCamp Curriculum",
+    "description": "Learn machine learning algorithms, classification, regression, neural networks, and computer vision with TensorFlow."
   },
   {
-    title: 'Automated CI/CD with GitHub Actions',
-    provider: 'GitHub Skills',
-    destinationUrl: 'https://skills.github.com/',
-    skillsCovered: ['cicd-github'],
-    difficulty: 'Intermediate',
-    estimatedHours: 8,
-    language: 'English',
-    isFree: true,
-    rating: 4.9,
-    ratingSource: 'GitHub Skills Platform',
-    description: 'Writing workflow YAMLs, matrix test pipelines, automated artifact generation, secret management, and CD deployments.'
-  },
-
-  // 27 to 36: AI & Machine Learning
-  {
-    title: 'Machine Learning Specialization by Andrew Ng',
-    provider: 'DeepLearning.AI / Coursera',
-    destinationUrl: 'https://www.deeplearning.ai/courses/machine-learning-specialization/',
-    skillsCovered: ['ml-foundations', 'python'],
-    difficulty: 'Beginner',
-    estimatedHours: 35,
-    language: 'English',
-    isFree: true,
-    rating: 4.9,
-    ratingSource: 'Coursera (Over 500k students)',
-    description: 'Linear regression, logistic regression, neural networks, decision trees, bias-variance tradeoff, and recommender systems.'
+    "title": "Information Security Certification Track",
+    "provider": "freeCodeCamp",
+    "destinationUrl": "https://www.freecodecamp.org/learn/information-security/",
+    "skillsCovered": [
+      "appsec-owasp",
+      "auth-iam",
+      "netsec-threat"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 40,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "freeCodeCamp Curriculum",
+    "description": "Web application security with HelmetJS, penetration testing, defensive coding, hashing, and cryptography."
   },
   {
-    title: 'Generative AI for Everyone & Prompt Engineering',
-    provider: 'DeepLearning.AI',
-    destinationUrl: 'https://www.deeplearning.ai/courses/generative-ai-for-everyone/',
-    skillsCovered: ['llm-genai'],
-    difficulty: 'Beginner',
-    estimatedHours: 8,
-    language: 'English',
-    isFree: true,
-    rating: 4.9,
-    ratingSource: 'DeepLearning.AI Reviews',
-    description: 'How LLMs work, prompt engineering techniques, capabilities, real-world constraints, and ethical AI deployment.'
+    "title": "TypeScript in 50 Lessons & Production Practices",
+    "provider": "freeCodeCamp",
+    "destinationUrl": "https://www.freecodecamp.org/news/learn-typescript-beginners-guide/",
+    "skillsCovered": [
+      "ts-js"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 12,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "freeCodeCamp Community",
+    "description": "Deep dive into TypeScript utility types, generics, interfaces, strict compiler options, and code patterns."
   },
   {
-    title: 'Building RAG Systems with Vector Databases',
-    provider: 'Google Cloud Skills Boost',
-    destinationUrl: 'https://www.cloudskillsboost.google/course_templates/536',
-    skillsCovered: ['rag-vector', 'llm-genai'],
-    difficulty: 'Intermediate',
-    estimatedHours: 14,
-    language: 'English',
-    isFree: true,
-    rating: 4.8,
-    ratingSource: 'Google Cloud Skills Boost',
-    description: 'Chunking strategies, text embeddings, pgvector / vector stores, cosine similarity, and contextual augmentation.'
+    "title": "The Docker Handbook for Beginners to Production",
+    "provider": "freeCodeCamp",
+    "destinationUrl": "https://www.freecodecamp.org/news/the-docker-handbook/",
+    "skillsCovered": [
+      "docker-k8s"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 12,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.9,
+    "ratingSource": "freeCodeCamp Community",
+    "description": "Comprehensive guide to containerization, Dockerfiles, multi-stage builds, volumes, Compose, and security."
   },
   {
-    title: 'Deep Learning with PyTorch: Zero to GANs',
-    provider: 'freeCodeCamp',
-    destinationUrl: 'https://www.freecodecamp.org/news/learn-pytorch-for-deep-learning/',
-    skillsCovered: ['pytorch-tf', 'ml-foundations'],
-    difficulty: 'Intermediate',
-    estimatedHours: 26,
-    language: 'English',
-    isFree: true,
-    rating: 4.8,
-    ratingSource: 'freeCodeCamp PyTorch Handbook',
-    description: 'Tensors, gradients, convolutional neural networks (CNNs), recurrent nets, transformers, and model inference.'
-  },
-
-  // 37 to 43: Cybersecurity
-  {
-    title: 'OWASP Top 10 Web Application Security Fundamentals',
-    provider: 'freeCodeCamp',
-    destinationUrl: 'https://www.freecodecamp.org/news/web-application-security-fundamentals/',
-    skillsCovered: ['appsec-owasp'],
-    difficulty: 'Intermediate',
-    estimatedHours: 10,
-    language: 'English',
-    isFree: true,
-    rating: 4.8,
-    ratingSource: 'OWASP Foundation Guides',
-    description: 'Deep dive into SQLi, Cross-Site Scripting (XSS), CSRF, IDOR, sensitive data exposure, and security headers.'
+    "title": "Git and GitHub Crash Course for Developers",
+    "provider": "freeCodeCamp",
+    "destinationUrl": "https://www.freecodecamp.org/news/git-and-github-crash-course/",
+    "skillsCovered": [
+      "cicd-github"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 8,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.9,
+    "ratingSource": "freeCodeCamp Community",
+    "description": "Version control mastery: branching, merging, rebasing, pull requests, workflows, and collaboration."
   },
   {
-    title: 'Identity & Access Management (OAuth 2.0 & JWT Security)',
-    provider: 'Microsoft Learn',
-    destinationUrl: 'https://learn.microsoft.com/en-us/training/modules/implement-secure-identities/',
-    skillsCovered: ['auth-iam', 'appsec-owasp'],
-    difficulty: 'Intermediate',
-    estimatedHours: 10,
-    language: 'English',
-    isFree: true,
-    rating: 4.7,
-    ratingSource: 'Microsoft Learn',
-    description: 'PKCE authorization flow, access/refresh token rotation, RBAC, cryptographically signed claims, and session hygiene.'
+    "title": "SQL and Relational Databases Full Course",
+    "provider": "freeCodeCamp",
+    "destinationUrl": "https://www.freecodecamp.org/news/sql-and-databases-full-course/",
+    "skillsCovered": [
+      "sql-db",
+      "adv-sql"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 15,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "freeCodeCamp Community",
+    "description": "Complete SQL course covering schema design, CRUD, joins, subqueries, group by, indexing, and ACID principles."
   },
   {
-    title: 'Network Defense, TLS and API Hardening',
-    provider: 'NPTEL',
-    destinationUrl: 'https://nptel.ac.in/courses/106105031',
-    skillsCovered: ['netsec-threat'],
-    difficulty: 'Intermediate',
-    estimatedHours: 20,
-    language: 'Bilingual',
-    isFree: true,
-    rating: 4.6,
-    ratingSource: 'NPTEL Security Track',
-    description: 'Cryptographic handshakes, TLS 1.3, rate limiting algorithms (token bucket, leaky bucket), and DDoS mitigation.'
-  },
-
-  // 44 to 50: Leadership, Communication & Product
-  {
-    title: 'Writing Technical Documentation & Architectural RFCs',
-    provider: 'Google Open Source Peer Track',
-    destinationUrl: 'https://developers.google.com/tech-writing',
-    skillsCovered: ['tech-writing'],
-    difficulty: 'Beginner',
-    estimatedHours: 8,
-    language: 'English',
-    isFree: true,
-    rating: 4.9,
-    ratingSource: 'Google Tech Writing Course',
-    description: 'Techniques for clear technical communication, writing design documents, structuring READMEs, and API docs.'
+    "title": "How to Write Clear Technical Documentation and READMEs",
+    "provider": "freeCodeCamp",
+    "destinationUrl": "https://www.freecodecamp.org/news/how-to-write-a-good-readme-file/",
+    "skillsCovered": [
+      "tech-writing"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 6,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "freeCodeCamp Community",
+    "description": "Practical guide to structuring architecture docs, open-source READMEs, contribution guides, and API specs."
   },
   {
-    title: 'Product Discovery, PRD Craft & User Interviews',
-    provider: 'Product School & Open Guides',
-    destinationUrl: 'https://productschool.com/blog/product-management-2/product-discovery',
-    skillsCovered: ['prod-discovery', 'user-research'],
-    difficulty: 'Intermediate',
-    estimatedHours: 14,
-    language: 'English',
-    isFree: true,
-    rating: 4.7,
-    ratingSource: 'Product School Guides',
-    description: 'Synthesizing user pain points, writing unambiguous Product Requirements Documents, and prioritization frameworks (RICE).'
+    "title": "Microsoft Azure Fundamentals (AZ-900)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/az-900t00",
+    "skillsCovered": [
+      "aws-cloud"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 16,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Microsoft Learn",
+    "description": "Foundational cloud concepts: compute, storage, networking, high availability, disaster recovery, and cost management."
   },
   {
-    title: 'Data-Informed Product Analytics and Metrics Frameworks',
-    provider: 'Amplitude Open Academy',
-    destinationUrl: 'https://amplitude.com/product-analytics-playbook',
-    skillsCovered: ['product-analytics', 'bi-modeling'],
-    difficulty: 'Intermediate',
-    estimatedHours: 12,
-    language: 'English',
-    isFree: true,
-    rating: 4.8,
-    ratingSource: 'Amplitude Academy',
-    description: 'Master North Star metric trees, activation funnels, retention curves, cohort segmentation, and feature adoption.'
+    "title": "Microsoft Azure Data Fundamentals (DP-900)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/dp-900t00",
+    "skillsCovered": [
+      "sql-db",
+      "adv-sql",
+      "bi-modeling"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 14,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.7,
+    "ratingSource": "Microsoft Learn",
+    "description": "Core data concepts: relational databases, non-relational storage, analytical data warehousing, and Power BI visualization."
   },
   {
-    title: 'Agile Team Dynamics and Engineering Mentorship',
-    provider: 'Atlassian Agile Coach',
-    destinationUrl: 'https://www.atlassian.com/agile',
-    skillsCovered: ['agile-teamwork', 'stakeholder-mgt'],
-    difficulty: 'All Levels',
-    estimatedHours: 8,
-    language: 'English',
-    isFree: true,
-    rating: 4.8,
-    ratingSource: 'Atlassian Guides',
-    description: 'Scrum vs Kanban, effective sprint retrospectives, psychological safety, and fostering collaborative engineering culture.'
+    "title": "Microsoft Azure AI Fundamentals (AI-900)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/ai-900t00",
+    "skillsCovered": [
+      "ml-foundations",
+      "llm-genai"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 12,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Microsoft Learn",
+    "description": "Explore artificial intelligence workloads, computer vision, natural language processing, and conversational AI."
+  },
+  {
+    "title": "Security, Compliance, and Identity Fundamentals (SC-900)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/sc-900t00",
+    "skillsCovered": [
+      "auth-iam",
+      "netsec-threat"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 12,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Microsoft Learn",
+    "description": "Understand Zero Trust principles, identity management, access lifecycle, threat protection, and cloud compliance."
+  },
+  {
+    "title": "Microsoft Power Platform Fundamentals (PL-900)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/pl-900t00",
+    "skillsCovered": [
+      "bi-modeling",
+      "prod-discovery"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 12,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.7,
+    "ratingSource": "Microsoft Learn",
+    "description": "Learn business application modernization, Dataverse entities, Power Apps, automated flows, and Power BI dashboards."
+  },
+  {
+    "title": "Microsoft Azure Administrator (AZ-104)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/az-104t00",
+    "skillsCovered": [
+      "aws-cloud",
+      "docker-k8s"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 24,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Microsoft Learn",
+    "description": "Implement, manage, and monitor virtual networks, storage accounts, compute VMs, container instances, and governance."
+  },
+  {
+    "title": "Developing Solutions for Microsoft Azure (AZ-204)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/az-204t00",
+    "skillsCovered": [
+      "nodejs",
+      "ts-js",
+      "docker-k8s"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 28,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Microsoft Learn",
+    "description": "Create serverless compute functions, containerized web apps, event-driven integrations, and caching tiers."
+  },
+  {
+    "title": "Data Engineering on Microsoft Azure (DP-203)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/dp-203t00",
+    "skillsCovered": [
+      "adv-sql",
+      "eda-pandas",
+      "bi-modeling"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 30,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Microsoft Learn",
+    "description": "Integrate, transform, and consolidate data from structured and unstructured systems using Spark, Synapse, and SQL."
+  },
+  {
+    "title": "Designing and Implementing an Azure AI Solution (AI-102)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/ai-102t00",
+    "skillsCovered": [
+      "llm-genai",
+      "rag-vector"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 24,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Microsoft Learn",
+    "description": "Build enterprise AI applications utilizing Azure Cognitive Services, speech, computer vision, and language agents."
+  },
+  {
+    "title": "Designing and Implementing DevOps Solutions (AZ-400)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/az-400t00",
+    "skillsCovered": [
+      "cicd-github",
+      "docker-k8s",
+      "agile-teamwork"
+    ],
+    "difficulty": "Advanced",
+    "estimatedHours": 26,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.9,
+    "ratingSource": "Microsoft Learn",
+    "description": "Design CI/CD release pipelines, code quality gates, Git branching strategies, infrastructure as code, and compliance."
+  },
+  {
+    "title": "Microsoft Power BI Data Analyst (PL-300)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/pl-300t00",
+    "skillsCovered": [
+      "data-vis",
+      "bi-modeling",
+      "product-analytics"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 22,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.9,
+    "ratingSource": "Microsoft Learn",
+    "description": "Clean data, build semantic data models, author complex DAX formulas, and publish interactive executive reports."
+  },
+  {
+    "title": "Microsoft Security Operations Analyst (SC-200)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/sc-200t00",
+    "skillsCovered": [
+      "netsec-threat",
+      "appsec-owasp"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 20,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Microsoft Learn",
+    "description": "Mitigate active cyber threats using Microsoft Defender, investigate attacks, configure SIEM/SOAR alerts and mitigation."
+  },
+  {
+    "title": "Designing Azure Infrastructure Solutions (AZ-305)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/az-305t00",
+    "skillsCovered": [
+      "sys-design",
+      "aws-cloud",
+      "k8s-orch"
+    ],
+    "difficulty": "Advanced",
+    "estimatedHours": 32,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.9,
+    "ratingSource": "Microsoft Learn",
+    "description": "Architect resilient enterprise solutions, business continuity, identity, governance, and hybrid networking topologies."
+  },
+  {
+    "title": "Administering Microsoft Azure SQL Databases (DP-300)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/dp-300t00",
+    "skillsCovered": [
+      "sql-db",
+      "adv-sql"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 22,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.7,
+    "ratingSource": "Microsoft Learn",
+    "description": "Implement database high availability, disaster recovery, query performance tuning, indexing, and T-SQL optimization."
+  },
+  {
+    "title": "Develop Generative AI Solutions with Azure OpenAI (AI-050)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/ai-050t00",
+    "skillsCovered": [
+      "llm-genai",
+      "rag-vector"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 16,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.9,
+    "ratingSource": "Microsoft Learn",
+    "description": "Configure Azure OpenAI models, engineer effective prompts, implement RAG with embeddings, and enforce safety guardrails."
+  },
+  {
+    "title": "Microsoft Identity and Access Administrator (SC-300)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/sc-300t00",
+    "skillsCovered": [
+      "auth-iam",
+      "appsec-owasp"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 18,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Microsoft Learn",
+    "description": "Implement Microsoft Entra ID, OAuth/OIDC tokens, Conditional Access, multi-factor auth, and privileged access management."
+  },
+  {
+    "title": "Microsoft Azure Security Technologies (AZ-500)",
+    "provider": "Microsoft Learn",
+    "destinationUrl": "https://learn.microsoft.com/en-us/training/courses/az-500t00",
+    "skillsCovered": [
+      "netsec-threat",
+      "auth-iam",
+      "appsec-owasp"
+    ],
+    "difficulty": "Advanced",
+    "estimatedHours": 24,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Microsoft Learn",
+    "description": "Implement security controls and threat protection across networking, compute, storage, key vaults, and databases."
+  },
+  {
+    "title": "Programming in Python (IIT Madras)",
+    "provider": "NPTEL",
+    "destinationUrl": "https://nptel.ac.in/courses/106106145",
+    "skillsCovered": [
+      "python"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 30,
+    "language": "Bilingual",
+    "isFree": true,
+    "rating": 4.7,
+    "ratingSource": "NPTEL Swayam Portal",
+    "description": "In-depth Python programming taught by IIT Madras faculty covering idioms, OOP, modules, and testing."
+  },
+  {
+    "title": "Data Science for Engineers (IIT Kharagpur)",
+    "provider": "NPTEL",
+    "destinationUrl": "https://nptel.ac.in/courses/106105151",
+    "skillsCovered": [
+      "eda-pandas",
+      "data-vis"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 28,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.6,
+    "ratingSource": "NPTEL Swayam Portal",
+    "description": "Linear algebra, optimization, statistics, R/Python programming, and hypothesis testing for data engineering."
+  },
+  {
+    "title": "Cryptography and Network Security (IIT Kharagpur)",
+    "provider": "NPTEL",
+    "destinationUrl": "https://nptel.ac.in/courses/106105031",
+    "skillsCovered": [
+      "netsec-threat",
+      "appsec-owasp"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 25,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.6,
+    "ratingSource": "NPTEL Swayam Portal",
+    "description": "Classical encryption, AES, RSA, digital signatures, message authentication codes, TLS protocols, and firewalls."
+  },
+  {
+    "title": "Database Management System (IIT Madras)",
+    "provider": "NPTEL",
+    "destinationUrl": "https://nptel.ac.in/courses/106106166",
+    "skillsCovered": [
+      "sql-db",
+      "adv-sql"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 32,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.7,
+    "ratingSource": "NPTEL Swayam Portal",
+    "description": "Relational algebra, SQL, normal forms, indexing (B+ trees), query processing, concurrency control, and transactions."
+  },
+  {
+    "title": "Deep Learning (IIT Madras)",
+    "provider": "NPTEL",
+    "destinationUrl": "https://nptel.ac.in/courses/106106198",
+    "skillsCovered": [
+      "pytorch-tf",
+      "ml-foundations"
+    ],
+    "difficulty": "Advanced",
+    "estimatedHours": 35,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.7,
+    "ratingSource": "NPTEL Swayam Portal",
+    "description": "Feedforward neural networks, backpropagation, CNNs, RNNs, attention mechanisms, and deep generative models."
+  },
+  {
+    "title": "Introduction to Machine Learning (IIT Madras)",
+    "provider": "NPTEL",
+    "destinationUrl": "https://nptel.ac.in/courses/106106139",
+    "skillsCovered": [
+      "ml-foundations",
+      "python"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 30,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.7,
+    "ratingSource": "NPTEL Swayam Portal",
+    "description": "Supervised and unsupervised learning, decision trees, support vector machines, clustering, and ensemble methods."
+  },
+  {
+    "title": "Software Engineering (IIT Kharagpur)",
+    "provider": "NPTEL",
+    "destinationUrl": "https://nptel.ac.in/courses/106105175",
+    "skillsCovered": [
+      "agile-teamwork",
+      "sys-design"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 28,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.6,
+    "ratingSource": "NPTEL Swayam Portal",
+    "description": "Software development life cycle, Agile methodologies, UML modeling, modular design, software testing, and metrics."
+  },
+  {
+    "title": "Cloud Computing (IIT Kharagpur)",
+    "provider": "NPTEL",
+    "destinationUrl": "https://nptel.ac.in/courses/106105216",
+    "skillsCovered": [
+      "aws-cloud",
+      "docker-k8s"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 28,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.6,
+    "ratingSource": "NPTEL Swayam Portal",
+    "description": "Virtualization, hypervisors, cloud storage, service models (IaaS/PaaS/SaaS), distributed resource management, and SLA."
+  },
+  {
+    "title": "Computer Networks and Internet Protocol (IIT Kanpur)",
+    "provider": "NPTEL",
+    "destinationUrl": "https://nptel.ac.in/courses/106104019",
+    "skillsCovered": [
+      "netsec-threat"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 30,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.7,
+    "ratingSource": "NPTEL Swayam Portal",
+    "description": "TCP/IP architecture, socket programming, routing algorithms, congestion control, transport protocols, and DNS."
+  },
+  {
+    "title": "Technical Communication for Engineers (IIT Kanpur)",
+    "provider": "NPTEL",
+    "destinationUrl": "https://nptel.ac.in/courses/109104031",
+    "skillsCovered": [
+      "tech-writing",
+      "stakeholder-mgt"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 20,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.6,
+    "ratingSource": "NPTEL Swayam Portal",
+    "description": "Formal technical writing, engineering proposal creation, presentation skills, executive briefs, and documentation."
+  },
+  {
+    "title": "Project Management for Engineers (IIT Kharagpur)",
+    "provider": "NPTEL",
+    "destinationUrl": "https://nptel.ac.in/courses/110105089",
+    "skillsCovered": [
+      "prod-discovery",
+      "agile-teamwork",
+      "user-research"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 24,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.7,
+    "ratingSource": "NPTEL Swayam Portal",
+    "description": "Project appraisal, risk mitigation, critical path method (CPM/PERT), stakeholder communication, and Agile execution."
+  },
+  {
+    "title": "Getting Started with Google Cloud",
+    "provider": "Google Cloud Skills Boost",
+    "destinationUrl": "https://www.cloudskillsboost.google/paths/8",
+    "skillsCovered": [
+      "aws-cloud"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 10,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Google Cloud Training",
+    "description": "Explore the fundamental computing, storage, networking, database, and management services of Google Cloud."
+  },
+  {
+    "title": "Cloud Digital Leader Certification Track",
+    "provider": "Google Cloud Skills Boost",
+    "destinationUrl": "https://www.cloudskillsboost.google/paths/9",
+    "skillsCovered": [
+      "aws-cloud",
+      "prod-discovery"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 12,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Google Cloud Training",
+    "description": "Understand cloud capabilities, digital transformation, cloud financial management, and business impact."
+  },
+  {
+    "title": "Associate Cloud Engineer Learning Path",
+    "provider": "Google Cloud Skills Boost",
+    "destinationUrl": "https://www.cloudskillsboost.google/paths/11",
+    "skillsCovered": [
+      "aws-cloud",
+      "docker-k8s"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 25,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Google Cloud Training",
+    "description": "Deploy applications, monitor operations, configure access control, and manage cloud enterprise solutions."
+  },
+  {
+    "title": "Professional Cloud Architect Learning Path",
+    "provider": "Google Cloud Skills Boost",
+    "destinationUrl": "https://www.cloudskillsboost.google/paths/12",
+    "skillsCovered": [
+      "sys-design",
+      "aws-cloud"
+    ],
+    "difficulty": "Advanced",
+    "estimatedHours": 35,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.9,
+    "ratingSource": "Google Cloud Training",
+    "description": "Design robust, secure, scalable, and dynamic solutions to drive business objectives using cloud architecture patterns."
+  },
+  {
+    "title": "Professional Network Engineer Certification Track",
+    "provider": "Google Cloud Skills Boost",
+    "destinationUrl": "https://www.cloudskillsboost.google/paths/14",
+    "skillsCovered": [
+      "netsec-threat"
+    ],
+    "difficulty": "Advanced",
+    "estimatedHours": 25,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.7,
+    "ratingSource": "Google Cloud Training",
+    "description": "Design, implement, and manage network architectures, VPCs, hybrid interconnects, load balancing, and network security."
+  },
+  {
+    "title": "Professional Security Engineer Learning Path",
+    "provider": "Google Cloud Skills Boost",
+    "destinationUrl": "https://www.cloudskillsboost.google/paths/15",
+    "skillsCovered": [
+      "netsec-threat",
+      "auth-iam",
+      "appsec-owasp"
+    ],
+    "difficulty": "Advanced",
+    "estimatedHours": 30,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Google Cloud Training",
+    "description": "Implement defense-in-depth security, IAM zero trust, data protection, security monitoring, and regulatory compliance."
+  },
+  {
+    "title": "Professional Data Engineer Learning Path",
+    "provider": "Google Cloud Skills Boost",
+    "destinationUrl": "https://www.cloudskillsboost.google/paths/16",
+    "skillsCovered": [
+      "adv-sql",
+      "eda-pandas",
+      "bi-modeling"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 35,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.9,
+    "ratingSource": "Google Cloud Training",
+    "description": "Build data-driven solutions by collecting, transforming, and publishing data through BigQuery, Dataflow, and Pub/Sub."
+  },
+  {
+    "title": "Professional Machine Learning Engineer Learning Path",
+    "provider": "Google Cloud Skills Boost",
+    "destinationUrl": "https://www.cloudskillsboost.google/paths/17",
+    "skillsCovered": [
+      "ml-foundations",
+      "pytorch-tf",
+      "python"
+    ],
+    "difficulty": "Advanced",
+    "estimatedHours": 35,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Google Cloud Training",
+    "description": "Design, build, and deploy machine learning models on Vertex AI with pipeline automation and model monitoring."
+  },
+  {
+    "title": "Data Analyst Learning Path",
+    "provider": "Google Cloud Skills Boost",
+    "destinationUrl": "https://www.cloudskillsboost.google/paths/18",
+    "skillsCovered": [
+      "eda-pandas",
+      "bi-modeling",
+      "product-analytics"
+    ],
+    "difficulty": "Beginner",
+    "estimatedHours": 20,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Google Cloud Training",
+    "description": "Transform data into meaningful insights using BigQuery SQL, Looker Studio dashboards, and statistical models."
+  },
+  {
+    "title": "Professional Cloud Developer Certification Track",
+    "provider": "Google Cloud Skills Boost",
+    "destinationUrl": "https://www.cloudskillsboost.google/paths/19",
+    "skillsCovered": [
+      "nodejs",
+      "ts-js",
+      "docker-k8s"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 28,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Google Cloud Training",
+    "description": "Build scalable and secure cloud-native applications using modern developer tooling, Cloud Run, and managed services."
+  },
+  {
+    "title": "Professional Cloud DevOps Engineer Learning Path",
+    "provider": "Google Cloud Skills Boost",
+    "destinationUrl": "https://www.cloudskillsboost.google/paths/20",
+    "skillsCovered": [
+      "cicd-github",
+      "k8s-orch",
+      "docker-k8s"
+    ],
+    "difficulty": "Advanced",
+    "estimatedHours": 30,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Google Cloud Training",
+    "description": "Implement SRE practices, CI/CD automated deployments, system monitoring with Cloud Logging, and incident response."
+  },
+  {
+    "title": "Kubernetes Fundamentals and Cluster Architecture",
+    "provider": "Google Cloud Skills Boost",
+    "destinationUrl": "https://www.cloudskillsboost.google/course_templates/2",
+    "skillsCovered": [
+      "k8s-orch",
+      "docker-k8s"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 16,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Google Cloud Training",
+    "description": "Deploying pods, services, ingress, horizontal pod autoscaling, config maps, and rolling zero-downtime updates."
+  },
+  {
+    "title": "Building RAG Systems with Vector Databases",
+    "provider": "Google Cloud Skills Boost",
+    "destinationUrl": "https://www.cloudskillsboost.google/course_templates/536",
+    "skillsCovered": [
+      "rag-vector",
+      "llm-genai"
+    ],
+    "difficulty": "Intermediate",
+    "estimatedHours": 14,
+    "language": "English",
+    "isFree": true,
+    "rating": 4.8,
+    "ratingSource": "Google Cloud Skills Boost",
+    "description": "Chunking strategies, text embeddings, vector search, semantic retrieval, and contextual LLM augmentation."
   }
 ];
 

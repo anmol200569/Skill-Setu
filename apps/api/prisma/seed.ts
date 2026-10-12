@@ -94,8 +94,25 @@ export async function seedDatabase() {
 
   // 3. Seed Curated Courses & Course-Skill relations
   for (const courseData of curatedCoursesData) {
+    const courseId = courseData.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '')
+      .slice(0, 50);
+
+    const existingCourse = await prisma.course.findFirst({
+      where: {
+        OR: [
+          { id: courseId },
+          { destinationUrl: courseData.destinationUrl }
+        ]
+      }
+    });
+
+    const targetId = existingCourse ? existingCourse.id : courseId;
+
     const course = await prisma.course.upsert({
-      where: { id: courseData.title.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 36) },
+      where: { id: targetId },
       update: {
         title: courseData.title,
         provider: courseData.provider,
@@ -110,7 +127,7 @@ export async function seedDatabase() {
         description: courseData.description
       },
       create: {
-        id: courseData.title.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 36),
+        id: targetId,
         title: courseData.title,
         provider: courseData.provider,
         destinationUrl: courseData.destinationUrl,
