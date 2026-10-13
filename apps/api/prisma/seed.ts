@@ -1,7 +1,15 @@
 import { PrismaClient } from '@prisma/client';
 import { domainsData, rolesData, curatedCoursesData, diagnosticQuestionsData, generateCourseId } from './seedData';
 
-const prisma = new PrismaClient();
+const connectionUrl = process.env.DIRECT_URL || process.env.DATABASE_URL;
+const prisma = new PrismaClient({
+  datasources: connectionUrl ? { db: { url: connectionUrl } } : undefined
+});
+
+export const SEED_TRANSACTION_OPTIONS = {
+  maxWait: 15000,
+  timeout: 120000
+};
 
 export async function seedDatabase() {
   console.log('🌱 Starting Skill Setu database seeding...');
@@ -150,12 +158,15 @@ export async function seedDatabase() {
   console.log(`✅ Seeded ${curatedCoursesData.length} curated courses.`);
 
   // 3b. Transactional Remapping of ALL old-id course rows to matching new curated IDs
-  await prisma.$transaction(async (tx) => {
-    const result = await remapAndCleanupOldCourses(tx as any, curatedCoursesData);
-    console.log(
-      `🧹 Transactionally remapped ${result.remappedCount} old course rows (${result.remappedEnrollments} enrollments, ${result.remappedPathItems} path items; dropped ${result.droppedEnrollments} enrollments, ${result.droppedPathItems} path items). Verified final course count: ${result.finalCount} / ${curatedCoursesData.length}.`
-    );
-  });
+  await prisma.$transaction(
+    async (tx) => {
+      const result = await remapAndCleanupOldCourses(tx as any, curatedCoursesData);
+      console.log(
+        `🧹 Transactionally remapped ${result.remappedCount} old course rows (${result.remappedEnrollments} enrollments, ${result.remappedPathItems} path items; dropped ${result.droppedEnrollments} enrollments, ${result.droppedPathItems} path items). Verified final course count: ${result.finalCount} / ${curatedCoursesData.length}.`
+      );
+    },
+    SEED_TRANSACTION_OPTIONS
+  );
 
   // 4. Seed Diagnostic Assessment Questions (Idempotent)
   for (const q of diagnosticQuestionsData) {
@@ -265,21 +276,28 @@ export async function seedDatabase() {
 export interface CourseRemapClient {
   course: {
     findMany: (args?: any) => Promise<any[]>;
-    delete: (args: any) => Promise<any>;
+    delete?: (args: any) => Promise<any>;
+    deleteMany?: (args: any) => Promise<any>;
     count: () => Promise<number>;
   };
   enrollment: {
     findMany: (args?: any) => Promise<any[]>;
-    findUnique: (args: any) => Promise<any>;
-    delete: (args: any) => Promise<any>;
-    update: (args: any) => Promise<any>;
+    findUnique?: (args: any) => Promise<any>;
+    delete?: (args: any) => Promise<any>;
+    deleteMany?: (args: any) => Promise<any>;
+    update?: (args: any) => Promise<any>;
+    updateMany?: (args: any) => Promise<any>;
   };
   learningPathItem: {
     findMany: (args?: any) => Promise<any[]>;
-    findFirst: (args: any) => Promise<any>;
-    delete: (args: any) => Promise<any>;
-    update: (args: any) => Promise<any>;
+    findFirst?: (args: any) => Promise<any>;
+    delete?: (args: any) => Promise<any>;
+    deleteMany?: (args: any) => Promise<any>;
+    update?: (args: any) => Promise<any>;
     updateMany?: (args: any) => Promise<any>;
+  };
+  learningPath?: {
+    findMany: (args?: any) => Promise<any[]>;
   };
   courseSkill: {
     findMany?: (args?: any) => Promise<any[]>;
@@ -333,9 +351,13 @@ export async function remapAndCleanupOldCourses(
   }
 
   const oldCourses = allDbCourses.filter((c) => !validCourseIds.has(c.id));
-  const mappedOldCourseMap = new Map<string, string>();
+  const oldCourseIds = oldCourses.map((c) => c.id);
 
+  const mappedOldCourseMap = new Map<string, string>();
   for (const old of oldCourses) {
+    if (KNOWN_NON_EQUIVALENT_DROPPED_IDS.has(old.id)) {
+      continue;
+    }
     const urlKey = (old.destinationUrl || '').trim().toLowerCase();
     let targetId = curatedMapByUrl.get(urlKey);
     if (!targetId) {
@@ -344,6 +366,8 @@ export async function remapAndCleanupOldCourses(
     }
     if (targetId && validCourseIds.has(targetId)) {
       mappedOldCourseMap.set(old.id, targetId);
+    } else {
+      throw new Error(`[Seed Migration Error] Course "${old.id}" ("${old.title}") has no matching curated course target.`);
     }
   }
 
@@ -376,6 +400,18 @@ export async function remapAndCleanupOldCourses(
     );
   }
 
+  if (oldCourseIds.length === 0) {
+    const finalCount = await tx.course.count();
+    return {
+      remappedCount: 0,
+      finalCount,
+      remappedEnrollments: 0,
+      remappedPathItems: 0,
+      droppedEnrollments: 0,
+      droppedPathItems: 0
+    };
+  }
+
   const STATUS_RANK: Record<string, number> = {
     completed: 3,
     in_progress: 2,
@@ -388,104 +424,283 @@ export async function remapAndCleanupOldCourses(
     return statusScore + progressScore;
   }
 
-  let remappedCount = 0;
-  let remappedEnrollments = 0;
-  let remappedPathItems = 0;
+  // --- Load all old relations in batched queries ---
+  let oldEnrollments: any[] = [];
+  try {
+    oldEnrollments = await tx.enrollment.findMany({
+      where: { courseId: { in: oldCourseIds } }
+    });
+  } catch (_) {
+    oldEnrollments = [];
+  }
+  oldEnrollments = oldEnrollments.filter((e: any) => oldCourseIds.includes(e.courseId));
+  if (oldEnrollments.length === 0 && oldCourseIds.length > 0) {
+    const allEnrs = await tx.enrollment.findMany();
+    oldEnrollments = allEnrs.filter((e: any) => oldCourseIds.includes(e.courseId));
+  }
+
+  let oldPathItems: any[] = [];
+  try {
+    oldPathItems = await tx.learningPathItem.findMany({
+      where: { courseId: { in: oldCourseIds } },
+      orderBy: { stepOrder: 'asc' }
+    });
+  } catch (_) {
+    oldPathItems = [];
+  }
+  oldPathItems = oldPathItems.filter((i: any) => oldCourseIds.includes(i.courseId));
+  if (oldPathItems.length === 0 && oldCourseIds.length > 0) {
+    const allItems = await tx.learningPathItem.findMany();
+    oldPathItems = allItems.filter((i: any) => oldCourseIds.includes(i.courseId));
+  }
+
+  // 1. Process non-equivalent dropped courses
   let droppedEnrollments = 0;
   let droppedPathItems = 0;
+  const droppedEnrollmentIds: string[] = [];
+  const droppedPathItemIds: string[] = [];
 
   for (const old of oldCourses) {
-    const isDropped = KNOWN_NON_EQUIVALENT_DROPPED_IDS.has(old.id);
-    const targetId = mappedOldCourseMap.get(old.id);
-
-    if (isDropped) {
-      // Drop relations for non-equivalent course
-      const enrollments = await tx.enrollment.findMany({ where: { courseId: old.id } });
-      for (const enr of enrollments) {
-        await tx.enrollment.delete({ where: { id: enr.id } });
-      }
-      droppedEnrollments += enrollments.length;
-
-      const lpItems = await tx.learningPathItem.findMany({ where: { courseId: old.id } });
-      for (const item of lpItems) {
-        await tx.learningPathItem.delete({ where: { id: item.id } });
-      }
-      droppedPathItems += lpItems.length;
-
+    if (KNOWN_NON_EQUIVALENT_DROPPED_IDS.has(old.id)) {
+      const enrs = oldEnrollments.filter((e: any) => e.courseId === old.id);
+      const items = oldPathItems.filter((p: any) => p.courseId === old.id);
       console.log(
-        `🗑️ Dropped non-equivalent relations for "${old.id}" ("${old.title}"): ${enrollments.length} enrollments, ${lpItems.length} path items.`
+        `🗑️ Dropped non-equivalent relations for "${old.id}" ("${old.title}"): ${enrs.length} enrollments, ${items.length} path items.`
       );
-
-      await tx.courseSkill.deleteMany({ where: { courseId: old.id } });
-      await tx.course.delete({ where: { id: old.id } });
-      remappedCount++;
-      continue;
+      enrs.forEach((e: any) => droppedEnrollmentIds.push(e.id));
+      items.forEach((p: any) => droppedPathItemIds.push(p.id));
+      droppedEnrollments += enrs.length;
+      droppedPathItems += items.length;
     }
-
-    if (!targetId) {
-      throw new Error(`[Seed Migration Error] Course "${old.id}" ("${old.title}") has no matching curated course target.`);
-    }
-
-    // Remap enrollments with higher progress priority
-    const enrollments = await tx.enrollment.findMany({ where: { courseId: old.id } });
-    for (const enr of enrollments) {
-      const existingTargetEnr = await tx.enrollment.findUnique({
-        where: { userId_courseId: { userId: enr.userId, courseId: targetId } }
-      });
-
-      if (existingTargetEnr) {
-        const oldPriority = getEnrollmentPriority(enr);
-        const existingPriority = getEnrollmentPriority(existingTargetEnr);
-
-        if (oldPriority > existingPriority) {
-          // Promote higher progress from old enrollment into target enrollment
-          await tx.enrollment.update({
-            where: { id: existingTargetEnr.id },
-            data: {
-              status: enr.status,
-              progressPercent: Math.max(existingTargetEnr.progressPercent || 0, enr.progressPercent || 0),
-              completedAt: enr.completedAt ?? existingTargetEnr.completedAt
-            }
-          });
-          await tx.enrollment.delete({ where: { id: enr.id } });
-        } else {
-          // Existing target enrollment already has equal or higher progress
-          await tx.enrollment.delete({ where: { id: enr.id } });
-        }
-      } else {
-        await tx.enrollment.update({ where: { id: enr.id }, data: { courseId: targetId } });
-        remappedEnrollments++;
-      }
-    }
-
-    // Remap learning path items (deduplicating within the same learningPath)
-    const lpItems = await tx.learningPathItem.findMany({ where: { courseId: old.id } });
-    for (const item of lpItems) {
-      const existingInPath = await tx.learningPathItem.findFirst({
-        where: {
-          learningPathId: item.learningPathId,
-          courseId: targetId,
-          id: { not: item.id }
-        }
-      });
-      if (existingInPath) {
-        await tx.learningPathItem.delete({ where: { id: item.id } });
-      } else {
-        await tx.learningPathItem.update({
-          where: { id: item.id },
-          data: { courseId: targetId }
-        });
-        remappedPathItems++;
-      }
-    }
-
-    // Delete course skills
-    await tx.courseSkill.deleteMany({ where: { courseId: old.id } });
-
-    // Delete obsolete course row
-    await tx.course.delete({ where: { id: old.id } });
-    remappedCount++;
   }
+
+  // 2. Process mapped enrollments
+  let remappedEnrollments = 0;
+  const duplicateEnrollmentIdsToDelete: string[] = [];
+  const enrollmentsToRemap: { id: string; targetId: string }[] = [];
+  const promotedTargetUpdates: { id: string; data: any }[] = [];
+
+  const mappedOldEnrollments = oldEnrollments.filter(
+    (e: any) => !KNOWN_NON_EQUIVALENT_DROPPED_IDS.has(e.courseId)
+  );
+
+  const targetCourseIds = Array.from(new Set(Array.from(mappedOldCourseMap.values())));
+  const userIds = Array.from(new Set(mappedOldEnrollments.map((e: any) => e.userId)));
+
+  let existingTargetEnrollments: any[] = [];
+  if (targetCourseIds.length > 0 && userIds.length > 0) {
+    try {
+      existingTargetEnrollments = await tx.enrollment.findMany({
+        where: {
+          userId: { in: userIds },
+          courseId: { in: targetCourseIds }
+        }
+      });
+    } catch (_) {
+      existingTargetEnrollments = [];
+    }
+    if (existingTargetEnrollments.length === 0) {
+      const allEnrs = await tx.enrollment.findMany();
+      existingTargetEnrollments = allEnrs.filter(
+        (e: any) => userIds.includes(e.userId) && targetCourseIds.includes(e.courseId)
+      );
+    }
+  }
+
+  const existingTargetEnrMap = new Map<string, any>();
+  for (const e of existingTargetEnrollments) {
+    existingTargetEnrMap.set(`${e.userId}:::${e.courseId}`, e);
+  }
+
+  for (const enr of mappedOldEnrollments) {
+    const targetId = mappedOldCourseMap.get(enr.courseId)!;
+    const key = `${enr.userId}:::${targetId}`;
+    const existingTargetEnr = existingTargetEnrMap.get(key);
+
+    if (existingTargetEnr) {
+      const oldPriority = getEnrollmentPriority(enr);
+      const existingPriority = getEnrollmentPriority(existingTargetEnr);
+
+      if (oldPriority > existingPriority) {
+        promotedTargetUpdates.push({
+          id: existingTargetEnr.id,
+          data: {
+            status: enr.status,
+            progressPercent: Math.max(existingTargetEnr.progressPercent || 0, enr.progressPercent || 0),
+            completedAt: enr.completedAt ?? existingTargetEnr.completedAt
+          }
+        });
+        existingTargetEnr.status = enr.status;
+        existingTargetEnr.progressPercent = Math.max(existingTargetEnr.progressPercent || 0, enr.progressPercent || 0);
+      }
+      duplicateEnrollmentIdsToDelete.push(enr.id);
+    } else {
+      existingTargetEnrMap.set(key, enr);
+      enrollmentsToRemap.push({ id: enr.id, targetId });
+      remappedEnrollments++;
+    }
+  }
+
+  // Execute enrollment deletions
+  const allEnrollmentIdsToDelete = [...droppedEnrollmentIds, ...duplicateEnrollmentIdsToDelete];
+  if (allEnrollmentIdsToDelete.length > 0) {
+    if (tx.enrollment.deleteMany) {
+      await tx.enrollment.deleteMany({ where: { id: { in: allEnrollmentIdsToDelete } } });
+    } else {
+      for (const id of allEnrollmentIdsToDelete) {
+        await tx.enrollment.delete!({ where: { id } });
+      }
+    }
+  }
+
+  // Execute promoted target updates
+  for (const promo of promotedTargetUpdates) {
+    await tx.enrollment.update!({ where: { id: promo.id }, data: promo.data });
+  }
+
+  // Execute enrollment remapping (batched by targetId)
+  const remapEnrByTarget = new Map<string, string[]>();
+  for (const item of enrollmentsToRemap) {
+    const list = remapEnrByTarget.get(item.targetId) || [];
+    list.push(item.id);
+    remapEnrByTarget.set(item.targetId, list);
+  }
+  for (const [targetId, ids] of remapEnrByTarget.entries()) {
+    if (tx.enrollment.updateMany) {
+      await tx.enrollment.updateMany({
+        where: { id: { in: ids } },
+        data: { courseId: targetId }
+      });
+    } else {
+      for (const id of ids) {
+        await tx.enrollment.update!({ where: { id }, data: { courseId: targetId } });
+      }
+    }
+  }
+
+  // 3. Process mapped learning path items
+  let remappedPathItems = 0;
+  const duplicatePathItemIdsToDelete: string[] = [];
+  const pathItemsToRemap: { id: string; targetId: string }[] = [];
+
+  const mappedOldPathItems = oldPathItems.filter(
+    (p: any) => !KNOWN_NON_EQUIVALENT_DROPPED_IDS.has(p.courseId)
+  );
+
+  const affectedLpIds = Array.from(new Set(mappedOldPathItems.map((p: any) => p.learningPathId)));
+
+  let existingCuratedLpItems: any[] = [];
+  if (affectedLpIds.length > 0) {
+    try {
+      existingCuratedLpItems = await tx.learningPathItem.findMany({
+        where: {
+          learningPathId: { in: affectedLpIds },
+          courseId: { in: Array.from(validCourseIds) }
+        }
+      });
+    } catch (_) {
+      existingCuratedLpItems = [];
+    }
+    if (existingCuratedLpItems.length === 0) {
+      const allItems = await tx.learningPathItem.findMany();
+      existingCuratedLpItems = allItems.filter(
+        (i: any) => affectedLpIds.includes(i.learningPathId) && validCourseIds.has(i.courseId)
+      );
+    }
+  }
+
+  const existingCoursesPerLp = new Set<string>();
+  for (const item of existingCuratedLpItems) {
+    existingCoursesPerLp.add(`${item.learningPathId}:::${item.courseId}`);
+  }
+
+  for (const item of mappedOldPathItems) {
+    const targetId = mappedOldCourseMap.get(item.courseId)!;
+    const key = `${item.learningPathId}:::${targetId}`;
+
+    if (existingCoursesPerLp.has(key)) {
+      duplicatePathItemIdsToDelete.push(item.id);
+    } else {
+      existingCoursesPerLp.add(key);
+      pathItemsToRemap.push({ id: item.id, targetId });
+      remappedPathItems++;
+    }
+  }
+
+  // Execute path item deletions
+  const allPathItemIdsToDelete = [...droppedPathItemIds, ...duplicatePathItemIdsToDelete];
+  if (allPathItemIdsToDelete.length > 0) {
+    if (tx.learningPathItem.deleteMany) {
+      await tx.learningPathItem.deleteMany({ where: { id: { in: allPathItemIdsToDelete } } });
+    } else {
+      for (const id of allPathItemIdsToDelete) {
+        await tx.learningPathItem.delete!({ where: { id } });
+      }
+    }
+  }
+
+  // Execute path item remapping (batched by targetId)
+  const remapPathByTarget = new Map<string, string[]>();
+  for (const item of pathItemsToRemap) {
+    const list = remapPathByTarget.get(item.targetId) || [];
+    list.push(item.id);
+    remapPathByTarget.set(item.targetId, list);
+  }
+  for (const [targetId, ids] of remapPathByTarget.entries()) {
+    if (tx.learningPathItem.updateMany) {
+      await tx.learningPathItem.updateMany({
+        where: { id: { in: ids } },
+        data: { courseId: targetId }
+      });
+    } else {
+      for (const id of ids) {
+        await tx.learningPathItem.update!({ where: { id }, data: { courseId: targetId } });
+      }
+    }
+  }
+
+  // 4. Renumber stepOrder to 1..n per LearningPath (keeping existing relative order)
+  const allRemainingPathItems = await tx.learningPathItem.findMany();
+  const itemsByLp = new Map<string, any[]>();
+  for (const item of allRemainingPathItems) {
+    const list = itemsByLp.get(item.learningPathId) || [];
+    list.push(item);
+    itemsByLp.set(item.learningPathId, list);
+  }
+  for (const [, items] of itemsByLp.entries()) {
+    items.sort((a, b) => (a.stepOrder ?? 0) - (b.stepOrder ?? 0));
+    let currentStep = 1;
+    for (const item of items) {
+      if (item.stepOrder !== currentStep) {
+        if (tx.learningPathItem.update) {
+          await tx.learningPathItem.update({
+            where: { id: item.id },
+            data: { stepOrder: currentStep }
+          });
+        }
+        item.stepOrder = currentStep;
+      }
+      currentStep++;
+    }
+  }
+
+  // 5. Delete all courseSkills for old courses in one batched call
+  await tx.courseSkill.deleteMany({
+    where: { courseId: { in: oldCourseIds } }
+  });
+
+  // 6. Delete all old course rows in one batched call
+  if (tx.course.deleteMany) {
+    await tx.course.deleteMany({
+      where: { id: { in: oldCourseIds } }
+    });
+  } else {
+    for (const id of oldCourseIds) {
+      await tx.course.delete!({ where: { id } });
+    }
+  }
+
+  const remappedCount = oldCourseIds.length;
 
   // Strictly assert final course count inside the transaction
   const finalCount = await tx.course.count();

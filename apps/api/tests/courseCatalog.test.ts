@@ -522,7 +522,7 @@ describe('Curated Course Catalog Validation', () => {
         },
         update: async ({ where, data }: any) => {
           const item = fakeLearningPaths.find((lp) => lp.id === where.id);
-          if (item) item.courseId = data.courseId;
+          if (item) Object.assign(item, data);
         }
       },
       courseSkill: {
@@ -603,5 +603,133 @@ describe('Curated Course Catalog Validation', () => {
     ).rejects.toThrow(/\[Seed Migration Error\]/);
 
     expect(rollbackExecuted).toBe(true);
+  });
+
+  it('confirms SEED_TRANSACTION_OPTIONS configures { maxWait: 15000, timeout: 120000 } for long-running seed transactions', async () => {
+    const { SEED_TRANSACTION_OPTIONS } = await import('../prisma/seed');
+    expect(SEED_TRANSACTION_OPTIONS).toBeDefined();
+    expect(SEED_TRANSACTION_OPTIONS.maxWait).toBe(15000);
+    expect(SEED_TRANSACTION_OPTIONS.timeout).toBe(120000);
+  });
+
+  it('renumbers stepOrder to 1..n per LearningPath after non-equivalent drops, keeping original relative order idempotently', async () => {
+    const { remapAndCleanupOldCourses } = await import('../prisma/seed');
+
+    const fakeDbCourses = [
+      ...curatedCoursesData.map((c) => ({
+        id: generateCourseId(c),
+        title: c.title,
+        provider: c.provider,
+        destinationUrl: c.destinationUrl
+      })),
+      {
+        id: 'full-stack-open---deep-dive-into-mod',
+        title: 'Full Stack Open — Deep Dive Into Modern Web Development',
+        provider: 'University of Helsinki',
+        destinationUrl: 'https://fullstackopen.com/en/'
+      },
+      {
+        id: 'react-documentation---official-inter',
+        title: 'React Documentation & Official Interactive Tutorials',
+        provider: 'React.dev',
+        destinationUrl: 'https://react.dev/learn'
+      }
+    ];
+
+    // Path A had steps [1, 2, 3, 4, 5]. Step 1 and 2 were dropped courses. Remaining were steps 3, 4, 5.
+    // Path B had steps [1, 2, 3, 4]. Step 2 was dropped course. Remaining were steps 1, 3, 4.
+    let fakePathItems = [
+      // Path A
+      { id: 'item-a-1', learningPathId: 'lp-a', courseId: 'full-stack-open---deep-dive-into-mod', stepOrder: 1 },
+      { id: 'item-a-2', learningPathId: 'lp-a', courseId: 'react-documentation---official-inter', stepOrder: 2 },
+      { id: 'item-a-3', learningPathId: 'lp-a', courseId: generateCourseId(curatedCoursesData[0]), stepOrder: 3 },
+      { id: 'item-a-4', learningPathId: 'lp-a', courseId: generateCourseId(curatedCoursesData[1]), stepOrder: 4 },
+      { id: 'item-a-5', learningPathId: 'lp-a', courseId: generateCourseId(curatedCoursesData[2]), stepOrder: 5 },
+      // Path B
+      { id: 'item-b-1', learningPathId: 'lp-b', courseId: generateCourseId(curatedCoursesData[3]), stepOrder: 1 },
+      { id: 'item-b-2', learningPathId: 'lp-b', courseId: 'react-documentation---official-inter', stepOrder: 2 },
+      { id: 'item-b-3', learningPathId: 'lp-b', courseId: generateCourseId(curatedCoursesData[4]), stepOrder: 3 },
+      { id: 'item-b-4', learningPathId: 'lp-b', courseId: generateCourseId(curatedCoursesData[5]), stepOrder: 4 }
+    ];
+
+    const updatedStepOrders: { id: string; stepOrder: number }[] = [];
+
+    const mockTx = {
+      course: {
+        findMany: async () => [...fakeDbCourses],
+        delete: async () => {},
+        deleteMany: async ({ where }: any) => {
+          if (where?.id?.in) {
+            where.id.in.forEach((id: string) => {
+              const idx = fakeDbCourses.findIndex((c) => c.id === id);
+              if (idx !== -1) fakeDbCourses.splice(idx, 1);
+            });
+          }
+        },
+        count: async () => fakeDbCourses.length
+      },
+      enrollment: {
+        findMany: async () => [],
+        findUnique: async () => null,
+        delete: async () => {},
+        deleteMany: async () => {},
+        update: async () => {},
+        updateMany: async () => {}
+      },
+      learningPathItem: {
+        findMany: async (args: any) => {
+          if (!args?.where) return [...fakePathItems];
+          if (args.where.courseId?.in) {
+            return fakePathItems.filter((i) => args.where.courseId.in.includes(i.courseId));
+          }
+          if (args.where.courseId) {
+            return fakePathItems.filter((i) => i.courseId === args.where.courseId);
+          }
+          return [...fakePathItems];
+        },
+        delete: async ({ where }: any) => {
+          fakePathItems = fakePathItems.filter((i) => i.id !== where.id);
+        },
+        deleteMany: async ({ where }: any) => {
+          if (where?.id?.in) {
+            fakePathItems = fakePathItems.filter((i) => !where.id.in.includes(i.id));
+          }
+        },
+        update: async ({ where, data }: any) => {
+          const item = fakePathItems.find((i) => i.id === where.id);
+          if (item) {
+            Object.assign(item, data);
+            if (data.stepOrder !== undefined) {
+              updatedStepOrders.push({ id: item.id, stepOrder: data.stepOrder });
+            }
+          }
+        },
+        updateMany: async () => {}
+      },
+      courseSkill: {
+        findMany: async () => [],
+        deleteMany: async () => {}
+      }
+    };
+
+    const res = await remapAndCleanupOldCourses(mockTx as any, curatedCoursesData);
+
+    expect(res.droppedPathItems).toBe(3);
+
+    // Path A remaining items must be renumbered 1, 2, 3 (not 3, 4, 5)
+    const lpA = fakePathItems.filter((i) => i.learningPathId === 'lp-a').sort((a, b) => a.stepOrder - b.stepOrder);
+    expect(lpA.length).toBe(3);
+    expect(lpA.map((i) => i.stepOrder)).toEqual([1, 2, 3]);
+    expect(lpA[0].id).toBe('item-a-3');
+    expect(lpA[1].id).toBe('item-a-4');
+    expect(lpA[2].id).toBe('item-a-5');
+
+    // Path B remaining items must be renumbered 1, 2, 3 (not 1, 3, 4)
+    const lpB = fakePathItems.filter((i) => i.learningPathId === 'lp-b').sort((a, b) => a.stepOrder - b.stepOrder);
+    expect(lpB.length).toBe(3);
+    expect(lpB.map((i) => i.stepOrder)).toEqual([1, 2, 3]);
+    expect(lpB[0].id).toBe('item-b-1');
+    expect(lpB[1].id).toBe('item-b-3');
+    expect(lpB[2].id).toBe('item-b-4');
   });
 });
