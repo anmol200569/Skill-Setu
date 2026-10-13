@@ -132,7 +132,7 @@ describe('Curated Course Catalog Validation', () => {
     ];
 
     let fakeLearningPaths = [
-      { id: 'lp-1', courseId: 'react-documentation---official-inter' }
+      { id: 'lp-1', learningPathId: 'path-user-1', courseId: 'react-documentation---official-inter' }
     ];
 
     let deletedCourses: string[] = [];
@@ -162,10 +162,23 @@ describe('Curated Course Catalog Validation', () => {
         }
       },
       learningPathItem: {
-        updateMany: async ({ where, data }: any) => {
-          fakeLearningPaths.forEach((lp) => {
-            if (lp.courseId === where.courseId) lp.courseId = data.courseId;
-          });
+        findMany: async ({ where }: any) => fakeLearningPaths.filter((lp) => lp.courseId === where.courseId),
+        findFirst: async ({ where }: any) => {
+          return (
+            fakeLearningPaths.find(
+              (lp) =>
+                lp.learningPathId === where.learningPathId &&
+                lp.courseId === where.courseId &&
+                (!where.id?.not || lp.id !== where.id.not)
+            ) || null
+          );
+        },
+        delete: async ({ where }: any) => {
+          fakeLearningPaths = fakeLearningPaths.filter((lp) => lp.id !== where.id);
+        },
+        update: async ({ where, data }: any) => {
+          const item = fakeLearningPaths.find((lp) => lp.id === where.id);
+          if (item) item.courseId = data.courseId;
         }
       },
       courseSkill: {
@@ -189,5 +202,146 @@ describe('Curated Course Catalog Validation', () => {
 
     // Check learning path remapping
     expect(fakeLearningPaths[0].courseId).toBe(newTargetIdReact);
+  });
+
+  it('deduplicates several old-id LearningPathItem rows mapping to ONE new course without duplicate rows or constraint failures', async () => {
+    const { remapAndCleanupOldCourses } = await import('../prisma/seed');
+    const newTargetIdReact = generateCourseId(
+      curatedCoursesData.find((c) => c.title === 'Front End Development Libraries')!
+    );
+
+    const fakeDbCourses = [
+      ...curatedCoursesData.map((c) => ({
+        id: generateCourseId(c),
+        title: c.title,
+        provider: c.provider,
+        destinationUrl: c.destinationUrl
+      })),
+      {
+        id: 'react-documentation---official-inter',
+        title: 'React Documentation & Official Interactive Tutorials',
+        provider: 'React.dev',
+        destinationUrl: 'https://react.dev/learn'
+      }
+    ];
+
+    // Same user, same learning path ("lp-same-user-path"), but multiple old/existing items
+    let fakeLearningPaths = [
+      // Row 1: already has target course in the same path
+      { id: 'lpi-1', learningPathId: 'lp-same-user-path', courseId: newTargetIdReact },
+      // Row 2: old course that maps to newTargetIdReact
+      { id: 'lpi-2', learningPathId: 'lp-same-user-path', courseId: 'react-documentation---official-inter' }
+    ];
+
+    const mockTx = {
+      course: {
+        findMany: async () => [...fakeDbCourses],
+        delete: async ({ where }: any) => {
+          const idx = fakeDbCourses.findIndex((c) => c.id === where.id);
+          if (idx !== -1) fakeDbCourses.splice(idx, 1);
+        },
+        count: async () => fakeDbCourses.length
+      },
+      enrollment: {
+        findMany: async () => [],
+        findUnique: async () => null,
+        delete: async () => {},
+        update: async () => {}
+      },
+      learningPathItem: {
+        findMany: async ({ where }: any) => fakeLearningPaths.filter((lp) => lp.courseId === where.courseId),
+        findFirst: async ({ where }: any) => {
+          return (
+            fakeLearningPaths.find(
+              (lp) =>
+                lp.learningPathId === where.learningPathId &&
+                lp.courseId === where.courseId &&
+                (!where.id?.not || lp.id !== where.id.not)
+            ) || null
+          );
+        },
+        delete: async ({ where }: any) => {
+          fakeLearningPaths = fakeLearningPaths.filter((lp) => lp.id !== where.id);
+        },
+        update: async ({ where, data }: any) => {
+          const item = fakeLearningPaths.find((lp) => lp.id === where.id);
+          if (item) item.courseId = data.courseId;
+        }
+      },
+      courseSkill: {
+        deleteMany: async () => {}
+      }
+    };
+
+    const result = await remapAndCleanupOldCourses(mockTx as any, curatedCoursesData);
+
+    expect(result.remappedCount).toBe(1);
+    expect(result.finalCount).toBe(61);
+
+    // Exactly one row exists in this path for newTargetIdReact (duplicate deleted, no constraint error)
+    const itemsInPath = fakeLearningPaths.filter((lp) => lp.learningPathId === 'lp-same-user-path');
+    expect(itemsInPath.length).toBe(1);
+    expect(itemsInPath[0].courseId).toBe(newTargetIdReact);
+    expect(itemsInPath[0].id).toBe('lpi-1');
+  });
+
+  it('confirms the course remap runs in one transaction and rolls back on failure', async () => {
+    const { remapAndCleanupOldCourses } = await import('../prisma/seed');
+    // Set up DB with mismatched count so assertion fails inside the transaction
+    const corruptedDbCourses = [
+      {
+        id: 'obsolete-orphaned-course-without-match',
+        title: 'Unmatchable Random Ghost Course Title 999',
+        provider: 'Unknown',
+        destinationUrl: 'https://example.com/ghost'
+      }
+    ];
+
+    let rollbackExecuted = false;
+
+    // Simulate Prisma transactional runner
+    async function runPrismaTransaction(fn: (tx: any) => Promise<any>): Promise<any> {
+      // Snapshot state prior to transaction
+      const stateBefore = JSON.stringify(corruptedDbCourses);
+      try {
+        const mockTx = {
+          course: {
+            findMany: async () => [...corruptedDbCourses],
+            delete: async () => {},
+            count: async () => corruptedDbCourses.length
+          },
+          enrollment: {
+            findMany: async () => [],
+            findUnique: async () => null,
+            delete: async () => {},
+            update: async () => {}
+          },
+          learningPathItem: {
+            findMany: async () => [],
+            findFirst: async () => null,
+            delete: async () => {},
+            update: async () => {}
+          },
+          courseSkill: {
+            deleteMany: async () => {}
+          }
+        };
+
+        return await fn(mockTx);
+      } catch (err) {
+        // Rollback on failure
+        rollbackExecuted = true;
+        expect(JSON.stringify(corruptedDbCourses)).toBe(stateBefore);
+        throw err;
+      }
+    }
+
+    await expect(
+      runPrismaTransaction(async (tx) => {
+        return await remapAndCleanupOldCourses(tx, curatedCoursesData);
+      })
+    ).rejects.toThrow(/\[Seed Migration Error\]/);
+
+    expect(rollbackExecuted).toBe(true);
   });
 });

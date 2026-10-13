@@ -370,11 +370,25 @@ export async function remapAndCleanupOldCourses(
       }
     }
 
-    // Remap learning path items
-    await tx.learningPathItem.updateMany({
-      where: { courseId: old.id },
-      data: { courseId: targetId }
-    });
+    // Remap learning path items (deduplicating within the same learningPath)
+    const lpItems = await tx.learningPathItem.findMany({ where: { courseId: old.id } });
+    for (const item of lpItems) {
+      const existingInPath = await tx.learningPathItem.findFirst({
+        where: {
+          learningPathId: item.learningPathId,
+          courseId: targetId,
+          id: { not: item.id }
+        }
+      });
+      if (existingInPath) {
+        await tx.learningPathItem.delete({ where: { id: item.id } });
+      } else {
+        await tx.learningPathItem.update({
+          where: { id: item.id },
+          data: { courseId: targetId }
+        });
+      }
+    }
 
     // Delete course skills
     await tx.courseSkill.deleteMany({ where: { courseId: old.id } });
