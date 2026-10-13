@@ -159,6 +159,7 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
         {
           skillId: 'react',
           skillName: 'React',
+          domainName: 'Frontend',
           requiredLevel: 4,
           currentLevel: 2.5,
           gap: 1.5,
