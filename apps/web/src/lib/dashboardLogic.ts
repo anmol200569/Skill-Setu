@@ -353,3 +353,39 @@ export function computeReadinessScore(
   const result = calculateReadiness(formattedReqs, formattedUser);
   return result.overallReadinessScore;
 }
+
+export function calculateChecklistProgress(
+  hasSavedTargetRole: boolean,
+  stats?: {
+    diagnosticAttemptsCount?: number;
+    activeGapsCount?: number;
+    completedCoursesCount?: number;
+  } | null
+): {
+  step1Completed: boolean;
+  step2Completed: boolean;
+  step3Completed: boolean;
+  step4Completed: boolean;
+  completedCount: number;
+  totalCount: number;
+} {
+  const step1Completed = Boolean(hasSavedTargetRole);
+  const step2Completed = Boolean(stats?.diagnosticAttemptsCount && stats.diagnosticAttemptsCount > 0);
+  const step3Completed = Boolean(stats?.activeGapsCount && stats.activeGapsCount > 0);
+  const step4Completed = Boolean(stats?.completedCoursesCount && stats.completedCoursesCount > 0);
+
+  const completedCount =
+    (step1Completed ? 1 : 0) +
+    (step2Completed ? 1 : 0) +
+    (step3Completed ? 1 : 0) +
+    (step4Completed ? 1 : 0);
+
+  return {
+    step1Completed,
+    step2Completed,
+    step3Completed,
+    step4Completed,
+    completedCount,
+    totalCount: 4
+  };
+}

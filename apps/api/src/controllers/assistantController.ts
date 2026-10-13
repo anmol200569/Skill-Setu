@@ -58,9 +58,10 @@ export async function sendChatMessage(req: Request, res: Response): Promise<void
   }
 
   const gapAnalysis = await analyzeLearnerSkillGaps(userId, profile.targetRoleId || undefined);
+  const gapsList = gapAnalysis?.gaps || [];
   const topGapsSummary =
-    gapAnalysis.gaps.length > 0
-      ? gapAnalysis.gaps
+    gapsList.length > 0
+      ? gapsList
           .slice(0, 3)
           .map((g) => `${g.skillName} (Current: ${g.currentLevel}/5, Required: ${g.requiredLevel}/5)`)
           .join('; ')

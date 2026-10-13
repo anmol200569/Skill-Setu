@@ -7,7 +7,8 @@ import {
   determineNextBestAction,
   computeReadinessScore,
   buildWeeklyPlanItems,
-  buildDisplayGaps
+  buildDisplayGaps,
+  calculateChecklistProgress
 } from '../lib/dashboardLogic';
 import { GapItem, RecommendedCourseItem } from '../pages/learner/DashboardPage';
 
@@ -505,6 +506,50 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
 
       expect(merged[2].skillId).toBe('s3');
       expect(merged[2].isAssessed).toBe(false);
+    });
+  });
+
+  describe('6. Checklist with and without a saved role', () => {
+    it('returns step 1 unchecked and 0 of 4 completed for a brand-new user with no saved role', () => {
+      const result = calculateChecklistProgress(false, {
+        diagnosticAttemptsCount: 0,
+        activeGapsCount: 0,
+        completedCoursesCount: 0
+      });
+      expect(result.step1Completed).toBe(false);
+      expect(result.step2Completed).toBe(false);
+      expect(result.step3Completed).toBe(false);
+      expect(result.step4Completed).toBe(false);
+      expect(result.completedCount).toBe(0);
+      expect(result.totalCount).toBe(4);
+    });
+
+    it('returns step 1 checked and at least 1 of 4 completed when a saved target role exists', () => {
+      const result = calculateChecklistProgress(true, {
+        diagnosticAttemptsCount: 0,
+        activeGapsCount: 0,
+        completedCoursesCount: 0
+      });
+      expect(result.step1Completed).toBe(true);
+      expect(result.completedCount).toBe(1);
+    });
+
+    it('returns step 1 and step 2 checked when role is saved and diagnostic is completed', () => {
+      const result = calculateChecklistProgress(true, {
+        diagnosticAttemptsCount: 1,
+        activeGapsCount: 1,
+        completedCoursesCount: 0
+      });
+      expect(result.step1Completed).toBe(true);
+      expect(result.step2Completed).toBe(true);
+      expect(result.step3Completed).toBe(true);
+      expect(result.completedCount).toBe(3);
+    });
+
+    it('handles null stats gracefully without throwing', () => {
+      const result = calculateChecklistProgress(false, null);
+      expect(result.step1Completed).toBe(false);
+      expect(result.completedCount).toBe(0);
     });
   });
 });

@@ -13,7 +13,8 @@ import {
   getDashboardReadiness,
   determineNextBestAction,
   buildWeeklyPlanItems,
-  buildDisplayGaps
+  buildDisplayGaps,
+  calculateChecklistProgress
 } from '../../lib/dashboardLogic';
 import {
   Radar,
@@ -339,27 +340,34 @@ export function DashboardPage() {
             </div>
 
             {/* 4-Step Checklist */}
-            <div className="space-y-3 pt-2">
-              <div className="flex items-center justify-between text-xs font-semibold text-foreground pb-1">
-                <span>{t('dashboard.emptyState.checklistTitle')}</span>
-                <span className="text-muted-foreground">
-                  {t('dashboard.emptyState.checklistProgress', {
-                    completed:
-                      (hasSavedTargetRole ? 1 : 0) +
-                      ((stats?.recentAssessments?.length ?? 0) > 0 || (stats?.assessedSkillsCount ?? 0) > 0 ? 1 : 0),
-                    total: 4
-                  })}
-                </span>
-              </div>
+            {(() => {
+              const checklist = calculateChecklistProgress(hasSavedTargetRole, {
+                diagnosticAttemptsCount:
+                  (stats?.recentAssessments?.length ?? 0) > 0 || (stats?.assessedSkillsCount ?? 0) > 0 ? 1 : 0,
+                activeGapsCount: 0,
+                completedCoursesCount: 0
+              });
 
-              {/* Step 1: Pick Target Role */}
-              <div className="p-4 rounded-xl border border-border bg-background flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                <div className="flex items-start gap-3">
-                  {hasSavedTargetRole ? (
-                    <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  ) : (
-                    <Circle className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                  )}
+              return (
+                <div className="space-y-3 pt-2">
+                  <div className="flex items-center justify-between text-xs font-semibold text-foreground pb-1">
+                    <span>{t('dashboard.emptyState.checklistTitle')}</span>
+                    <span className="text-muted-foreground">
+                      {t('dashboard.emptyState.checklistProgress', {
+                        completed: checklist.completedCount,
+                        total: checklist.totalCount
+                      })}
+                    </span>
+                  </div>
+
+                  {/* Step 1: Pick Target Role */}
+                  <div className="p-4 rounded-xl border border-border bg-background flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      {checklist.step1Completed ? (
+                        <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      ) : (
+                        <Circle className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                      )}
                   <div>
                     <div className="font-semibold text-xs sm:text-sm text-foreground">
                       1. {t('dashboard.emptyState.step1Title')}
@@ -442,6 +450,8 @@ export function DashboardPage() {
                 </Link>
               </div>
             </div>
+              );
+            })()}
 
             {/* Backend-Matched Notice: No Fake Numbers */}
             <div className="p-3.5 rounded-xl bg-secondary/50 border border-border text-xs text-muted-foreground flex items-center gap-2">
