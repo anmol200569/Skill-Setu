@@ -13,18 +13,16 @@ export function parseAllowedOrigins(corsOriginEnv?: string, vercelProjectUrl?: s
     rawEntries.push(...corsOriginEnv.split(','));
   }
   if (vercelProjectUrl) {
-    const url = vercelProjectUrl.startsWith('http')
+    const url = vercelProjectUrl.startsWith('http://') || vercelProjectUrl.startsWith('https://')
       ? vercelProjectUrl
       : `https://${vercelProjectUrl}`;
     rawEntries.push(url);
-  } else if (!corsOriginEnv) {
-    rawEntries.push('https://skill-setu.vercel.app');
   }
 
   const origins = new Set<string>();
   for (const entry of rawEntries) {
     const trimmed = entry.trim().replace(/\/+$/, '');
-    // Disallow empty or wildcard patterns (strictly no *.vercel.app)
+    // Disallow empty or wildcard patterns (strictly no wildcard or regex)
     if (trimmed && !trimmed.includes('*')) {
       origins.add(trimmed);
     }
@@ -81,7 +79,7 @@ export function createApp(): Application {
 
     // Production CORS validation:
     const allowedOrigins = parseAllowedOrigins(
-      process.env.CORS_ORIGIN || config.corsOrigin,
+      process.env.CORS_ORIGIN,
       process.env.VERCEL_PROJECT_PRODUCTION_URL
     );
 

@@ -152,24 +152,43 @@ describe('API Authentication, Authorization & Route Protection', () => {
     }
   });
 
-  it('blocks lookalike origins such as https://turbo-amber-ue8igyf.vercel.app.evil.com', async () => {
+  it('with CORS_ORIGIN=https://turbo-amber-ue8igyf.vercel.app, that origin is allowed, https://skill-setu.vercel.app is blocked (403), and https://turbo-amber-ue8igyf.vercel.app.evil.com is blocked', async () => {
     const originalEnv = process.env.NODE_ENV;
     const originalCors = process.env.CORS_ORIGIN;
+    const originalVercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
     process.env.NODE_ENV = 'production';
     process.env.CORS_ORIGIN = 'https://turbo-amber-ue8igyf.vercel.app';
+    delete process.env.VERCEL_PROJECT_PRODUCTION_URL;
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     try {
       const prodApp = createApp();
-      const res = await request(prodApp)
+
+      // 1. Configured origin is allowed (200)
+      const allowedRes = await request(prodApp)
+        .get('/health')
+        .set('Origin', 'https://turbo-amber-ue8igyf.vercel.app');
+      expect(allowedRes.status).toBe(200);
+
+      // 2. Old hardcoded fallback origin is blocked (403)
+      const oldRes = await request(prodApp)
+        .get('/health')
+        .set('Origin', 'https://skill-setu.vercel.app');
+      expect(oldRes.status).toBe(403);
+      expect(oldRes.body).toEqual({ error: 'Forbidden origin' });
+
+      // 3. Lookalike evil origin is blocked (403)
+      const evilRes = await request(prodApp)
         .get('/health')
         .set('Origin', 'https://turbo-amber-ue8igyf.vercel.app.evil.com');
-      expect(res.status).toBe(403);
-      expect(res.body).toEqual({ error: 'Forbidden origin' });
-      expect(errorSpy).toHaveBeenCalledWith('Blocked CORS origin: https://turbo-amber-ue8igyf.vercel.app.evil.com');
+      expect(evilRes.status).toBe(403);
+      expect(evilRes.body).toEqual({ error: 'Forbidden origin' });
     } finally {
       errorSpy.mockRestore();
       process.env.NODE_ENV = originalEnv;
       process.env.CORS_ORIGIN = originalCors;
+      if (originalVercel !== undefined) {
+        process.env.VERCEL_PROJECT_PRODUCTION_URL = originalVercel;
+      }
     }
   });
 

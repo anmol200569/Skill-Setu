@@ -14,7 +14,7 @@ Configure these variables in your Vercel Project Settings under **Environment Va
 | `SUPABASE_ANON_KEY` | Public / Anonymous key for client JWT verification | `eyJh...` |
 | `SUPABASE_SERVICE_ROLE_KEY` | Elevated service-role key for server administration | `eyJh...` |
 | `INITIAL_ADMIN_EMAIL` | Verified email address designated for bootstrap administrator | `admin@yourdomain.com` |
-| `CORS_ORIGIN` | Comma-separated list of exact allowed frontend origin URLs (trimmed, no trailing slashes, wildcards like `*.vercel.app` are strictly rejected; same-origin requests are automatically permitted) | `https://your-production-app.vercel.app, https://skill-setu.org` |
+| `CORS_ORIGIN` | Exact production URL(s) allowed for CORS (comma-separated if multiple, trimmed, no trailing slashes). CORS_ORIGIN must be the exact production URL — there are no hardcoded fallbacks and wildcards like `*.vercel.app` are strictly rejected. Same-origin requests are automatically permitted. | `https://your-production-app.vercel.app, https://skill-setu.org` |
 | `GEMINI_API_KEY` | Google AI Studio API Key for Gemini model inference | `AIzaSy...` |
 | `GEMINI_MODEL` | Gemini primary generative model name | `gemini-3.5-flash-lite` |
 | `GEMINI_FALLBACK_MODEL` | Optional fallback model when primary is rate-limited / unavailable | `gemini-3.1-flash-lite` |
