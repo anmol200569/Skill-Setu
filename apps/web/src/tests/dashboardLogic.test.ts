@@ -219,7 +219,7 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
   });
 
   describe('4. What-If Compare computing the same readiness as the backend', () => {
-    it('computes identical readiness score matching backend gapAnalysisEngine formula for partial assessments', () => {
+    it('suppresses readiness score (null) when fewer than 3 skills are assessed for a role', () => {
       // Role requirements: 3 skills with weights
       const roleRequirements = [
         { requiredProficiency: 4, weight: 1.5 },
@@ -227,11 +227,7 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
         { requiredProficiency: 5, weight: 2.0 }
       ];
 
-      // Skill 1: assessed (self 3, verified 4) -> eff = 3.6, gap = 0.4, weightedReq = 6.0, weightedGap = 0.6
-      // Skill 2: unassessed (verified null) -> Not included in readiness numerator/denominator
-      // Skill 3: assessed (self 4, verified 5) -> eff = 4.6, gap = 0.4, weightedReq = 10.0, weightedGap = 0.8
-      // Assessed weighted req = 16.0, assessed weighted gap = 1.4
-      // Readiness = round((1 - 1.4 / 16.0) * 100) = 91%
+      // Only 2 skills assessed (fewer than 3 skills)
       const userSkills = [
         { selfAssessedLevel: 3, verifiedScore: 4 },
         { selfAssessedLevel: 2, verifiedScore: null },
@@ -239,7 +235,34 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
       ];
 
       const score = computeReadinessScore(roleRequirements, userSkills);
-      expect(score).toBe(91);
+      expect(score).toBeNull();
+    });
+
+    it('computes identical readiness score matching backend gapAnalysisEngine formula when at least 3 skills and 60% are assessed', () => {
+      // Role requirements: 4 skills with weights
+      const roleRequirements = [
+        { requiredProficiency: 4, weight: 1.5 },
+        { requiredProficiency: 3, weight: 1.0 },
+        { requiredProficiency: 5, weight: 2.0 },
+        { requiredProficiency: 3, weight: 1.0 }
+      ];
+
+      // Skill 1: assessed (self 3, verified 4) -> eff = 3.6, gap = 0.4, weightedReq = 6.0, weightedGap = 0.6
+      // Skill 2: unassessed (verified null) -> Not included in readiness numerator/denominator
+      // Skill 3: assessed (self 4, verified 5) -> eff = 4.6, gap = 0.4, weightedReq = 10.0, weightedGap = 0.8
+      // Skill 4: assessed (self 3, verified 3) -> eff = 3.0, gap = 0.0, weightedReq = 3.0, weightedGap = 0.0
+      // 3 of 4 assessed (75% >= 60% and 3 >= 3)
+      // Assessed weighted req = 19.0, assessed weighted gap = 1.4
+      // Readiness = round((1 - 1.4 / 19.0) * 100) = 93%
+      const userSkills = [
+        { selfAssessedLevel: 3, verifiedScore: 4 },
+        { selfAssessedLevel: 2, verifiedScore: null },
+        { selfAssessedLevel: 4, verifiedScore: 5 },
+        { selfAssessedLevel: 3, verifiedScore: 3 }
+      ];
+
+      const score = computeReadinessScore(roleRequirements, userSkills);
+      expect(score).toBe(93);
     });
 
     it('returns null readiness when 0 skills are assessed', () => {

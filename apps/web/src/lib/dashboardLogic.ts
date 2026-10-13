@@ -1,13 +1,14 @@
 import {
   calculateReadiness,
   calculateEstimatedReadinessGain,
+  hasSufficientAssessmentData,
   RoleRequirementInput,
   UserSkillAssessmentInput,
   ReadinessCalculationResult
 } from '@skill-setu/shared';
 import { CareerRoleItem, GapItem, RecommendedCourseItem } from '../pages/learner/DashboardPage';
 
-export { calculateReadiness, calculateEstimatedReadinessGain };
+export { calculateReadiness, calculateEstimatedReadinessGain, hasSufficientAssessmentData };
 export type { RoleRequirementInput, UserSkillAssessmentInput, ReadinessCalculationResult };
 
 /**
@@ -37,14 +38,20 @@ export function isDashboardNotStarted(
 }
 
 /**
- * Returns the readiness score or null when the user is in "not_started" state.
- * Matches backend contract: no numbers/percentages displayed when 0 assessed or no target role exists.
+ * Returns the readiness score or null when the user is in "not_started" state
+ * or when fewer than 3 skills (or under 60% of role requirements) are assessed.
+ * Matches backend contract: no headline numbers displayed when data is insufficient.
  */
 export function getDashboardReadiness(
-  stats?: { status?: string; targetRoleId?: string | null; overallReadiness?: number | null; assessedSkillsCount?: number } | null,
+  stats?: { status?: string; targetRoleId?: string | null; overallReadiness?: number | null; assessedSkillsCount?: number; totalSkillsCount?: number } | null,
   profile?: { targetRoleId?: string | null } | null
 ): number | null {
   if (isDashboardNotStarted(stats, profile)) {
+    return null;
+  }
+  const total = stats?.totalSkillsCount ?? 0;
+  const assessed = stats?.assessedSkillsCount ?? 0;
+  if (total > 0 && !hasSufficientAssessmentData(total, assessed)) {
     return null;
   }
   return typeof stats?.overallReadiness === 'number' ? stats.overallReadiness : null;

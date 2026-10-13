@@ -483,14 +483,19 @@ export function DashboardPage() {
                       </div>
                     </>
                   ) : (
-                    <div className="mt-1 space-y-1.5">
-                      <span className="inline-block text-xs font-semibold px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">
-                        {t('dashboard.notStartedTag', { defaultValue: 'not started' })}
-                      </span>
-                      <div>
+                    <div className="mt-1 space-y-1">
+                      <div className="text-xs font-semibold px-2 py-0.5 rounded-full bg-secondary text-muted-foreground inline-block">
+                        {t('dashboard.readinessNotEnoughData', { defaultValue: 'Not enough data yet' })}
+                      </div>
+                      <div className="text-[11px] text-muted-foreground">
+                        {stats?.totalSkillsCount
+                          ? `${stats?.assessedSkillsCount ?? 0} of ${stats.totalSkillsCount} skills assessed`
+                          : (stats?.assessedRatioText || t('dashboard.notStartedTag', { defaultValue: 'not started' }))}
+                      </div>
+                      <div className="pt-1">
                         <Link to="/assessments">
-                          <Button size="sm" variant="outline" className="h-7 text-[11px] px-2 py-0 mt-1 border-[#C2410C]/40 text-[#C2410C]">
-                            {t('dashboard.takeFirstDiagnostic', { defaultValue: 'Take your first diagnostic' })}
+                          <Button size="sm" variant="outline" className="h-7 text-[11px] px-2 py-0 border-[#C2410C]/40 text-[#C2410C]">
+                            {t('dashboard.takeDiagnostic', { defaultValue: 'Take diagnostic' })}
                           </Button>
                         </Link>
                       </div>

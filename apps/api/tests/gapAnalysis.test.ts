@@ -162,9 +162,9 @@ describe('Skill Gap Analysis & Readiness Engine', () => {
       expect(result.assessedRatioText).toBe('Based on 1 of 3 skills assessed');
       expect(result.isPreliminary).toBe(true); // 1 < 3/2 -> preliminary
 
-      // ts-js is assessed: effective = 0.4*2 + 0.6*4 = 3.2. Gap = 4 - 3.2 = 0.8
-      // Readiness from assessed skills: (1 - (0.8*1.5) / (4*1.5)) * 100 = (1 - 1.2 / 6.0) * 100 = 80%
-      expect(result.overallReadinessScore).toBe(80);
+      // Fewer than 3 skills assessed: overallReadinessScore is null (insufficient data)
+      expect(result.overallReadinessScore).toBeNull();
+      expect(result.hasSufficientData).toBe(false);
 
       // Assessed gaps contain only ts-js; unassessedSkills contain react & sys-design
       expect(result.gaps.length).toBe(1);

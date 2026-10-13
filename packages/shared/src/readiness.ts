@@ -24,9 +24,24 @@ export interface ReadinessCalculationResult {
   totalSkillsCount: number;
   assessedRatioText: string;
   isPreliminary: boolean;
+  hasSufficientData: boolean;
   gaps: SkillGapItem[];
   unassessedSkills: UnassessedSkillItem[];
   strengths: { skillId: string; skillName: string; level: number }[];
+}
+
+/**
+ * Determines whether enough skills are assessed to display a headline readiness score.
+ * Threshold: At least 3 skills (or all skills if role has < 3) AND at least 60% of role's required skills assessed.
+ * If fewer than 3 skills or under 60% are assessed, headline score is suppressed (null).
+ */
+export function hasSufficientAssessmentData(
+  totalSkillsCount: number,
+  assessedSkillsCount: number
+): boolean {
+  if (totalSkillsCount <= 0 || assessedSkillsCount <= 0) return false;
+  const minCount = Math.min(3, totalSkillsCount);
+  return assessedSkillsCount >= minCount && (assessedSkillsCount / totalSkillsCount) >= 0.6;
 }
 
 /**
@@ -36,9 +51,8 @@ export interface ReadinessCalculationResult {
  * 1. If the user has no self-assessed level for a skill, effective level = verified score only (do NOT assume self = 1).
  * 2. Unassessed skills must never get a numeric deficit, priority score or "gain".
  *    Keep them in a separate "not assessed" list; top gaps / next best action / AI synthesis use only assessed skills.
- * 3. If fewer than half of the role's skills are assessed, show readiness with a "Preliminary" label
- *    next to "Based on N of M skills assessed" (isPreliminary = true).
- * 4. Overall readiness /100 is computed strictly from the assessed skills:
+ * 3. If fewer than 3 skills or under 60% of role requirements are assessed, overallReadinessScore = null (not enough data).
+ * 4. Overall readiness /100 is computed strictly from the assessed skills when threshold is met:
  *    readiness = round((1 - sum(gap * weight) / sum(required * weight)) * 100)
  */
 export function calculateReadiness(
@@ -138,8 +152,8 @@ export function calculateReadiness(
   gaps.sort((a, b) => b.priorityScore - a.priorityScore);
 
   const assessedRatioText = `Based on ${assessedSkillsCount} of ${totalSkillsCount} skills assessed`;
-  // Rule 3: If fewer than half of the role's skills are assessed, mark preliminary
   const isPreliminary = totalSkillsCount > 0 && assessedSkillsCount < totalSkillsCount / 2;
+  const hasSufficientData = hasSufficientAssessmentData(totalSkillsCount, assessedSkillsCount);
 
   if (assessedSkillsCount === 0 || totalWeightedAssessedRequired <= 0) {
     return {
@@ -149,6 +163,7 @@ export function calculateReadiness(
       totalSkillsCount,
       assessedRatioText,
       isPreliminary: false,
+      hasSufficientData: false,
       gaps,
       unassessedSkills,
       strengths
@@ -157,10 +172,9 @@ export function calculateReadiness(
 
   const rawReadiness =
     (1 - totalWeightedAssessedGap / totalWeightedAssessedRequired) * 100;
-  const overallReadinessScore = Math.max(
-    0,
-    Math.min(100, Math.round(rawReadiness))
-  );
+  const overallReadinessScore = hasSufficientData
+    ? Math.max(0, Math.min(100, Math.round(rawReadiness)))
+    : null;
 
   return {
     status: 'active',
@@ -169,6 +183,7 @@ export function calculateReadiness(
     totalSkillsCount,
     assessedRatioText,
     isPreliminary,
+    hasSufficientData,
     gaps,
     unassessedSkills,
     strengths
