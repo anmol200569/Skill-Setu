@@ -103,11 +103,7 @@ export function OnboardingPage() {
           if (matched) {
             setSelectedRoleId(matched.id);
             prefilledApplied = true;
-          } else if (fetchedRoles.length > 0) {
-            setSelectedRoleId(fetchedRoles[0].id);
           }
-        } else if (fetchedRoles.length > 0) {
-          setSelectedRoleId(fetchedRoles[0].id);
         }
 
         if (targetLevel === 'beginner' || targetLevel === 'intermediate' || targetLevel === 'advanced') {

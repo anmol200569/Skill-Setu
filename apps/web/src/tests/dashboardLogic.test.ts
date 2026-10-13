@@ -152,11 +152,68 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
       expect(action.estimatedGain).toBe(16);
     });
 
+    it('prompts to take diagnostic with no deficit or gain numbers when the highest-requirement skill is unassessed', () => {
+      // Role requires TypeScript (level 5) and React (level 4).
+      // React is assessed (gap 1.5), but TypeScript (highest requirement, level 5) is unassessed.
+      const assessedGaps = [
+        {
+          skillId: 'react',
+          skillName: 'React',
+          requiredLevel: 4,
+          currentLevel: 2.5,
+          gap: 1.5,
+          isAssessed: true,
+          priority: 'high' as const,
+          priorityScore: 3.0,
+          weight: 1.0
+        }
+      ];
+
+      const unassessedSkills = [
+        {
+          skillId: 'typescript',
+          skillName: 'TypeScript',
+          requiredLevel: 5,
+          weight: 1.5
+        }
+      ];
+
+      const recommendations = [
+        {
+          course: {
+            id: 'c-react',
+            title: 'Mastering React',
+            provider: 'freeCodeCamp',
+            skillsCovered: ['React'],
+            destinationUrl: 'https://example.com/react',
+            difficulty: 'Intermediate' as const,
+            estimatedHours: 10,
+            language: 'English' as const,
+            isFree: true,
+            description: 'Learn React'
+          },
+          matchingSkill: 'React',
+          recommendationReason: 'Bridges React gap'
+        }
+      ];
+
+      const action = determineNextBestAction(assessedGaps, recommendations, [], unassessedSkills);
+
+      expect(action.unassessedPrompt).toEqual({
+        skillId: 'typescript',
+        skillName: 'TypeScript'
+      });
+      expect(action.topGap).toBeNull();
+      expect(action.topCourse).toBeNull();
+      expect(action.estimatedGain).toBe(0);
+    });
+
     it('handles empty gaps list safely', () => {
       const action = determineNextBestAction([], []);
       expect(action.topGap).toBeNull();
       expect(action.topCourse).toBeNull();
       expect(action.estimatedGain).toBe(0);
+      expect(action.unassessedPrompt).toBeNull();
     });
   });
 

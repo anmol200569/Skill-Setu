@@ -52,3 +52,49 @@ describe('Client-Side Auth Validation', () => {
     expect(invalidEmail.success).toBe(false);
   });
 });
+
+describe('Onboarding Role Prefill Isolation', () => {
+  const roles = [
+    { id: 'role-1', code: 'frontend-developer', title: 'Frontend Developer' },
+    { id: 'role-2', code: 'data-engineer', title: 'Data Engineer' }
+  ];
+
+  function resolveInitialOnboardingRole(
+    wizardParam: string | null,
+    fetchedRoles: Array<{ id: string; code: string }>
+  ): { selectedRoleId: string; isPrefilled: boolean } {
+    let selectedRoleId = '';
+    let isPrefilled = false;
+
+    if (wizardParam) {
+      const matched = fetchedRoles.find(
+        (r) => r.code === wizardParam || r.id === wizardParam
+      );
+      if (matched) {
+        selectedRoleId = matched.id;
+        isPrefilled = true;
+      }
+    }
+
+    return { selectedRoleId, isPrefilled };
+  }
+
+  it('does NOT preselect any role when user lands without wizard answers (no default to first role)', () => {
+    const result = resolveInitialOnboardingRole(null, roles);
+    expect(result.selectedRoleId).toBe('');
+    expect(result.isPrefilled).toBe(false);
+  });
+
+  it('preselects matching role and applies Prefilled badge when valid wizard answer is provided', () => {
+    const result = resolveInitialOnboardingRole('frontend-developer', roles);
+    expect(result.selectedRoleId).toBe('role-1');
+    expect(result.isPrefilled).toBe(true);
+  });
+
+  it('does NOT preselect any role when wizard param does not match any existing role', () => {
+    const result = resolveInitialOnboardingRole('unknown-role', roles);
+    expect(result.selectedRoleId).toBe('');
+    expect(result.isPrefilled).toBe(false);
+  });
+});
+

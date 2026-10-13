@@ -210,17 +210,24 @@ export function DashboardPage() {
     'Target Career Role';
 
   const rawRadarData = stats?.radarData ?? [];
-  // Radar data with short names to prevent clipped polar labels
-  const radarData = rawRadarData.map((d: any) => {
-    const full = d.skill || '';
-    const short = full.length > 11 ? `${full.slice(0, 9)}…` : full;
-    return {
-      skill: short,
-      fullSkill: full,
-      current: d.current ?? 0,
-      required: d.required ?? 0
-    };
-  });
+  // Radar data with short names to prevent clipped polar labels (omit unassessed skills so they are not plotted as 0)
+  const radarData = rawRadarData
+    .filter((d: any) => d.current !== null && d.current !== undefined)
+    .map((d: any) => {
+      const full = d.skill || '';
+      const short = full.length > 11 ? `${full.slice(0, 9)}…` : full;
+      return {
+        skill: short,
+        fullSkill: full,
+        current: d.current,
+        required: d.required ?? 0
+      };
+    });
+
+  const unassessedSkillsList = stats?.unassessedSkills || [];
+  const unassessedCount = unassessedSkillsList.length > 0
+    ? unassessedSkillsList.length
+    : Math.max(0, (stats?.totalSkillsCount ?? 0) - (stats?.assessedSkillsCount ?? 0));
 
   // Gaps sorted by impact (largest absolute gap first)
   const rawGaps: GapItem[] = stats?.topGaps ?? [];
@@ -228,16 +235,18 @@ export function DashboardPage() {
 
   const recommendations: RecommendedCourseItem[] = stats?.recommendedCourses ?? [];
   const weeklyHours = profile?.weeklyStudyHours || 10;
+  const totalCoursesCount = stats?.totalCoursesCount ?? 61;
 
   // Next Best Action Determination using pure logic
-  const { topGap, topCourse, estimatedGain } = determineNextBestAction(
+  const { topGap, topCourse, estimatedGain, unassessedPrompt } = determineNextBestAction(
     sortedGaps,
     recommendations,
-    radarData.length > 0 ? radarData : sortedGaps
+    radarData.length > 0 ? radarData : sortedGaps,
+    unassessedSkillsList
   );
 
   return (
-    <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto pb-12">
+    <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto pb-28 sm:pb-24">
       {/* Top Welcome & Target Role Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-border">
         <div className="space-y-1">
@@ -452,9 +461,16 @@ export function DashboardPage() {
                           {t('dashboard.readinessOutOf')}
                         </span>
                       </div>
-                      <div className="text-[10px] text-muted-foreground mt-0.5">
-                        {stats?.assessedRatioText ||
-                          `Based on ${stats?.assessedSkillsCount ?? 0} of ${stats?.totalSkillsCount ?? stats?.topGaps?.length ?? 0} skills assessed`}
+                      <div className="flex items-center gap-1.5 flex-wrap text-[10px] text-muted-foreground mt-0.5">
+                        <span>
+                          {stats?.assessedRatioText ||
+                            `Based on ${stats?.assessedSkillsCount ?? 0} of ${stats?.totalSkillsCount ?? stats?.topGaps?.length ?? 0} skills assessed`}
+                        </span>
+                        {(stats?.isPreliminary || (stats?.totalSkillsCount > 0 && stats?.assessedSkillsCount < stats.totalSkillsCount / 2)) && (
+                          <Badge variant="outline" className="text-[9px] px-1.5 py-0 bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 font-medium">
+                            Preliminary
+                          </Badge>
+                        )}
                       </div>
                     </>
                   ) : (
@@ -541,7 +557,7 @@ export function DashboardPage() {
                   <span className="text-[11px] font-bold uppercase tracking-wider text-[#C2410C]">
                     {t('dashboard.nextAction.tag')}
                   </span>
-                  {readiness !== null && estimatedGain > 0 && (
+                  {readiness !== null && estimatedGain > 0 && !unassessedPrompt && (
                     <Badge variant="outline" className="text-[10px]">
                       {t('dashboard.nextAction.impactLabel', {
                         pts: estimatedGain
@@ -550,12 +566,16 @@ export function DashboardPage() {
                   )}
                 </div>
                 <h3 className="text-base sm:text-lg font-serif font-bold text-foreground">
-                  {topGap
+                  {unassessedPrompt
+                    ? `Take the ${unassessedPrompt.skillName} diagnostic to measure this gap`
+                    : topGap
                     ? `${t('dashboard.nextAction.title')}: Bridge ${topGap.skillName}`
                     : `${t('dashboard.nextAction.title')}: Take Diagnostic Assessment`}
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  {topCourse
+                  {unassessedPrompt
+                    ? `This role strongly requires ${unassessedPrompt.skillName}. Complete the objective diagnostic assessment to establish your proficiency baseline and unlock targeted recommendations.`
+                    : topCourse
                     ? `${topCourse.recommendationReason} (${topCourse.course.title} • ${topCourse.course.estimatedHours} hrs)`
                     : topGap
                     ? t('dashboard.nextAction.noCourseCoveringGap', {
@@ -566,7 +586,14 @@ export function DashboardPage() {
               </div>
 
               <div className="flex-shrink-0 w-full sm:w-auto">
-                {topCourse ? (
+                {unassessedPrompt ? (
+                  <Link to={`/assessments?skillId=${unassessedPrompt.skillId}`} className="inline-block w-full sm:w-auto">
+                    <Button size="sm" className="w-full sm:w-auto text-xs font-semibold shadow-sm">
+                      <span>{t('dashboard.takeFirstDiagnostic', { defaultValue: 'Take Diagnostic' })}</span>
+                      <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                    </Button>
+                  </Link>
+                ) : topCourse ? (
                   <a
                     href={topCourse.course.destinationUrl}
                     target="_blank"
@@ -588,7 +615,7 @@ export function DashboardPage() {
                 ) : (
                   <Link to="/courses" className="inline-block w-full sm:w-auto">
                     <Button size="sm" className="w-full sm:w-auto text-xs font-semibold shadow-sm">
-                      <span>{t('dashboard.browseCatalogue', { count: 61 })}</span>
+                      <span>{t('dashboard.browseCatalogue', { count: totalCoursesCount })}</span>
                       <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                     </Button>
                   </Link>
@@ -614,16 +641,16 @@ export function DashboardPage() {
               <CardContent className="space-y-4">
                 <div className="w-full h-72 sm:h-80">
                   <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart data={radarData} margin={{ top: 15, right: 25, bottom: 15, left: 25 }}>
+                    <RadarChart data={radarData} margin={{ top: 25, right: 35, bottom: 25, left: 35 }}>
                       <PolarGrid stroke="#D4D0C5" className="dark:stroke-border/60" />
                       <PolarAngleAxis
                         dataKey="skill"
-                        tick={{ fill: '#6B6861', fontSize: 11 }}
+                        tick={{ fill: '#6B6861', fontSize: 10 }}
                       />
                       <PolarRadiusAxis
                         angle={90}
                         domain={[0, 5]}
-                        tick={{ fill: '#6B6861', fontSize: 10 }}
+                        tick={{ fill: '#6B6861', fontSize: 9 }}
                         tickCount={6}
                       />
                       <Tooltip
@@ -677,6 +704,13 @@ export function DashboardPage() {
                     <span>{t('dashboard.radar.requiredLegend')}</span>
                   </span>
                 </div>
+
+                {/* Unassessed skills note */}
+                {unassessedCount > 0 && (
+                  <div className="text-center text-[11px] text-muted-foreground italic pt-1">
+                    {unassessedCount} {unassessedCount === 1 ? 'skill not assessed' : 'skills not assessed'}
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -796,6 +830,7 @@ export function DashboardPage() {
                 {[
                   {
                     idx: 1,
+                    isRoutine: false,
                     text: topCourse
                       ? `Core Module: ${topGap ? topGap.skillName : 'Target Skill'} via ${topCourse.course.title} (${(weeklyHours * 0.4).toFixed(1)} hrs)`
                       : topGap
@@ -804,14 +839,17 @@ export function DashboardPage() {
                   },
                   {
                     idx: 2,
+                    isRoutine: true,
                     text: `Hands-on Lab Practice & Problem Sets (${(weeklyHours * 0.3).toFixed(1)} hrs)`
                   },
                   {
                     idx: 3,
+                    isRoutine: true,
                     text: `Diagnostic & Knowledge Check Quizzes (${(weeklyHours * 0.15).toFixed(1)} hrs)`
                   },
                   {
                     idx: 4,
+                    isRoutine: true,
                     text: `Concept Revision & Code Reflection (${(weeklyHours * 0.15).toFixed(1)} hrs)`
                   }
                 ].map((item) => {
@@ -820,25 +858,32 @@ export function DashboardPage() {
                     <div
                       key={item.idx}
                       onClick={() => toggleMilestone(item.idx)}
-                      className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-center gap-3 ${
+                      className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between gap-3 ${
                         isChecked
                           ? 'border-green-600/30 bg-green-500/5 text-muted-foreground line-through'
                           : 'border-border bg-card hover:bg-secondary/30 text-foreground'
                       }`}
                     >
-                      <button
-                        type="button"
-                        className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-colors ${
-                          isChecked
-                            ? 'bg-green-600 border-green-600 text-white'
-                            : 'border-muted-foreground/40 bg-background'
-                        }`}
-                      >
-                        {isChecked && <Check className="w-3 h-3" />}
-                      </button>
-                      <span className="text-xs font-medium leading-relaxed select-none">
-                        {item.text}
-                      </span>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <button
+                          type="button"
+                          className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-colors ${
+                            isChecked
+                              ? 'bg-green-600 border-green-600 text-white'
+                              : 'border-muted-foreground/40 bg-background'
+                          }`}
+                        >
+                          {isChecked && <Check className="w-3 h-3" />}
+                        </button>
+                        <span className="text-xs font-medium leading-relaxed select-none">
+                          {item.text}
+                        </span>
+                      </div>
+                      {item.isRoutine && (
+                        <Badge variant="outline" className="text-[9px] px-1.5 py-0 text-muted-foreground border-border whitespace-nowrap flex-shrink-0">
+                          Suggested routine
+                        </Badge>
+                      )}
                     </div>
                   );
                 })}
@@ -865,7 +910,7 @@ export function DashboardPage() {
                   to="/courses"
                   className="text-xs text-[#C2410C] hover:underline font-semibold whitespace-nowrap"
                 >
-                  {t('dashboard.browseCatalogue', { count: 61 })}
+                  {t('dashboard.browseCatalogue', { count: totalCoursesCount })}
                 </Link>
               </div>
 
