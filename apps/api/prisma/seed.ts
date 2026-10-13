@@ -235,6 +235,54 @@ export async function seedDatabase() {
   }
   console.log(`✅ Seeded diagnostic assessment questions.`);
 
+  // Cleanup obsolete questions not present in seedData.ts
+  const validQuestionSignatures = new Set(
+    diagnosticQuestionsData.map((q) => `${q.skillCode}:::${q.questionText.trim()}`)
+  );
+
+  const existingQuestions = await prisma.assessmentQuestion.findMany({
+    select: {
+      id: true,
+      questionText: true,
+      skill: {
+        select: {
+          code: true
+        }
+      },
+      _count: {
+        select: {
+          answers: true
+        }
+      }
+    }
+  });
+
+  let deletedQCount = 0;
+  let inactiveQCount = 0;
+
+  for (const q of existingQuestions) {
+    const rawText = q.questionText.replace(/^\[INACTIVE\]\s*/i, '').trim();
+    const signature = `${q.skill.code}:::${rawText}`;
+    if (!validQuestionSignatures.has(signature)) {
+      if (q._count.answers === 0) {
+        await prisma.assessmentQuestion.delete({ where: { id: q.id } });
+        deletedQCount++;
+      } else if (!q.questionText.startsWith('[INACTIVE] ')) {
+        await prisma.assessmentQuestion.update({
+          where: { id: q.id },
+          data: {
+            questionText: `[INACTIVE] ${rawText}`
+          }
+        });
+        inactiveQCount++;
+      }
+    }
+  }
+
+  if (deletedQCount > 0 || inactiveQCount > 0) {
+    console.log(`🧹 Cleaned up questions: ${deletedQCount} deleted (unreferenced), ${inactiveQCount} marked inactive.`);
+  }
+
   // 5. Bootstrap Initial Administrator if email configured
   const adminEmail = process.env.INITIAL_ADMIN_EMAIL;
   if (adminEmail) {

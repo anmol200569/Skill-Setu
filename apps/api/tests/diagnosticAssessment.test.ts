@@ -40,6 +40,15 @@ describe('Diagnostic Assessments & Seed Data Suite', () => {
         expect(q).toHaveProperty('options');
         expect(q).not.toHaveProperty('correctAnswers');
       }
+
+      expect(prisma.assessmentQuestion.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            skillId: 'test-skill-uuid',
+            NOT: { questionText: { startsWith: '[INACTIVE]' } }
+          })
+        })
+      );
     });
 
     it('returns empty array [] with 200 when skill has no diagnostic questions', async () => {
@@ -218,6 +227,36 @@ describe('Diagnostic Assessments & Seed Data Suite', () => {
       expect(toDelete).toEqual(['obsolete-unreferenced-course']);
       expect(toDelete).not.toContain('obsolete-referenced-course');
       expect(toDelete).not.toContain('valid-active-course');
+    });
+
+    it('simulates safe question cleanup logic: deletes unreferenced questions and marks referenced questions as inactive', () => {
+      const validSignatures = new Set(['ts-js:::Active Question A', 'ts-js:::Active Question B']);
+
+      const dbQuestions = [
+        { id: 'q-active', skillCode: 'ts-js', questionText: 'Active Question A', answerCount: 5 },
+        { id: 'q-obsolete-unref', skillCode: 'ts-js', questionText: 'Obsolete Question X', answerCount: 0 },
+        { id: 'q-obsolete-ref', skillCode: 'ts-js', questionText: 'Obsolete Question Y', answerCount: 2 }
+      ];
+
+      const toDelete: string[] = [];
+      const toMarkInactive: { id: string; newText: string }[] = [];
+
+      for (const q of dbQuestions) {
+        const rawText = q.questionText.replace(/^\[INACTIVE\]\s*/i, '').trim();
+        const sig = `${q.skillCode}:::${rawText}`;
+        if (!validSignatures.has(sig)) {
+          if (q.answerCount === 0) {
+            toDelete.push(q.id);
+          } else if (!q.questionText.startsWith('[INACTIVE] ')) {
+            toMarkInactive.push({ id: q.id, newText: `[INACTIVE] ${rawText}` });
+          }
+        }
+      }
+
+      expect(toDelete).toEqual(['q-obsolete-unref']);
+      expect(toMarkInactive).toEqual([
+        { id: 'q-obsolete-ref', newText: '[INACTIVE] Obsolete Question Y' }
+      ]);
     });
   });
 

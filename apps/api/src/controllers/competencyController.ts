@@ -20,7 +20,17 @@ export async function getCompetencyStats(_req: Request, res: Response): Promise<
         skills: {
           include: {
             _count: {
-              select: { assessmentQuestions: true }
+              select: {
+                assessmentQuestions: {
+                  where: {
+                    NOT: {
+                      questionText: {
+                        startsWith: '[INACTIVE]'
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }

@@ -18,7 +18,14 @@ export async function getSkillAssessmentQuestions(req: Request, res: Response): 
   const { skillId } = req.params;
 
   const questions = await prisma.assessmentQuestion.findMany({
-    where: { skillId },
+    where: {
+      skillId,
+      NOT: {
+        questionText: {
+          startsWith: '[INACTIVE]'
+        }
+      }
+    },
     take: 10,
     select: {
       id: true,
