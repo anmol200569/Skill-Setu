@@ -126,6 +126,14 @@ export interface SkillGapItem {
   weight: number;
 }
 
+export interface UnassessedSkillItem {
+  skillId: string;
+  skillName: string;
+  domainName?: string;
+  requiredLevel: number;
+  weight?: number;
+}
+
 export interface SkillGapAnalysisResult {
   userId: string;
   targetRoleId?: string | null;
@@ -135,7 +143,9 @@ export interface SkillGapAnalysisResult {
   assessedSkillsCount?: number;
   totalRequiredSkillsCount?: number;
   assessedRatioText?: string;
+  isPreliminary?: boolean;
   gaps: SkillGapItem[];
+  unassessedSkills?: UnassessedSkillItem[];
   strengths: { skillId: string; skillName: string; level: number }[];
   aiSummaryExplanation: string;
   analyzedAt: string;

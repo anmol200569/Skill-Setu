@@ -41,9 +41,11 @@ export function getDeterministicSkillSummary(roleTitle: string, readiness: numbe
     return '';
   }
 
-  const assessedGaps = gaps.filter((g) => g.isAssessed);
-  const gapsToUse = assessedGaps.length > 0 ? assessedGaps : gaps;
-  const top2 = gapsToUse.slice(0, 2);
+  const assessedGaps = gaps.filter((g) => g.isAssessed !== false && g.currentLevel !== null && g.currentLevel !== undefined);
+  if (assessedGaps.length === 0) {
+    return '';
+  }
+  const top2 = assessedGaps.slice(0, 2);
 
   if (top2.length === 1) {
     return `Your readiness for ${roleTitle} is ${readiness}%. Prioritize bridging your top skill gap in ${top2[0].skillName} (deficit of ${top2[0].gap.toFixed(1)} pts) to qualify for this role.`;
@@ -193,7 +195,9 @@ Provide a concise, encouraging 2-3 sentence strategic summary and highlight whic
     assessedSkillsCount: calculation.assessedSkillsCount,
     totalRequiredSkillsCount: calculation.totalSkillsCount,
     assessedRatioText: calculation.assessedRatioText,
+    isPreliminary: calculation.isPreliminary,
     gaps: calculation.gaps,
+    unassessedSkills: calculation.unassessedSkills,
     strengths: calculation.strengths,
     aiSummaryExplanation: aiSummary,
     analyzedAt: new Date().toISOString()

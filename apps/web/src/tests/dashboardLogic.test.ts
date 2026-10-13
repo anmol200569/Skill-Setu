@@ -243,7 +243,7 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
       expect(computeEstimatedReadinessGain({ gap: 2, weight: 1 }, [])).toBe(0);
     });
 
-    it('proves identical numbers for Web and API imports using shared calculateReadiness', async () => {
+    it('proves identical numbers and contract output for Web and API imports using shared calculateReadiness', async () => {
       const { calculateReadiness } = await import('@skill-setu/shared');
       const reqs = [
         { skillId: 's1', skillName: 'React', requiredProficiency: 4, weight: 1.5 },
@@ -262,7 +262,47 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
 
       expect(webScore).toBe(sharedOutput.overallReadinessScore);
       expect(sharedOutput.assessedRatioText).toBe('Based on 1 of 2 skills assessed');
-      expect(sharedOutput.gaps.find(g => g.skillId === 's2')?.currentLevel).toBeNull();
+      expect(sharedOutput.isPreliminary).toBe(false); // 1 is not fewer than 2/2 (1 == 1)
+      expect(sharedOutput.gaps.length).toBe(1);
+      expect(sharedOutput.gaps[0].skillId).toBe('s1');
+      expect(sharedOutput.unassessedSkills.length).toBe(1);
+      expect(sharedOutput.unassessedSkills[0].skillId).toBe('s2');
+      expect(sharedOutput.unassessedSkills[0]).not.toHaveProperty('gap');
+      expect(sharedOutput.unassessedSkills[0]).not.toHaveProperty('priorityScore');
+    });
+
+    it('verifies effectiveLevel = verifiedScore directly when no selfAssessedLevel is provided (no self=1 assumption)', async () => {
+      const { calculateReadiness } = await import('@skill-setu/shared');
+      const reqs = [
+        { skillId: 's1', skillName: 'React', requiredProficiency: 4, weight: 1.0 }
+      ];
+      const userAssessments = [
+        { skillId: 's1', verifiedScore: 3 } // no selfAssessedLevel
+      ];
+
+      const sharedOutput = calculateReadiness(reqs, userAssessments);
+      expect(sharedOutput.gaps[0].currentLevel).toBe(3);
+      expect(sharedOutput.gaps[0].gap).toBe(1); // 4 - 3 = 1 (if self=1 assumed: 4 - 2.2 = 1.8)
+    });
+
+    it('flags isPreliminary when fewer than half of skills are assessed (e.g. 1 of 3)', async () => {
+      const { calculateReadiness } = await import('@skill-setu/shared');
+      const reqs = [
+        { skillId: 's1', skillName: 'React', requiredProficiency: 4, weight: 1.0 },
+        { skillId: 's2', skillName: 'Node', requiredProficiency: 3, weight: 1.0 },
+        { skillId: 's3', skillName: 'SQL', requiredProficiency: 3, weight: 1.0 }
+      ];
+      const userAssessments = [
+        { skillId: 's1', selfAssessedLevel: 3, verifiedScore: 3 },
+        { skillId: 's2', verifiedScore: null },
+        { skillId: 's3', verifiedScore: null }
+      ];
+
+      const sharedOutput = calculateReadiness(reqs, userAssessments);
+      expect(sharedOutput.isPreliminary).toBe(true);
+      expect(sharedOutput.assessedSkillsCount).toBe(1);
+      expect(sharedOutput.totalSkillsCount).toBe(3);
+      expect(sharedOutput.unassessedSkills.length).toBe(2);
     });
   });
 });

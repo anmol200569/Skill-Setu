@@ -106,7 +106,7 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
   }
 
   // Run independent Prisma queries and gap analysis concurrently using Promise.all
-  const [profile, enrollments, quizAttempts, recentAssessments] = await Promise.all([
+  const [profile, enrollments, quizAttempts, recentAssessments, totalCoursesCount] = await Promise.all([
     // 1. Fetch Profile
     prisma.profile.findUnique({
       where: { userId },
@@ -130,7 +130,9 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
       include: { skill: true },
       orderBy: { startedAt: 'desc' },
       take: 5
-    })
+    }),
+    // 5. Total Courses Count from database
+    prisma.course.count()
   ]);
 
   const completedCourses = enrollments.filter((e) => e.status === 'completed');
@@ -155,6 +157,9 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
       assessedSkillsCount: 0,
       totalSkillsCount: 0,
       assessedRatioText: 'Based on 0 of 0 skills assessed',
+      isPreliminary: false,
+      unassessedSkills: [],
+      totalCoursesCount,
       targetRoleId: null,
       targetRoleTitle: null,
       completedCoursesCount: completedCourses.length,
@@ -248,6 +253,9 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
     assessedSkillsCount: gapAnalysis.assessedSkillsCount,
     totalSkillsCount: gapAnalysis.totalRequiredSkillsCount,
     assessedRatioText: gapAnalysis.assessedRatioText,
+    isPreliminary: gapAnalysis.isPreliminary ?? false,
+    unassessedSkills: gapAnalysis.unassessedSkills || [],
+    totalCoursesCount,
     targetRoleId: profile.targetRoleId,
     targetRoleTitle: gapAnalysis.targetRoleTitle,
     completedCoursesCount: completedCourses.length,

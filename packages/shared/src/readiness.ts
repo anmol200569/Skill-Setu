@@ -1,4 +1,4 @@
-import { SkillGapItem } from './types/index.js';
+import { SkillGapItem, UnassessedSkillItem } from './types/index.js';
 
 export interface RoleRequirementInput {
   skillId: string;
@@ -15,13 +15,17 @@ export interface UserSkillAssessmentInput {
   verifiedScore?: number | null;
 }
 
+export type { UnassessedSkillItem };
+
 export interface ReadinessCalculationResult {
   status: 'active' | 'not_started';
   overallReadinessScore: number | null;
   assessedSkillsCount: number;
   totalSkillsCount: number;
   assessedRatioText: string;
+  isPreliminary: boolean;
   gaps: SkillGapItem[];
+  unassessedSkills: UnassessedSkillItem[];
   strengths: { skillId: string; skillName: string; level: number }[];
 }
 
@@ -29,11 +33,13 @@ export interface ReadinessCalculationResult {
  * Computes readiness score and skill gap breakdown from role requirements and user assessments.
  *
  * Requirements & Contract:
- * 1. A skill with no diagnostic answers (verifiedScore === null or undefined) is UNASSESSED (isAssessed: false, currentLevel: null).
- * 2. If 0 skills are assessed, status is "not_started", overallReadinessScore is null, and ratio text is "Based on 0 of M skills assessed".
- * 3. If 1 or more skills are assessed, overall readiness /100 is computed strictly from the assessed skills:
+ * 1. If the user has no self-assessed level for a skill, effective level = verified score only (do NOT assume self = 1).
+ * 2. Unassessed skills must never get a numeric deficit, priority score or "gain".
+ *    Keep them in a separate "not assessed" list; top gaps / next best action / AI synthesis use only assessed skills.
+ * 3. If fewer than half of the role's skills are assessed, show readiness with a "Preliminary" label
+ *    next to "Based on N of M skills assessed" (isPreliminary = true).
+ * 4. Overall readiness /100 is computed strictly from the assessed skills:
  *    readiness = round((1 - sum(gap * weight) / sum(required * weight)) * 100)
- * 4. Priority multipliers: must_have = 1.5, good_to_have = 1.0, optional = 0.5.
  */
 export function calculateReadiness(
   requirements: RoleRequirementInput[],
@@ -51,6 +57,7 @@ export function calculateReadiness(
   let totalWeightedAssessedGap = 0;
 
   const gaps: SkillGapItem[] = [];
+  const unassessedSkills: UnassessedSkillItem[] = [];
   const strengths: { skillId: string; skillName: string; level: number }[] = [];
 
   for (const req of requirements) {
@@ -64,19 +71,33 @@ export function calculateReadiness(
       assessment?.verifiedScore !== null &&
       assessment?.verifiedScore !== undefined;
 
-    let effectiveLevel: number | null = null;
-    let gap = reqLevel;
-
-    if (isAssessed) {
-      assessedSkillsCount++;
-      const verified = assessment!.verifiedScore!;
-      const self = assessment?.selfAssessedLevel ?? 1;
-      effectiveLevel = Number((0.4 * self + 0.6 * verified).toFixed(2));
-      gap = Math.max(0, Number((reqLevel - effectiveLevel).toFixed(2)));
-
-      totalWeightedAssessedRequired += reqLevel * weight;
-      totalWeightedAssessedGap += gap * weight;
+    if (!isAssessed) {
+      // Unassessed skills must never get a numeric deficit, priority score or gain
+      unassessedSkills.push({
+        skillId: req.skillId,
+        skillName: req.skillName,
+        domainName: req.domainName || '',
+        requiredLevel: reqLevel,
+        weight
+      });
+      continue;
     }
+
+    assessedSkillsCount++;
+    const verified = assessment!.verifiedScore!;
+    const hasSelf =
+      assessment?.selfAssessedLevel !== null &&
+      assessment?.selfAssessedLevel !== undefined;
+
+    // Rule 1: If no self-assessed level, effective level = verified score only (do NOT assume self = 1)
+    const effectiveLevel = hasSelf
+      ? Number((0.4 * assessment!.selfAssessedLevel! + 0.6 * verified).toFixed(2))
+      : Number(verified.toFixed(2));
+
+    const gap = Math.max(0, Number((reqLevel - effectiveLevel).toFixed(2)));
+
+    totalWeightedAssessedRequired += reqLevel * weight;
+    totalWeightedAssessedGap += gap * weight;
 
     const priorityMultiplier =
       priority === 'must_have' ? 1.5 : (priority === 'good_to_have' ? 1.0 : 0.5);
@@ -91,20 +112,20 @@ export function calculateReadiness(
       priorityCategory = 'medium';
     }
 
-    if (!isAssessed || gap > 0) {
+    if (gap > 0) {
       gaps.push({
         skillId: req.skillId,
         skillName: req.skillName,
         domainName: req.domainName || '',
         requiredLevel: reqLevel,
         currentLevel: effectiveLevel,
-        isAssessed,
+        isAssessed: true,
         gap,
         priority: priorityCategory,
         priorityScore,
         weight
       });
-    } else if (effectiveLevel !== null) {
+    } else {
       strengths.push({
         skillId: req.skillId,
         skillName: req.skillName,
@@ -113,10 +134,12 @@ export function calculateReadiness(
     }
   }
 
-  // Sort gaps by priority score descending
+  // Sort assessed gaps by priority score descending
   gaps.sort((a, b) => b.priorityScore - a.priorityScore);
 
   const assessedRatioText = `Based on ${assessedSkillsCount} of ${totalSkillsCount} skills assessed`;
+  // Rule 3: If fewer than half of the role's skills are assessed, mark preliminary
+  const isPreliminary = totalSkillsCount > 0 && assessedSkillsCount < totalSkillsCount / 2;
 
   if (assessedSkillsCount === 0 || totalWeightedAssessedRequired <= 0) {
     return {
@@ -125,7 +148,9 @@ export function calculateReadiness(
       assessedSkillsCount: 0,
       totalSkillsCount,
       assessedRatioText,
+      isPreliminary: false,
       gaps,
+      unassessedSkills,
       strengths
     };
   }
@@ -143,7 +168,9 @@ export function calculateReadiness(
     assessedSkillsCount,
     totalSkillsCount,
     assessedRatioText,
+    isPreliminary,
     gaps,
+    unassessedSkills,
     strengths
   };
 }
@@ -152,13 +179,13 @@ export function calculateReadiness(
  * Computes the estimated readiness gain when closing the highest-impact gap,
  * scaled to the total role requirements according to the platform's readiness formula.
  *
- * Shows 0 (no gain) if it cannot be computed (e.g. 0 assessed skills, no gaps, or total weighted requirements <= 0).
+ * Shows 0 (no gain) if it cannot be computed (e.g. 0 assessed skills, unassessed top gap, no gaps, or total weighted requirements <= 0).
  */
 export function calculateEstimatedReadinessGain(
   topGap: { gap: number; weight?: number; isAssessed?: boolean } | null | undefined,
   roleRequirements: Array<{ requiredProficiency?: number; required?: number; requiredLevel?: number; weight?: number }>
 ): number {
-  if (!topGap || typeof topGap.gap !== 'number' || topGap.gap <= 0) {
+  if (!topGap || topGap.isAssessed === false || typeof topGap.gap !== 'number' || topGap.gap <= 0) {
     return 0;
   }
 

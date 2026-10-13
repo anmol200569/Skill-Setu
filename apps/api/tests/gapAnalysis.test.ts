@@ -102,7 +102,7 @@ describe('Skill Gap Analysis & Readiness Engine', () => {
   });
 
   describe('Strict Assessment Contract: 0, Partial, Full Assessment and Shared Formula Parity', () => {
-    it('returns not_started with null readiness when 0 skills are assessed, showing "Not assessed"', () => {
+    it('returns not_started with null readiness and unassessed skills in unassessedSkills list when 0 skills assessed', () => {
       // User with 0 diagnostic answers (verifiedScore is null / undefined)
       const userSkills: RawSkillInput[] = [
         { skillId: 'ts-js', selfAssessedLevel: 2, verifiedScore: null },
@@ -116,15 +116,37 @@ describe('Skill Gap Analysis & Readiness Engine', () => {
       expect(result.assessedSkillsCount).toBe(0);
       expect(result.totalSkillsCount).toBe(3);
       expect(result.assessedRatioText).toBe('Based on 0 of 3 skills assessed');
+      expect(result.isPreliminary).toBe(false);
 
-      // Every unassessed skill must report currentLevel as null and isAssessed as false
-      for (const gap of result.gaps) {
-        expect(gap.currentLevel).toBeNull();
-        expect(gap.isAssessed).toBe(false);
+      // Gaps must only contain assessed skills; unassessed skills must be in unassessedSkills without numeric deficit
+      expect(result.gaps).toEqual([]);
+      expect(result.unassessedSkills.length).toBe(3);
+      for (const unassessed of result.unassessedSkills) {
+        expect(unassessed).toHaveProperty('skillId');
+        expect(unassessed).toHaveProperty('skillName');
+        expect(unassessed).toHaveProperty('requiredLevel');
+        expect(unassessed).not.toHaveProperty('gap');
+        expect(unassessed).not.toHaveProperty('priorityScore');
       }
     });
 
-    it('computes readiness strictly from assessed skills in partial assessment (e.g. 1 of 3)', () => {
+    it('computes effectiveLevel = verifiedScore directly when user has no self-assessed level (do NOT assume self = 1)', () => {
+      // User has verified score 3.0 on ts-js (required 4.0), but no selfAssessedLevel
+      const userSkills: RawSkillInput[] = [
+        { skillId: 'ts-js', verifiedScore: 3.0 }
+      ];
+
+      const result = computeSkillGapMetrics(sampleRequirements, userSkills);
+      expect(result.assessedSkillsCount).toBe(1);
+      const tsGap = result.gaps.find((g) => g.skillId === 'ts-js');
+      expect(tsGap).toBeDefined();
+      // If self assumed 1: eff = 0.4*1 + 0.6*3 = 2.2 -> gap 1.8
+      // Under rule (no assumption): eff = 3.0 -> gap = 4.0 - 3.0 = 1.0
+      expect(tsGap?.currentLevel).toBe(3.0);
+      expect(tsGap?.gap).toBe(1.0);
+    });
+
+    it('flags isPreliminary when fewer than half of the role skills are assessed (e.g. 1 of 3)', () => {
       // Only ts-js has a verified diagnostic score
       const userSkills: RawSkillInput[] = [
         { skillId: 'ts-js', selfAssessedLevel: 2, verifiedScore: 4 },
@@ -138,21 +160,20 @@ describe('Skill Gap Analysis & Readiness Engine', () => {
       expect(result.assessedSkillsCount).toBe(1);
       expect(result.totalSkillsCount).toBe(3);
       expect(result.assessedRatioText).toBe('Based on 1 of 3 skills assessed');
+      expect(result.isPreliminary).toBe(true); // 1 < 3/2 -> preliminary
 
       // ts-js is assessed: effective = 0.4*2 + 0.6*4 = 3.2. Gap = 4 - 3.2 = 0.8
       // Readiness from assessed skills: (1 - (0.8*1.5) / (4*1.5)) * 100 = (1 - 1.2 / 6.0) * 100 = 80%
       expect(result.overallReadinessScore).toBe(80);
 
-      const tsGap = result.gaps.find((g) => g.skillId === 'ts-js');
-      expect(tsGap?.isAssessed).toBe(true);
-      expect(tsGap?.currentLevel).toBe(3.2);
-
-      const reactGap = result.gaps.find((g) => g.skillId === 'react');
-      expect(reactGap?.isAssessed).toBe(false);
-      expect(reactGap?.currentLevel).toBeNull();
+      // Assessed gaps contain only ts-js; unassessedSkills contain react & sys-design
+      expect(result.gaps.length).toBe(1);
+      expect(result.gaps[0].skillId).toBe('ts-js');
+      expect(result.unassessedSkills.length).toBe(2);
+      expect(result.unassessedSkills.map((u) => u.skillId)).toEqual(['react', 'sys-design']);
     });
 
-    it('computes readiness across all requirements in full assessment (3 of 3)', () => {
+    it('computes readiness across all requirements in full assessment (3 of 3) with isPreliminary = false', () => {
       const userSkills: RawSkillInput[] = [
         { skillId: 'ts-js', selfAssessedLevel: 3, verifiedScore: 4 }, // eff = 3.6, gap = 0.4
         { skillId: 'react', selfAssessedLevel: 4, verifiedScore: 3 }, // eff = 3.4, gap = 0.6
@@ -165,12 +186,9 @@ describe('Skill Gap Analysis & Readiness Engine', () => {
       expect(result.assessedSkillsCount).toBe(3);
       expect(result.totalSkillsCount).toBe(3);
       expect(result.assessedRatioText).toBe('Based on 3 of 3 skills assessed');
-      expect(typeof result.overallReadinessScore).toBe('number');
-
-      for (const gap of result.gaps) {
-        expect(gap.isAssessed).toBe(true);
-        expect(gap.currentLevel).not.toBeNull();
-      }
+      expect(result.isPreliminary).toBe(false); // 3 >= 3/2
+      expect(result.unassessedSkills.length).toBe(0);
+      expect(result.gaps.length).toBe(3);
     });
 
     it('proves identical numbers for shared readiness formula across API and Web', async () => {
@@ -188,7 +206,9 @@ describe('Skill Gap Analysis & Readiness Engine', () => {
       expect(apiResult.overallReadinessScore).toBe(sharedResult.overallReadinessScore);
       expect(apiResult.assessedSkillsCount).toBe(sharedResult.assessedSkillsCount);
       expect(apiResult.assessedRatioText).toBe(sharedResult.assessedRatioText);
+      expect(apiResult.isPreliminary).toBe(sharedResult.isPreliminary);
       expect(apiResult.gaps).toEqual(sharedResult.gaps);
+      expect(apiResult.unassessedSkills).toEqual(sharedResult.unassessedSkills);
     });
 
     it('verifies weighted averaging honors role requirement weights in readiness calculation', async () => {
