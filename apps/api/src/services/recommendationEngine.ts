@@ -42,7 +42,7 @@ export function calculateCourseMatchScore(
   const reason = primaryMatchedGap
     ? primaryMatchedGap.currentLevel !== null && primaryMatchedGap.isAssessed
       ? `Directly bridges your ${primaryMatchedGap.priority} skill gap in ${primaryMatchedGap.skillName} (Current: ${primaryMatchedGap.currentLevel}/5, Required: ${primaryMatchedGap.requiredLevel}/5).`
-      : `Directly bridges your target requirement in ${primaryMatchedGap.skillName} (Required: Level ${primaryMatchedGap.requiredLevel}/5).`
+      : `Foundational course recommended to build ${primaryMatchedGap.skillName} (Target: Level ${primaryMatchedGap.requiredLevel}/5).`
     : `Strengthens core foundation with hands-on practice from ${course.provider}.`;
 
   return {
@@ -61,37 +61,125 @@ export async function getPersonalizedRecommendations(
     where: { userId }
   });
 
-  const allCourses = await prisma.course.findMany();
+  // Augment gaps with unassessed required skills from user's target career role
+  const effectiveGaps: SkillGapItem[] = [...gaps];
+  const targetRoleId = profile?.targetRoleId;
 
-  const formattedCourses: Course[] = allCourses.map((c) => ({
-    id: c.id,
-    title: c.title,
-    provider: c.provider,
-    destinationUrl: c.destinationUrl,
-    skillsCovered: c.skillsCovered as string[],
-    difficulty: c.difficulty as any,
-    estimatedHours: c.estimatedHours,
-    language: c.language as any,
-    isFree: c.isFree,
-    rating: c.rating,
-    ratingSource: c.ratingSource,
-    description: c.description,
-    thumbnailUrl: c.thumbnailUrl ?? undefined
-  }));
+  if (targetRoleId) {
+    const role = await prisma.role.findUnique({
+      where: { id: targetRoleId },
+      include: {
+        skillsRequired: {
+          include: { skill: true }
+        }
+      }
+    });
+
+    if (role) {
+      const assessedSkillIds = new Set(gaps.map((g) => g.skillId.toLowerCase()));
+      const assessedSkillNames = new Set(gaps.map((g) => g.skillName.toLowerCase()));
+
+      for (const req of role.skillsRequired) {
+        const isAssessed =
+          assessedSkillIds.has(req.skillId.toLowerCase()) ||
+          assessedSkillNames.has(req.skill.name.toLowerCase());
+
+        if (!isAssessed) {
+          const priorityScore =
+            req.requiredProficiency *
+            req.weight *
+            (req.priority === 'critical' ? 1.5 : req.priority === 'high' ? 1.25 : 1.0);
+
+          effectiveGaps.push({
+            skillId: req.skillId,
+            skillName: req.skill.name,
+            domainName: '',
+            requiredLevel: req.requiredProficiency,
+            currentLevel: null,
+            gap: req.requiredProficiency,
+            priority: req.priority as any,
+            weight: req.weight,
+            priorityScore,
+            isAssessed: false
+          });
+        }
+      }
+    }
+  }
+
+  // Sort effective gaps by priorityScore descending
+  effectiveGaps.sort((a, b) => (b.priorityScore || 0) - (a.priorityScore || 0));
+
+  const allCourses = await prisma.course.findMany({
+    include: {
+      courseSkills: {
+        include: {
+          skill: true
+        }
+      }
+    }
+  });
+
+  const formattedCourses: Course[] = allCourses.map((c) => {
+    // Collect skills covered from both JSON skillsCovered and relational CourseSkill mappings
+    const coveredSet = new Set<string>();
+    if (Array.isArray(c.skillsCovered)) {
+      c.skillsCovered.forEach((s) => typeof s === 'string' && coveredSet.add(s));
+    }
+    if (c.courseSkills) {
+      c.courseSkills.forEach((cs) => {
+        coveredSet.add(cs.skillId);
+        if (cs.skill) {
+          coveredSet.add(cs.skill.code);
+          coveredSet.add(cs.skill.name);
+        }
+      });
+    }
+
+    return {
+      id: c.id,
+      title: c.title,
+      provider: c.provider,
+      destinationUrl: c.destinationUrl,
+      skillsCovered: Array.from(coveredSet),
+      difficulty: c.difficulty as any,
+      estimatedHours: c.estimatedHours,
+      language: c.language as any,
+      isFree: c.isFree,
+      rating: c.rating,
+      ratingSource: c.ratingSource,
+      description: c.description,
+      thumbnailUrl: c.thumbnailUrl ?? undefined
+    };
+  });
+
+  // Check if any role required skill has no mapped course in the catalog, and log safely
+  for (const gap of effectiveGaps) {
+    const hasCourse = formattedCourses.some((c) => {
+      const cSkills = (c.skillsCovered || []).map((s) => s.toLowerCase());
+      const name = gap.skillName.toLowerCase();
+      const id = gap.skillId.toLowerCase();
+      return cSkills.some((s) => s === id || s === name || name.includes(s) || s.includes(name));
+    });
+    if (!hasCourse) {
+      console.warn(`[Recommendations] Required skill "${gap.skillName}" (${gap.skillId}) has no mapped courses in catalog. Skipping.`);
+    }
+  }
 
   const recommendations: CourseRecommendation[] = [];
 
   for (const course of formattedCourses) {
     const { score, matchedGap, reason } = calculateCourseMatchScore(
       course,
-      gaps,
+      effectiveGaps,
       {
         preferredLanguage: (profile?.preferredLanguage as any) || 'en',
         weeklyStudyHours: profile?.weeklyStudyHours || 10
       }
     );
 
-    if (score >= 25) {
+    // Accept courses that cover a user gap with sufficient coverage
+    if (score >= 15 || (matchedGap !== null && score > 0)) {
       recommendations.push({
         course,
         matchScore: score,
@@ -103,8 +191,18 @@ export async function getPersonalizedRecommendations(
     }
   }
 
-  // Sort by match score descending
-  recommendations.sort((a, b) => b.matchScore - a.matchScore);
+  // Sort by match score descending, promoting beginner courses for foundational gaps
+  recommendations.sort((a, b) => {
+    if (b.matchScore !== a.matchScore) {
+      return b.matchScore - a.matchScore;
+    }
+    const aBeginner = a.course.difficulty.toLowerCase() === 'beginner' ? 1 : 0;
+    const bBeginner = b.course.difficulty.toLowerCase() === 'beginner' ? 1 : 0;
+    if (bBeginner !== aBeginner) {
+      return bBeginner - aBeginner;
+    }
+    return (b.course.rating || 0) - (a.course.rating || 0);
+  });
 
   const topRecs = recommendations.slice(0, limit);
   topRecs.forEach((r, idx) => {
@@ -123,7 +221,22 @@ export async function generateLearningPath(
     where: { id: targetRoleId }
   });
 
-  const recommendations = await getPersonalizedRecommendations(userId, gaps, 5);
+  const allRecs = await getPersonalizedRecommendations(userId, gaps, 10);
+
+  // Pick recommendations covering diverse skill gaps where possible
+  const seenGaps = new Set<string>();
+  const diverseRecs: CourseRecommendation[] = [];
+  const remainingRecs: CourseRecommendation[] = [];
+
+  for (const r of allRecs) {
+    if (r.gapAddressed && !seenGaps.has(r.gapAddressed)) {
+      seenGaps.add(r.gapAddressed);
+      diverseRecs.push(r);
+    } else {
+      remainingRecs.push(r);
+    }
+  }
+  const recommendations = [...diverseRecs, ...remainingRecs].slice(0, 5);
 
   let totalEstimatedHours = 0;
   for (const r of recommendations) {

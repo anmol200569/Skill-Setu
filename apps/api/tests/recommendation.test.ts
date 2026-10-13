@@ -67,4 +67,31 @@ describe('Course Recommendation Scoring Engine', () => {
     expect(result.score).toBe(0);
     expect(result.matchedGap).toBeNull();
   });
+
+  it('recommends foundational courses for unassessed required skills', () => {
+    const unassessedGap: SkillGapItem = {
+      skillId: 'adv-sql',
+      skillName: 'Advanced SQL & Query Optimization',
+      domainName: 'Databases',
+      requiredLevel: 3,
+      currentLevel: null,
+      gap: 3,
+      priority: 'high',
+      priorityScore: 4.5,
+      weight: 1.5,
+      isAssessed: false
+    };
+
+    const sqlCourse: Course = {
+      ...sampleCourse,
+      id: 'cs50-sql',
+      title: "CS50's Introduction to Databases with SQL",
+      skillsCovered: ['adv-sql']
+    };
+
+    const { score, matchedGap, reason } = calculateCourseMatchScore(sqlCourse, [unassessedGap]);
+    expect(score).toBe(100);
+    expect(matchedGap?.skillId).toBe('adv-sql');
+    expect(reason).toContain('Foundational course recommended to build Advanced SQL & Query Optimization');
+  });
 });

@@ -425,6 +425,11 @@
     "verifiedLevel": "Assessed Proficiency Level",
     "timeSpent": "Time Spent"
   },
+  "learningPath": {
+    "emptyTitle": "Take your first diagnostic to unlock your roadmap",
+    "emptySubtitle": "Complete diagnostic assessments in your target skills to personalize your milestone roadmap and track progress.",
+    "startDiagnostic": "Start Diagnostic"
+  },
   "common": {
     "loading": "Loading...",
     "save": "Save Changes",
