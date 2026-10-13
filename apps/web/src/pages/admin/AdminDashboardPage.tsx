@@ -179,15 +179,21 @@ export function AdminDashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {popularRoles.map((role: any, idx: number) => (
-              <div
-                key={idx}
-                className="p-3.5 rounded-lg border border-border bg-secondary/30 flex items-center justify-between text-xs"
-              >
-                <div className="font-semibold text-foreground">{role.roleTitle}</div>
-                <Badge variant="outline">{role.learnerCount} Aspirants</Badge>
+            {popularRoles.length === 0 ? (
+              <div className="text-center py-8 text-xs text-muted-foreground">
+                No target career roles selected yet.
               </div>
-            ))}
+            ) : (
+              popularRoles.map((role: any, idx: number) => (
+                <div
+                  key={idx}
+                  className="p-3.5 rounded-lg border border-border bg-secondary/30 flex items-center justify-between text-xs"
+                >
+                  <div className="font-semibold text-foreground">{role.roleTitle}</div>
+                  <Badge variant="outline">{role.learnerCount} Aspirants</Badge>
+                </div>
+              ))
+            )}
           </CardContent>
         </Card>
       </div>

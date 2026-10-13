@@ -133,34 +133,48 @@ export function CourseManagerPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
-            {filtered.map((course) => (
-              <tr key={course.id} className="hover:bg-muted/40 transition-colors">
-                <td className="p-3.5 font-medium text-foreground max-w-xs truncate">
-                  {course.title}
-                </td>
-                <td className="p-3.5">
-                  <Badge variant="outline">{course.provider}</Badge>
-                </td>
-                <td className="p-3.5">{course.difficulty}</td>
-                <td className="p-3.5">{course.estimatedHours} hrs</td>
-                <td className="p-3.5 text-right space-x-2">
-                  <a
-                    href={course.destinationUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                  <button
-                    onClick={() => handleDeleteCourse(course.id)}
-                    className="inline-flex p-1.5 rounded hover:bg-red-500/10 text-red-600"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
+            {isLoading ? (
+              <tr>
+                <td colSpan={5} className="p-8 text-center text-muted-foreground">
+                  Loading courses...
                 </td>
               </tr>
-            ))}
+            ) : filtered.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="p-8 text-center text-muted-foreground">
+                  No courses found matching your criteria.
+                </td>
+              </tr>
+            ) : (
+              filtered.map((course) => (
+                <tr key={course.id} className="hover:bg-muted/40 transition-colors">
+                  <td className="p-3.5 font-medium text-foreground max-w-xs truncate">
+                    {course.title}
+                  </td>
+                  <td className="p-3.5">
+                    <Badge variant="outline">{course.provider}</Badge>
+                  </td>
+                  <td className="p-3.5">{course.difficulty}</td>
+                  <td className="p-3.5">{course.estimatedHours} hrs</td>
+                  <td className="p-3.5 text-right space-x-2">
+                    <a
+                      href={course.destinationUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                    <button
+                      onClick={() => handleDeleteCourse(course.id)}
+                      className="inline-flex p-1.5 rounded hover:bg-red-500/10 text-red-600"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

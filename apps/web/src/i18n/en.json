@@ -316,6 +316,8 @@
     "topGapsTitle": "Ranked Priority Skill Gaps",
     "viewAllGaps": "View All Gaps",
     "recommendedCoursesTitle": "Recommended for Your Gap Priority",
+    "noRecommendationsTitle": "No course recommendations yet",
+    "noRecommendationsSub": "Select a target career role or take a diagnostic assessment to receive targeted course tracks.",
     "browseCatalogue": "Browse Catalogue ({{count}} courses)",
     "viewTrack": "View Track",
     "aiSynthesisTitle": "AI Synthesis & Strategy",
@@ -351,7 +353,8 @@
       "tag": "Highest-Impact Step",
       "title": "Next Best Action",
       "impactLabel": "Estimated +{{pts}} Readiness Gain",
-      "button": "Take Action Now"
+      "button": "Take Action Now",
+      "noCourseCoveringGap": "No curated course currently covers this specific gap in the catalog. Explore all catalog courses or start with foundational practice."
     },
     "gapBars": {
       "title": "Skill-by-Skill Gap Breakdown",
@@ -362,6 +365,7 @@
       "critical": "Critical Gap",
       "high": "High Gap",
       "moderate": "Moderate Gap",
+      "notAssessed": "Not assessed",
       "allMet": "You meet all benchmark requirements for this target role!"
     },
     "radar": {
@@ -400,6 +404,7 @@
       "deltaLoss": "{{delta}} pts lower qualification",
       "deltaEqual": "Identical baseline qualification",
       "topGapsTitle": "Top Gaps for {{role}}:",
+      "noGaps": "No competency gaps detected for this role.",
       "switchAction": "Switch Active Role to {{role}}",
       "switchingAction": "Updating active role...",
       "close": "Close Comparison"
@@ -427,7 +432,11 @@
     "submit": "Submit Assessment",
     "reviewScore": "Assessment Result",
     "verifiedLevel": "Assessed Proficiency Level",
-    "timeSpent": "Time Spent"
+    "timeSpent": "Time Spent",
+    "noAssessmentsTitle": "No diagnostic assessments available yet",
+    "noAssessmentsSub": "Diagnostic evaluations will appear once competencies and question banks are configured.",
+    "noDomainAssessments": "No assessments found for this domain.",
+    "viewAllDomains": "View All Domains"
   },
   "learningPath": {
     "emptyTitle": "Take your first diagnostic to unlock your roadmap",

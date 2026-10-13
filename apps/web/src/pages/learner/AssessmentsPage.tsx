@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { apiClient } from '../../lib/api';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
@@ -36,6 +37,7 @@ interface Question {
 }
 
 export function AssessmentsPage() {
+  const { t } = useTranslation();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [userSkills, setUserSkills] = useState<any[]>([]);
   const [selectedDomain, setSelectedDomain] = useState<string>('all');
@@ -179,51 +181,83 @@ export function AssessmentsPage() {
       </div>
 
       {/* Skills Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {filteredSkills.map((skill) => {
-          const userSkill = userSkills.find((us) => us.skillId === skill.id);
-          const hasVerified = userSkill?.verifiedScore !== null && userSkill?.verifiedScore !== undefined;
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-pulse">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="h-44 rounded-xl bg-card border border-border" />
+          ))}
+        </div>
+      ) : skills.length === 0 ? (
+        <Card className="p-12 text-center text-muted-foreground">
+          <Target className="w-10 h-10 text-muted-foreground/60 mx-auto mb-3" />
+          <p className="font-semibold text-foreground text-base">
+            {t('assessment.noAssessmentsTitle', 'No diagnostic assessments available yet')}
+          </p>
+          <p className="text-xs mt-1">
+            {t('assessment.noAssessmentsSub', 'Diagnostic evaluations will appear once competencies and question banks are configured.')}
+          </p>
+        </Card>
+      ) : filteredSkills.length === 0 ? (
+        <Card className="p-12 text-center text-muted-foreground">
+          <p className="font-semibold text-foreground text-sm">
+            {t('assessment.noDomainAssessments', 'No assessments found for this domain.')}
+          </p>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setSelectedDomain('all')}
+            className="mt-3 text-xs"
+          >
+            {t('assessment.viewAllDomains', 'View All Domains')}
+          </Button>
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {filteredSkills.map((skill) => {
+            const userSkill = userSkills.find((us) => us.skillId === skill.id);
+            const hasVerified = userSkill?.verifiedScore !== null && userSkill?.verifiedScore !== undefined;
 
-          return (
-            <Card key={skill.id} className="flex flex-col justify-between hover:border-[#C2410C]/50 transition-colors">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <Badge variant="outline" className="text-[10px]">
-                    {skill.domain?.name || skill.category}
-                  </Badge>
-                  {hasVerified ? (
-                    <Badge variant="success">Verified {userSkill.verifiedScore}/5</Badge>
-                  ) : (
-                    <Badge variant="neutral">Not assessed</Badge>
-                  )}
-                </div>
-                <CardTitle className="text-base font-serif">{skill.name}</CardTitle>
-                <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{skill.description}</p>
-              </CardHeader>
+            return (
+              <Card key={skill.id} className="flex flex-col justify-between hover:border-[#C2410C]/50 transition-colors">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <Badge variant="outline" className="text-[10px]">
+                      {skill.domain?.name || skill.category}
+                    </Badge>
+                    {hasVerified ? (
+                      <Badge variant="success">Verified {userSkill.verifiedScore}/5</Badge>
+                    ) : (
+                      <Badge variant="neutral">Not assessed</Badge>
+                    )}
+                  </div>
+                  <CardTitle className="text-base font-serif">{skill.name}</CardTitle>
+                  <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{skill.description}</p>
+                </CardHeader>
 
-              <CardContent className="pt-0 border-t border-border mt-3 flex items-center justify-between pt-3">
-                <div className="text-xs text-muted-foreground">
-                  {hasVerified ? (
-                    <>
-                      Effective: <strong className="text-foreground">{userSkill?.effectiveScore || userSkill?.verifiedScore}/5</strong>
-                    </>
-                  ) : (
-                    <span className="text-muted-foreground italic">Not assessed</span>
-                  )}
-                </div>
-                <Button
-                  size="sm"
-                  variant={hasVerified ? 'outline' : 'primary'}
-                  onClick={() => startAssessment(skill)}
-                  className="text-xs"
-                >
-                  {hasVerified ? 'Re-assess' : 'Start Diagnostic'}
-                </Button>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+                <CardContent className="pt-0 border-t border-border mt-3 flex items-center justify-between pt-3">
+                  <div className="text-xs text-muted-foreground">
+                    {hasVerified ? (
+                      <>
+                        Effective: <strong className="text-foreground">{userSkill?.effectiveScore || userSkill?.verifiedScore}/5</strong>
+                      </>
+                    ) : (
+                      <span className="text-muted-foreground italic">Not assessed</span>
+                    )}
+                  </div>
+                  <Button
+                    size="sm"
+                    variant={hasVerified ? 'outline' : 'primary'}
+                    onClick={() => startAssessment(skill)}
+                    className="text-xs"
+                  >
+                    {hasVerified ? 'Re-assess' : 'Start Diagnostic'}
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      )}
 
       {/* Recent Assessment History */}
       {history.length > 0 && (

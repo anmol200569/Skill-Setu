@@ -73,37 +73,51 @@ export function QuizManagerPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
-            {quizzes.map((q) => (
-              <tr key={q.id} className="hover:bg-muted/40 transition-colors">
-                <td className="p-3.5 font-medium text-foreground max-w-xs truncate">
-                  {q.title}
-                </td>
-                <td className="p-3.5 text-muted-foreground">{q.creatorEmail}</td>
-                <td className="p-3.5">{q.questionCount}</td>
-                <td className="p-3.5">{q.attemptCount || 0}</td>
-                <td className="p-3.5">
-                  <Badge variant={q.isPublished ? 'success' : 'neutral'}>
-                    {q.isPublished ? 'Published' : 'Draft / Hidden'}
-                  </Badge>
-                </td>
-                <td className="p-3.5 text-right space-x-2">
-                  <button
-                    onClick={() => togglePublish(q)}
-                    className="p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
-                    title={q.isPublished ? 'Hide from learners' : 'Publish for learners'}
-                  >
-                    {q.isPublished ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                  </button>
-                  <button
-                    onClick={() => handleDelete(q.id)}
-                    className="p-1.5 rounded hover:bg-red-500/10 text-red-600"
-                    title="Delete quiz"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
+            {isLoading ? (
+              <tr>
+                <td colSpan={6} className="p-8 text-center text-muted-foreground">
+                  Loading quizzes...
                 </td>
               </tr>
-            ))}
+            ) : quizzes.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="p-8 text-center text-muted-foreground">
+                  No quizzes generated yet.
+                </td>
+              </tr>
+            ) : (
+              quizzes.map((q) => (
+                <tr key={q.id} className="hover:bg-muted/40 transition-colors">
+                  <td className="p-3.5 font-medium text-foreground max-w-xs truncate">
+                    {q.title}
+                  </td>
+                  <td className="p-3.5 text-muted-foreground">{q.creatorEmail}</td>
+                  <td className="p-3.5">{q.questionCount}</td>
+                  <td className="p-3.5">{q.attemptCount || 0}</td>
+                  <td className="p-3.5">
+                    <Badge variant={q.isPublished ? 'success' : 'neutral'}>
+                      {q.isPublished ? 'Published' : 'Draft / Hidden'}
+                    </Badge>
+                  </td>
+                  <td className="p-3.5 text-right space-x-2">
+                    <button
+                      onClick={() => togglePublish(q)}
+                      className="p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
+                      title={q.isPublished ? 'Hide from learners' : 'Publish for learners'}
+                    >
+                      {q.isPublished ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(q.id)}
+                      className="p-1.5 rounded hover:bg-red-500/10 text-red-600"
+                      title="Delete quiz"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

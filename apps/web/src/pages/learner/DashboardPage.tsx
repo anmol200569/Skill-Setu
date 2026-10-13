@@ -953,7 +953,21 @@ export function DashboardPage() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                {recommendations.slice(0, 4).map((rec, idx) => (
+                {recommendations.length === 0 ? (
+                  <div className="col-span-full p-8 rounded-xl border border-dashed border-border bg-card/60 text-center text-muted-foreground text-xs space-y-2">
+                    <BookOpen className="w-8 h-8 text-muted-foreground/60 mx-auto" />
+                    <p className="font-semibold text-foreground">
+                      {t('dashboard.noRecommendationsTitle', 'No course recommendations yet')}
+                    </p>
+                    <p className="text-[11px]">
+                      {t(
+                        'dashboard.noRecommendationsSub',
+                        'Select a target career role or take a diagnostic assessment to receive targeted course tracks.'
+                      )}
+                    </p>
+                  </div>
+                ) : (
+                  recommendations.slice(0, 4).map((rec, idx) => (
                   <div
                     key={idx}
                     className="p-4 rounded-xl border border-border bg-card flex flex-col justify-between hover:border-[#C2410C]/50 transition-colors shadow-sm"
@@ -1101,15 +1115,21 @@ export function DashboardPage() {
                   })}
                 </div>
                 <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
-                  {(whatIfData.gaps || []).slice(0, 4).map((g) => (
-                    <div
-                      key={g.skillId}
-                      className="p-2 rounded-lg border border-border bg-background flex items-center justify-between text-[11px]"
-                    >
-                      <span className="text-foreground font-medium">{g.skillName}</span>
-                      <span className="text-[#C2410C] font-semibold">Gap -{Math.abs(g.gap).toFixed(1)}</span>
+                  {(whatIfData.gaps || []).length === 0 ? (
+                    <div className="p-3 text-center text-muted-foreground text-[11px]">
+                      {t('dashboard.whatIf.noGaps', 'No competency gaps detected for this role.')}
                     </div>
-                  ))}
+                  ) : (
+                    (whatIfData.gaps || []).slice(0, 4).map((g) => (
+                      <div
+                        key={g.skillId}
+                        className="p-2 rounded-lg border border-border bg-background flex items-center justify-between text-[11px]"
+                      >
+                        <span className="text-foreground font-medium">{g.skillName}</span>
+                        <span className="text-[#C2410C] font-semibold">Gap -{Math.abs(g.gap).toFixed(1)}</span>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
