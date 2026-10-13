@@ -94,6 +94,11 @@ export async function authenticate(
       next();
       return;
     }
+    if (token === 'test-partial-token') {
+      req.user = { id: 'test-partial-uuid', email: 'partial@skillsetu.dev', role: 'learner' };
+      next();
+      return;
+    }
   }
 
   // Check in-memory cache first — avoids Supabase + Prisma network calls

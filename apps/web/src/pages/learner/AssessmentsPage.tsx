@@ -194,7 +194,7 @@ export function AssessmentsPage() {
                   {hasVerified ? (
                     <Badge variant="success">Verified {userSkill.verifiedScore}/5</Badge>
                   ) : (
-                    <Badge variant="neutral">Self: {userSkill?.selfAssessedLevel || 1}/5</Badge>
+                    <Badge variant="neutral">Not assessed</Badge>
                   )}
                 </div>
                 <CardTitle className="text-base font-serif">{skill.name}</CardTitle>
@@ -203,7 +203,13 @@ export function AssessmentsPage() {
 
               <CardContent className="pt-0 border-t border-border mt-3 flex items-center justify-between pt-3">
                 <div className="text-xs text-muted-foreground">
-                  Effective: <strong className="text-foreground">{userSkill?.effectiveScore || userSkill?.selfAssessedLevel || 1}/5</strong>
+                  {hasVerified ? (
+                    <>
+                      Effective: <strong className="text-foreground">{userSkill?.effectiveScore || userSkill?.verifiedScore}/5</strong>
+                    </>
+                  ) : (
+                    <span className="text-muted-foreground italic">Not assessed</span>
+                  )}
                 </div>
                 <Button
                   size="sm"

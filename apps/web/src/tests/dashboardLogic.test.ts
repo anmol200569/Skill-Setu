@@ -161,21 +161,19 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
   });
 
   describe('4. What-If Compare computing the same readiness as the backend', () => {
-    it('computes identical readiness score matching backend gapAnalysisEngine formula', () => {
+    it('computes identical readiness score matching backend gapAnalysisEngine formula for partial assessments', () => {
       // Role requirements: 3 skills with weights
       const roleRequirements = [
         { requiredProficiency: 4, weight: 1.5 },
         { requiredProficiency: 3, weight: 1.0 },
         { requiredProficiency: 5, weight: 2.0 }
       ];
-      // Total weighted required: (4*1.5) + (3*1.0) + (5*2.0) = 6.0 + 3.0 + 10.0 = 19.0
 
-      // User skills:
-      // Skill 1: self 3, verified 4 -> effective = 0.4*3 + 0.6*4 = 1.2 + 2.4 = 3.6 -> gap = max(0, 4 - 3.6) = 0.4
-      // Skill 2: self 2, verified null -> effective = 2.0 -> gap = max(0, 3 - 2) = 1.0
-      // Skill 3: self 4, verified 5 -> effective = 0.4*4 + 0.6*5 = 1.6 + 3.0 = 4.6 -> gap = max(0, 5 - 4.6) = 0.4
-      // Total weighted gap: (0.4 * 1.5) + (1.0 * 1.0) + (0.4 * 2.0) = 0.6 + 1.0 + 0.8 = 2.4
-      // Raw readiness = (1 - 2.4 / 19.0) * 100 = (1 - 0.126315) * 100 = 87.368% -> round = 87
+      // Skill 1: assessed (self 3, verified 4) -> eff = 3.6, gap = 0.4, weightedReq = 6.0, weightedGap = 0.6
+      // Skill 2: unassessed (verified null) -> Not included in readiness numerator/denominator
+      // Skill 3: assessed (self 4, verified 5) -> eff = 4.6, gap = 0.4, weightedReq = 10.0, weightedGap = 0.8
+      // Assessed weighted req = 16.0, assessed weighted gap = 1.4
+      // Readiness = round((1 - 1.4 / 16.0) * 100) = 91%
       const userSkills = [
         { selfAssessedLevel: 3, verifiedScore: 4 },
         { selfAssessedLevel: 2, verifiedScore: null },
@@ -183,7 +181,36 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
       ];
 
       const score = computeReadinessScore(roleRequirements, userSkills);
-      expect(score).toBe(87);
+      expect(score).toBe(91);
+    });
+
+    it('returns null readiness when 0 skills are assessed', () => {
+      const roleRequirements = [
+        { requiredProficiency: 4, weight: 1.5 },
+        { requiredProficiency: 3, weight: 1.0 }
+      ];
+      const userSkills = [
+        { selfAssessedLevel: 3, verifiedScore: null },
+        { selfAssessedLevel: 2, verifiedScore: null }
+      ];
+
+      expect(computeReadinessScore(roleRequirements, userSkills)).toBeNull();
+    });
+
+    it('computes full assessment score when all skills have diagnostic answers', () => {
+      const roleRequirements = [
+        { requiredProficiency: 4, weight: 1.5 },
+        { requiredProficiency: 3, weight: 1.0 },
+        { requiredProficiency: 5, weight: 2.0 }
+      ];
+      const userSkills = [
+        { selfAssessedLevel: 3, verifiedScore: 4 },
+        { selfAssessedLevel: 2, verifiedScore: 2 },
+        { selfAssessedLevel: 4, verifiedScore: 5 }
+      ];
+
+      // Total weighted req = 19.0. Total weighted gap = 0.6 + 1.0 + 0.8 = 2.4. (1 - 2.4/19)*100 = 87%
+      expect(computeReadinessScore(roleRequirements, userSkills)).toBe(87);
     });
 
     it('returns 100% when all requirements are fully exceeded', () => {
@@ -208,6 +235,34 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
       ];
 
       expect(computeReadinessScore(roleRequirements, userSkills)).toBe(0);
+    });
+
+    it('shows no gain (0) if readiness gain cannot be computed with the formula', () => {
+      expect(computeEstimatedReadinessGain(null, [])).toBe(0);
+      expect(computeEstimatedReadinessGain({ gap: 0, weight: 1 }, [{ required: 5 }])).toBe(0);
+      expect(computeEstimatedReadinessGain({ gap: 2, weight: 1 }, [])).toBe(0);
+    });
+
+    it('proves identical numbers for Web and API imports using shared calculateReadiness', async () => {
+      const { calculateReadiness } = await import('@skill-setu/shared');
+      const reqs = [
+        { skillId: 's1', skillName: 'React', requiredProficiency: 4, weight: 1.5 },
+        { skillId: 's2', skillName: 'Node', requiredProficiency: 3, weight: 1.0 }
+      ];
+      const userAssessments = [
+        { skillId: 's1', selfAssessedLevel: 2, verifiedScore: 3 },
+        { skillId: 's2', selfAssessedLevel: 1, verifiedScore: null }
+      ];
+
+      const sharedOutput = calculateReadiness(reqs, userAssessments);
+      const webScore = computeReadinessScore(
+        reqs.map(r => ({ skillId: r.skillId, requiredProficiency: r.requiredProficiency, weight: r.weight })),
+        userAssessments
+      );
+
+      expect(webScore).toBe(sharedOutput.overallReadinessScore);
+      expect(sharedOutput.assessedRatioText).toBe('Based on 1 of 2 skills assessed');
+      expect(sharedOutput.gaps.find(g => g.skillId === 's2')?.currentLevel).toBeNull();
     });
   });
 });

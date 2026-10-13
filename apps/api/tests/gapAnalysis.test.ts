@@ -100,4 +100,96 @@ describe('Skill Gap Analysis & Readiness Engine', () => {
     expect(result.gaps).toEqual([]);
     expect(result.strengths).toEqual([]);
   });
+
+  describe('Strict Assessment Contract: 0, Partial, Full Assessment and Shared Formula Parity', () => {
+    it('returns not_started with null readiness when 0 skills are assessed, showing "Not assessed"', () => {
+      // User with 0 diagnostic answers (verifiedScore is null / undefined)
+      const userSkills: RawSkillInput[] = [
+        { skillId: 'ts-js', selfAssessedLevel: 2, verifiedScore: null },
+        { skillId: 'react', selfAssessedLevel: 3, verifiedScore: null }
+      ];
+
+      const result = computeSkillGapMetrics(sampleRequirements, userSkills);
+
+      expect(result.status).toBe('not_started');
+      expect(result.overallReadinessScore).toBeNull();
+      expect(result.assessedSkillsCount).toBe(0);
+      expect(result.totalSkillsCount).toBe(3);
+      expect(result.assessedRatioText).toBe('Based on 0 of 3 skills assessed');
+
+      // Every unassessed skill must report currentLevel as null and isAssessed as false
+      for (const gap of result.gaps) {
+        expect(gap.currentLevel).toBeNull();
+        expect(gap.isAssessed).toBe(false);
+      }
+    });
+
+    it('computes readiness strictly from assessed skills in partial assessment (e.g. 1 of 3)', () => {
+      // Only ts-js has a verified diagnostic score
+      const userSkills: RawSkillInput[] = [
+        { skillId: 'ts-js', selfAssessedLevel: 2, verifiedScore: 4 },
+        { skillId: 'react', selfAssessedLevel: 1, verifiedScore: null },
+        { skillId: 'sys-design', selfAssessedLevel: 1, verifiedScore: null }
+      ];
+
+      const result = computeSkillGapMetrics(sampleRequirements, userSkills);
+
+      expect(result.status).toBe('active');
+      expect(result.assessedSkillsCount).toBe(1);
+      expect(result.totalSkillsCount).toBe(3);
+      expect(result.assessedRatioText).toBe('Based on 1 of 3 skills assessed');
+
+      // ts-js is assessed: effective = 0.4*2 + 0.6*4 = 3.2. Gap = 4 - 3.2 = 0.8
+      // Readiness from assessed skills: (1 - (0.8*1.5) / (4*1.5)) * 100 = (1 - 1.2 / 6.0) * 100 = 80%
+      expect(result.overallReadinessScore).toBe(80);
+
+      const tsGap = result.gaps.find((g) => g.skillId === 'ts-js');
+      expect(tsGap?.isAssessed).toBe(true);
+      expect(tsGap?.currentLevel).toBe(3.2);
+
+      const reactGap = result.gaps.find((g) => g.skillId === 'react');
+      expect(reactGap?.isAssessed).toBe(false);
+      expect(reactGap?.currentLevel).toBeNull();
+    });
+
+    it('computes readiness across all requirements in full assessment (3 of 3)', () => {
+      const userSkills: RawSkillInput[] = [
+        { skillId: 'ts-js', selfAssessedLevel: 3, verifiedScore: 4 }, // eff = 3.6, gap = 0.4
+        { skillId: 'react', selfAssessedLevel: 4, verifiedScore: 3 }, // eff = 3.4, gap = 0.6
+        { skillId: 'sys-design', selfAssessedLevel: 2, verifiedScore: 3 } // eff = 2.6, gap = 0.4
+      ];
+
+      const result = computeSkillGapMetrics(sampleRequirements, userSkills);
+
+      expect(result.status).toBe('active');
+      expect(result.assessedSkillsCount).toBe(3);
+      expect(result.totalSkillsCount).toBe(3);
+      expect(result.assessedRatioText).toBe('Based on 3 of 3 skills assessed');
+      expect(typeof result.overallReadinessScore).toBe('number');
+
+      for (const gap of result.gaps) {
+        expect(gap.isAssessed).toBe(true);
+        expect(gap.currentLevel).not.toBeNull();
+      }
+    });
+
+    it('proves identical numbers for shared readiness formula across API and Web', async () => {
+      const { calculateReadiness } = await import('@skill-setu/shared');
+
+      const inputs = [
+        { skillId: 'ts-js', selfAssessedLevel: 3, verifiedScore: 4 },
+        { skillId: 'react', selfAssessedLevel: 2, verifiedScore: 3 },
+        { skillId: 'sys-design', selfAssessedLevel: 1, verifiedScore: null }
+      ];
+
+      const apiResult = computeSkillGapMetrics(sampleRequirements, inputs);
+      const sharedResult = calculateReadiness(sampleRequirements, inputs);
+
+      expect(apiResult.overallReadinessScore).toBe(sharedResult.overallReadinessScore);
+      expect(apiResult.assessedSkillsCount).toBe(sharedResult.assessedSkillsCount);
+      expect(apiResult.assessedRatioText).toBe(sharedResult.assessedRatioText);
+      expect(apiResult.gaps).toEqual(sharedResult.gaps);
+    });
+  });
 });
+

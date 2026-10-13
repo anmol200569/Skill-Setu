@@ -1,6 +1,14 @@
 import crypto from 'crypto';
 import { prisma } from '../lib/prisma';
-import { SkillGapItem, SkillGapAnalysisResult } from '@skill-setu/shared';
+import {
+  calculateReadiness,
+  calculateEstimatedReadinessGain,
+  ReadinessCalculationResult,
+  RoleRequirementInput,
+  UserSkillAssessmentInput,
+  SkillGapItem,
+  SkillGapAnalysisResult
+} from '@skill-setu/shared';
 import { generateGeminiCompletion } from './aiService';
 
 interface CachedSummary {
@@ -16,22 +24,41 @@ export function clearSummaryCache(): void {
   summaryCache.clear();
 }
 
-export function computeGapStateHash(userId: string, roleId: string, readiness: number, gaps: SkillGapItem[]): string {
-  const serialized = `${userId}:${roleId}:${readiness}:${gaps.map((g) => `${g.skillId}:${g.gap}:${g.priority}`).join('|')}`;
+export function computeGapStateHash(userId: string, roleId: string, readiness: number | null, gaps: SkillGapItem[]): string {
+  const serialized = `${userId}:${roleId}:${readiness ?? 'null'}:${gaps.map((g) => `${g.skillId}:${g.gap}:${g.priority}:${g.isAssessed}`).join('|')}`;
   return crypto.createHash('md5').update(serialized).digest('hex');
 }
 
-export function getFallbackSkillSummary(roleTitle: string, readiness: number, gaps: SkillGapItem[]): string {
-  if (gaps.length === 0) {
-    return `Your readiness for ${roleTitle} is ${readiness}%. You currently meet the target proficiency across all evaluated skills. Keep practicing to maintain your edge.`;
+/**
+ * Deterministic summary from real data (top 2 gaps by name and size) or empty string when 0 assessed.
+ * Strictly avoids invented content or hallucinated percentages.
+ */
+export function getDeterministicSkillSummary(roleTitle: string, readiness: number | null, gaps: SkillGapItem[]): string {
+  if (readiness === null || gaps.length === 0) {
+    if (readiness !== null && gaps.length === 0) {
+      return `Your readiness for ${roleTitle} is ${readiness}%. You currently meet the target proficiency across all evaluated skills.`;
+    }
+    return '';
   }
-  const topGapNames = gaps.slice(0, 2).map((g) => g.skillName).join(' and ');
-  return `Your readiness for ${roleTitle} is ${readiness}%. Prioritize addressing your top skill gaps (${topGapNames}) to rapidly improve role qualification.`;
+
+  const assessedGaps = gaps.filter((g) => g.isAssessed);
+  const gapsToUse = assessedGaps.length > 0 ? assessedGaps : gaps;
+  const top2 = gapsToUse.slice(0, 2);
+
+  if (top2.length === 1) {
+    return `Your readiness for ${roleTitle} is ${readiness}%. Prioritize bridging your top skill gap in ${top2[0].skillName} (deficit of ${top2[0].gap.toFixed(1)} pts) to qualify for this role.`;
+  }
+
+  return `Your readiness for ${roleTitle} is ${readiness}%. Prioritize bridging your top skill gaps in ${top2[0].skillName} (deficit of ${top2[0].gap.toFixed(1)} pts) and ${top2[1].skillName} (deficit of ${top2[1].gap.toFixed(1)} pts) to qualify for this role.`;
+}
+
+export function getFallbackSkillSummary(roleTitle: string, readiness: number | null, gaps: SkillGapItem[]): string {
+  return getDeterministicSkillSummary(roleTitle, readiness, gaps);
 }
 
 export interface RawSkillInput {
   skillId: string;
-  selfAssessedLevel: number;
+  selfAssessedLevel?: number | null;
   verifiedScore?: number | null;
 }
 
@@ -41,94 +68,10 @@ export interface GapComputationInput {
 }
 
 export function computeSkillGapMetrics(
-  roleRequirements: {
-    skillId: string;
-    skillName: string;
-    domainName: string;
-    requiredProficiency: number;
-    priority: 'must_have' | 'good_to_have' | 'optional';
-    weight: number;
-  }[],
-  userSkills: RawSkillInput[]
-): {
-  overallReadinessScore: number;
-  gaps: SkillGapItem[];
-  strengths: { skillId: string; skillName: string; level: number }[];
-} {
-  const userSkillMap = new Map<string, RawSkillInput>();
-  for (const s of userSkills) {
-    userSkillMap.set(s.skillId, s);
-  }
-
-  let totalWeightedRequired = 0;
-  let totalWeightedGap = 0;
-
-  const gaps: SkillGapItem[] = [];
-  const strengths: { skillId: string; skillName: string; level: number }[] = [];
-
-  for (const req of roleRequirements) {
-    const userSkill = userSkillMap.get(req.skillId);
-    const selfLevel = userSkill?.selfAssessedLevel ?? 1;
-    const verified = userSkill?.verifiedScore ?? null;
-
-    // Documented formula: 40% self-assessment + 60% diagnostic verified score
-    const effectiveLevel = verified !== null
-      ? Number((0.4 * selfLevel + 0.6 * verified).toFixed(2))
-      : Number(selfLevel.toFixed(2));
-
-    const gap = Math.max(0, Number((req.requiredProficiency - effectiveLevel).toFixed(2)));
-
-    // Priority multiplier
-    const priorityMultiplier = req.priority === 'must_have' ? 1.5 : (req.priority === 'good_to_have' ? 1.0 : 0.5);
-    const priorityScore = Number((gap * req.weight * priorityMultiplier).toFixed(2));
-
-    let priorityCategory: 'critical' | 'high' | 'medium' | 'low' = 'low';
-    if (gap >= 2.0 || (gap >= 1.0 && req.priority === 'must_have')) {
-      priorityCategory = 'critical';
-    } else if (gap >= 1.0) {
-      priorityCategory = 'high';
-    } else if (gap > 0.3) {
-      priorityCategory = 'medium';
-    }
-
-    totalWeightedRequired += req.requiredProficiency * req.weight;
-    totalWeightedGap += gap * req.weight;
-
-    if (gap > 0) {
-      gaps.push({
-        skillId: req.skillId,
-        skillName: req.skillName,
-        domainName: req.domainName,
-        requiredLevel: req.requiredProficiency,
-        currentLevel: effectiveLevel,
-        gap,
-        priority: priorityCategory,
-        priorityScore,
-        weight: req.weight
-      });
-    } else {
-      strengths.push({
-        skillId: req.skillId,
-        skillName: req.skillName,
-        level: effectiveLevel
-      });
-    }
-  }
-
-  // Sort gaps by priority score descending
-  gaps.sort((a, b) => b.priorityScore - a.priorityScore);
-
-  const rawReadiness = totalWeightedRequired > 0
-    ? (1 - (totalWeightedGap / totalWeightedRequired)) * 100
-    : 100;
-
-  const overallReadinessScore = Math.max(0, Math.min(100, Math.round(rawReadiness)));
-
-  return {
-    overallReadinessScore,
-    gaps,
-    strengths
-  };
+  roleRequirements: RoleRequirementInput[],
+  userSkills: UserSkillAssessmentInput[]
+): ReadinessCalculationResult {
+  return calculateReadiness(roleRequirements, userSkills);
 }
 
 export async function analyzeLearnerSkillGaps(
@@ -202,38 +145,42 @@ export async function analyzeLearnerSkillGaps(
     verifiedScore: s.verifiedScore
   }));
 
-  const { overallReadinessScore, gaps, strengths } = computeSkillGapMetrics(
+  const calculation = computeSkillGapMetrics(
     formattedReqs,
     formattedUserSkills
   );
 
-  // Generate or retrieve cached AI explanation
-  const gapHash = computeGapStateHash(userId, role.id, overallReadinessScore, gaps);
-  const cacheKey = `${userId}:${role.id}:${gapHash}`;
-  const cached = summaryCache.get(cacheKey);
-
   let aiSummary = '';
-  if (cached && Date.now() - cached.cachedAt < SUMMARY_CACHE_TTL_MS) {
-    aiSummary = cached.summary;
+  if (calculation.assessedSkillsCount === 0) {
+    aiSummary = '';
   } else {
-    try {
-      const topGapNames = gaps.slice(0, 3).map((g) => `${g.skillName} (Gap: ${g.gap}, Priority: ${g.priority})`).join(', ');
-      const prompt = `Explain the key skill gaps for a learner targeting the role "${role.title}".
-Overall readiness score: ${overallReadinessScore}%.
+    // Generate or retrieve cached AI explanation
+    const gapHash = computeGapStateHash(userId, role.id, calculation.overallReadinessScore, calculation.gaps);
+    const cacheKey = `${userId}:${role.id}:${gapHash}`;
+    const cached = summaryCache.get(cacheKey);
+
+    if (cached && Date.now() - cached.cachedAt < SUMMARY_CACHE_TTL_MS) {
+      aiSummary = cached.summary;
+    } else {
+      try {
+        const topGapNames = calculation.gaps.slice(0, 3).map((g) => `${g.skillName} (Gap: ${g.gap}, Priority: ${g.priority})`).join(', ');
+        const prompt = `Explain the key skill gaps for a learner targeting the role "${role.title}".
+Overall readiness score: ${calculation.overallReadinessScore}%.
 Top skill gaps: ${topGapNames || 'None, learner meets current requirements'}.
 Provide a concise, encouraging 2-3 sentence strategic summary and highlight which gap to bridge first.`;
 
-      // Non-blocking 3.5s timeout with LOW thinking so dashboard never hangs
-      aiSummary = await generateGeminiCompletion(prompt, undefined, 0.2, {
-        timeoutMs: 3500,
-        thinkingLevel: 'LOW'
-      });
+        // Non-blocking 3.5s timeout with LOW thinking so dashboard never hangs
+        aiSummary = await generateGeminiCompletion(prompt, undefined, 0.2, {
+          timeoutMs: 3500,
+          thinkingLevel: 'LOW'
+        });
 
-      // Cache the result for subsequent instant loads
-      summaryCache.set(cacheKey, { summary: aiSummary, cachedAt: Date.now() });
-    } catch (err) {
-      // Fallback template summary on timeout or API unavailability
-      aiSummary = getFallbackSkillSummary(role.title, overallReadinessScore, gaps);
+        // Cache the result for subsequent instant loads
+        summaryCache.set(cacheKey, { summary: aiSummary, cachedAt: Date.now() });
+      } catch (err) {
+        // Deterministic template summary on timeout or API unavailability
+        aiSummary = getFallbackSkillSummary(role.title, calculation.overallReadinessScore, calculation.gaps);
+      }
     }
   }
 
@@ -241,10 +188,13 @@ Provide a concise, encouraging 2-3 sentence strategic summary and highlight whic
     userId,
     targetRoleId: role.id,
     targetRoleTitle: role.title,
-    status: 'active',
-    overallReadinessScore,
-    gaps,
-    strengths,
+    status: calculation.status,
+    overallReadinessScore: calculation.overallReadinessScore,
+    assessedSkillsCount: calculation.assessedSkillsCount,
+    totalRequiredSkillsCount: calculation.totalSkillsCount,
+    assessedRatioText: calculation.assessedRatioText,
+    gaps: calculation.gaps,
+    strengths: calculation.strengths,
     aiSummaryExplanation: aiSummary,
     analyzedAt: new Date().toISOString()
   };

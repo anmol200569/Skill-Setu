@@ -49,21 +49,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (localDevToken) {
       const isPopulated = localDevToken === 'test-populated-token';
       const isEmpty = localDevToken === 'test-empty-token';
+      const isPartial = localDevToken === 'test-partial-token';
       setUser({
         id: isPopulated
           ? 'eb99b4ac-fa46-4776-852b-ebc87fea2f49'
           : isEmpty
           ? 'test-empty-uuid'
+          : isPartial
+          ? 'test-partial-uuid'
           : 'test-learner-uuid',
         email: isPopulated
           ? 'anmolsingh12jbp7@gmail.com'
           : isEmpty
           ? 'newbie@skillsetu.dev'
+          : isPartial
+          ? 'partial@skillsetu.dev'
           : 'learner@skillsetu.dev',
         aud: 'authenticated',
         app_metadata: {},
         user_metadata: {
-          fullName: isPopulated ? 'Anmol Singh' : isEmpty ? 'New Learner' : 'Test Learner'
+          fullName: isPopulated ? 'Anmol Singh' : isEmpty ? 'New Learner' : isPartial ? 'Alex Morgan' : 'Test Learner'
         },
         created_at: new Date().toISOString()
       } as any);

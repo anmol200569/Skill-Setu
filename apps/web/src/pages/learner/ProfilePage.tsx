@@ -215,11 +215,15 @@ export function ProfilePage() {
                     <div>
                       <div className="font-semibold text-xs text-foreground">{us.skillName}</div>
                       <div className="text-[11px] text-muted-foreground">
-                        Self: {us.selfAssessedLevel}/5 {us.verifiedScore !== null ? `• Verified: ${us.verifiedScore}/5` : ''}
+                        {us.verifiedScore !== null && us.verifiedScore !== undefined
+                          ? `Self: ${us.selfAssessedLevel}/5 • Verified: ${us.verifiedScore}/5`
+                          : 'Not assessed'}
                       </div>
                     </div>
-                    <Badge variant={us.verifiedScore !== null ? 'success' : 'neutral'}>
-                      Level {us.effectiveScore}/5
+                    <Badge variant={us.verifiedScore !== null && us.verifiedScore !== undefined ? 'success' : 'neutral'}>
+                      {us.verifiedScore !== null && us.verifiedScore !== undefined
+                        ? `Level ${us.effectiveScore}/5`
+                        : 'Not assessed'}
                     </Badge>
                   </div>
                 ))}

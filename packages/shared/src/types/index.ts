@@ -118,8 +118,9 @@ export interface SkillGapItem {
   skillName: string;
   domainName: string;
   requiredLevel: number; // 1 to 5
-  currentLevel: number; // 1 to 5
-  gap: number; // required - current (>= 0)
+  currentLevel: number | null; // null if not assessed
+  isAssessed: boolean;
+  gap: number; // required - (currentLevel ?? 0)
   priority: 'critical' | 'high' | 'medium' | 'low';
   priorityScore: number; // sorted by priority score
   weight: number;
@@ -130,7 +131,10 @@ export interface SkillGapAnalysisResult {
   targetRoleId?: string | null;
   targetRoleTitle?: string | null;
   status?: 'active' | 'not_started';
-  overallReadinessScore: number | null; // null if not_started
+  overallReadinessScore: number | null; // null if not_started or 0 assessed
+  assessedSkillsCount?: number;
+  totalRequiredSkillsCount?: number;
+  assessedRatioText?: string;
   gaps: SkillGapItem[];
   strengths: { skillId: string; skillName: string; level: number }[];
   aiSummaryExplanation: string;
