@@ -7,6 +7,47 @@ import v1Router from './routes/v1';
 import { generalRateLimiter } from './middleware/rateLimiter';
 import { errorHandler } from './middleware/error';
 
+export function parseAllowedOrigins(corsOriginEnv?: string, vercelProjectUrl?: string): string[] {
+  const rawEntries: string[] = [];
+  if (corsOriginEnv) {
+    rawEntries.push(...corsOriginEnv.split(','));
+  }
+  if (vercelProjectUrl) {
+    const url = vercelProjectUrl.startsWith('http')
+      ? vercelProjectUrl
+      : `https://${vercelProjectUrl}`;
+    rawEntries.push(url);
+  } else if (!corsOriginEnv) {
+    rawEntries.push('https://skill-setu.vercel.app');
+  }
+
+  const origins = new Set<string>();
+  for (const entry of rawEntries) {
+    const trimmed = entry.trim().replace(/\/+$/, '');
+    // Disallow empty or wildcard patterns (strictly no *.vercel.app)
+    if (trimmed && !trimmed.includes('*')) {
+      origins.add(trimmed);
+    }
+  }
+  return Array.from(origins);
+}
+
+export function isSameOriginRequest(origin: string, req: Request): boolean {
+  try {
+    const originUrl = new URL(origin);
+    const hostHeader = (req.headers['x-forwarded-host'] as string) || req.headers.host;
+    if (!hostHeader) return false;
+    const hostWithoutPort = hostHeader.split(':')[0].toLowerCase();
+    const originHostWithoutPort = originUrl.hostname.toLowerCase();
+    return (
+      originUrl.host.toLowerCase() === hostHeader.toLowerCase() ||
+      originHostWithoutPort === hostWithoutPort
+    );
+  } catch {
+    return false;
+  }
+}
+
 export function createApp(): Application {
   const app = express();
 
@@ -18,49 +59,47 @@ export function createApp(): Application {
   );
 
   // CORS Configuration
-  const isProduction = config.env === 'production' || process.env.NODE_ENV === 'production';
-  const vercelProdUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? (process.env.VERCEL_PROJECT_PRODUCTION_URL.startsWith('http')
-        ? process.env.VERCEL_PROJECT_PRODUCTION_URL
-        : `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`)
-    : 'https://skill-setu.vercel.app';
-
-  const productionOrigins = Array.from(
-    new Set([config.corsOrigin, vercelProdUrl].filter(Boolean))
-  );
-
-  const corsMiddleware = cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
-      if (!origin) {
-        callback(null, true);
-        return;
-      }
-
-      if (isProduction) {
-        if (productionOrigins.includes(origin)) {
-          callback(null, true);
-        } else {
-          callback(new Error(`CORS blocked: Origin ${origin} is not allowed in production`));
-        }
-      } else {
-        // Development/test: allow all origins
-        callback(null, true);
-      }
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-  });
-
   app.use((req: Request, res: Response, next: NextFunction) => {
-    corsMiddleware(req, res, (err) => {
-      if (err) {
-        res.status(403).json({ error: 'Forbidden origin' });
-        return;
-      }
+    const origin = req.headers.origin;
+    const isProduction = config.env === 'production' || process.env.NODE_ENV === 'production';
+
+    // Requests with no origin (e.g. mobile apps, curl, server-to-server)
+    if (!origin) {
       next();
-    });
+      return;
+    }
+
+    if (!isProduction) {
+      cors({
+        origin: true,
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+      })(req, res, next);
+      return;
+    }
+
+    // Production CORS validation:
+    const allowedOrigins = parseAllowedOrigins(
+      process.env.CORS_ORIGIN || config.corsOrigin,
+      process.env.VERCEL_PROJECT_PRODUCTION_URL
+    );
+
+    const sameOrigin = isSameOriginRequest(origin, req);
+    const exactMatch = allowedOrigins.includes(origin);
+
+    if (sameOrigin || exactMatch) {
+      cors({
+        origin: origin,
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+      })(req, res, next);
+    } else {
+      // Log the blocked Origin header value only (to server stderr)
+      console.error(`Blocked CORS origin: ${origin}`);
+      res.status(403).json({ error: 'Forbidden origin' });
+    }
   });
 
   // Request Logging

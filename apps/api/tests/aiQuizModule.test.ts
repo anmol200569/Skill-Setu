@@ -9,6 +9,7 @@ import {
 import { chunkText } from '../src/services/fileExtractionService';
 import * as quizGenerator from '../src/services/quizGenerator';
 import { prisma } from '../src/lib/prisma';
+import { supabaseAuth } from '../src/lib/supabase';
 
 const app = createApp();
 
@@ -244,6 +245,263 @@ describe('AI Quiz Module & Gemini Model Configuration', () => {
       expect(geminiSpy).toHaveBeenCalledTimes(2);
       expect(geminiSpy.mock.calls[0][3]?.model).toBe('gemini-3.5-flash-lite');
       expect(geminiSpy.mock.calls[1][3]?.model).toBe('gemini-3.1-flash-lite');
+    });
+  });
+
+  describe('Quiz Privacy & Ownership Isolation (C2)', () => {
+    const quizAId = 'quiz-owned-by-learner-a';
+    const mockQuizA = {
+      id: quizAId,
+      title: 'Learner A Secret Quiz',
+      description: 'Private assessment content',
+      creatorId: 'test-learner-uuid',
+      creatorRole: 'learner',
+      sourceType: 'pasted_text',
+      isPublished: true,
+      questionCount: 1,
+      difficulty: 'intermediate',
+      language: 'en',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      creator: { id: 'test-learner-uuid', email: 'learner-a@skillsetu.dev', role: 'learner' },
+      questions: [
+        {
+          id: 'q-1',
+          questionText: 'What is A?',
+          type: 'single_mcq',
+          difficulty: 'intermediate',
+          options: [{ id: 'opt_1', text: 'Option 1' }],
+          correctAnswers: ['opt_1'],
+          explanation: 'Secret explanation',
+          topicTag: 'Privacy',
+          orderIndex: 1
+        }
+      ],
+      _count: { questions: 1, attempts: 0 }
+    };
+
+    beforeEach(() => {
+      vi.spyOn(supabaseAuth.auth, 'getUser').mockImplementation(async (token: string) => {
+        if (token === 'test-learner-b-token' || token === 'test-empty-token') {
+          return {
+            data: {
+              user: { id: 'test-learner-b-uuid', email: 'learner-b@skillsetu.dev' }
+            },
+            error: null
+          } as any;
+        }
+        return { data: { user: null }, error: new Error('Invalid token') } as any;
+      });
+
+      vi.spyOn(prisma.user, 'findUnique').mockImplementation(async (args: any) => {
+        if (args?.where?.id === 'test-learner-b-uuid') {
+          return {
+            id: 'test-learner-b-uuid',
+            email: 'learner-b@skillsetu.dev',
+            role: 'learner'
+          } as any;
+        }
+        return null;
+      });
+    });
+
+    it('user B cannot list user A\'s quiz (isolated to own quizzes)', async () => {
+      vi.spyOn(prisma.quiz, 'findMany').mockImplementation(async (args: any) => {
+        if (args?.where?.creatorId === 'test-learner-b-uuid') {
+          return [];
+        }
+        if (args?.where?.creatorId === 'test-learner-uuid') {
+          return [mockQuizA as any];
+        }
+        return [];
+      });
+
+      const resB = await request(app)
+        .get('/api/v1/quizzes')
+        .set('Authorization', 'Bearer test-learner-b-token');
+      expect(resB.status).toBe(200);
+      expect(resB.body.length).toBe(0);
+
+      const resA = await request(app)
+        .get('/api/v1/quizzes')
+        .set('Authorization', 'Bearer test-learner-token');
+      expect(resA.status).toBe(200);
+      expect(resA.body.length).toBe(1);
+      expect(resA.body[0].id).toBe(quizAId);
+    });
+
+    it('user B cannot get user A\'s quiz by id (returns 404)', async () => {
+      vi.spyOn(prisma.quiz, 'findFirst').mockImplementation(async (args: any) => {
+        if (args?.where?.id === quizAId && args?.where?.creatorId === 'test-learner-uuid') {
+          return mockQuizA as any;
+        }
+        return null;
+      });
+
+      const resB = await request(app)
+        .get(`/api/v1/quizzes/${quizAId}`)
+        .set('Authorization', 'Bearer test-learner-b-token');
+      expect(resB.status).toBe(404);
+      expect(resB.body).toEqual({ error: 'NotFound', message: 'Quiz not found' });
+    });
+
+    it('user B cannot submit user A\'s quiz (returns 404)', async () => {
+      vi.spyOn(prisma.quiz, 'findUnique').mockImplementation(async (args: any) => {
+        if (args?.where?.id === quizAId) {
+          return { id: quizAId, creatorId: 'test-learner-uuid' } as any;
+        }
+        return null;
+      });
+
+      const resB = await request(app)
+        .post('/api/v1/quizzes/submit')
+        .set('Authorization', 'Bearer test-learner-b-token')
+        .send({
+          quizId: quizAId,
+          timeSpentSeconds: 60,
+          answers: [{ questionId: 'q-1', selectedOptions: ['opt_1'] }]
+        });
+
+      expect(resB.status).toBe(404);
+      expect(resB.body).toEqual({ error: 'NotFound', message: 'Quiz not found' });
+    });
+
+    it('user B cannot export user A\'s quiz as PDF (returns 404)', async () => {
+      vi.spyOn(prisma.quiz, 'findFirst').mockImplementation(async (args: any) => {
+        if (args?.where?.id === quizAId && args?.where?.creatorId === 'test-learner-uuid') {
+          return mockQuizA as any;
+        }
+        return null;
+      });
+
+      const resB = await request(app)
+        .get(`/api/v1/quizzes/${quizAId}/export-pdf`)
+        .set('Authorization', 'Bearer test-learner-b-token');
+      expect(resB.status).toBe(404);
+      expect(resB.body).toEqual({ error: 'NotFound', message: 'Quiz not found' });
+    });
+
+    it('user B cannot update user A\'s quiz (returns 404)', async () => {
+      vi.spyOn(prisma.quiz, 'findUnique').mockImplementation(async (args: any) => {
+        if (args?.where?.id === quizAId) {
+          return { id: quizAId, creatorId: 'test-learner-uuid' } as any;
+        }
+        return null;
+      });
+
+      const resB = await request(app)
+        .put(`/api/v1/quizzes/${quizAId}`)
+        .set('Authorization', 'Bearer test-learner-b-token')
+        .send({ title: 'Hacked Title' });
+      expect(resB.status).toBe(404);
+      expect(resB.body).toEqual({ error: 'NotFound', message: 'Quiz not found' });
+    });
+
+    it('user B cannot delete user A\'s quiz (returns 404)', async () => {
+      vi.spyOn(prisma.quiz, 'findUnique').mockImplementation(async (args: any) => {
+        if (args?.where?.id === quizAId) {
+          return { id: quizAId, creatorId: 'test-learner-uuid' } as any;
+        }
+        return null;
+      });
+
+      const resB = await request(app)
+        .delete(`/api/v1/quizzes/${quizAId}`)
+        .set('Authorization', 'Bearer test-learner-b-token');
+      expect(resB.status).toBe(404);
+      expect(resB.body).toEqual({ error: 'NotFound', message: 'Quiz not found' });
+    });
+
+    it('user B cannot see history of user A\'s quiz (returns 404)', async () => {
+      vi.spyOn(prisma.quiz, 'findUnique').mockImplementation(async (args: any) => {
+        if (args?.where?.id === quizAId) {
+          return { id: quizAId, creatorId: 'test-learner-uuid' } as any;
+        }
+        return null;
+      });
+
+      const resB = await request(app)
+        .get(`/api/v1/quizzes/${quizAId}/history`)
+        .set('Authorization', 'Bearer test-learner-b-token');
+      expect(resB.status).toBe(404);
+      expect(resB.body).toEqual({ error: 'NotFound', message: 'Quiz not found' });
+    });
+
+    it('admin sees only quizzes they created in the AI Quizzes list (no cross-user view)', async () => {
+      let queriedCreatorId: string | undefined;
+      vi.spyOn(prisma.quiz, 'findMany').mockImplementation(async (args: any) => {
+        queriedCreatorId = args?.where?.creatorId;
+        if (args?.where?.creatorId === 'test-admin-uuid') {
+          return [{
+            ...mockQuizA,
+            id: 'admin-owned-quiz',
+            creatorId: 'test-admin-uuid'
+          } as any];
+        }
+        return [];
+      });
+
+      const resAdmin = await request(app)
+        .get('/api/v1/quizzes')
+        .set('Authorization', 'Bearer test-admin-token');
+      expect(resAdmin.status).toBe(200);
+      expect(queriedCreatorId).toBe('test-admin-uuid');
+      expect(resAdmin.body.length).toBe(1);
+      expect(resAdmin.body[0].id).toBe('admin-owned-quiz');
+    });
+
+    it('list and get payloads contain no study text or creatorId for any role including admin', async () => {
+      vi.spyOn(prisma.quiz, 'findMany').mockResolvedValueOnce([mockQuizA as any]);
+      vi.spyOn(prisma.quiz, 'findFirst').mockResolvedValueOnce(mockQuizA as any);
+
+      // 1. List payload check (admin)
+      const listRes = await request(app)
+        .get('/api/v1/quizzes')
+        .set('Authorization', 'Bearer test-admin-token');
+      expect(listRes.status).toBe(200);
+      const listItem = listRes.body[0];
+      expect(listItem.creatorId).toBeUndefined();
+      expect(listItem.creatorEmail).toBeUndefined();
+      expect(listItem.owner).toBeUndefined();
+      expect(listItem.studyMaterialText).toBeUndefined();
+      expect(listItem.extractedText).toBeUndefined();
+      expect(listItem.topicOrText).toBeUndefined();
+
+      // 2. Get payload check (learner)
+      const getRes = await request(app)
+        .get(`/api/v1/quizzes/${quizAId}`)
+        .set('Authorization', 'Bearer test-learner-token');
+      expect(getRes.status).toBe(200);
+      expect(getRes.body.creatorId).toBeUndefined();
+      expect(getRes.body.studyMaterialText).toBeUndefined();
+      expect(getRes.body.extractedText).toBeUndefined();
+      expect(getRes.body.topicOrText).toBeUndefined();
+    });
+
+    it('defaults title to first line of text or "Untitled quiz" when empty title is provided', async () => {
+      const generateSpy = vi.spyOn(quizGenerator, 'generateAndSaveQuiz').mockResolvedValueOnce({
+        id: 'quiz-default-title',
+        title: 'Mastering Database Sharding and Partitioning',
+        creatorId: 'test-learner-uuid'
+      } as any);
+
+      const res = await request(app)
+        .post('/api/v1/quizzes/generate')
+        .set('Authorization', 'Bearer test-learner-token')
+        .send({
+          title: '   ',
+          topicOrText: 'Mastering Database Sharding and Partitioning\nDetailed notes on horizontal scaling...',
+          questionCount: 5,
+          difficulty: 'intermediate',
+          language: 'en'
+        });
+
+      expect(res.status).toBe(201);
+      expect(generateSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: 'Mastering Database Sharding and Partitioning'
+        })
+      );
     });
   });
 });

@@ -86,9 +86,10 @@ describe('API Authentication, Authorization & Route Protection', () => {
     }
   });
 
-  it('returns HTTP 403 { error: "Forbidden origin" } when CORS blocks unauthorized origin in production', async () => {
+  it('returns HTTP 403 { error: "Forbidden origin" } and logs to stderr when CORS blocks foreign origin in production', async () => {
     const originalEnv = process.env.NODE_ENV;
     process.env.NODE_ENV = 'production';
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     try {
       const prodApp = createApp();
       const res = await request(prodApp)
@@ -96,23 +97,79 @@ describe('API Authentication, Authorization & Route Protection', () => {
         .set('Origin', 'https://unauthorized-malicious-site.com');
       expect(res.status).toBe(403);
       expect(res.body).toEqual({ error: 'Forbidden origin' });
+      expect(errorSpy).toHaveBeenCalledWith('Blocked CORS origin: https://unauthorized-malicious-site.com');
+    } finally {
+      errorSpy.mockRestore();
+      process.env.NODE_ENV = originalEnv;
+    }
+  });
+
+  it('allows same-origin requests in production when Origin host matches Host or x-forwarded-host', async () => {
+    const originalEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'production';
+    try {
+      const prodApp = createApp();
+      // Case 1: Host header matches Origin host
+      const resHost = await request(prodApp)
+        .get('/health')
+        .set('Origin', 'https://api.skillsetu.com')
+        .set('Host', 'api.skillsetu.com');
+      expect(resHost.status).toBe(200);
+      expect(resHost.body.status).toBe('healthy');
+
+      // Case 2: x-forwarded-host matches Origin host
+      const resForwarded = await request(prodApp)
+        .get('/health')
+        .set('Origin', 'https://custom-gateway.internal')
+        .set('x-forwarded-host', 'custom-gateway.internal');
+      expect(resForwarded.status).toBe(200);
+      expect(resForwarded.body.status).toBe('healthy');
     } finally {
       process.env.NODE_ENV = originalEnv;
     }
   });
 
-  it('allows authorized production origin in production', async () => {
+  it('allows two listed origins from a comma-separated CORS_ORIGIN in production', async () => {
     const originalEnv = process.env.NODE_ENV;
+    const originalCors = process.env.CORS_ORIGIN;
     process.env.NODE_ENV = 'production';
+    process.env.CORS_ORIGIN = 'https://skill-setu.vercel.app, https://skillsetu.org';
+    try {
+      const prodApp = createApp();
+
+      const res1 = await request(prodApp)
+        .get('/health')
+        .set('Origin', 'https://skill-setu.vercel.app');
+      expect(res1.status).toBe(200);
+
+      const res2 = await request(prodApp)
+        .get('/health')
+        .set('Origin', 'https://skillsetu.org');
+      expect(res2.status).toBe(200);
+    } finally {
+      process.env.NODE_ENV = originalEnv;
+      process.env.CORS_ORIGIN = originalCors;
+    }
+  });
+
+  it('blocks lookalike origins such as https://turbo-amber-ue8igyf.vercel.app.evil.com', async () => {
+    const originalEnv = process.env.NODE_ENV;
+    const originalCors = process.env.CORS_ORIGIN;
+    process.env.NODE_ENV = 'production';
+    process.env.CORS_ORIGIN = 'https://turbo-amber-ue8igyf.vercel.app';
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     try {
       const prodApp = createApp();
       const res = await request(prodApp)
         .get('/health')
-        .set('Origin', 'https://skill-setu.vercel.app');
-      expect(res.status).toBe(200);
-      expect(res.body.status).toBe('healthy');
+        .set('Origin', 'https://turbo-amber-ue8igyf.vercel.app.evil.com');
+      expect(res.status).toBe(403);
+      expect(res.body).toEqual({ error: 'Forbidden origin' });
+      expect(errorSpy).toHaveBeenCalledWith('Blocked CORS origin: https://turbo-amber-ue8igyf.vercel.app.evil.com');
     } finally {
+      errorSpy.mockRestore();
       process.env.NODE_ENV = originalEnv;
+      process.env.CORS_ORIGIN = originalCors;
     }
   });
 

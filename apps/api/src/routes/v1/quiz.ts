@@ -8,10 +8,12 @@ import {
   submitQuiz,
   exportQuizPdfEndpoint,
   updateQuiz,
-  deleteQuiz
+  deleteQuiz,
+  publishQuiz,
+  getQuizHistory,
+  getQuizResultById
 } from '../../controllers/quizController';
 import { authenticate } from '../../middleware/auth';
-import { requireTrainerOrAdmin } from '../../middleware/rbac';
 import { aiRateLimiter } from '../../middleware/rateLimiter';
 
 const router = Router();
@@ -36,8 +38,12 @@ router.get('/:id', getQuizById);
 router.post('/submit', submitQuiz);
 router.get('/:id/export-pdf', exportQuizPdfEndpoint);
 
-// Trainer / Admin management
-router.put('/:id', requireTrainerOrAdmin, updateQuiz);
-router.delete('/:id', requireTrainerOrAdmin, deleteQuiz);
+// Quiz ownership actions (owner only: update, publish, delete, history, results)
+router.put('/:id', updateQuiz);
+router.patch('/:id/publish', publishQuiz);
+router.delete('/:id', deleteQuiz);
+router.get('/:id/history', getQuizHistory);
+router.get('/:id/attempts', getQuizHistory);
+router.get('/:id/results/:attemptId', getQuizResultById);
 
 export default router;

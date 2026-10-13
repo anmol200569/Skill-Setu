@@ -110,6 +110,15 @@ export async function generateQuiz(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
   const userRole = req.user!.role;
 
+  // Default empty title to first line of text or 'Untitled quiz'
+  let rawTitle = (req.body.title || '').trim();
+  if (!rawTitle) {
+    const rawText = (req.body.topicOrText || '').trim();
+    const firstLine = rawText.split('\n').map((s: string) => s.trim()).find((s: string) => s.length > 0) || '';
+    rawTitle = firstLine.slice(0, 100) || 'Untitled quiz';
+  }
+  req.body.title = rawTitle;
+
   let validated;
   try {
     validated = quizGenerateInputSchema.parse(req.body);
@@ -161,19 +170,12 @@ export async function generateQuiz(req: Request, res: Response): Promise<void> {
 }
 
 export async function listQuizzes(req: Request, res: Response): Promise<void> {
-  const { publishedOnly = 'true' } = req.query;
+  const user = req.user!;
 
-  const whereClause: any = {};
-  if (publishedOnly === 'true' && req.user?.role === 'learner') {
-    whereClause.isPublished = true;
-  }
-
+  // Strict ownership: Every user, including admin, sees ONLY quizzes they created
   const quizzes = await prisma.quiz.findMany({
-    where: whereClause,
+    where: { creatorId: user.id },
     include: {
-      creator: {
-        select: { id: true, email: true, role: true }
-      },
       _count: {
         select: { questions: true, attempts: true }
       }
@@ -181,12 +183,12 @@ export async function listQuizzes(req: Request, res: Response): Promise<void> {
     orderBy: { createdAt: 'desc' }
   });
 
+  // Payloads must NEVER return stored study text, creatorId, owner, or creatorEmail
   res.json(
     quizzes.map((q) => ({
       id: q.id,
       title: q.title,
       description: q.description,
-      creatorEmail: q.creator.email,
       sourceType: q.sourceType,
       isPublished: q.isPublished,
       questionCount: q._count.questions,
@@ -200,10 +202,11 @@ export async function listQuizzes(req: Request, res: Response): Promise<void> {
 
 export async function getQuizById(req: Request, res: Response): Promise<void> {
   const { id } = req.params;
-  const userRole = req.user?.role;
+  const user = req.user!;
 
-  const quiz = await prisma.quiz.findUnique({
-    where: { id },
+  // Non-owned quiz must always return 404 for all users (including admin)
+  const quiz = await prisma.quiz.findFirst({
+    where: { id, creatorId: user.id },
     include: {
       questions: {
         orderBy: { orderIndex: 'asc' }
@@ -217,10 +220,21 @@ export async function getQuizById(req: Request, res: Response): Promise<void> {
   }
 
   // If learner is fetching, hide correctAnswers before submission
-  const isTrainerOrAdmin = userRole === 'admin' || userRole === 'trainer';
+  const isTrainerOrAdmin = user.role === 'admin' || user.role === 'trainer';
 
+  // Exclude creatorId and any study text from ALL responses, including for admin
   res.json({
-    ...quiz,
+    id: quiz.id,
+    title: quiz.title,
+    description: quiz.description,
+    sourceType: quiz.sourceType,
+    sourceFilename: quiz.sourceFilename,
+    isPublished: quiz.isPublished,
+    questionCount: quiz.questionCount,
+    difficulty: quiz.difficulty,
+    language: quiz.language,
+    createdAt: quiz.createdAt,
+    updatedAt: quiz.updatedAt,
     questions: quiz.questions.map((q) => ({
       id: q.id,
       questionText: q.questionText,
@@ -239,6 +253,17 @@ export async function submitQuiz(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
   const validated = submitQuizAttemptSchema.parse(req.body);
 
+  // Enforce quiz ownership rule: Non-owned quiz must always return 404
+  const quiz = await prisma.quiz.findUnique({
+    where: { id: validated.quizId },
+    select: { id: true, creatorId: true }
+  });
+
+  if (!quiz || quiz.creatorId !== userId) {
+    res.status(404).json({ error: 'NotFound', message: 'Quiz not found' });
+    return;
+  }
+
   try {
     const evaluation = await evaluateQuizAttempt({
       quizId: validated.quizId,
@@ -255,9 +280,11 @@ export async function submitQuiz(req: Request, res: Response): Promise<void> {
 
 export async function exportQuizPdfEndpoint(req: Request, res: Response): Promise<void> {
   const { id } = req.params;
+  const userId = req.user!.id;
 
-  const quiz = await prisma.quiz.findUnique({
-    where: { id },
+  // Non-owned quiz must always return 404
+  const quiz = await prisma.quiz.findFirst({
+    where: { id, creatorId: userId },
     include: {
       questions: { orderBy: { orderIndex: 'asc' } }
     }
@@ -291,10 +318,22 @@ export async function exportQuizPdfEndpoint(req: Request, res: Response): Promis
   res.send(pdfBuffer);
 }
 
-// ---------------- Admin/Trainer Management ----------------
+// ---------------- Quiz Management (Owner only) ----------------
 
 export async function updateQuiz(req: Request, res: Response): Promise<void> {
   const { id } = req.params;
+  const userId = req.user!.id;
+
+  const existing = await prisma.quiz.findUnique({
+    where: { id },
+    select: { id: true, creatorId: true }
+  });
+
+  if (!existing || existing.creatorId !== userId) {
+    res.status(404).json({ error: 'NotFound', message: 'Quiz not found' });
+    return;
+  }
+
   const { title, description, isPublished, difficulty } = req.body;
 
   const quiz = await prisma.quiz.update({
@@ -307,11 +346,99 @@ export async function updateQuiz(req: Request, res: Response): Promise<void> {
     }
   });
 
-  res.json({ message: 'Quiz updated successfully', quiz });
+  const { creatorId: _c, ...safeQuiz } = quiz;
+  res.json({ message: 'Quiz updated successfully', quiz: safeQuiz });
+}
+
+export async function publishQuiz(req: Request, res: Response): Promise<void> {
+  const { id } = req.params;
+  const userId = req.user!.id;
+
+  const existing = await prisma.quiz.findUnique({
+    where: { id },
+    select: { id: true, creatorId: true, isPublished: true }
+  });
+
+  if (!existing || existing.creatorId !== userId) {
+    res.status(404).json({ error: 'NotFound', message: 'Quiz not found' });
+    return;
+  }
+
+  const { isPublished } = req.body;
+  const updated = await prisma.quiz.update({
+    where: { id },
+    data: { isPublished: isPublished !== undefined ? Boolean(isPublished) : true }
+  });
+
+  const { creatorId: _c, ...safeQuiz } = updated;
+  res.json({ message: 'Quiz publish status updated', quiz: safeQuiz });
 }
 
 export async function deleteQuiz(req: Request, res: Response): Promise<void> {
   const { id } = req.params;
+  const userId = req.user!.id;
+
+  const existing = await prisma.quiz.findUnique({
+    where: { id },
+    select: { id: true, creatorId: true }
+  });
+
+  if (!existing || existing.creatorId !== userId) {
+    res.status(404).json({ error: 'NotFound', message: 'Quiz not found' });
+    return;
+  }
+
   await prisma.quiz.delete({ where: { id } });
   res.json({ message: 'Quiz deleted successfully' });
+}
+
+export async function getQuizHistory(req: Request, res: Response): Promise<void> {
+  const { id } = req.params;
+  const userId = req.user!.id;
+
+  const quiz = await prisma.quiz.findUnique({
+    where: { id },
+    select: { id: true, creatorId: true }
+  });
+
+  if (!quiz || quiz.creatorId !== userId) {
+    res.status(404).json({ error: 'NotFound', message: 'Quiz not found' });
+    return;
+  }
+
+  const attempts = await prisma.quizAttempt.findMany({
+    where: { quizId: id, userId },
+    orderBy: { submittedAt: 'desc' }
+  });
+
+  res.json(attempts);
+}
+
+export async function getQuizResultById(req: Request, res: Response): Promise<void> {
+  const { id, attemptId } = req.params;
+  const userId = req.user!.id;
+
+  const quiz = await prisma.quiz.findUnique({
+    where: { id },
+    select: { id: true, creatorId: true }
+  });
+
+  if (!quiz || quiz.creatorId !== userId) {
+    res.status(404).json({ error: 'NotFound', message: 'Quiz not found' });
+    return;
+  }
+
+  const attempt = await prisma.quizAttempt.findFirst({
+    where: { id: attemptId, quizId: id, userId },
+    include: {
+      answers: true
+    }
+  });
+
+  if (!attempt) {
+    res.status(404).json({ error: 'NotFound', message: 'Quiz attempt not found' });
+    return;
+  }
+
+  res.json(attempt);
 }
