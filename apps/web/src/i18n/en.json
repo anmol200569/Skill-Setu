@@ -70,7 +70,7 @@
     "sampleResult": {
       "tag": "What You Will Receive",
       "title": "A Concrete Diagnostic Gap Analysis",
-      "subtitle": "Every learner gets an objective evaluation with verified scores, identified gaps, and exact courses to take.",
+      "subtitle": "Every learner gets an objective evaluation with clear scores, identified gaps, and exact courses to take.",
       "badge": "Sample Result — Illustrative Only",
       "role": "Target Role: Full-Stack Developer",
       "readinessLabel": "Estimated readiness",
@@ -95,7 +95,7 @@
     "loop": {
       "tag": "Continuous Improvement",
       "title": "The Skill Setu Growth Loop",
-      "subtitle": "A cyclical framework designed to move you from uncertain self-assessments to verified, demonstrable competency.",
+      "subtitle": "A cyclical framework designed to move you from uncertain self-assessments to clear, demonstrable competency.",
       "steps": {
         "step1": {
           "title": "Assess",
@@ -111,7 +111,7 @@
         },
         "step4": {
           "title": "Learn",
-          "desc": "Follow curated, step-by-step pathways assembled exclusively from verified free resources from Microsoft, Google, and CS50."
+          "desc": "Follow curated, step-by-step pathways assembled exclusively from free resources from Microsoft, Google, and CS50."
         },
         "step5": {
           "title": "Practice",
@@ -160,11 +160,11 @@
         },
         "q2": {
           "question": "How are diagnostic questions scored and evaluated?",
-          "answer": "Every diagnostic assessment calculates a score using verified competency frameworks on a 1.0 to 5.0 scale. Option orders are shuffled on every attempt to eliminate positional bias, and questions feature explanations for both correct choices and common misconceptions."
+          "answer": "Every diagnostic assessment calculates a score using clear competency frameworks on a 1.0 to 5.0 scale. Option orders are shuffled on every attempt to eliminate positional bias, and questions feature explanations for both correct choices and common misconceptions."
         },
         "q3": {
           "question": "Are the recommended learning paths genuinely free?",
-          "answer": "Yes. Our catalog indexes over 60 verified courses from open educational providers including Microsoft Learn, Google Cloud Skills Boost, freeCodeCamp, CS50, and NPTEL. You will never encounter a paywall inside our recommended course pathways."
+          "answer": "Yes. Our catalog indexes over 60 free courses from open educational providers including Microsoft Learn, Google Cloud Skills Boost, freeCodeCamp, CS50, and NPTEL. You will never encounter a paywall inside our recommended course pathways."
         },
         "q4": {
           "question": "Can I change my target career role after signing up?",
@@ -173,7 +173,7 @@
       }
     },
     "footer": {
-      "tagline": "Skill Setu — Open Skill Intelligence & Learning Platform",
+      "tagline": "Open Skill Intelligence & Learning Platform",
       "courses": "Courses Catalog",
       "login": "Learner Login",
       "signup": "Sign Up",
@@ -271,7 +271,7 @@
   },
   "assessment": {
     "title": "Diagnostic Competency Assessment",
-    "subtitle": "Test your practical knowledge with verified scoring",
+    "subtitle": "Test your practical knowledge with clear scoring",
     "questionOf": "Question {{current}} of {{total}}",
     "submit": "Submit Assessment",
     "reviewScore": "Assessment Result",

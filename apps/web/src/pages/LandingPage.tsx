@@ -689,11 +689,15 @@ export function LandingPage() {
       <footer className="mt-auto border-t border-border bg-card py-12 px-4 sm:px-6 text-xs text-muted-foreground">
         <div className="max-w-7xl mx-auto space-y-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <span className="w-6 h-6 rounded bg-[#C2410C] text-white flex items-center justify-center font-serif font-bold text-xs">
-                S
-              </span>
-              <span className="font-serif font-bold text-foreground text-sm">Skill Setu</span>
+            <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <span className="w-6 h-6 rounded bg-[#C2410C] text-white flex items-center justify-center font-serif font-bold text-xs flex-shrink-0">
+                  S
+                </span>
+                <span className="font-serif font-bold text-foreground text-sm whitespace-nowrap">
+                  Skill Setu
+                </span>
+              </div>
               <span>— {t('landing.footer.tagline')}</span>
             </div>
             <div className="flex items-center gap-6">
