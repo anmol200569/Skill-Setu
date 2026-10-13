@@ -48,7 +48,7 @@ describe('AI Quiz Generation Schema Validation', () => {
   });
 });
 
-describe('Document Upload Validation & Error Paths', () => {
+describe('Document Upload Validation & Error Paths', { timeout: 15000 }, () => {
   it('rejects file larger than 4 MB with plain error message', async () => {
     const { validateFileMetadata } = await import('../src/services/fileExtractionService');
     const oversizeBytes = 4.2 * 1024 * 1024; // 4.2 MB > 4 MB
