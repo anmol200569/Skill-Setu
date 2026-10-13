@@ -82,13 +82,18 @@ export async function apiClient<T>(
 
   if (!response.ok) {
     let errorDetail = 'Request failed';
+    let errorJson: any = null;
     try {
-      const errorJson = await response.json();
+      errorJson = await response.json();
       errorDetail = errorJson.message || errorJson.error || response.statusText;
     } catch {
       errorDetail = response.statusText;
     }
-    throw new Error(errorDetail);
+    const err: any = new Error(errorDetail);
+    err.status = response.status;
+    err.statusCode = response.status;
+    err.degraded = errorJson?.degraded;
+    throw err;
   }
 
   // Handle blob or json

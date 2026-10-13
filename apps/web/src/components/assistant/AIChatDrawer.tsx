@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles, X, Send, Bot, User, Loader2, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Sparkles, X, Send, Bot, User, Loader2, ArrowRight, RotateCcw, Compass } from 'lucide-react';
 import { apiClient } from '../../lib/api';
 import { useAuth } from '../../context/AuthContext';
 
@@ -8,10 +9,14 @@ interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
   createdAt?: string;
+  isError?: boolean;
+  retryMessage?: string;
+  noRole?: boolean;
 }
 
 export function AIChatDrawer() {
   const { profile } = useAuth();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
@@ -24,11 +29,15 @@ export function AIChatDrawer() {
       // Load initial chat welcome message
       const conv = `conv-${Date.now()}`;
       setConversationId(conv);
+      const roleName = profile?.targetRoleName;
       setMessages([
         {
           id: 'welcome',
           role: 'assistant',
-          content: `Hi there! I'm your Skill Setu AI Mentor. I have your target role (${profile?.targetRoleName || 'Target Career'}) and current skill assessments in my context. What would you like to explore today?`
+          content: roleName
+            ? `Hi there! I'm your Skill Setu AI Mentor. I have your target role (${roleName}) and current skill assessments in my context. What would you like to explore today?`
+            : `Hi there! I'm your Skill Setu AI Mentor. Pick a target role first so I can tailor mentoring and study recommendations to your career goals.`,
+          noRole: !roleName
         }
       ]);
     }
@@ -52,14 +61,26 @@ export function AIChatDrawer() {
     setInput('');
     setIsLoading(true);
 
+    const controller = new AbortController();
+    const timeoutTimer = setTimeout(() => {
+      controller.abort();
+    }, 15000);
+
     try {
-      const res = await apiClient<{ conversationId: string; message: { id: string; content: string } }>('/assistant/chat', {
+      const res = await apiClient<{
+        conversationId: string;
+        noRole?: boolean;
+        degraded?: boolean;
+        message: { id: string; content: string };
+      }>('/assistant/chat', {
         method: 'POST',
+        signal: controller.signal,
         body: JSON.stringify({
           conversationId,
           message: textToSend
         })
       });
+      clearTimeout(timeoutTimer);
 
       if (res?.conversationId) setConversationId(res.conversationId);
 
@@ -68,16 +89,36 @@ export function AIChatDrawer() {
         {
           id: res.message.id,
           role: 'assistant',
-          content: res.message.content
+          content: res.message.content,
+          noRole: res.noRole
         }
       ]);
     } catch (err: any) {
+      clearTimeout(timeoutTimer);
+      const isTimeout =
+        err?.name === 'AbortError' ||
+        err?.message?.toLowerCase().includes('abort') ||
+        err?.message?.toLowerCase().includes('timed out') ||
+        err?.message?.toLowerCase().includes('timeout');
+      const is429 = err?.status === 429 || err?.statusCode === 429 || err?.message?.includes('429');
+      const is503 = err?.status === 503 || err?.statusCode === 503 || err?.message?.includes('503') || err?.degraded;
+
+      const friendlyMessage = is429
+        ? 'The AI Mentor is currently busy due to high demand. Please try again in a moment.'
+        : isTimeout
+        ? 'Request timed out after 15 seconds. Please try asking again.'
+        : is503
+        ? 'The AI Mentor service is temporarily unavailable. Please retry in a moment.'
+        : 'Could not connect to the AI Mentor service. Please check your network and retry.';
+
       setMessages((prev) => [
         ...prev,
         {
           id: `error-${Date.now()}`,
           role: 'assistant',
-          content: `Error: ${err.message || 'Could not connect to AI service. Please check your backend configuration.'}`
+          content: friendlyMessage,
+          isError: true,
+          retryMessage: textToSend
         }
       ]);
     } finally {
@@ -117,7 +158,7 @@ export function AIChatDrawer() {
               <div>
                 <h4 className="text-sm font-serif font-bold text-foreground">Skill Setu AI Mentor</h4>
                 <p className="text-[11px] text-muted-foreground">
-                  Context: {profile?.targetRoleName || 'Target Career'}
+                  Context: {profile?.targetRoleName || 'Role Not Selected'}
                 </p>
               </div>
             </div>
@@ -145,10 +186,35 @@ export function AIChatDrawer() {
                   className={`rounded-xl px-3.5 py-2.5 max-w-[85%] leading-relaxed ${
                     m.role === 'user'
                       ? 'bg-[#C2410C] text-white'
+                      : m.isError
+                      ? 'bg-destructive/10 text-destructive border border-destructive/30'
                       : 'bg-secondary text-secondary-foreground border border-border whitespace-pre-wrap'
                   }`}
                 >
-                  {m.content}
+                  <div>{m.content}</div>
+                  {m.isError && m.retryMessage && (
+                    <button
+                      type="button"
+                      onClick={() => handleSend(m.retryMessage)}
+                      className="mt-2 text-xs font-semibold px-2.5 py-1 rounded-md bg-destructive text-destructive-foreground hover:bg-destructive/90 flex items-center gap-1.5 transition-colors"
+                    >
+                      <RotateCcw className="w-3 h-3" />
+                      <span>Retry</span>
+                    </button>
+                  )}
+                  {m.noRole && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsOpen(false);
+                        navigate('/dashboard');
+                      }}
+                      className="mt-2 text-xs font-semibold px-2.5 py-1 rounded-md bg-[#C2410C] text-white hover:bg-[#9A3412] flex items-center gap-1.5 transition-colors"
+                    >
+                      <Compass className="w-3 h-3" />
+                      <span>Pick Target Role</span>
+                    </button>
+                  )}
                 </div>
                 {m.role === 'user' && (
                   <div className="w-6 h-6 rounded-full bg-muted text-muted-foreground flex items-center justify-center flex-shrink-0 mt-0.5">
