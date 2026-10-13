@@ -3,25 +3,12 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { formatAuthError, isSupabaseConfigured } from '../lib/supabase';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Eye, EyeOff, AlertCircle, CheckCircle2, ArrowLeft, Compass } from 'lucide-react';
-
-const roleLabels: Record<string, string> = {
-  'fullstack-dev': 'Full-Stack Developer',
-  'data-analyst': 'Data Analyst',
-  'cloud-engineer': 'Cloud & DevOps Engineer',
-  'ml-engineer': 'Machine Learning Engineer',
-  'appsec-engineer': 'Application Security'
-};
-
-const levelLabels: Record<string, string> = {
-  beginner: 'Foundational / Beginner',
-  intermediate: 'Intermediate',
-  advanced: 'Senior / Transitioning'
-};
 
 const signupSchema = z.object({
   fullName: z.string().min(2, 'Full name must be at least 2 characters'),
@@ -38,6 +25,7 @@ const signupSchema = z.object({
 type SignupFormValues = z.infer<typeof signupSchema>;
 
 export function SignupPage() {
+  const { t } = useTranslation();
   const { signUpWithEmail, signInWithGoogle } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -136,7 +124,7 @@ export function SignupPage() {
 
     const guardTimeout = setTimeout(() => {
       setIsGoogleSubmitting(false);
-      setAuthError('Google sign-up request timed out. Please try again.');
+      setAuthError(t('auth.login.timeout'));
     }, 12000);
 
     try {
@@ -155,15 +143,16 @@ export function SignupPage() {
           <div className="w-12 h-12 rounded-full bg-green-500/10 text-green-600 flex items-center justify-center mx-auto">
             <CheckCircle2 className="w-6 h-6" />
           </div>
-          <h2 className="text-2xl font-serif font-bold text-foreground">Verify your email address</h2>
+          <h2 className="text-2xl font-serif font-bold text-foreground">
+            {t('auth.signup.verification.title')}
+          </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            We have sent a secure confirmation link to <span className="font-semibold text-foreground">{registeredEmail}</span>.
-            Please click the link in your email to activate your account and start your skill diagnostics.
+            {t('auth.signup.verification.body', { email: registeredEmail })}
           </p>
           <div className="pt-4">
             <Link to="/login">
               <Button variant="outline" className="w-full">
-                Return to Log In
+                {t('auth.signup.verification.backLogin')}
               </Button>
             </Link>
           </div>
@@ -182,10 +171,10 @@ export function SignupPage() {
           </Link>
         </div>
         <h2 className="mt-6 text-center text-3xl font-serif font-bold text-foreground">
-          Create your Skill Setu account
+          {t('auth.signup.title')}
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          Map your competencies and get personalized career roadmaps
+          {t('auth.signup.subtitle')}
         </p>
       </div>
 
@@ -207,15 +196,15 @@ export function SignupPage() {
             <div className="mb-6 p-4 rounded-xl bg-[#C2410C]/10 border border-[#C2410C]/25 text-xs space-y-1.5">
               <div className="flex items-center gap-1.5 font-semibold text-[#C2410C]">
                 <Compass className="w-4 h-4 flex-shrink-0" />
-                <span>Selected Pathway Configuration</span>
+                <span>{t('auth.signup.pathwayTitle')}</span>
               </div>
               <p className="text-foreground text-[11px] leading-relaxed">
-                Target Role: <strong>{roleLabels[pathwayConfig.role] || pathwayConfig.role}</strong><br />
-                Self-Assessed Level: <strong>{levelLabels[pathwayConfig.level] || pathwayConfig.level}</strong><br />
-                Weekly Commitment: <strong>{pathwayConfig.hours} hrs/week</strong>
+                {t('auth.signup.targetRole')}: <strong>{t(`landing.wizard.roles.${pathwayConfig.role}`, { defaultValue: pathwayConfig.role })}</strong><br />
+                {t('auth.signup.assessedLevel')}: <strong>{t(`landing.wizard.levels.${pathwayConfig.level}.label`, { defaultValue: pathwayConfig.level })}</strong><br />
+                {t('auth.signup.weeklyCommitment')}: <strong>{pathwayConfig.hours} hrs/week</strong>
               </p>
               <p className="text-[10px] text-muted-foreground pt-1 border-t border-[#C2410C]/15">
-                These selections will automatically initialize your diagnostic roadmap upon registration.
+                {t('auth.signup.pathwayNote')}
               </p>
             </div>
           )}
@@ -223,7 +212,7 @@ export function SignupPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {/* Role Toggle */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-foreground/80">Account Type</label>
+              <label className="block text-xs font-medium text-foreground/80">{t('auth.signup.accountType')}</label>
               <div className="grid grid-cols-2 gap-2">
                 <label
                   className={`flex items-center justify-center p-2.5 rounded-lg border text-xs font-semibold cursor-pointer transition-colors ${
@@ -233,7 +222,7 @@ export function SignupPage() {
                   }`}
                 >
                   <input type="radio" value="learner" className="sr-only" {...register('role')} />
-                  Learner / Professional
+                  {t('auth.signup.roleLearner')}
                 </label>
                 <label
                   className={`flex items-center justify-center p-2.5 rounded-lg border text-xs font-semibold cursor-pointer transition-colors ${
@@ -243,15 +232,15 @@ export function SignupPage() {
                   }`}
                 >
                   <input type="radio" value="trainer" className="sr-only" {...register('role')} />
-                  Instructor / Trainer
+                  {t('auth.signup.roleTrainer')}
                 </label>
               </div>
             </div>
 
             <Input
               id="fullName"
-              label="Full Name"
-              placeholder="e.g. Anmol Singh"
+              label={t('auth.signup.fullNameLabel')}
+              placeholder={t('auth.signup.fullNamePlaceholder')}
               error={errors.fullName?.message}
               {...register('fullName')}
             />
@@ -259,8 +248,8 @@ export function SignupPage() {
             <Input
               id="email"
               type="email"
-              label="Email Address"
-              placeholder="you@domain.com"
+              label={t('auth.signup.emailLabel')}
+              placeholder={t('auth.signup.emailPlaceholder')}
               error={errors.email?.message}
               {...register('email')}
             />
@@ -268,8 +257,8 @@ export function SignupPage() {
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              label="Password"
-              placeholder="At least 8 chars, 1 uppercase, 1 number"
+              label={t('auth.signup.passwordLabel')}
+              placeholder={t('auth.signup.passwordPlaceholder')}
               error={errors.password?.message}
               {...register('password')}
               rightElement={
@@ -290,7 +279,7 @@ export function SignupPage() {
               isLoading={isSubmitting}
               disabled={isSubmitting || isGoogleSubmitting}
             >
-              Create Account
+              {t('auth.signup.submit')}
             </Button>
           </form>
 
@@ -300,7 +289,7 @@ export function SignupPage() {
                 <div className="w-full border-t border-border" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">Or sign up with</span>
+                <span className="bg-card px-2 text-muted-foreground">{t('auth.signup.orSignUpWith')}</span>
               </div>
             </div>
 
@@ -330,15 +319,15 @@ export function SignupPage() {
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                   />
                 </svg>
-                <span>Continue with Google</span>
+                <span>{t('auth.signup.google')}</span>
               </Button>
             </div>
           </div>
 
           <div className="mt-6 text-center text-xs text-muted-foreground">
-            Already have an account?{' '}
+            {t('auth.signup.alreadyAccount')}{' '}
             <Link to="/login" className="font-semibold text-[#C2410C] hover:underline">
-              Sign in
+              {t('auth.signup.signIn')}
             </Link>
           </div>
         </div>
@@ -346,7 +335,7 @@ export function SignupPage() {
         <div className="mt-6 text-center">
           <Link to="/" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
             <ArrowLeft className="w-3.5 h-3.5" />
-            Back to homepage
+            {t('auth.signup.backHome')}
           </Link>
         </div>
       </div>

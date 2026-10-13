@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
@@ -15,6 +16,7 @@ const forgotPasswordSchema = z.object({
 type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
 export function ForgotPasswordPage() {
+  const { t } = useTranslation();
   const { resetPassword } = useAuth();
   const [authError, setAuthError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -51,10 +53,10 @@ export function ForgotPasswordPage() {
           </Link>
         </div>
         <h2 className="mt-6 text-center text-3xl font-serif font-bold text-foreground">
-          Reset your password
+          {t('auth.forgot.title')}
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          We'll send you a secure link to reset your account password
+          {t('auth.forgot.subtitle')}
         </p>
       </div>
 
@@ -65,13 +67,17 @@ export function ForgotPasswordPage() {
               <div className="w-12 h-12 rounded-full bg-green-500/10 text-green-600 flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
-              <h3 className="font-serif text-lg font-bold text-foreground">Password reset email sent</h3>
+              <h3 className="font-serif text-lg font-bold text-foreground">
+                {t('auth.forgot.successTitle')}
+              </h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Check your inbox for instructions to set a new password. If you don't receive an email within a few minutes, check your spam folder.
+                {t('auth.forgot.successDesc')}
               </p>
               <div className="pt-2">
                 <Link to="/login">
-                  <Button variant="outline" className="w-full">Back to Sign In</Button>
+                  <Button variant="outline" className="w-full">
+                    {t('auth.forgot.backLogin')}
+                  </Button>
                 </Link>
               </div>
             </div>
@@ -88,8 +94,8 @@ export function ForgotPasswordPage() {
                 <Input
                   id="email"
                   type="email"
-                  label="Email Address"
-                  placeholder="you@domain.com"
+                  label={t('auth.forgot.emailLabel')}
+                  placeholder={t('auth.forgot.emailPlaceholder')}
                   error={errors.email?.message}
                   {...register('email')}
                 />
@@ -99,14 +105,14 @@ export function ForgotPasswordPage() {
                   className="w-full font-semibold"
                   isLoading={isSubmitting}
                 >
-                  Send Reset Link
+                  {t('auth.forgot.submit')}
                 </Button>
               </form>
 
               <div className="mt-6 text-center text-xs text-muted-foreground">
-                Remember your password?{' '}
+                {t('auth.forgot.remember')}{' '}
                 <Link to="/login" className="font-semibold text-[#C2410C] hover:underline">
-                  Sign in
+                  {t('auth.forgot.signIn')}
                 </Link>
               </div>
             </>
@@ -116,7 +122,7 @@ export function ForgotPasswordPage() {
         <div className="mt-6 text-center">
           <Link to="/" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
             <ArrowLeft className="w-3.5 h-3.5" />
-            Back to homepage
+            {t('auth.forgot.backHome')}
           </Link>
         </div>
       </div>

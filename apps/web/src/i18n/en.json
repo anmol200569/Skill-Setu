@@ -12,14 +12,233 @@
     "logout": "Log Out"
   },
   "landing": {
-    "badge": "AI-Powered Skill Intelligence Platform",
-    "title": "Bridge the gap between who you are and who you want to become.",
-    "subtitle": "Assess verified competencies, map precision skill gaps for target careers, discover curated courses, and generate mastery quizzes from your study material.",
-    "ctaStart": "Start Skill Diagnostic",
-    "ctaExplore": "Explore Roles & Courses",
-    "statsLearners": "Active Learners",
-    "statsCurated": "Curated Free Tracks",
-    "statsAccuracy": "Gap Precision"
+    "badge": "Open Technical Skill Intelligence",
+    "title": "Know your technical skill gaps. Bridge them with structured open learning.",
+    "subtitle": "Objective diagnostic assessments mapped to real industry competencies. Discover your proficiency, benchmark against role requirements, and follow curated open-source courses.",
+    "heroTitle": "Know your technical skill gaps. Bridge them with structured open learning.",
+    "heroSubtitle": "Objective diagnostic assessments mapped to real industry competencies. Discover your proficiency, benchmark against role requirements, and follow curated open-source courses.",
+    "heroCta": "Configure Your Pathway",
+    "wizard": {
+      "tag": "Step-by-Step Setup",
+      "title": "Plan Your Diagnostic Pathway in 30 Seconds",
+      "badge": "No credit card • Answers carry into signup",
+      "step1Title": "Select Target Role",
+      "step2Title": "Self-Assessed Level",
+      "step3Title": "Weekly Commitment",
+      "roles": {
+        "fullstack-dev": "Full-Stack Developer",
+        "data-analyst": "Data Analyst",
+        "cloud-engineer": "Cloud & DevOps Engineer",
+        "ml-engineer": "Machine Learning Engineer",
+        "appsec-engineer": "Application Security"
+      },
+      "levels": {
+        "beginner": {
+          "label": "Foundational / Beginner",
+          "sub": "Starting from core basics"
+        },
+        "intermediate": {
+          "label": "Intermediate Developer",
+          "sub": "1-3 years practical coding"
+        },
+        "advanced": {
+          "label": "Senior / Transitioning",
+          "sub": "Solid base, targeting gaps"
+        }
+      },
+      "hours": {
+        "h3_5": {
+          "label": "3 to 5 hours / week",
+          "sub": "Consistent light pace"
+        },
+        "h6_10": {
+          "label": "6 to 10 hours / week",
+          "sub": "Recommended standard"
+        },
+        "h11_15": {
+          "label": "11 to 15 hours / week",
+          "sub": "Accelerated study"
+        },
+        "h15_plus": {
+          "label": "15+ hours / week",
+          "sub": "Immersive focus"
+        }
+      },
+      "summary": "Ready to initialize your benchmark audit with these selections.",
+      "cta": "Continue with This Pathway"
+    },
+    "sampleResult": {
+      "tag": "What You Will Receive",
+      "title": "A Concrete Diagnostic Gap Analysis",
+      "subtitle": "Every learner gets an objective evaluation with verified scores, identified gaps, and exact courses to take.",
+      "badge": "Sample Result — Illustrative Only",
+      "role": "Target Role: Full-Stack Developer",
+      "readinessLabel": "Estimated Qualification Readiness",
+      "readinessValue": "Readiness 68/100 (Sample)",
+      "competencySummary": "Competency Evaluation Summary",
+      "gapMinor": "Minor Gap (-0.5)",
+      "gapCritical": "Critical Gap (-2.0)",
+      "gapHigh": "High Gap (-1.0)",
+      "currentRequired": "Current: {{current}} / 5 • Required: {{required}} / 5",
+      "targetedIntervention": "Targeted Learning Intervention",
+      "topCoursesTitle": "Top High-Impact Course Recommendations:",
+      "az305Title": "Designing Azure Infrastructure Solutions (AZ-305)",
+      "az305Provider": "(Microsoft Learn)",
+      "az305Covers": "Covers: System Design & Scalability (sys-design)",
+      "az305Bridges": "Bridges 2.0 score units • 32 hrs",
+      "fccTitle": "Information Security Certification Track",
+      "fccProvider": "(freeCodeCamp)",
+      "fccCovers": "Covers: Application Security (OWASP Top 10) (appsec-owasp)",
+      "fccBridges": "Bridges 1.0 score units • 40 hrs",
+      "sampleEstimate": "Sample estimate: Completing these two targeted courses raises estimated readiness to 86/100."
+    },
+    "loop": {
+      "tag": "Continuous Improvement",
+      "title": "The Skill Setu Continuous Growth Loop",
+      "subtitle": "A cyclical framework designed to move you from uncertain self-assessments to verified, demonstrable competency.",
+      "steps": {
+        "step1": {
+          "title": "Assess",
+          "desc": "Complete focused diagnostic assessments covering genuine workplace code scenarios and architecture dilemmas."
+        },
+        "step2": {
+          "title": "Score",
+          "desc": "Receive calibrated 1.0 to 5.0 proficiency scores derived from objective testing and self-assessment rubrics."
+        },
+        "step3": {
+          "title": "Skill Graph",
+          "desc": "View an instant radar visualization highlighting must-have role requirements versus your current proficiencies."
+        },
+        "step4": {
+          "title": "Learn",
+          "desc": "Follow curated, step-by-step pathways assembled exclusively from verified free resources from Microsoft, Google, and CS50."
+        },
+        "step5": {
+          "title": "Practice",
+          "desc": "Generate interactive revision quizzes from course materials or notes using our integrated AI study assistant."
+        },
+        "step6": {
+          "title": "Re-Score",
+          "desc": "Retake diagnostic modules as you complete courses to watch your quantified qualification score increase."
+        }
+      }
+    },
+    "domains": {
+      "tag": "Comprehensive Curriculum Bank",
+      "titleLoading": "Curated Technical Competencies & Question Banks",
+      "titleWithStats": "{{domains}} Domains, {{skills}} Competencies, {{questions}} Curated Questions",
+      "subtitle": "Real competency models and verified assessment banks loaded dynamically from our database.",
+      "coreSkills": "{{count}} Core Skills",
+      "questions": "{{count}} Questions",
+      "descriptions": {
+        "prog-soft-dev": "ECMAScript runtime, TypeScript typing, React architecture, Node.js APIs, and relational modeling.",
+        "data-analytics": "Advanced SQL window functions, exploratory data analysis with Pandas, and executive storytelling.",
+        "cloud-devops": "Containers, Kubernetes orchestration, AWS cloud architecture, and CI/CD automation pipelines.",
+        "ai-ml": "Machine learning fundamentals, LLM prompt engineering, RAG vector search, and PyTorch training.",
+        "cybersecurity": "OWASP Top 10 web vulnerabilities, OAuth 2.0 / JWT identity, and zero-trust network defenses.",
+        "communication-leadership": "Technical writing, architectural RFCs, stakeholder alignment, and agile code review culture.",
+        "product-management": "Product discovery, PRD authoring, North Star metrics, cohort retention, and UX design thinking."
+      },
+      "names": {
+        "prog-soft-dev": "Programming & Software Development",
+        "data-analytics": "Data & Analytics",
+        "cloud-devops": "Cloud & DevOps",
+        "ai-ml": "AI & Machine Learning",
+        "cybersecurity": "Cybersecurity & Digital Safety",
+        "communication-leadership": "Communication & Leadership",
+        "product-management": "Product & Project Management"
+      }
+    },
+    "faq": {
+      "tag": "Transparency First",
+      "title": "Frequently Asked Questions",
+      "subtitle": "Clear, honest answers about our methodology, scope, and guarantees.",
+      "items": {
+        "q1": {
+          "question": "Does Skill Setu guarantee a job, placement, or interview?",
+          "answer": "No. Skill Setu is an educational benchmarking and skill gap diagnostics tool, not a recruitment agency, staffing firm, or placement bootcamp. We help you systematically uncover where your technical skills fall short of industry role benchmarks and connect you with free curricula to bridge those gaps. Hiring decisions depend on employers, market dynamics, and your independent project portfolio."
+        },
+        "q2": {
+          "question": "How are diagnostic questions scored and evaluated?",
+          "answer": "Every diagnostic assessment calculates a score using verified competency frameworks on a 1.0 to 5.0 scale. Option orders are shuffled on every attempt to eliminate positional bias, and questions feature explanations for both correct choices and common misconceptions."
+        },
+        "q3": {
+          "question": "Are the recommended learning paths genuinely free?",
+          "answer": "Yes. Our catalog indexes over 60 verified courses from open educational providers including Microsoft Learn, Google Cloud Skills Boost, freeCodeCamp, CS50, and NPTEL. You will never encounter a paywall inside our recommended course pathways."
+        },
+        "q4": {
+          "question": "Can I change my target career role after signing up?",
+          "answer": "Yes. You can change or compare target roles at any time in your profile dashboard. Switching roles automatically re-computes your readiness score and reprioritizes your course suggestions."
+        }
+      }
+    },
+    "footer": {
+      "tagline": "Skill Setu — Open Skill Intelligence & Learning Platform",
+      "courses": "Courses Catalog",
+      "login": "Learner Login",
+      "signup": "Sign Up",
+      "copyright": "© {{year}} Skill Setu. Open-source educational diagnostics platform. All course trademarks belong to their respective owners."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back to Skill Setu",
+      "subtitle": "Sign in to access your skill diagnostics and personalized path",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "name@example.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "forgotPassword": "Forgot your password?",
+      "submit": "Sign In",
+      "orContinueWith": "Or continue with",
+      "google": "Continue with Google",
+      "noAccount": "Don't have an account yet?",
+      "createAccount": "Create an account",
+      "backHome": "Back to homepage",
+      "timeout": "Google sign-in request timed out. Please try again."
+    },
+    "signup": {
+      "title": "Create your Skill Setu account",
+      "subtitle": "Map your competencies and get personalized career roadmaps",
+      "pathwayTitle": "Selected Pathway Configuration",
+      "targetRole": "Target Role",
+      "assessedLevel": "Self-Assessed Level",
+      "weeklyCommitment": "Weekly Commitment",
+      "pathwayNote": "These selections will automatically initialize your diagnostic roadmap upon registration.",
+      "accountType": "Account Type",
+      "roleLearner": "Learner / Professional",
+      "roleTrainer": "Instructor / Trainer",
+      "fullNameLabel": "Full Name",
+      "fullNamePlaceholder": "e.g. Anmol Singh",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "you@domain.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "At least 8 chars, 1 uppercase, 1 number",
+      "submit": "Create Account",
+      "orSignUpWith": "Or sign up with",
+      "google": "Continue with Google",
+      "alreadyAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "backHome": "Back to homepage",
+      "verification": {
+        "title": "Verify your email address",
+        "body": "We have sent a secure confirmation link to {{email}}. Please click the link in your email to activate your account and start your skill diagnostics.",
+        "backLogin": "Return to Log In"
+      }
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "subtitle": "We'll send you a secure link to reset your account password",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "you@domain.com",
+      "submit": "Send Reset Link",
+      "successTitle": "Password reset email sent",
+      "successDesc": "Check your inbox for instructions to set a new password. If you don't receive an email within a few minutes, check your spam folder.",
+      "backLogin": "Back to Sign In",
+      "remember": "Remember your password?",
+      "signIn": "Sign in",
+      "backHome": "Back to homepage"
+    }
   },
   "dashboard": {
     "welcome": "Welcome back",

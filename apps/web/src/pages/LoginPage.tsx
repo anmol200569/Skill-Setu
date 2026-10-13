@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { formatAuthError, isSupabaseConfigured } from '../lib/supabase';
 import { Button } from '../components/ui/Button';
@@ -21,6 +22,7 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function LoginPage() {
+  const { t } = useTranslation();
   const { signInWithEmail, signInWithGoogle } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -91,7 +93,7 @@ export function LoginPage() {
     // Guard timeout to prevent permanent button spinning if navigation is blocked
     const guardTimeout = setTimeout(() => {
       setIsGoogleSubmitting(false);
-      setAuthError('Google sign-in request timed out. Please try again.');
+      setAuthError(t('auth.login.timeout'));
     }, 12000);
 
     try {
@@ -114,10 +116,10 @@ export function LoginPage() {
           </Link>
         </div>
         <h2 className="mt-6 text-center text-3xl font-serif font-bold text-foreground">
-          Welcome back to Skill Setu
+          {t('auth.login.title')}
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          Sign in to access your skill diagnostics and personalized path
+          {t('auth.login.subtitle')}
         </p>
       </div>
 
@@ -146,8 +148,8 @@ export function LoginPage() {
             <Input
               id="email"
               type="email"
-              label="Email Address"
-              placeholder="name@example.com"
+              label={t('auth.login.emailLabel')}
+              placeholder={t('auth.login.emailPlaceholder')}
               autoComplete="email"
               error={errors.email?.message}
               {...register('email')}
@@ -156,8 +158,8 @@ export function LoginPage() {
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              label="Password"
-              placeholder="Enter your password"
+              label={t('auth.login.passwordLabel')}
+              placeholder={t('auth.login.passwordPlaceholder')}
               autoComplete="current-password"
               error={errors.password?.message}
               {...register('password')}
@@ -178,7 +180,7 @@ export function LoginPage() {
                 to="/forgot-password"
                 className="text-xs font-semibold text-[#C2410C] hover:underline"
               >
-                Forgot your password?
+                {t('auth.login.forgotPassword')}
               </Link>
             </div>
 
@@ -188,7 +190,7 @@ export function LoginPage() {
               isLoading={isSubmitting}
               disabled={isSubmitting || isGoogleSubmitting}
             >
-              Sign In
+              {t('auth.login.submit')}
             </Button>
           </form>
 
@@ -198,7 +200,7 @@ export function LoginPage() {
                 <div className="w-full border-t border-border" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                <span className="bg-card px-2 text-muted-foreground">{t('auth.login.orContinueWith')}</span>
               </div>
             </div>
 
@@ -228,15 +230,15 @@ export function LoginPage() {
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                   />
                 </svg>
-                <span>Continue with Google</span>
+                <span>{t('auth.login.google')}</span>
               </Button>
             </div>
           </div>
 
           <div className="mt-6 text-center text-xs text-muted-foreground">
-            Don't have an account yet?{' '}
+            {t('auth.login.noAccount')}{' '}
             <Link to="/signup" className="font-semibold text-[#C2410C] hover:underline">
-              Create an account
+              {t('auth.login.createAccount')}
             </Link>
           </div>
         </div>
@@ -244,7 +246,7 @@ export function LoginPage() {
         <div className="mt-6 text-center">
           <Link to="/" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
             <ArrowLeft className="w-3.5 h-3.5" />
-            Back to homepage
+            {t('auth.login.backHome')}
           </Link>
         </div>
       </div>

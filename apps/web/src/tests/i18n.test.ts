@@ -12,6 +12,15 @@ describe('Internationalization Translation Dictionaries', () => {
 
     expect(en.landing.title).toBeDefined();
     expect(hi.landing.title).toBeDefined();
+    expect(en.landing.heroTitle).toBeDefined();
+    expect(hi.landing.heroTitle).toBeDefined();
+    expect(en.landing.wizard.title).toBeDefined();
+    expect(hi.landing.wizard.title).toBeDefined();
+
+    expect(en.auth.login.title).toBe('Welcome back to Skill Setu');
+    expect(hi.auth.login.title).toBe('स्किल सेतु में आपका पुनः स्वागत है');
+    expect(en.auth.signup.title).toBe('Create your Skill Setu account');
+    expect(hi.auth.signup.title).toBe('अपना स्किल सेतु खाता बनाएं');
 
     expect(en.quiz.title).toBe('AI Quiz Generator');
     expect(hi.quiz.title).toBe('AI क्विज़ जनरेटर');
