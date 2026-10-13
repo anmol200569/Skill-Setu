@@ -5,7 +5,9 @@ import {
   getDashboardReadiness,
   computeEstimatedReadinessGain,
   determineNextBestAction,
-  computeReadinessScore
+  computeReadinessScore,
+  buildWeeklyPlanItems,
+  buildDisplayGaps
 } from '../lib/dashboardLogic';
 import { GapItem, RecommendedCourseItem } from '../pages/learner/DashboardPage';
 
@@ -384,6 +386,94 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
       expect(sharedOutput.assessedSkillsCount).toBe(1);
       expect(sharedOutput.totalSkillsCount).toBe(3);
       expect(sharedOutput.unassessedSkills.length).toBe(2);
+    });
+  });
+
+  describe('5. Weekly Plan and Gap Breakdown Helpers (Fix E)', () => {
+    it('returns empty array when no recommended courses exist', () => {
+      const items = buildWeeklyPlanItems([], 10);
+      expect(items).toEqual([]);
+    });
+
+    it('builds specific weekly items from recommended courses when courses exist', () => {
+      const recs: RecommendedCourseItem[] = [
+        {
+          course: {
+            id: 'c1',
+            title: 'Modern React Mastery',
+            provider: 'Coursera',
+            destinationUrl: 'https://coursera.org',
+            difficulty: 'Intermediate',
+            estimatedHours: 12
+          },
+          matchScore: 80,
+          gapAddressed: 'React',
+          recommendationReason: 'Covers React'
+        },
+        {
+          course: {
+            id: 'c2',
+            title: 'Node.js Microservices',
+            provider: 'Udemy',
+            destinationUrl: 'https://udemy.com',
+            difficulty: 'Advanced',
+            estimatedHours: 8
+          },
+          matchScore: 65,
+          gapAddressed: 'Node.js',
+          recommendationReason: 'Covers Node.js'
+        }
+      ];
+
+      const items = buildWeeklyPlanItems(recs, 10);
+      expect(items.length).toBe(4);
+      expect(items[0].text).toContain('React via Modern React Mastery');
+      expect(items[1].text).toContain('Node.js via Node.js Microservices');
+      expect(items[2].isRoutine).toBe(true);
+      expect(items[3].isRoutine).toBe(true);
+    });
+
+    it('merges unassessed required skills into display gaps so no blank layout area appears', () => {
+      const assessedGaps: GapItem[] = [
+        {
+          skillId: 's1',
+          skillName: 'React',
+          requiredLevel: 4,
+          currentLevel: 2,
+          gap: 2,
+          priority: 'critical',
+          weight: 1.5
+        }
+      ];
+
+      const unassessed = [
+        {
+          skillId: 's2',
+          skillName: 'TypeScript',
+          requiredLevel: 3,
+          priority: 'high' as const,
+          weight: 1.2
+        },
+        {
+          skillId: 's3',
+          skillName: 'SQL',
+          requiredLevel: 3,
+          priority: 'medium' as const,
+          weight: 1.0
+        }
+      ];
+
+      const merged = buildDisplayGaps(assessedGaps, unassessed);
+      expect(merged.length).toBe(3);
+      expect(merged[0].skillId).toBe('s1');
+      expect(merged[0].isAssessed).not.toBe(false);
+
+      expect(merged[1].skillId).toBe('s2');
+      expect(merged[1].isAssessed).toBe(false);
+      expect(merged[1].currentLevel).toBeNull();
+
+      expect(merged[2].skillId).toBe('s3');
+      expect(merged[2].isAssessed).toBe(false);
     });
   });
 });

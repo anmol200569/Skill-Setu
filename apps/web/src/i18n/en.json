@@ -367,6 +367,8 @@
     "radar": {
       "title": "Competency Radar Analysis",
       "scale": "1 - 5 Scale",
+      "emptyTitle": "No assessed skills yet",
+      "emptySubtitle": "Complete diagnostic evaluations to plot your multi-skill competency radar against role benchmarks.",
       "currentLegend": "Your Current Level",
       "requiredLegend": "Target Role Requirement",
       "tooltipCurrent": "Current Level: {{score}}/5",
@@ -376,6 +378,8 @@
       "title": "This-Week Learning Plan",
       "subtitle": "Structured weekly plan to bridge your top priority gaps",
       "targetHours": "Target: {{hours}} hrs/week",
+      "noPlanTitle": "No weekly plan available",
+      "noPlanSubtitle": "Take a diagnostic assessment to generate targeted course milestones for your weekly schedule.",
       "progress": "{{done}} of {{total}} milestones completed",
       "item1": "Core Study: Focus on highest-impact gap module",
       "item2": "Practical Project: Hands-on code exercise and review",

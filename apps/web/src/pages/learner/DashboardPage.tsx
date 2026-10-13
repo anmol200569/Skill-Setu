@@ -11,7 +11,9 @@ import {
   sortGapsByImpact,
   isDashboardNotStarted,
   getDashboardReadiness,
-  determineNextBestAction
+  determineNextBestAction,
+  buildWeeklyPlanItems,
+  buildDisplayGaps
 } from '../../lib/dashboardLogic';
 import {
   Radar,
@@ -239,9 +241,11 @@ export function DashboardPage() {
   // Gaps sorted by impact (largest absolute gap first)
   const rawGaps: GapItem[] = stats?.topGaps ?? [];
   const sortedGaps = sortGapsByImpact(rawGaps);
+  const displayGaps = buildDisplayGaps(sortedGaps, unassessedSkillsList);
 
   const recommendations: RecommendedCourseItem[] = stats?.recommendedCourses ?? [];
   const weeklyHours = profile?.weeklyStudyHours || 10;
+  const weeklyPlanItems = buildWeeklyPlanItems(recommendations, weeklyHours);
   const totalCoursesCount = stats?.totalCoursesCount ?? 61;
 
   // Next Best Action Determination using pure logic
@@ -653,77 +657,102 @@ export function DashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="w-full h-72 sm:h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart data={radarData} margin={{ top: 25, right: 35, bottom: 25, left: 35 }}>
-                      <PolarGrid stroke="#D4D0C5" className="dark:stroke-border/60" />
-                      <PolarAngleAxis
-                        dataKey="skill"
-                        tick={{ fill: '#6B6861', fontSize: 10 }}
-                      />
-                      <PolarRadiusAxis
-                        angle={90}
-                        domain={[0, 5]}
-                        tick={{ fill: '#6B6861', fontSize: 9 }}
-                        tickCount={6}
-                      />
-                      <Tooltip
-                        content={({ active, payload }: any) => {
-                          if (active && payload && payload.length) {
-                            const item = payload[0].payload;
-                            return (
-                              <div className="bg-popover border border-border rounded-lg p-2.5 shadow-md text-xs space-y-1">
-                                <div className="font-semibold text-foreground">
-                                  {item.fullSkill || item.skill}
-                                </div>
-                                <div className="text-[#C2410C] font-medium">
-                                  {t('dashboard.radar.tooltipCurrent', { score: item.current })}
-                                </div>
-                                <div className="text-muted-foreground">
-                                  {t('dashboard.radar.tooltipRequired', { score: item.required })}
-                                </div>
-                              </div>
-                            );
-                          }
-                          return null;
-                        }}
-                      />
-                      <Radar
-                        name="Current"
-                        dataKey="current"
-                        stroke="#C2410C"
-                        fill="#C2410C"
-                        fillOpacity={0.4}
-                      />
-                      <Radar
-                        name="Required"
-                        dataKey="required"
-                        stroke="#1A1A18"
-                        className="dark:stroke-foreground/60"
-                        fill="#1A1A18"
-                        fillOpacity={0.15}
-                      />
-                    </RadarChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* Radar Legend */}
-                <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground pt-3 border-t border-border">
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#C2410C]" />
-                    <span>{t('dashboard.radar.currentLegend')}</span>
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#1A1A18] dark:bg-foreground/60" />
-                    <span>{t('dashboard.radar.requiredLegend')}</span>
-                  </span>
-                </div>
-
-                {/* Unassessed skills note */}
-                {unassessedCount > 0 && (
-                  <div className="text-center text-[11px] text-muted-foreground italic pt-1">
-                    {unassessedCount} {unassessedCount === 1 ? 'skill not assessed' : 'skills not assessed'}
+                {radarData.length === 0 ? (
+                  <div className="w-full h-72 sm:h-80 flex flex-col items-center justify-center text-center p-6 space-y-3 bg-secondary/20 rounded-xl border border-dashed border-border">
+                    <div className="w-10 h-10 rounded-full bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center">
+                      <TrendingUp className="w-5 h-5" />
+                    </div>
+                    <div className="space-y-1 max-w-xs">
+                      <div className="text-sm font-semibold text-foreground">
+                        {t('dashboard.radar.emptyTitle', { defaultValue: 'No assessed skills yet' })}
+                      </div>
+                      <div className="text-xs text-muted-foreground leading-relaxed">
+                        {t('dashboard.radar.emptySubtitle', {
+                          defaultValue: 'Complete diagnostic evaluations to plot your multi-skill competency radar against role benchmarks.'
+                        })}
+                      </div>
+                    </div>
+                    <Link to="/assessments">
+                      <Button size="sm" variant="outline" className="h-7 text-xs border-[#C2410C]/40 text-[#C2410C] mt-1">
+                        {t('dashboard.takeDiagnostic', { defaultValue: 'Take diagnostic' })}
+                      </Button>
+                    </Link>
                   </div>
+                ) : (
+                  <>
+                    <div className="w-full h-72 sm:h-80">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <RadarChart data={radarData} margin={{ top: 25, right: 35, bottom: 25, left: 35 }}>
+                          <PolarGrid stroke="#D4D0C5" className="dark:stroke-border/60" />
+                          <PolarAngleAxis
+                            dataKey="skill"
+                            tick={{ fill: '#6B6861', fontSize: 10 }}
+                          />
+                          <PolarRadiusAxis
+                            angle={90}
+                            domain={[0, 5]}
+                            tick={{ fill: '#6B6861', fontSize: 9 }}
+                            tickCount={6}
+                          />
+                          <Tooltip
+                            content={({ active, payload }: any) => {
+                              if (active && payload && payload.length) {
+                                const item = payload[0].payload;
+                                return (
+                                  <div className="bg-popover border border-border rounded-lg p-2.5 shadow-md text-xs space-y-1">
+                                    <div className="font-semibold text-foreground">
+                                      {item.fullSkill || item.skill}
+                                    </div>
+                                    <div className="text-[#C2410C] font-medium">
+                                      {t('dashboard.radar.tooltipCurrent', { score: item.current })}
+                                    </div>
+                                    <div className="text-muted-foreground">
+                                      {t('dashboard.radar.tooltipRequired', { score: item.required })}
+                                    </div>
+                                  </div>
+                                );
+                              }
+                              return null;
+                            }}
+                          />
+                          <Radar
+                            name="Current"
+                            dataKey="current"
+                            stroke="#C2410C"
+                            fill="#C2410C"
+                            fillOpacity={0.4}
+                          />
+                          <Radar
+                            name="Required"
+                            dataKey="required"
+                            stroke="#1A1A18"
+                            className="dark:stroke-foreground/60"
+                            fill="#1A1A18"
+                            fillOpacity={0.15}
+                          />
+                        </RadarChart>
+                      </ResponsiveContainer>
+                    </div>
+
+                    {/* Radar Legend */}
+                    <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground pt-3 border-t border-border">
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#C2410C]" />
+                        <span>{t('dashboard.radar.currentLegend')}</span>
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#1A1A18] dark:bg-foreground/60" />
+                        <span>{t('dashboard.radar.requiredLegend')}</span>
+                      </span>
+                    </div>
+
+                    {/* Unassessed skills note */}
+                    {unassessedCount > 0 && (
+                      <div className="text-center text-[11px] text-muted-foreground italic pt-1">
+                        {unassessedCount} {unassessedCount === 1 ? 'skill not assessed' : 'skills not assessed'}
+                      </div>
+                    )}
+                  </>
                 )}
               </CardContent>
             </Card>
@@ -748,13 +777,13 @@ export function DashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 pt-2">
-                {sortedGaps.length === 0 ? (
+                {displayGaps.length === 0 ? (
                   <div className="text-center py-8 text-xs text-muted-foreground">
                     <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
                     <span>{t('dashboard.gapBars.allMet')}</span>
                   </div>
                 ) : (
-                  sortedGaps.slice(0, 5).map((gap) => {
+                  displayGaps.slice(0, 5).map((gap) => {
                     const isAssessed = gap.isAssessed !== false && gap.currentLevel !== null && gap.currentLevel !== undefined;
                     const currentPct = isAssessed ? Math.min(100, ((gap.currentLevel as number) / 5) * 100) : 0;
                     const requiredPct = Math.min(100, (gap.requiredLevel / 5) * 100);
@@ -840,75 +869,70 @@ export function DashboardPage() {
                 </div>
               </div>
 
-              <div className="space-y-2.5">
-                {[
-                  {
-                    idx: 1,
-                    isRoutine: false,
-                    text: topCourse
-                      ? `Core Module: ${topGap ? topGap.skillName : 'Target Skill'} via ${topCourse.course.title} (${(weeklyHours * 0.4).toFixed(1)} hrs)`
-                      : topGap
-                      ? `Core Module: Focus on ${topGap.skillName} (${(weeklyHours * 0.4).toFixed(1)} hrs)`
-                      : `Core Module: Foundational Competencies (${(weeklyHours * 0.4).toFixed(1)} hrs)`
-                  },
-                  {
-                    idx: 2,
-                    isRoutine: true,
-                    text: `Hands-on Lab Practice & Problem Sets (${(weeklyHours * 0.3).toFixed(1)} hrs)`
-                  },
-                  {
-                    idx: 3,
-                    isRoutine: true,
-                    text: `Diagnostic & Knowledge Check Quizzes (${(weeklyHours * 0.15).toFixed(1)} hrs)`
-                  },
-                  {
-                    idx: 4,
-                    isRoutine: true,
-                    text: `Concept Revision & Code Reflection (${(weeklyHours * 0.15).toFixed(1)} hrs)`
-                  }
-                ].map((item) => {
-                  const isChecked = Boolean(completedMilestones[item.idx]);
-                  return (
-                    <div
-                      key={item.idx}
-                      onClick={() => toggleMilestone(item.idx)}
-                      className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between gap-3 ${
-                        isChecked
-                          ? 'border-green-600/30 bg-green-500/5 text-muted-foreground line-through'
-                          : 'border-border bg-card hover:bg-secondary/30 text-foreground'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <button
-                          type="button"
-                          className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-colors ${
+              {weeklyPlanItems.length === 0 ? (
+                <div className="p-6 rounded-2xl border border-dashed border-border bg-card text-center space-y-3">
+                  <div className="text-xs font-semibold text-foreground">
+                    {t('dashboard.thisWeek.noPlanTitle', { defaultValue: 'No weekly plan available' })}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed max-w-xs mx-auto">
+                    {t('dashboard.thisWeek.noPlanSubtitle', {
+                      defaultValue: 'Take a diagnostic assessment to generate targeted course milestones for your weekly schedule.'
+                    })}
+                  </p>
+                  <Link to="/assessments">
+                    <Button size="sm" variant="outline" className="h-7 text-xs border-[#C2410C]/40 text-[#C2410C]">
+                      {t('dashboard.takeDiagnostic', { defaultValue: 'Take diagnostic' })}
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-2.5">
+                    {weeklyPlanItems.map((item) => {
+                      const isChecked = Boolean(completedMilestones[item.idx]);
+                      return (
+                        <div
+                          key={item.idx}
+                          onClick={() => toggleMilestone(item.idx)}
+                          className={`p-3.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between gap-3 ${
                             isChecked
-                              ? 'bg-green-600 border-green-600 text-white'
-                              : 'border-muted-foreground/40 bg-background'
+                              ? 'border-green-600/30 bg-green-500/5 text-muted-foreground line-through'
+                              : 'border-border bg-card hover:bg-secondary/30 text-foreground'
                           }`}
                         >
-                          {isChecked && <Check className="w-3 h-3" />}
-                        </button>
-                        <span className="text-xs font-medium leading-relaxed select-none">
-                          {item.text}
-                        </span>
-                      </div>
-                      {item.isRoutine && (
-                        <Badge variant="outline" className="text-[9px] px-1.5 py-0 text-muted-foreground border-border whitespace-nowrap flex-shrink-0">
-                          Suggested routine
-                        </Badge>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+                          <div className="flex items-center gap-3 min-w-0">
+                            <button
+                              type="button"
+                              className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-colors ${
+                                isChecked
+                                  ? 'bg-green-600 border-green-600 text-white'
+                                  : 'border-muted-foreground/40 bg-background'
+                              }`}
+                            >
+                              {isChecked && <Check className="w-3 h-3" />}
+                            </button>
+                            <span className="text-xs font-medium leading-relaxed select-none">
+                              {item.text}
+                            </span>
+                          </div>
+                          {item.isRoutine && (
+                            <Badge variant="outline" className="text-[9px] px-1.5 py-0 text-muted-foreground border-border whitespace-nowrap flex-shrink-0">
+                              Suggested routine
+                            </Badge>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
 
-              <div className="text-[11px] text-muted-foreground pt-1">
-                {t('dashboard.thisWeek.progress', {
-                  done: Object.values(completedMilestones).filter(Boolean).length,
-                  total: 4
-                })}
-              </div>
+                  <div className="text-[11px] text-muted-foreground pt-1">
+                    {t('dashboard.thisWeek.progress', {
+                      done: Object.values(completedMilestones).filter(Boolean).length,
+                      total: weeklyPlanItems.length
+                    })}
+                  </div>
+                </>
+              )}
             </div>
 
             {/* CURATED RECOMMENDED COURSES FOR TOP GAPS */}

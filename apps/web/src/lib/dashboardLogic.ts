@@ -194,6 +194,107 @@ export function determineNextBestAction(
  * Computes overall readiness score from role requirements and user skills
  * using the shared calculateReadiness formula.
  */
+/**
+ * Builds weekly plan milestone items from recommended courses and weekly hours.
+ * Returns an empty array if no recommendations are available.
+ */
+export function buildWeeklyPlanItems(
+  recommendations: RecommendedCourseItem[] = [],
+  weeklyHours: number = 10
+): Array<{ idx: number; isRoutine: boolean; text: string }> {
+  if (!recommendations || recommendations.length === 0) {
+    return [];
+  }
+
+  const items: Array<{ idx: number; isRoutine: boolean; text: string }> = [];
+  const r1 = recommendations[0];
+  const h1 = (weeklyHours * 0.4).toFixed(1);
+  items.push({
+    idx: 1,
+    isRoutine: false,
+    text: `Core Module: ${r1.gapAddressed || 'Target Skill'} via ${r1.course.title} (${h1} hrs)`
+  });
+
+  if (recommendations.length > 1) {
+    const r2 = recommendations[1];
+    const h2 = (weeklyHours * 0.3).toFixed(1);
+    items.push({
+      idx: 2,
+      isRoutine: false,
+      text: `Secondary Focus: ${r2.gapAddressed || 'Applied Skill'} via ${r2.course.title} (${h2} hrs)`
+    });
+  } else {
+    items.push({
+      idx: 2,
+      isRoutine: true,
+      text: `Hands-on Lab Practice & Problem Sets (${(weeklyHours * 0.3).toFixed(1)} hrs)`
+    });
+  }
+
+  if (recommendations.length > 2) {
+    const r3 = recommendations[2];
+    const h3 = (weeklyHours * 0.15).toFixed(1);
+    items.push({
+      idx: 3,
+      isRoutine: false,
+      text: `Supplemental Track: ${r3.gapAddressed || 'Mastery Skill'} via ${r3.course.title} (${h3} hrs)`
+    });
+  } else {
+    items.push({
+      idx: 3,
+      isRoutine: true,
+      text: `Diagnostic & Knowledge Check Quizzes (${(weeklyHours * 0.15).toFixed(1)} hrs)`
+    });
+  }
+
+  items.push({
+    idx: 4,
+    isRoutine: true,
+    text: `Concept Revision & Code Reflection (${(weeklyHours * 0.15).toFixed(1)} hrs)`
+  });
+
+  return items;
+}
+
+/**
+ * Merges assessed gaps with unassessed required skills to ensure all role skills
+ * are displayed without empty layout areas.
+ */
+export function buildDisplayGaps(
+  sortedGaps: GapItem[] = [],
+  unassessedSkills: Array<{
+    skillId: string;
+    skillName: string;
+    requiredLevel: number;
+    priority?: any;
+    domainName?: string;
+    weight?: number;
+  }> = []
+): GapItem[] {
+  const list: GapItem[] = [...sortedGaps];
+  const seenIds = new Set(list.map((g) => g.skillId.toLowerCase()));
+  const seenNames = new Set(list.map((g) => g.skillName.toLowerCase()));
+
+  for (const u of unassessedSkills) {
+    if (!seenIds.has(u.skillId.toLowerCase()) && !seenNames.has(u.skillName.toLowerCase())) {
+      list.push({
+        skillId: u.skillId,
+        skillName: u.skillName,
+        domainName: u.domainName || '',
+        requiredLevel: u.requiredLevel,
+        currentLevel: null,
+        gap: u.requiredLevel,
+        priority: u.priority || 'medium',
+        weight: u.weight || 1.0,
+        priorityScore: 0,
+        isAssessed: false
+      });
+    }
+  }
+
+  return list;
+}
+
 export function computeReadinessScore(
   roleRequirements: Array<{ skillId?: string; requiredProficiency: number; weight: number }>,
   userSkills: Array<{ skillId?: string; selfAssessedLevel?: number; verifiedScore?: number | null }>
