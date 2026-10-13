@@ -2,7 +2,8 @@ import { Router } from 'express';
 import {
   getSkillAssessmentQuestions,
   submitAssessment,
-  getAssessmentHistory
+  getAssessmentHistory,
+  getAssessmentAttemptById
 } from '../../controllers/assessmentController';
 import { authenticate } from '../../middleware/auth';
 import { validateBody } from '../../middleware/validation';
@@ -15,5 +16,6 @@ router.use(authenticate);
 router.get('/questions/:skillId', getSkillAssessmentQuestions);
 router.post('/submit', validateBody(submitAssessmentSchema), submitAssessment);
 router.get('/history', getAssessmentHistory);
+router.get('/attempt/:id', getAssessmentAttemptById);
 
 export default router;

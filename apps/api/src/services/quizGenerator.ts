@@ -1,7 +1,8 @@
 import { prisma } from '../lib/prisma';
 import {
   aiGeneratedQuizOutputSchema,
-  UserRole
+  UserRole,
+  stripInactivePrefix
 } from '@skill-setu/shared';
 import { config } from '../config';
 import * as aiService from './aiService';
@@ -228,7 +229,7 @@ export async function evaluateQuizAttempt(params: QuizAttemptEvaluation) {
 
     answersDetail.push({
       questionId: q.id,
-      questionText: q.questionText,
+      questionText: stripInactivePrefix(q.questionText),
       selectedOptions: selected,
       correctOptions: correct,
       isCorrect,

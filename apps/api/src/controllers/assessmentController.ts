@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../lib/prisma';
-import { submitAssessmentSchema } from '@skill-setu/shared';
+import { submitAssessmentSchema, stripInactivePrefix } from '@skill-setu/shared';
 
 /**
  * Fisher-Yates array shuffle implementation
@@ -59,6 +59,7 @@ export async function getSkillAssessmentQuestions(req: Request, res: Response): 
 
     return {
       ...q,
+      questionText: stripInactivePrefix(q.questionText),
       options
     };
   });
@@ -106,6 +107,7 @@ export async function submitAssessment(req: Request, res: Response): Promise<voi
 
     evaluatedAnswers.push({
       questionId: q.id,
+      questionText: stripInactivePrefix(q.questionText),
       selectedOptions: selected,
       isCorrect,
       timeSpentSeconds: answerInput.timeSpentSeconds || 0,
@@ -189,6 +191,7 @@ export async function submitAssessment(req: Request, res: Response): Promise<voi
     correctQuestions: correctCount,
     evaluatedAnswers: evaluatedAnswers.map((a) => ({
       questionId: a.questionId,
+      questionText: a.questionText,
       selectedOptions: a.selectedOptions,
       correctAnswers: a.correctAnswers,
       isCorrect: a.isCorrect,
@@ -202,7 +205,12 @@ export async function getAssessmentHistory(req: Request, res: Response): Promise
 
   const attempts = await prisma.assessmentAttempt.findMany({
     where: { userId },
-    include: { skill: true },
+    include: {
+      skill: true,
+      answers: {
+        include: { question: true }
+      }
+    },
     orderBy: { startedAt: 'desc' },
     take: 20
   });
@@ -216,7 +224,52 @@ export async function getAssessmentHistory(req: Request, res: Response): Promise
       assessedLevel: a.assessedLevel,
       totalQuestions: a.totalQuestions,
       correctQuestions: a.correctQuestions,
-      completedAt: a.completedAt
+      completedAt: a.completedAt,
+      answers: a.answers?.map((ans) => ({
+        id: ans.id,
+        questionId: ans.questionId,
+        questionText: ans.question ? stripInactivePrefix(ans.question.questionText) : '',
+        selectedOptions: ans.selectedOptions,
+        isCorrect: ans.isCorrect
+      }))
     }))
   );
+}
+
+export async function getAssessmentAttemptById(req: Request, res: Response): Promise<void> {
+  const { id } = req.params;
+  const userId = req.user!.id;
+
+  const attempt = await prisma.assessmentAttempt.findFirst({
+    where: { id, userId },
+    include: {
+      skill: true,
+      answers: {
+        include: { question: true }
+      }
+    }
+  });
+
+  if (!attempt) {
+    res.status(404).json({ error: 'NotFound', message: 'Assessment attempt not found' });
+    return;
+  }
+
+  res.json({
+    id: attempt.id,
+    skillId: attempt.skillId,
+    skillName: attempt.skill.name,
+    score: attempt.score,
+    assessedLevel: attempt.assessedLevel,
+    totalQuestions: attempt.totalQuestions,
+    correctQuestions: attempt.correctQuestions,
+    completedAt: attempt.completedAt,
+    answers: attempt.answers.map((ans) => ({
+      id: ans.id,
+      questionId: ans.questionId,
+      questionText: ans.question ? stripInactivePrefix(ans.question.questionText) : '',
+      selectedOptions: ans.selectedOptions,
+      isCorrect: ans.isCorrect
+    }))
+  });
 }

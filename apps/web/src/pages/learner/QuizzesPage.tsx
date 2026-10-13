@@ -20,6 +20,7 @@ import {
   Loader2
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { stripInactivePrefix } from '@skill-setu/shared';
 
 interface QuizItem {
   id: string;
@@ -555,6 +556,9 @@ export function QuizzesPage() {
                     )}
                     <span>Q{idx + 1}: {ans.isCorrect ? 'Correct' : 'Incorrect'}</span>
                   </div>
+                  {ans.questionText && (
+                    <p className="text-foreground/90 font-medium pl-6">{stripInactivePrefix(ans.questionText)}</p>
+                  )}
                   <p className="text-muted-foreground pl-6">{ans.explanation}</p>
                 </div>
               ))}
@@ -585,7 +589,7 @@ export function QuizzesPage() {
             </div>
 
             <div className="text-sm font-semibold text-foreground leading-relaxed">
-              {quizQuestions[currentIdx].questionText}
+              {stripInactivePrefix(quizQuestions[currentIdx].questionText)}
             </div>
 
             {/* Options */}

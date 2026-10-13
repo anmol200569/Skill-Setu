@@ -9,7 +9,11 @@ import {
   evaluateQuizAttempt
 } from '../services/quizGenerator';
 import { generateQuizPdf } from '../services/quizExportService';
-import { quizGenerateInputSchema, submitQuizAttemptSchema } from '@skill-setu/shared';
+import {
+  quizGenerateInputSchema,
+  submitQuizAttemptSchema,
+  stripInactivePrefix
+} from '@skill-setu/shared';
 
 export async function uploadStudyMaterial(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
@@ -237,7 +241,7 @@ export async function getQuizById(req: Request, res: Response): Promise<void> {
     updatedAt: quiz.updatedAt,
     questions: quiz.questions.map((q) => ({
       id: q.id,
-      questionText: q.questionText,
+      questionText: stripInactivePrefix(q.questionText),
       type: q.type,
       difficulty: q.difficulty,
       options: q.options,

@@ -195,6 +195,65 @@ describe('Diagnostic Assessments & Seed Data Suite', () => {
         })
       );
     });
+
+    it('strips [INACTIVE] prefix from questionText before returning evaluated answers to the user', async () => {
+      const skillId = 'skill-uuid-inactive-test';
+      const questionId = 'q-inactive-1';
+
+      vi.spyOn(prisma.skill, 'findUnique').mockResolvedValueOnce({
+        id: skillId,
+        code: 'db-sql',
+        name: 'Database SQL',
+        category: 'Backend',
+        description: 'SQL skills',
+        domainId: 'domain-1'
+      } as any);
+
+      vi.spyOn(prisma.assessmentQuestion, 'findMany').mockResolvedValueOnce([
+        {
+          id: questionId,
+          skillId,
+          questionText: '[INACTIVE] What is ACID in relational database management systems?',
+          type: 'single_mcq',
+          difficulty: 'intermediate',
+          options: [{ id: 'opt1', text: 'Atomicity, Consistency, Isolation, Durability' }],
+          correctAnswers: ['opt1'],
+          explanation: 'ACID defines standard transactional properties.'
+        }
+      ] as any);
+
+      vi.spyOn(prisma.assessmentAttempt, 'create').mockResolvedValueOnce({
+        id: 'attempt-inactive-1',
+        userId: 'test-learner-user-id',
+        skillId,
+        score: 100,
+        assessedLevel: 5,
+        totalQuestions: 1,
+        correctQuestions: 1,
+        completedAt: new Date(),
+        answers: []
+      } as any);
+
+      vi.spyOn(prisma.userSkill, 'findUnique').mockResolvedValueOnce(null);
+      vi.spyOn(prisma.userSkill, 'upsert').mockResolvedValueOnce({} as any);
+
+      const res = await request(app)
+        .post('/api/v1/assessment/submit')
+        .set('Authorization', 'Bearer test-learner-token')
+        .send({
+          skillId,
+          answers: [{ questionId, selectedOptions: ['opt1'], timeSpentSeconds: 10 }]
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.body.evaluatedAnswers).toBeDefined();
+      expect(res.body.evaluatedAnswers.length).toBe(1);
+      // The [INACTIVE] prefix MUST be stripped before sending to the client!
+      expect(res.body.evaluatedAnswers[0].questionText).toBe(
+        'What is ACID in relational database management systems?'
+      );
+      expect(res.body.evaluatedAnswers[0].questionText).not.toContain('[INACTIVE]');
+    });
   });
 
   describe('Seed Course Cleanup Logic', () => {
