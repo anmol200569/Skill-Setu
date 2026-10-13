@@ -2,7 +2,7 @@ import pdfParse from 'pdf-parse';
 import mammoth from 'mammoth';
 import AdmZip from 'adm-zip';
 
-export const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
+export const MAX_FILE_SIZE_BYTES = 4 * 1024 * 1024; // 4 MB (enforced below Vercel 4.5 MB request limit)
 
 export const ALLOWED_MIME_TYPES = [
   'application/pdf',
@@ -16,12 +16,12 @@ export const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.pptx', '.txt', '.ppt'];
 
 export function validateFileMetadata(filename: string, mimeType: string, sizeBytes: number): void {
   if (sizeBytes > MAX_FILE_SIZE_BYTES) {
-    throw new Error(`File size ${(sizeBytes / (1024 * 1024)).toFixed(2)} MB exceeds maximum allowed limit of 10 MB.`);
+    throw new Error(`File size ${(sizeBytes / (1024 * 1024)).toFixed(2)} MB exceeds maximum allowed limit of 4 MB. Please upload a smaller document.`);
   }
 
   const ext = filename.substring(filename.lastIndexOf('.')).toLowerCase();
   if (!ALLOWED_EXTENSIONS.includes(ext)) {
-    throw new Error(`Unsupported file extension: ${ext}. Allowed formats: PDF, DOCX, PPTX, TXT.`);
+    throw new Error(`Unsupported file format. Please upload a PDF, DOCX, PPTX, or TXT file.`);
   }
 }
 
@@ -34,8 +34,21 @@ export async function extractTextFromBuffer(
 
   switch (ext) {
     case '.pdf': {
-      const data = await pdfParse(buffer);
-      return data.text.trim();
+      try {
+        const data = await pdfParse(buffer);
+        const text = data.text ? data.text.trim() : '';
+        if (!text || text.length < 10) {
+          throw new Error('No readable text found in document. If this is a scanned PDF or image, please provide a text-based document or paste the text directly.');
+        }
+        return text;
+      } catch (err: any) {
+        if (err.message?.includes('No readable text') || err.message?.includes('scanned')) {
+          throw err;
+        }
+        // Log real error server-side only
+        console.error('[PDF Extraction Server Error]:', err);
+        throw new Error('No readable text found in document. If this is a scanned PDF or image, please provide a text-based document or paste the text directly.');
+      }
     }
 
     case '.docx': {

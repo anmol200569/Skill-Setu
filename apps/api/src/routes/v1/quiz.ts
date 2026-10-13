@@ -18,16 +18,36 @@ import { aiRateLimiter } from '../../middleware/rateLimiter';
 
 const router = Router();
 
-// Multer memory storage with 10MB limit
+// Multer memory storage with 4MB limit (below Vercel serverless request body limit)
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 }
+  limits: { fileSize: 4 * 1024 * 1024 }
 });
 
 router.use(authenticate);
 
-// Document upload & text extraction
-router.post('/upload', upload.single('file'), uploadStudyMaterial);
+// Document upload & text extraction with Multer error handling
+router.post(
+  '/upload',
+  (req, res, next) => {
+    upload.single('file')(req, res, (err) => {
+      if (err) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({
+            error: 'UploadError',
+            message: 'File size exceeds the 4 MB upload limit. Please upload a smaller document.'
+          });
+        }
+        return res.status(400).json({
+          error: 'UploadError',
+          message: err.message || 'File upload failed'
+        });
+      }
+      next();
+    });
+  },
+  uploadStudyMaterial
+);
 
 // Generate quiz via Gemini backend
 router.post('/generate', aiRateLimiter, generateQuiz);

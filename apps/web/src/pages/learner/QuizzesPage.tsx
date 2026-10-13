@@ -100,13 +100,19 @@ export function QuizzesPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 10 * 1024 * 1024) {
-      setErrorMsg('File size exceeds the maximum 10 MB limit.');
+    // Reset previous state
+    setErrorMsg(null);
+
+    // Enforce client-side max size below Vercel serverless request limit (4 MB)
+    const MAX_CLIENT_SIZE_BYTES = 4 * 1024 * 1024;
+    if (file.size > MAX_CLIENT_SIZE_BYTES) {
+      setUploadedFile(null);
+      setExtractedPreview('');
+      setErrorMsg('File size exceeds the 4 MB upload limit. Please upload a document smaller than 4 MB.');
+      if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
-    setUploadedFile(file);
-    setErrorMsg(null);
     setIsExtracting(true);
 
     const formData = new FormData();
@@ -117,13 +123,19 @@ export function QuizzesPage() {
         method: 'POST',
         body: formData
       });
+      // Show chip with 'Text extracted' ONLY after extraction really succeeded
+      setUploadedFile(file);
       setPastedText(res.extractedText);
       setExtractedPreview(res.preview);
       if (!title) {
         setTitle(file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ') + ' Quiz');
       }
     } catch (err: any) {
+      // Ensure file chip is cleared on extraction error
+      setUploadedFile(null);
+      setExtractedPreview('');
       setErrorMsg(err.message || 'Failed to extract text from document');
+      if (fileInputRef.current) fileInputRef.current.value = '';
     } finally {
       setIsExtracting(false);
     }
@@ -414,7 +426,7 @@ export function QuizzesPage() {
                   <div className="flex flex-col items-center gap-1.5 text-xs text-muted-foreground">
                     <Upload className="w-8 h-8 text-[#C2410C]/80" />
                     <span className="font-semibold text-foreground">Click to upload study material</span>
-                    <span>Supports PDF, DOCX, PPTX, TXT (up to 10 MB)</span>
+                    <span>Supports PDF, DOCX, PPTX, TXT (up to 4 MB)</span>
                   </div>
                 )}
               </div>

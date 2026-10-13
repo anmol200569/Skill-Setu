@@ -33,10 +33,10 @@ export async function uploadStudyMaterial(req: Request, res: Response): Promise<
       file.mimetype
     );
 
-    if (!extractedText || extractedText.length < 10) {
+    if (!extractedText || extractedText.trim().length < 10) {
       res.status(400).json({
         error: 'ExtractionError',
-        message: 'Could not extract readable text content from the uploaded document.'
+        message: 'No readable text found in document. If this is a scanned PDF or image, please provide a text-based document or paste the text directly.'
       });
       return;
     }
@@ -61,9 +61,25 @@ export async function uploadStudyMaterial(req: Request, res: Response): Promise<
       extractedText
     });
   } catch (err: any) {
+    // Log the real internal error server-side only
+    console.error('[uploadStudyMaterial] Internal file extraction error:', err);
+
+    let clientMessage = err.message || 'File processing failed';
+    if (clientMessage.includes('exceeds maximum allowed limit') || clientMessage.includes('limit of 4 MB')) {
+      clientMessage = 'File size exceeds the 4 MB upload limit. Please upload a smaller document.';
+    } else if (clientMessage.includes('Unsupported file')) {
+      clientMessage = 'Unsupported file format. Please upload a PDF, DOCX, PPTX, or TXT file.';
+    } else if (
+      clientMessage.includes('No readable text') ||
+      clientMessage.includes('scanned') ||
+      clientMessage.includes('Could not parse')
+    ) {
+      clientMessage = 'No readable text found in document. If this is a scanned PDF or image, please provide a text-based document or paste the text directly.';
+    }
+
     res.status(400).json({
       error: 'UploadError',
-      message: err.message || 'File processing failed'
+      message: clientMessage
     });
   }
 }
