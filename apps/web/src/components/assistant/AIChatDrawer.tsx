@@ -97,10 +97,11 @@ export function AIChatDrawer() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-full bg-[#C2410C] px-4 py-3 text-white shadow-lg hover:bg-[#9A3412] active:scale-95 transition-all"
+          className="fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-full bg-[#C2410C] p-3 sm:px-4 sm:py-3 text-white shadow-lg hover:bg-[#9A3412] active:scale-95 transition-all"
+          aria-label="Ask AI Mentor"
         >
           <Sparkles className="w-5 h-5 animate-pulse" />
-          <span className="text-sm font-semibold">Ask AI Mentor</span>
+          <span className="hidden sm:inline text-sm font-semibold">Ask AI Mentor</span>
         </button>
       )}
 

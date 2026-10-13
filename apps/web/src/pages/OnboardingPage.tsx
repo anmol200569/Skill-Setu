@@ -302,7 +302,7 @@ export function OnboardingPage() {
                   {t('onboarding.step1.noRolesFound')}
                 </div>
               ) : (
-                <div className="space-y-2.5 max-h-[340px] overflow-y-auto pr-1">
+                <div className="space-y-2.5">
                   {filteredRoles.map((r) => {
                     const isSelected = selectedRoleId === r.id;
                     return (
@@ -516,8 +516,8 @@ export function OnboardingPage() {
             </div>
           )}
 
-          {/* Stepper Navigation Buttons */}
-          <div className="flex items-center justify-between pt-6 border-t border-border mt-6">
+          {/* Stepper Navigation Buttons (Sticky to ensure effortless action across all scroll lengths) */}
+          <div className="sticky bottom-0 z-20 bg-card/95 backdrop-blur-sm -mx-6 sm:-mx-8 px-6 sm:px-8 py-4 border-t border-border mt-6 flex items-center justify-between">
             {step > 1 ? (
               <Button
                 type="button"

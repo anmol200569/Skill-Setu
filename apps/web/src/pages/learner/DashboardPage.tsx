@@ -612,18 +612,19 @@ export function DashboardPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="w-full h-64 sm:h-72">
+                <div className="w-full h-72 sm:h-80">
                   <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart data={radarData} margin={{ top: 10, right: 20, bottom: 10, left: 20 }}>
+                    <RadarChart data={radarData} margin={{ top: 15, right: 25, bottom: 15, left: 25 }}>
                       <PolarGrid stroke="#D4D0C5" className="dark:stroke-border/60" />
                       <PolarAngleAxis
                         dataKey="skill"
                         tick={{ fill: '#6B6861', fontSize: 11 }}
                       />
                       <PolarRadiusAxis
-                        angle={30}
+                        angle={90}
                         domain={[0, 5]}
                         tick={{ fill: '#6B6861', fontSize: 10 }}
+                        tickCount={6}
                       />
                       <Tooltip
                         content={({ active, payload }: any) => {

@@ -10,7 +10,7 @@ export function LearnerLayout() {
       <Navbar />
       <div className="flex-1 flex max-w-7xl w-full mx-auto">
         <Sidebar mode="learner" />
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-24 sm:pb-16 overflow-y-auto">
           <Outlet />
         </main>
       </div>
