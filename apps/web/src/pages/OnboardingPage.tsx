@@ -327,16 +327,18 @@ export function OnboardingPage() {
                               {r.description}
                             </p>
                           </div>
-                          <Badge
-                            variant={
-                              r.industryDemand === 'Critical' || r.industryDemand === 'Very High'
-                                ? 'critical'
-                                : 'high'
-                            }
-                            className="text-[10px] whitespace-nowrap flex-shrink-0"
-                          >
-                            {t('onboarding.step1.demandLabel', { demand: r.industryDemand })}
-                          </Badge>
+                          {r.industryDemand && (
+                            <Badge
+                              variant={
+                                r.industryDemand === 'Critical' || r.industryDemand === 'Very High'
+                                  ? 'critical'
+                                  : 'high'
+                              }
+                              className="text-[10px] whitespace-nowrap flex-shrink-0"
+                            >
+                              {t('onboarding.step1.demandLabel', { demand: r.industryDemand })}
+                            </Badge>
+                          )}
                         </div>
                       </div>
                     );

@@ -8,6 +8,12 @@ import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Ca
 import { Modal } from '../../components/ui/Modal';
 import { useTranslation } from 'react-i18next';
 import {
+  sortGapsByImpact,
+  isDashboardNotStarted,
+  getDashboardReadiness,
+  determineNextBestAction
+} from '../../lib/dashboardLogic';
+import {
   Radar,
   RadarChart,
   PolarGrid,
@@ -37,7 +43,7 @@ import {
   Check
 } from 'lucide-react';
 
-interface CareerRoleItem {
+export interface CareerRoleItem {
   id: string;
   code: string;
   title: string;
@@ -45,7 +51,7 @@ interface CareerRoleItem {
   industryDemand: string;
 }
 
-interface GapItem {
+export interface GapItem {
   skillId: string;
   skillName: string;
   currentLevel: number;
@@ -53,9 +59,10 @@ interface GapItem {
   gap: number;
   priority: 'critical' | 'high' | 'medium';
   domainName: string;
+  weight?: number;
 }
 
-interface RecommendedCourseItem {
+export interface RecommendedCourseItem {
   course: {
     id: string;
     title: string;
@@ -63,12 +70,15 @@ interface RecommendedCourseItem {
     estimatedHours: number;
     difficulty: string;
     destinationUrl: string;
+    isFree?: boolean;
   };
-  matchScore: number;
+  matchScore?: number;
+  matchingSkill?: string;
+  matchPercentage?: number;
   recommendationReason: string;
 }
 
-interface WhatIfAnalysisResult {
+export interface WhatIfAnalysisResult {
   overallReadinessScore: number;
   gaps: GapItem[];
   role?: {
@@ -188,9 +198,9 @@ export function DashboardPage() {
     );
   }
 
+  const isNotStarted = isDashboardNotStarted(stats, profile);
+  const readiness = getDashboardReadiness(stats, profile);
   const targetRoleId = stats?.targetRoleId ?? profile?.targetRoleId;
-  const isNotStarted = stats?.status === 'not_started' || !targetRoleId;
-  const readiness = isNotStarted ? null : stats?.overallReadiness;
   const targetRoleTitle =
     stats?.targetRoleTitle ||
     profile?.targetRoleName ||
@@ -212,14 +222,17 @@ export function DashboardPage() {
 
   // Gaps sorted by impact (largest absolute gap first)
   const rawGaps: GapItem[] = stats?.topGaps ?? [];
-  const sortedGaps = [...rawGaps].sort((a, b) => Math.abs(b.gap) - Math.abs(a.gap));
+  const sortedGaps = sortGapsByImpact(rawGaps);
 
   const recommendations: RecommendedCourseItem[] = stats?.recommendedCourses ?? [];
   const weeklyHours = profile?.weeklyStudyHours || 10;
 
-  // Next Best Action Determination
-  const topGap = sortedGaps[0];
-  const topCourse = recommendations[0];
+  // Next Best Action Determination using pure logic
+  const { topGap, topCourse, estimatedGain } = determineNextBestAction(
+    sortedGaps,
+    recommendations,
+    radarData.length > 0 ? radarData : sortedGaps
+  );
 
   return (
     <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto pb-12">
@@ -507,7 +520,7 @@ export function DashboardPage() {
                   </span>
                   <Badge variant="outline" className="text-[10px]">
                     {t('dashboard.nextAction.impactLabel', {
-                      pts: topGap ? Math.round(Math.abs(topGap.gap) * 6) : 10
+                      pts: estimatedGain
                     })}
                   </Badge>
                 </div>
