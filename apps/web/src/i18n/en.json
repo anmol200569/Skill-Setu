@@ -13,9 +13,9 @@
   },
   "landing": {
     "badge": "Open Technical Skill Intelligence",
-    "title": "Know your technical skill gaps. Bridge them with structured open learning.",
+    "title": "Know your technical skill gaps. Bridge them with open learning.",
     "subtitle": "Objective diagnostic assessments mapped to real industry competencies. Discover your proficiency, benchmark against role requirements, and follow curated open-source courses.",
-    "heroTitle": "Know your technical skill gaps. Bridge them with structured open learning.",
+    "heroTitle": "Know your technical skill gaps. Bridge them with open learning.",
     "heroSubtitle": "Objective diagnostic assessments mapped to real industry competencies. Discover your proficiency, benchmark against role requirements, and follow curated open-source courses.",
     "heroCta": "Configure Your Pathway",
     "wizard": {
@@ -73,7 +73,7 @@
       "subtitle": "Every learner gets an objective evaluation with verified scores, identified gaps, and exact courses to take.",
       "badge": "Sample Result — Illustrative Only",
       "role": "Target Role: Full-Stack Developer",
-      "readinessLabel": "Estimated Qualification Readiness",
+      "readinessLabel": "Estimated readiness",
       "readinessValue": "Readiness 68/100 (Sample)",
       "competencySummary": "Competency Evaluation Summary",
       "gapMinor": "Minor Gap (-0.5)",
@@ -94,7 +94,7 @@
     },
     "loop": {
       "tag": "Continuous Improvement",
-      "title": "The Skill Setu Continuous Growth Loop",
+      "title": "The Skill Setu Growth Loop",
       "subtitle": "A cyclical framework designed to move you from uncertain self-assessments to verified, demonstrable competency.",
       "steps": {
         "step1": {
@@ -127,7 +127,7 @@
       "tag": "Comprehensive Curriculum Bank",
       "titleLoading": "Curated Technical Competencies & Question Banks",
       "titleWithStats": "{{domains}} Domains, {{skills}} Competencies, {{questions}} Curated Questions",
-      "subtitle": "Real competency models and verified assessment banks loaded dynamically from our database.",
+      "subtitle": "Real competency models and curated assessment banks loaded dynamically from our database.",
       "coreSkills": "{{count}} Core Skills",
       "questions": "{{count}} Questions",
       "descriptions": {
