@@ -128,12 +128,18 @@ export function DashboardPage() {
     });
   };
 
-  const fetchDashboardData = () => {
+  const fetchDashboardData = async () => {
     setIsLoading(true);
-    apiClient('/analytics/learner')
-      .then((data) => setStats(data))
-      .catch((err) => console.warn('Could not load learner stats:', err))
-      .finally(() => setIsLoading(false));
+    try {
+      const data = await apiClient<any>('/analytics/learner');
+      setStats(data);
+      return data;
+    } catch (err) {
+      console.warn('Could not load learner stats:', err);
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -171,7 +177,7 @@ export function DashboardPage() {
         body: JSON.stringify({ targetRoleId: newRoleId })
       });
       await refreshProfile();
-      fetchDashboardData();
+      await fetchDashboardData();
       setIsWhatIfOpen(false);
       setIsPickRoleOpen(false);
     } catch (err: any) {
@@ -203,6 +209,7 @@ export function DashboardPage() {
   const isNotStarted = isDashboardNotStarted(stats, profile);
   const readiness = getDashboardReadiness(stats, profile);
   const targetRoleId = stats?.targetRoleId ?? profile?.targetRoleId;
+  const hasSavedTargetRole = Boolean(targetRoleId);
   const targetRoleTitle =
     stats?.targetRoleTitle ||
     profile?.targetRoleName ||
@@ -260,7 +267,7 @@ export function DashboardPage() {
           </h1>
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground pt-0.5">
             <span>{t('dashboard.targetRoleLabel')}:</span>
-            {isNotStarted ? (
+            {!hasSavedTargetRole ? (
               <button
                 onClick={() => setIsPickRoleOpen(true)}
                 className="font-semibold text-[#C2410C] underline hover:opacity-80"
@@ -333,7 +340,9 @@ export function DashboardPage() {
                 <span>{t('dashboard.emptyState.checklistTitle')}</span>
                 <span className="text-muted-foreground">
                   {t('dashboard.emptyState.checklistProgress', {
-                    completed: targetRoleId ? 1 : 0,
+                    completed:
+                      (hasSavedTargetRole ? 1 : 0) +
+                      ((stats?.recentAssessments?.length ?? 0) > 0 || (stats?.assessedSkillsCount ?? 0) > 0 ? 1 : 0),
                     total: 4
                   })}
                 </span>
@@ -342,7 +351,7 @@ export function DashboardPage() {
               {/* Step 1: Pick Target Role */}
               <div className="p-4 rounded-xl border border-border bg-background flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  {targetRoleId ? (
+                  {hasSavedTargetRole ? (
                     <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   ) : (
                     <Circle className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />

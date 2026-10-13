@@ -74,5 +74,10 @@ export async function getCurrentUser(req: Request, res: Response): Promise<void>
       updatedAt: user.updatedAt
     },
     profile: user.profile
+      ? {
+          ...user.profile,
+          targetRoleName: user.profile.targetRole?.title || null
+        }
+      : null
   });
 }

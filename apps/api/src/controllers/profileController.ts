@@ -74,7 +74,12 @@ export async function getProfile(req: Request, res: Response): Promise<void> {
   });
 
   res.json({
-    profile,
+    profile: profile
+      ? {
+          ...profile,
+          targetRoleName: profile.targetRole?.title || null
+        }
+      : null,
     userSkills: userSkills.map((s) => ({
       id: s.id,
       userId: s.userId,
@@ -121,7 +126,8 @@ export async function submitOnboarding(req: Request, res: Response): Promise<voi
       weeklyStudyHours: validated.weeklyStudyHours,
       learningPreferences: validated.learningPreferences,
       isOnboarded: true
-    }
+    },
+    include: { targetRole: true }
   });
 
   // Save initial self-assessed skills
@@ -150,7 +156,10 @@ export async function submitOnboarding(req: Request, res: Response): Promise<voi
 
   res.status(200).json({
     message: 'Onboarding completed successfully',
-    profile
+    profile: {
+      ...profile,
+      targetRoleName: profile.targetRole?.title || null
+    }
   });
 }
 
@@ -171,11 +180,15 @@ export async function updateProfile(req: Request, res: Response): Promise<void> 
       ...(validated.preferredLanguage ? { preferredLanguage: validated.preferredLanguage } : {}),
       ...(validated.weeklyStudyHours !== undefined ? { weeklyStudyHours: validated.weeklyStudyHours } : {}),
       ...(validated.learningPreferences ? { learningPreferences: validated.learningPreferences } : {})
-    }
+    },
+    include: { targetRole: true }
   });
 
   res.json({
     message: 'Profile updated successfully',
-    profile
+    profile: {
+      ...profile,
+      targetRoleName: profile.targetRole?.title || null
+    }
   });
 }
