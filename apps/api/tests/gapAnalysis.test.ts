@@ -190,6 +190,34 @@ describe('Skill Gap Analysis & Readiness Engine', () => {
       expect(apiResult.assessedRatioText).toBe(sharedResult.assessedRatioText);
       expect(apiResult.gaps).toEqual(sharedResult.gaps);
     });
+
+    it('verifies weighted averaging honors role requirement weights in readiness calculation', async () => {
+      const { calculateReadiness } = await import('@skill-setu/shared');
+
+      // Two skills with equal required proficiency (4.0), but different weights: 3.0 vs 1.0
+      const weightedReqs = [
+        { skillId: 'heavy-skill', skillName: 'Heavy Skill', requiredProficiency: 4, weight: 3.0 },
+        { skillId: 'light-skill', skillName: 'Light Skill', requiredProficiency: 4, weight: 1.0 }
+      ];
+
+      // Case A: User masters heavy-skill (verified 4), but has 0 in light-skill (verified 0)
+      // totalRequired = 4*3 + 4*1 = 16. gap = 0 in heavy, 4 in light. totalGap = 0*3 + 4*1 = 4.
+      // Readiness = (1 - 4/16) * 100 = 75%
+      const caseA = calculateReadiness(weightedReqs, [
+        { skillId: 'heavy-skill', selfAssessedLevel: 4, verifiedScore: 4 },
+        { skillId: 'light-skill', selfAssessedLevel: 0, verifiedScore: 0 }
+      ]);
+      expect(caseA.overallReadinessScore).toBe(75);
+
+      // Case B: User masters light-skill (verified 4), but has 0 in heavy-skill (verified 0)
+      // totalRequired = 16. gap = 4 in heavy, 0 in light. totalGap = 4*3 + 0*1 = 12.
+      // Readiness = (1 - 12/16) * 100 = 25%
+      const caseB = calculateReadiness(weightedReqs, [
+        { skillId: 'heavy-skill', selfAssessedLevel: 0, verifiedScore: 0 },
+        { skillId: 'light-skill', selfAssessedLevel: 4, verifiedScore: 4 }
+      ]);
+      expect(caseB.overallReadinessScore).toBe(25);
+    });
   });
 });
 
