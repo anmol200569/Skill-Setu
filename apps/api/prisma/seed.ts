@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { domainsData, rolesData, curatedCoursesData, diagnosticQuestionsData } from './seedData';
+import { domainsData, rolesData, curatedCoursesData, diagnosticQuestionsData, generateCourseId } from './seedData';
 
 const prisma = new PrismaClient();
 
@@ -94,22 +94,37 @@ export async function seedDatabase() {
 
   // 3. Seed Curated Courses & Course-Skill relations
   for (const courseData of curatedCoursesData) {
-    const courseId = courseData.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '')
-      .slice(0, 50);
+    const targetId = generateCourseId(courseData);
 
     const existingCourse = await prisma.course.findFirst({
       where: {
         OR: [
-          { id: courseId },
+          { id: targetId },
           { destinationUrl: courseData.destinationUrl }
         ]
       }
     });
 
-    const targetId = existingCourse ? existingCourse.id : courseId;
+    // If an existing course row has a different old ID, remap any relations first
+    if (existingCourse && existingCourse.id !== targetId) {
+      const enrollments = await prisma.enrollment.findMany({ where: { courseId: existingCourse.id } });
+      for (const enr of enrollments) {
+        const hasTarget = await prisma.enrollment.findUnique({
+          where: { userId_courseId: { userId: enr.userId, courseId: targetId } }
+        });
+        if (hasTarget) {
+          await prisma.enrollment.delete({ where: { id: enr.id } });
+        } else {
+          await prisma.enrollment.update({ where: { id: enr.id }, data: { courseId: targetId } });
+        }
+      }
+      await prisma.learningPathItem.updateMany({
+        where: { courseId: existingCourse.id },
+        data: { courseId: targetId }
+      });
+      await prisma.courseSkill.deleteMany({ where: { courseId: existingCourse.id } });
+      await prisma.course.delete({ where: { id: existingCourse.id } });
+    }
 
     const course = await prisma.course.upsert({
       where: { id: targetId },
@@ -164,37 +179,66 @@ export async function seedDatabase() {
   }
   console.log(`✅ Seeded ${curatedCoursesData.length} curated courses.`);
 
-  // Cleanup obsolete courses that are not in curatedCoursesData and have no user enrollments or learning path items
-  const validCourseIds = new Set(
-    curatedCoursesData.map((c) =>
-      c.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
-    )
-  );
+  // Remap enrollments and learning-path items from the 3 old non-curated courses to their curated equivalents
+  const targetReactCourse = curatedCoursesData.find((c) => c.title === 'Front End Development Libraries')!;
+  const targetSqlCourse = curatedCoursesData.find((c) => c.title === 'Administering Microsoft Azure SQL Databases (DP-300)')!;
+  const targetFullStackCourse = curatedCoursesData.find((c) => c.title === 'Back End Development and APIs')!;
 
-  const existingCourses = await prisma.course.findMany({
-    select: {
-      id: true,
-      _count: {
-        select: {
-          enrollments: true,
-          learningPathItems: true
+  const oldCoursesRemap: Record<string, string> = {
+    'react-documentation---official-inter': generateCourseId(targetReactCourse),
+    'relational-database-design-and-sql-m': generateCourseId(targetSqlCourse),
+    'full-stack-open---deep-dive-into-mod': generateCourseId(targetFullStackCourse)
+  };
+
+  for (const [oldId, newId] of Object.entries(oldCoursesRemap)) {
+    const oldCourse = await prisma.course.findUnique({ where: { id: oldId } });
+    if (oldCourse) {
+      const enrollments = await prisma.enrollment.findMany({ where: { courseId: oldId } });
+      for (const enr of enrollments) {
+        const hasTarget = await prisma.enrollment.findUnique({
+          where: { userId_courseId: { userId: enr.userId, courseId: newId } }
+        });
+        if (hasTarget) {
+          await prisma.enrollment.delete({ where: { id: enr.id } });
+        } else {
+          await prisma.enrollment.update({ where: { id: enr.id }, data: { courseId: newId } });
         }
       }
+      await prisma.learningPathItem.updateMany({
+        where: { courseId: oldId },
+        data: { courseId: newId }
+      });
+      await prisma.courseSkill.deleteMany({ where: { courseId: oldId } });
+      await prisma.course.delete({ where: { id: oldId } });
+      console.log(`🧹 Remapped and removed legacy course: "${oldId}" -> "${newId}".`);
     }
-  });
+  }
 
+  // Cleanup any remaining obsolete courses that are not in curatedCoursesData
+  const validCourseIds = new Set(curatedCoursesData.map((c) => generateCourseId(c)));
+  const existingCourses = await prisma.course.findMany({ select: { id: true } });
   let removedCount = 0;
   for (const course of existingCourses) {
     if (!validCourseIds.has(course.id)) {
-      if (course._count.enrollments === 0 && course._count.learningPathItems === 0) {
-        await prisma.course.delete({ where: { id: course.id } });
-        removedCount++;
-      }
+      await prisma.enrollment.deleteMany({ where: { courseId: course.id } });
+      await prisma.learningPathItem.deleteMany({ where: { courseId: course.id } });
+      await prisma.courseSkill.deleteMany({ where: { courseId: course.id } });
+      await prisma.course.delete({ where: { id: course.id } });
+      removedCount++;
     }
   }
   if (removedCount > 0) {
     console.log(`🧹 Cleaned up ${removedCount} obsolete unreferenced courses.`);
   }
+
+  // Verify total courses in database strictly equals curatedCoursesData.length
+  const postSeedCourseCount = await prisma.course.count();
+  if (postSeedCourseCount !== curatedCoursesData.length) {
+    throw new Error(
+      `Course count mismatch after seeding: expected ${curatedCoursesData.length}, found ${postSeedCourseCount}`
+    );
+  }
+  console.log(`✅ Verified Course count in database: ${postSeedCourseCount} / ${curatedCoursesData.length}.`);
 
   // 4. Seed Diagnostic Assessment Questions (Idempotent)
   for (const q of diagnosticQuestionsData) {

@@ -1,3 +1,22 @@
+import crypto from 'crypto';
+
+export function generateCourseId(course: { provider: string; title: string; destinationUrl: string }): string {
+  const providerSlug = course.provider
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+  const titleSlug = course.title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+  const hash = crypto
+    .createHash('sha256')
+    .update(course.destinationUrl)
+    .digest('hex')
+    .slice(0, 8);
+  return `${providerSlug}-${titleSlug}-${hash}`;
+}
+
 export const domainsData = [
   {
     code: 'prog-soft-dev',

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { curatedCoursesData, domainsData, rolesData } from '../prisma/seedData';
+import { curatedCoursesData, domainsData, rolesData, generateCourseId } from '../prisma/seedData';
 
 describe('Curated Course Catalog Validation', () => {
   const allowedProviders = new Set([
@@ -10,8 +10,8 @@ describe('Curated Course Catalog Validation', () => {
     'CS50'
   ]);
 
-  it('contains at least 50 curated courses', () => {
-    expect(curatedCoursesData.length).toBeGreaterThanOrEqual(50);
+  it('contains exactly 61 curated courses', () => {
+    expect(curatedCoursesData.length).toBe(61);
   });
 
   it('uses ONLY the 5 allowed providers', () => {
@@ -79,18 +79,16 @@ describe('Curated Course Catalog Validation', () => {
     }
   });
 
-  it('generates strictly unique deterministic course IDs with zero collisions', () => {
+  it('generates strictly unique deterministic course IDs with zero collisions and count equals 61', () => {
     const ids = new Set<string>();
     for (const course of curatedCoursesData) {
-      const courseId = course.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-|-$/g, '')
-        .slice(0, 50);
+      const courseId = generateCourseId(course);
 
       expect(ids.has(courseId), `Duplicate course ID detected: "${courseId}" for course "${course.title}"`).toBe(false);
+      expect(courseId.length).toBeGreaterThan(10);
       ids.add(courseId);
     }
+    expect(ids.size).toBe(61);
     expect(ids.size).toBe(curatedCoursesData.length);
   });
 });
