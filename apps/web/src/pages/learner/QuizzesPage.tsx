@@ -161,7 +161,18 @@ export function QuizzesPage() {
       resetForm();
       await loadQuizzes();
     } catch (err: any) {
-      setErrorMsg(err.message || 'Quiz generation failed.');
+      const msg = err.message || 'Quiz generation failed.';
+      if (
+        msg.toLowerCase().includes('busy') ||
+        msg.toLowerCase().includes('503') ||
+        msg.toLowerCase().includes('unavailable') ||
+        msg.toLowerCase().includes('quota') ||
+        msg.toLowerCase().includes('serviceunavailable')
+      ) {
+        setErrorMsg('The AI quiz service is busy right now. Try again in a few minutes.');
+      } else {
+        setErrorMsg(msg);
+      }
     } finally {
       setIsGenerating(false);
     }
@@ -333,9 +344,16 @@ export function QuizzesPage() {
       >
         <div className="space-y-4 py-2">
           {errorMsg && (
-            <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
-              <span>{errorMsg}</span>
+            <div className="p-3.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 text-xs flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span className="font-semibold">{errorMsg}</span>
+              </div>
+              {!errorMsg.toLowerCase().includes('few minutes') && (errorMsg.toLowerCase().includes('busy') || errorMsg.toLowerCase().includes('service') || errorMsg.toLowerCase().includes('unavailable')) && (
+                <p className="text-[11px] text-muted-foreground pl-6">
+                  Try again in a few minutes.
+                </p>
+              )}
             </div>
           )}
 

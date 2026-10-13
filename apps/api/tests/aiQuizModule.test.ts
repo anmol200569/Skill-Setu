@@ -1,12 +1,14 @@
 import { describe, it, expect, vi } from 'vitest';
 import request from 'supertest';
 import { createApp } from '../src/app';
+import * as aiService from '../src/services/aiService';
 import {
   validateAndGetGeminiModel,
   sanitizePromptInput
 } from '../src/services/aiService';
 import { chunkText } from '../src/services/fileExtractionService';
 import * as quizGenerator from '../src/services/quizGenerator';
+import { prisma } from '../src/lib/prisma';
 
 const app = createApp();
 
@@ -141,6 +143,107 @@ describe('AI Quiz Module & Gemini Model Configuration', () => {
       expect(res.status).toBe(503);
       expect(res.body.error).toBe('ServiceUnavailable');
       expect(res.body.message).toBe('The AI quiz service is busy right now. Please try again in a few minutes.');
+    });
+  });
+
+  describe('Model Fallback Chain (GEMINI_MODEL & GEMINI_FALLBACK_MODEL)', () => {
+    it('tries fallback model when primary returns 429/RESOURCE_EXHAUSTED and succeeds', async () => {
+      const mockValidQuizJson = JSON.stringify({
+        quizTitle: 'Distributed Systems Assessment',
+        description: 'Generated via fallback model',
+        questions: [
+          {
+            questionText: 'What is the role of a write-ahead log (WAL) in LSM-tree engines?',
+            type: 'single_mcq',
+            difficulty: 'intermediate',
+            options: [
+              { id: 'opt_1', text: 'Provides crash recovery and durability for in-memory MemTables' },
+              { id: 'opt_2', text: 'Speeds up read operations by skipping SSTables' }
+            ],
+            correctAnswers: ['opt_1'],
+            explanation: 'The WAL records every append to disk sequentially before acknowledging writes.',
+            topicTag: 'Storage Engines'
+          }
+        ]
+      });
+
+      const geminiSpy = vi.spyOn(aiService, 'generateGeminiCompletion')
+        .mockImplementation(async (_prompt: any, _system: any, _temp: any, options: any) => {
+          if (options?.model === 'gemini-3.5-flash-lite') {
+            const err = new Error('429 RESOURCE_EXHAUSTED quota exceeded');
+            (err as any).status = 429;
+            throw err;
+          }
+          if (options?.model === 'gemini-3.1-flash-lite') {
+            return mockValidQuizJson;
+          }
+          throw new Error(`Unexpected model: ${options?.model}`);
+        });
+
+      vi.spyOn(prisma.quiz, 'create').mockResolvedValueOnce({
+        id: 'quiz-fallback-123',
+        title: 'Distributed Systems Assessment',
+        description: 'Generated via fallback model',
+        questionCount: 1,
+        questions: [{ id: 'q-1' }]
+      } as any);
+
+      const result = await quizGenerator.generateAndSaveQuiz({
+        creatorId: 'user-1',
+        creatorRole: 'learner',
+        title: 'Distributed Systems Assessment',
+        topicOrText: 'Long technical text about LSM-trees and B-Trees with sufficient length to pass validation.',
+        questionCount: 5,
+        difficulty: 'intermediate',
+        language: 'en',
+        allowedTypes: ['single_mcq'],
+        sourceType: 'pasted_text'
+      });
+
+      expect(result).toBeDefined();
+      expect(result.id).toBe('quiz-fallback-123');
+      expect(geminiSpy).toHaveBeenCalledTimes(2);
+      expect(geminiSpy.mock.calls[0][3]?.model).toBe('gemini-3.5-flash-lite');
+      expect(geminiSpy.mock.calls[1][3]?.model).toBe('gemini-3.1-flash-lite');
+    });
+
+    it('throws 503 service busy when both primary and fallback models fail with 429/503', async () => {
+      const geminiSpy = vi.spyOn(aiService, 'generateGeminiCompletion')
+        .mockImplementation(async (_prompt: any, _system: any, _temp: any, options: any) => {
+          if (options?.model === 'gemini-3.5-flash-lite') {
+            const err = new Error('429 Quota exhausted on primary model');
+            (err as any).status = 429;
+            throw err;
+          }
+          if (options?.model === 'gemini-3.1-flash-lite') {
+            const err = new Error('503 Service Unavailable on fallback model');
+            (err as any).status = 503;
+            throw err;
+          }
+          throw new Error('Unexpected call');
+        });
+
+      await expect(
+        quizGenerator.generateAndSaveQuiz({
+          creatorId: 'user-1',
+          creatorRole: 'learner',
+          title: 'Distributed Systems Assessment',
+          topicOrText: 'Long technical text about LSM-trees and B-Trees with sufficient length to pass validation.',
+          questionCount: 5,
+          difficulty: 'intermediate',
+          language: 'en',
+          allowedTypes: ['single_mcq'],
+          sourceType: 'pasted_text'
+        })
+      ).rejects.toMatchObject({
+        status: 503,
+        message: expect.stringContaining('The AI quiz service is busy right now. Please try again in a few minutes.')
+      });
+
+      // Primary was tried once, fallback was tried once, no additional retries
+      expect(geminiSpy).toHaveBeenCalledTimes(2);
+      expect(geminiSpy.mock.calls[0][3]?.model).toBe('gemini-3.5-flash-lite');
+      expect(geminiSpy.mock.calls[1][3]?.model).toBe('gemini-3.1-flash-lite');
     });
   });
 });

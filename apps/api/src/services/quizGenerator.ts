@@ -4,7 +4,7 @@ import {
   UserRole
 } from '@skill-setu/shared';
 import { config } from '../config';
-import { generateGeminiCompletion, extractJsonFromText, sanitizePromptInput } from './aiService';
+import * as aiService from './aiService';
 import { chunkText } from './fileExtractionService';
 
 export interface GenerateQuizParams {
@@ -22,8 +22,8 @@ export interface GenerateQuizParams {
 
 export async function generateAndSaveQuiz(params: GenerateQuizParams) {
   // Sanitize prompt inputs to defend against prompt injection
-  const sanitizedTitle = sanitizePromptInput(params.title);
-  const sanitizedTopicOrText = sanitizePromptInput(params.topicOrText);
+  const sanitizedTitle = aiService.sanitizePromptInput(params.title);
+  const sanitizedTopicOrText = aiService.sanitizePromptInput(params.topicOrText);
 
   // Chunk input if it's long study material and use up to a sensible cap (3 chunks ~15,000 chars)
   const chunks = chunkText(sanitizedTopicOrText, 5000);
@@ -73,43 +73,76 @@ JSON Output Format Specification:
   ]
 }`;
 
+  const primaryModel = config.gemini.model || 'gemini-3.5-flash-lite';
+  const fallbackModel = config.gemini.fallbackModel || 'gemini-3.1-flash-lite';
+  const quizTimeout = Math.max(45000, config.gemini.timeoutMs || 45000);
+
+  const callAndValidateQuiz = async (model: string, temp: number) => {
+    const responseText = await aiService.generateGeminiCompletion(
+      prompt,
+      systemInstruction,
+      temp,
+      { model, responseMimeType: 'application/json', timeoutMs: quizTimeout, thinkingLevel: 'LOW' }
+    );
+    const parsed = aiService.extractJsonFromText<any>(responseText);
+    return aiGeneratedQuizOutputSchema.parse(parsed);
+  };
+
   let parsedQuizOutput: any = null;
-  let attempts = 0;
-  const maxAttempts = 2;
+  let hasRetriedInvalid = false;
 
-  while (attempts < maxAttempts) {
-    attempts++;
+  try {
+    // 1. Attempt generation with primary model
     try {
-      const quizTimeout = Math.max(45000, config.gemini.timeoutMs || 45000);
-      const responseText = await generateGeminiCompletion(
-        prompt,
-        systemInstruction,
-        attempts === 1 ? 0.2 : 0.4,
-        { responseMimeType: 'application/json', timeoutMs: quizTimeout, thinkingLevel: 'LOW' }
-      );
-
-      const parsed = extractJsonFromText<any>(responseText);
-      const validated = aiGeneratedQuizOutputSchema.parse(parsed);
-      parsedQuizOutput = validated;
-      break;
-    } catch (err: any) {
-      // Do not retry on timeout or 429 quota exhaustion
-      if (
-        err.status === 429 ||
-        err.statusCode === 429 ||
-        err.message?.includes('timeout') ||
-        err.message?.includes('timed out') ||
-        err.message?.includes('429') ||
-        err.message?.includes('quota') ||
-        err.message?.includes('RESOURCE_EXHAUSTED') ||
-        err.message?.includes('UNAVAILABLE')
-      ) {
-        throw err;
+      parsedQuizOutput = await callAndValidateQuiz(primaryModel, 0.2);
+    } catch (primaryOutputErr: any) {
+      if (aiService.isFallbackEligibleError(primaryOutputErr)) {
+        throw primaryOutputErr;
       }
-      console.warn(`Quiz generation attempt ${attempts} failed validation:`, err.message);
-      if (attempts >= maxAttempts) {
-        throw new Error(`Failed to generate valid quiz JSON: ${err.message}`);
+      // Invalid output on primary: retry ONCE
+      if (!hasRetriedInvalid) {
+        hasRetriedInvalid = true;
+        console.warn(`[QuizGeneration] Primary model invalid output, retrying once:`, primaryOutputErr.message);
+        parsedQuizOutput = await callAndValidateQuiz(primaryModel, 0.4);
+      } else {
+        throw primaryOutputErr;
       }
+    }
+  } catch (primaryErr: any) {
+    if (aiService.isFallbackEligibleError(primaryErr)) {
+      console.warn(`[QuizGeneration] Primary model (${primaryModel}) failed (${primaryErr.message}). Attempting fallback model (${fallbackModel})...`);
+      if (fallbackModel && fallbackModel !== primaryModel) {
+        try {
+          // Attempt fallback model ONCE
+          try {
+            parsedQuizOutput = await callAndValidateQuiz(fallbackModel, 0.2);
+          } catch (fallbackOutputErr: any) {
+            if (aiService.isFallbackEligibleError(fallbackOutputErr)) {
+              throw fallbackOutputErr;
+            }
+            if (!hasRetriedInvalid) {
+              hasRetriedInvalid = true;
+              console.warn(`[QuizGeneration] Fallback model invalid output, retrying once:`, fallbackOutputErr.message);
+              parsedQuizOutput = await callAndValidateQuiz(fallbackModel, 0.4);
+            } else {
+              throw fallbackOutputErr;
+            }
+          }
+        } catch (fallbackErr: any) {
+          console.error(`[QuizGeneration] Fallback model (${fallbackModel}) also failed:`, fallbackErr.message);
+          const busyErr = new Error('The AI quiz service is busy right now. Please try again in a few minutes.');
+          (busyErr as any).status = 503;
+          (busyErr as any).statusCode = 503;
+          throw busyErr;
+        }
+      } else {
+        const busyErr = new Error('The AI quiz service is busy right now. Please try again in a few minutes.');
+        (busyErr as any).status = 503;
+        (busyErr as any).statusCode = 503;
+        throw busyErr;
+      }
+    } else {
+      throw primaryErr;
     }
   }
 

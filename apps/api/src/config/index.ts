@@ -49,7 +49,8 @@ export const config = {
   },
   gemini: {
     apiKey: process.env.GEMINI_API_KEY || '',
-    model: process.env.GEMINI_MODEL || '',
+    model: process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite',
+    fallbackModel: process.env.GEMINI_FALLBACK_MODEL || 'gemini-3.1-flash-lite',
     timeoutMs: parseInt(process.env.GEMINI_TIMEOUT_MS || '45000', 10)
   },
   initialAdminEmail: isProduction

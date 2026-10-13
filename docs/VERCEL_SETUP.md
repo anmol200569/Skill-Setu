@@ -16,7 +16,8 @@ Configure these variables in your Vercel Project Settings under **Environment Va
 | `INITIAL_ADMIN_EMAIL` | Verified email address designated for bootstrap administrator | `admin@yourdomain.com` |
 | `CORS_ORIGIN` | Allowed production frontend origin URL | `https://your-production-app.vercel.app` |
 | `GEMINI_API_KEY` | Google AI Studio API Key for Gemini model inference | `AIzaSy...` |
-| `GEMINI_MODEL` | Gemini generative model name | `gemini-3.8-flash` |
+| `GEMINI_MODEL` | Gemini primary generative model name | `gemini-3.5-flash-lite` |
+| `GEMINI_FALLBACK_MODEL` | Optional fallback model when primary is rate-limited / unavailable | `gemini-3.1-flash-lite` |
 | `GEMINI_TIMEOUT_MS` | Max API timeout for AI generation (default 45000ms) | `45000` |
 | `DATABASE_URL` | Connection-pooled PostgreSQL connection string | `postgresql://postgres:[PASSWORD]@[HOST]:6543/postgres?pgbouncer=true` |
 | `DIRECT_URL` | Direct PostgreSQL connection string for Prisma migrations | `postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres` |

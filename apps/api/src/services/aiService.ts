@@ -59,22 +59,48 @@ export function extractJsonFromText<T>(text: string): T {
   return JSON.parse(cleaned) as T;
 }
 
+export function supportsThinkingConfig(model: string): boolean {
+  if (!model) return false;
+  const m = model.toLowerCase();
+  if (m.includes('embedding') || m.includes('learnlm') || m.includes('imagen')) {
+    return false;
+  }
+  return true;
+}
+
+export function isFallbackEligibleError(err: any): boolean {
+  if (!err) return false;
+  const status = err.status || err.statusCode || err.code;
+  if (status === 429 || status === 503) return true;
+  const msg = (err.message || '').toLowerCase();
+  return (
+    msg.includes('429') ||
+    msg.includes('resource_exhausted') ||
+    msg.includes('quota') ||
+    msg.includes('rate limit') ||
+    msg.includes('503') ||
+    msg.includes('unavailable') ||
+    msg.includes('service is busy') ||
+    msg.includes('high demand')
+  );
+}
+
 /**
  * Validates the configured Gemini model name. Throws if missing or using retired models.
  */
 export function validateAndGetGeminiModel(customModel?: string): string {
-  const modelName = (customModel !== undefined ? customModel : config.gemini.model || '').trim();
+  const modelName = (customModel !== undefined ? customModel : config.gemini.model || 'gemini-3.5-flash-lite').trim();
 
   if (!modelName) {
     throw new Error(
-      'GEMINI_MODEL environment variable is required but missing. Please configure GEMINI_MODEL (e.g. gemini-3.8-flash) in your environment.'
+      'GEMINI_MODEL environment variable is required but missing. Please configure GEMINI_MODEL (e.g. gemini-3.5-flash-lite) in your environment.'
     );
   }
 
   // Never fall back to gemini-1.5-*, 2.0-*, or 2.5-* (retired or retiring)
   if (/^gemini-(?:1\.5|2\.0|2\.5)/i.test(modelName)) {
     throw new Error(
-      `Configured GEMINI_MODEL "${modelName}" is retired or deprecated. Please configure an active model such as gemini-3.8-flash.`
+      `Configured GEMINI_MODEL "${modelName}" is retired or deprecated. Please configure an active model such as gemini-3.5-flash-lite.`
     );
   }
 
@@ -82,6 +108,7 @@ export function validateAndGetGeminiModel(customModel?: string): string {
 }
 
 export interface GeminiCompletionOptions {
+  model?: string;
   responseMimeType?: string;
   timeoutMs?: number;
   thinkingLevel?: 'MINIMAL' | 'LOW' | 'MEDIUM' | 'HIGH';
@@ -96,8 +123,8 @@ export async function generateGeminiCompletion(
   temperature: number = 0.2,
   options?: GeminiCompletionOptions
 ): Promise<string> {
-  // Validate model name from configuration
-  const modelName = validateAndGetGeminiModel();
+  // Validate model name from options or configuration
+  const modelName = validateAndGetGeminiModel(options?.model);
 
   const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST === 'true';
 
@@ -165,13 +192,16 @@ export async function generateGeminiCompletion(
   const genConfig: any = {
     systemInstruction: systemInstruction || 'You are Skill Setu AI, an expert technical mentor and skill intelligence assistant.',
     temperature,
-    maxOutputTokens: 8192,
-    thinkingConfig: {
+    maxOutputTokens: 8192
+  };
+
+  if (supportsThinkingConfig(modelName)) {
+    genConfig.thinkingConfig = {
       thinkingLevel: options?.thinkingLevel && options.thinkingLevel !== 'MINIMAL'
         ? options.thinkingLevel
         : 'LOW'
-    }
-  };
+    };
+  }
 
   if (options?.responseMimeType) {
     genConfig.responseMimeType = options.responseMimeType;
@@ -202,16 +232,24 @@ export async function generateGeminiCompletion(
     const durationMs = Date.now() - startTime;
     console.error(`[AI] Gemini call failed after ${durationMs}ms`);
     if (error.message?.includes('timed out')) {
-      throw new Error(`AI service timeout: Inference exceeded ${timeoutMs}ms limit.`);
+      const err = new Error(`AI service timeout: Inference exceeded ${timeoutMs}ms limit.`);
+      (err as any).status = 503;
+      throw err;
     }
     if (error.message?.includes('429') || error.message?.includes('quota') || error.message?.includes('RESOURCE_EXHAUSTED')) {
-      throw new Error('Gemini API quota exceeded or rate limit reached. Please verify your Google AI Studio plan.');
+      const err = new Error('Gemini API quota exceeded or rate limit reached. Please verify your Google AI Studio plan.');
+      (err as any).status = 429;
+      (err as any).statusCode = 429;
+      throw err;
     }
     if (error.message?.includes('API_KEY_INVALID') || error.message?.includes('API key not valid')) {
       throw new Error('Invalid GEMINI_API_KEY. Please verify your key at https://aistudio.google.com/apikey.');
     }
     if (error.message?.includes('503') || error.message?.includes('UNAVAILABLE')) {
-      throw new Error('Gemini AI service is temporarily unavailable. Please retry shortly.');
+      const err = new Error('Gemini AI service is temporarily unavailable. Please retry shortly.');
+      (err as any).status = 503;
+      (err as any).statusCode = 503;
+      throw err;
     }
     throw new Error(`AI service failure: ${error.message}`);
   }
