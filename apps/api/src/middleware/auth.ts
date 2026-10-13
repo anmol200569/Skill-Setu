@@ -84,6 +84,16 @@ export async function authenticate(
       next();
       return;
     }
+    if (token === 'test-populated-token') {
+      req.user = { id: 'eb99b4ac-fa46-4776-852b-ebc87fea2f49', email: 'anmolsingh12jbp7@gmail.com', role: 'learner' };
+      next();
+      return;
+    }
+    if (token === 'test-empty-token') {
+      req.user = { id: 'test-empty-uuid', email: 'newbie@skillsetu.dev', role: 'learner' };
+      next();
+      return;
+    }
   }
 
   // Check in-memory cache first — avoids Supabase + Prisma network calls

@@ -12,6 +12,12 @@ export async function getAuthHeaders(): Promise<Record<string, string>> {
     'Content-Type': 'application/json'
   };
 
+  const devToken = typeof window !== 'undefined' ? localStorage.getItem('skill_setu_token') : null;
+  if (devToken) {
+    headers['Authorization'] = `Bearer ${devToken}`;
+    return headers;
+  }
+
   if (!isSupabaseConfigured) {
     return headers;
   }

@@ -45,6 +45,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     let mounted = true;
 
+    const localDevToken = typeof window !== 'undefined' ? localStorage.getItem('skill_setu_token') : null;
+    if (localDevToken) {
+      const isPopulated = localDevToken === 'test-populated-token';
+      const isEmpty = localDevToken === 'test-empty-token';
+      setUser({
+        id: isPopulated
+          ? 'eb99b4ac-fa46-4776-852b-ebc87fea2f49'
+          : isEmpty
+          ? 'test-empty-uuid'
+          : 'test-learner-uuid',
+        email: isPopulated
+          ? 'anmolsingh12jbp7@gmail.com'
+          : isEmpty
+          ? 'newbie@skillsetu.dev'
+          : 'learner@skillsetu.dev',
+        aud: 'authenticated',
+        app_metadata: {},
+        user_metadata: {
+          fullName: isPopulated ? 'Anmol Singh' : isEmpty ? 'New Learner' : 'Test Learner'
+        },
+        created_at: new Date().toISOString()
+      } as any);
+      setRole('learner');
+      fetchBackendUserAndProfile().finally(() => {
+        if (mounted) setIsLoading(false);
+      });
+      return () => {
+        mounted = false;
+      };
+    }
+
     if (!isSupabaseConfigured) {
       setIsLoading(false);
       return;
@@ -161,6 +192,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signOut = async () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('skill_setu_token');
+    }
     if (isSupabaseConfigured) {
       await supabase.auth.signOut();
     }

@@ -240,19 +240,160 @@
       "backHome": "Back to homepage"
     }
   },
+  "onboarding": {
+    "brandSubtitle": "Personalize Your Diagnostic Pathway",
+    "stepProgress": "Step {{current}} of {{total}}: {{title}}",
+    "prefilledNotice": "Prefilled from your landing pathway choices",
+    "step1": {
+      "title": "Select Target Technical Role",
+      "subtitle": "Choose the career profile you want to benchmark your skills against",
+      "searchPlaceholder": "Search roles by title or keyword...",
+      "demandLabel": "{{demand}} Demand",
+      "requiredSkillsCount": "{{count}} benchmark skills",
+      "noRolesFound": "No roles found matching your search"
+    },
+    "step2": {
+      "title": "Select Your Experience Level",
+      "subtitle": "This sets your baseline benchmark expectations prior to diagnostic tests",
+      "levels": {
+        "beginner": {
+          "title": "Beginner / Entry Level",
+          "experience": "0–1 years of technical experience",
+          "desc": "Focusing on language fundamentals, algorithms, and core computing foundations."
+        },
+        "intermediate": {
+          "title": "Intermediate / Mid Level",
+          "experience": "2–4 years of technical experience",
+          "desc": "Hands-on experience building features, REST APIs, databases, and debugging systems."
+        },
+        "advanced": {
+          "title": "Advanced / Senior",
+          "experience": "5+ years of technical experience",
+          "desc": "Deep experience in system architecture, performance optimization, and production operations."
+        }
+      },
+      "baselineNotice": "Diagnostic assessments will calibrate and verify your actual proficiency level."
+    },
+    "step3": {
+      "title": "Weekly Commitment & Preferences",
+      "subtitle": "Define your available learning hours to generate a realistic study plan",
+      "hoursTitle": "Available Study Time per Week",
+      "hoursValue": "{{hours}} hours / week",
+      "hoursSliderMin": "Light (4 hrs)",
+      "hoursSliderMid": "Balanced (10 hrs)",
+      "hoursSliderMax": "Intensive (20+ hrs)",
+      "languageTitle": "Preferred Learning Language",
+      "langEn": "English (Global)",
+      "langHi": "हिन्दी (Hindi / Hinglish)",
+      "summaryHeading": "Pathway Summary",
+      "summaryRole": "Target Role",
+      "summaryLevel": "Level",
+      "summaryTime": "Commitment",
+      "summaryLanguage": "Language",
+      "completeButton": "Complete Onboarding & View Dashboard",
+      "completingButton": "Setting up your personalized dashboard..."
+    },
+    "nav": {
+      "next": "Next Step",
+      "back": "Previous Step"
+    }
+  },
   "dashboard": {
     "welcome": "Welcome back",
+    "badge": "AI Skill Intelligence Dashboard",
+    "targetRoleLabel": "Targeting",
+    "notSelectedRole": "Not Selected (Pick Target Role)",
+    "notStartedStatus": "Not started",
     "readinessTitle": "Target Career Readiness",
-    "readinessSubtitle": "Combined score based on diagnostic evaluations and self-assessment",
-    "topGapsTitle": "Ranked Skill Gaps",
-    "recommendedCoursesTitle": "Recommended for Your Gap Priority",
-    "learningPathProgress": "Learning Path Progress",
-    "recentActivity": "Recent Activity",
-    "suggestedActions": "Suggested Next Actions",
+    "readinessOutOf": "/100",
+    "readinessSubtitle": "Calibrated readiness score based on diagnostic evaluations",
+    "sampleBadge": "Sample",
     "hoursStudied": "Hours Logged",
     "coursesDone": "Completed Courses",
     "quizzesAttempted": "Quizzes Attempted",
-    "avgScore": "Average Quiz Score"
+    "avgScore": "Average Quiz Score",
+    "topGapsTitle": "Ranked Priority Skill Gaps",
+    "viewAllGaps": "View All Gaps",
+    "recommendedCoursesTitle": "Recommended for Your Gap Priority",
+    "browseCatalogue": "Browse Catalogue ({{count}} courses)",
+    "viewTrack": "View Track",
+    "aiSynthesisTitle": "AI Synthesis & Strategy",
+    "learningPathProgress": "Learning Path Progress",
+    "recentActivity": "Recent Activity",
+    "suggestedActions": "Suggested Next Actions",
+    "emptyState": {
+      "tag": "Diagnostic Setup",
+      "title": "Your Career Benchmark is Not Started",
+      "subtitle": "Complete our 4-step onboarding checklist to unlock your clear readiness score, gap analysis, and tailored learning pathway.",
+      "checklistTitle": "Quick Start Diagnostic Checklist",
+      "checklistProgress": "{{completed}} of {{total}} Completed",
+      "step1Title": "Pick target career role",
+      "step1Desc": "Select the technology role you want to measure yourself against.",
+      "step1Action": "Select Role",
+      "step2Title": "Take first diagnostic assessment",
+      "step2Desc": "Complete an objective 10-minute diagnostic to establish your baseline.",
+      "step2Action": "Start Diagnostic",
+      "step3Title": "Review skill gap breakdown",
+      "step3Desc": "Explore radar graphs and quantified gaps against role requirements.",
+      "step3Action": "Review Gaps",
+      "step4Title": "Start recommended course",
+      "step4Desc": "Begin your first free targeted learning module from Microsoft, Google, or FCC.",
+      "step4Action": "Browse Courses",
+      "noNumbersNotice": "Readiness scores and learning metrics will activate once your target role and first diagnostic are recorded."
+    },
+    "nextAction": {
+      "tag": "Highest-Impact Step",
+      "title": "Next Best Action",
+      "impactLabel": "Estimated +{{pts}} Readiness Gain",
+      "button": "Take Action Now"
+    },
+    "gapBars": {
+      "title": "Skill-by-Skill Gap Breakdown",
+      "subtitle": "Sorted by impact on target role qualification (largest gaps first)",
+      "current": "Current: {{current}}/5",
+      "required": "Required: {{required}}/5",
+      "gapTag": "Gap -{{gap}}",
+      "critical": "Critical Gap",
+      "high": "High Gap",
+      "moderate": "Moderate Gap",
+      "allMet": "You meet all benchmark requirements for this target role!"
+    },
+    "radar": {
+      "title": "Competency Radar Analysis",
+      "scale": "1 - 5 Scale",
+      "currentLegend": "Your Current Level",
+      "requiredLegend": "Target Role Requirement",
+      "tooltipCurrent": "Current Level: {{score}}/5",
+      "tooltipRequired": "Required Level: {{score}}/5"
+    },
+    "thisWeek": {
+      "title": "This-Week Learning Plan",
+      "subtitle": "Structured weekly plan to bridge your top priority gaps",
+      "targetHours": "Target: {{hours}} hrs/week",
+      "progress": "{{done}} of {{total}} milestones completed",
+      "item1": "Core Study: Focus on highest-impact gap module",
+      "item2": "Practical Project: Hands-on code exercise and review",
+      "item3": "Diagnostic Check: Retake diagnostic assessment for re-scoring",
+      "item4": "AI Pair Review: Generate revision quiz with AI Mentor"
+    },
+    "whatIf": {
+      "switchButton": "Switch / What-If Compare",
+      "modalTitle": "Target Role Switcher & What-If Compare",
+      "modalSubtitle": "Evaluate how your current competency scores translate to other career benchmarks without permanently altering your profile.",
+      "selectRoleLabel": "Select Role to Compare:",
+      "activeBadge": "Active Role",
+      "comparedBadge": "Simulated Role",
+      "readinessComparison": "Readiness Score Comparison",
+      "currentReadiness": "Active: {{role}} ({{score}}/100)",
+      "comparedReadiness": "Compared: {{role}} ({{score}}/100)",
+      "deltaGain": "+{{delta}} pts higher qualification",
+      "deltaLoss": "{{delta}} pts lower qualification",
+      "deltaEqual": "Identical baseline qualification",
+      "topGapsTitle": "Top Gaps for {{role}}:",
+      "switchAction": "Switch Active Role to {{role}}",
+      "switchingAction": "Updating active role...",
+      "close": "Close Comparison"
+    }
   },
   "quiz": {
     "title": "AI Quiz Generator",
