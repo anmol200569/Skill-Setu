@@ -491,11 +491,6 @@ export function DashboardPage() {
                           {stats?.assessedRatioText ||
                             `Based on ${stats?.assessedSkillsCount ?? 0} of ${stats?.totalSkillsCount ?? stats?.topGaps?.length ?? 0} skills assessed`}
                         </span>
-                        {(stats?.isPreliminary || (stats?.totalSkillsCount > 0 && stats?.assessedSkillsCount < stats.totalSkillsCount / 2)) && (
-                          <Badge variant="outline" className="text-[9px] px-1.5 py-0 bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 font-medium">
-                            Preliminary
-                          </Badge>
-                        )}
                       </div>
                     </>
                   ) : (
