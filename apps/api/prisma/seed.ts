@@ -179,66 +179,11 @@ export async function seedDatabase() {
   }
   console.log(`✅ Seeded ${curatedCoursesData.length} curated courses.`);
 
-  // Remap enrollments and learning-path items from the 3 old non-curated courses to their curated equivalents
-  const targetReactCourse = curatedCoursesData.find((c) => c.title === 'Front End Development Libraries')!;
-  const targetSqlCourse = curatedCoursesData.find((c) => c.title === 'Administering Microsoft Azure SQL Databases (DP-300)')!;
-  const targetFullStackCourse = curatedCoursesData.find((c) => c.title === 'Back End Development and APIs')!;
-
-  const oldCoursesRemap: Record<string, string> = {
-    'react-documentation---official-inter': generateCourseId(targetReactCourse),
-    'relational-database-design-and-sql-m': generateCourseId(targetSqlCourse),
-    'full-stack-open---deep-dive-into-mod': generateCourseId(targetFullStackCourse)
-  };
-
-  for (const [oldId, newId] of Object.entries(oldCoursesRemap)) {
-    const oldCourse = await prisma.course.findUnique({ where: { id: oldId } });
-    if (oldCourse) {
-      const enrollments = await prisma.enrollment.findMany({ where: { courseId: oldId } });
-      for (const enr of enrollments) {
-        const hasTarget = await prisma.enrollment.findUnique({
-          where: { userId_courseId: { userId: enr.userId, courseId: newId } }
-        });
-        if (hasTarget) {
-          await prisma.enrollment.delete({ where: { id: enr.id } });
-        } else {
-          await prisma.enrollment.update({ where: { id: enr.id }, data: { courseId: newId } });
-        }
-      }
-      await prisma.learningPathItem.updateMany({
-        where: { courseId: oldId },
-        data: { courseId: newId }
-      });
-      await prisma.courseSkill.deleteMany({ where: { courseId: oldId } });
-      await prisma.course.delete({ where: { id: oldId } });
-      console.log(`🧹 Remapped and removed legacy course: "${oldId}" -> "${newId}".`);
-    }
-  }
-
-  // Cleanup any remaining obsolete courses that are not in curatedCoursesData
-  const validCourseIds = new Set(curatedCoursesData.map((c) => generateCourseId(c)));
-  const existingCourses = await prisma.course.findMany({ select: { id: true } });
-  let removedCount = 0;
-  for (const course of existingCourses) {
-    if (!validCourseIds.has(course.id)) {
-      await prisma.enrollment.deleteMany({ where: { courseId: course.id } });
-      await prisma.learningPathItem.deleteMany({ where: { courseId: course.id } });
-      await prisma.courseSkill.deleteMany({ where: { courseId: course.id } });
-      await prisma.course.delete({ where: { id: course.id } });
-      removedCount++;
-    }
-  }
-  if (removedCount > 0) {
-    console.log(`🧹 Cleaned up ${removedCount} obsolete unreferenced courses.`);
-  }
-
-  // Verify total courses in database strictly equals curatedCoursesData.length
-  const postSeedCourseCount = await prisma.course.count();
-  if (postSeedCourseCount !== curatedCoursesData.length) {
-    throw new Error(
-      `Course count mismatch after seeding: expected ${curatedCoursesData.length}, found ${postSeedCourseCount}`
-    );
-  }
-  console.log(`✅ Verified Course count in database: ${postSeedCourseCount} / ${curatedCoursesData.length}.`);
+  // 3b. Transactional Remapping of ALL old-id course rows to matching new curated IDs
+  await prisma.$transaction(async (tx) => {
+    const result = await remapAndCleanupOldCourses(tx as any, curatedCoursesData);
+    console.log(`🧹 Transactionally remapped ${result.remappedCount} old course rows. Verified final course count: ${result.finalCount} / ${curatedCoursesData.length}.`);
+  });
 
   // 4. Seed Diagnostic Assessment Questions (Idempotent)
   for (const q of diagnosticQuestionsData) {
@@ -343,6 +288,111 @@ export async function seedDatabase() {
   }
 
   console.log('🎉 Seeding successfully completed!');
+}
+
+export interface CourseRemapClient {
+  course: {
+    findMany: (args: any) => Promise<any[]>;
+    delete: (args: any) => Promise<any>;
+    count: () => Promise<number>;
+  };
+  enrollment: {
+    findMany: (args: any) => Promise<any[]>;
+    findUnique: (args: any) => Promise<any>;
+    delete: (args: any) => Promise<any>;
+    update: (args: any) => Promise<any>;
+  };
+  learningPathItem: {
+    updateMany: (args: any) => Promise<any>;
+  };
+  courseSkill: {
+    deleteMany: (args: any) => Promise<any>;
+  };
+}
+
+export async function remapAndCleanupOldCourses(
+  tx: CourseRemapClient,
+  curatedCourses: typeof curatedCoursesData
+): Promise<{ remappedCount: number; finalCount: number }> {
+  const validCourseIds = new Set(curatedCourses.map((c) => generateCourseId(c)));
+  const curatedMapByUrl = new Map<string, string>();
+  const curatedMapByTitle = new Map<string, string>();
+
+  for (const c of curatedCourses) {
+    const id = generateCourseId(c);
+    curatedMapByUrl.set(c.destinationUrl.trim().toLowerCase(), id);
+    const titleKey = `${c.provider.trim().toLowerCase()}:::${c.title.trim().toLowerCase()}`;
+    curatedMapByTitle.set(titleKey, id);
+  }
+
+  const targetReactCourse = curatedCourses.find((c) => c.title === 'Front End Development Libraries')!;
+  const targetSqlCourse = curatedCourses.find((c) => c.title === 'Administering Microsoft Azure SQL Databases (DP-300)')!;
+  const targetFullStackCourse = curatedCourses.find((c) => c.title === 'Back End Development and APIs')!;
+
+  const explicitLegacyRemap: Record<string, string> = {
+    'react-documentation---official-inter': generateCourseId(targetReactCourse),
+    'relational-database-design-and-sql-m': generateCourseId(targetSqlCourse),
+    'full-stack-open---deep-dive-into-mod': generateCourseId(targetFullStackCourse)
+  };
+
+  const allDbCourses = await tx.course.findMany({
+    select: { id: true, title: true, provider: true, destinationUrl: true }
+  });
+
+  const oldCourses = allDbCourses.filter((c) => !validCourseIds.has(c.id));
+  let remappedCount = 0;
+
+  for (const old of oldCourses) {
+    const urlKey = (old.destinationUrl || '').trim().toLowerCase();
+    let targetId = curatedMapByUrl.get(urlKey);
+    if (!targetId) {
+      const titleKey = `${(old.provider || '').trim().toLowerCase()}:::${(old.title || '').trim().toLowerCase()}`;
+      targetId = curatedMapByTitle.get(titleKey);
+    }
+    if (!targetId && explicitLegacyRemap[old.id]) {
+      targetId = explicitLegacyRemap[old.id];
+    }
+
+    if (!targetId) {
+      throw new Error(`[Seed Migration Error] Course "${old.id}" ("${old.title}") has no matching curated course target.`);
+    }
+
+    // Remap enrollments
+    const enrollments = await tx.enrollment.findMany({ where: { courseId: old.id } });
+    for (const enr of enrollments) {
+      const hasTarget = await tx.enrollment.findUnique({
+        where: { userId_courseId: { userId: enr.userId, courseId: targetId } }
+      });
+      if (hasTarget) {
+        await tx.enrollment.delete({ where: { id: enr.id } });
+      } else {
+        await tx.enrollment.update({ where: { id: enr.id }, data: { courseId: targetId } });
+      }
+    }
+
+    // Remap learning path items
+    await tx.learningPathItem.updateMany({
+      where: { courseId: old.id },
+      data: { courseId: targetId }
+    });
+
+    // Delete course skills
+    await tx.courseSkill.deleteMany({ where: { courseId: old.id } });
+
+    // Delete obsolete course row
+    await tx.course.delete({ where: { id: old.id } });
+    remappedCount++;
+  }
+
+  // Strictly assert final course count inside the transaction
+  const finalCount = await tx.course.count();
+  if (finalCount !== curatedCourses.length) {
+    throw new Error(
+      `Course count mismatch after seeding: expected ${curatedCourses.length}, found ${finalCount}`
+    );
+  }
+
+  return { remappedCount, finalCount };
 }
 
 if (require.main === module) {
