@@ -12,10 +12,49 @@ export { calculateReadiness, calculateEstimatedReadinessGain, hasSufficientAsses
 export type { RoleRequirementInput, UserSkillAssessmentInput, ReadinessCalculationResult };
 
 /**
- * Sorts skill gaps by impact descending (largest gap deficit first).
+ * Priority multiplier matching @skill-setu/shared readiness engine.
+ */
+function getPriorityMultiplier(priority?: string): number {
+  switch (priority) {
+    case 'critical':
+      return 1.5;
+    case 'high':
+      return 1.25;
+    case 'medium':
+      return 1.0;
+    case 'low':
+      return 0.75;
+    default:
+      return 1.0;
+  }
+}
+
+/**
+ * Computes priority score for a gap item if not already set.
+ */
+export function getGapPriorityScore(gap: GapItem): number {
+  if (typeof gap.priorityScore === 'number' && !Number.isNaN(gap.priorityScore)) {
+    return gap.priorityScore;
+  }
+  const absGap = Math.abs(gap.gap || 0);
+  const weight = gap.weight || 1.0;
+  const mult = getPriorityMultiplier(gap.priority);
+  return absGap * weight * mult;
+}
+
+/**
+ * Sorts skill gaps by impact descending, using the exact same priority score ranking
+ * function as backend gap analysis and AI synthesis.
  */
 export function sortGapsByImpact(gaps: GapItem[] = []): GapItem[] {
-  return [...gaps].sort((a, b) => Math.abs(b.gap) - Math.abs(a.gap));
+  return [...gaps].sort((a, b) => {
+    const scoreA = getGapPriorityScore(a);
+    const scoreB = getGapPriorityScore(b);
+    if (scoreB !== scoreA) {
+      return scoreB - scoreA;
+    }
+    return Math.abs(b.gap) - Math.abs(a.gap);
+  });
 }
 
 /**

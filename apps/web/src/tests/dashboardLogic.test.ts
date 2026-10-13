@@ -57,6 +57,37 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
       expect(sorted[2].gap).toBe(-1.0);
     });
 
+    it('ranks gaps by priorityScore matching AI synthesis so Highest-Impact step and AI synthesis always agree', () => {
+      // Stakeholder Communication: gap 1.28, weight 1.5, priority critical (1.5) -> priorityScore = 2.88
+      // Advanced SQL: gap 1.5, weight 1.4, priority high (1.25) -> priorityScore = 2.625
+      const gaps: GapItem[] = [
+        {
+          skillId: 'adv-sql',
+          skillName: 'Advanced SQL',
+          requiredLevel: 3,
+          currentLevel: 1.5,
+          gap: 1.5,
+          priority: 'high',
+          weight: 1.4,
+          priorityScore: 2.625
+        },
+        {
+          skillId: 'stakeholder-mgt',
+          skillName: 'Stakeholder Communication',
+          requiredLevel: 4,
+          currentLevel: 2.72,
+          gap: 1.28,
+          priority: 'critical',
+          weight: 1.5,
+          priorityScore: 2.88
+        }
+      ];
+
+      const sorted = sortGapsByImpact(gaps);
+      expect(sorted[0].skillName).toBe('Stakeholder Communication');
+      expect(sorted[1].skillName).toBe('Advanced SQL');
+    });
+
     it('handles empty gap list gracefully', () => {
       expect(sortGapsByImpact([])).toEqual([]);
     });
