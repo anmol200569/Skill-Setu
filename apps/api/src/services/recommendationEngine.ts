@@ -85,10 +85,19 @@ export async function getPersonalizedRecommendations(
           assessedSkillNames.has(req.skill.name.toLowerCase());
 
         if (!isAssessed) {
-          const priorityScore =
-            req.requiredProficiency *
-            req.weight *
-            (req.priority === 'critical' ? 1.5 : req.priority === 'high' ? 1.25 : 1.0);
+          const priorityMultiplier =
+            (req.priority as string) === 'must_have' || (req.priority as string) === 'critical'
+              ? 1.5
+              : (req.priority as string) === 'good_to_have' || (req.priority as string) === 'high'
+              ? 1.0
+              : 0.5;
+          const priorityScore = Number((req.requiredProficiency * req.weight * priorityMultiplier).toFixed(2));
+          const priorityCategory: 'critical' | 'high' | 'medium' | 'low' =
+            (req.priority as string) === 'must_have' || (req.priority as string) === 'critical'
+              ? 'critical'
+              : (req.priority as string) === 'good_to_have' || (req.priority as string) === 'high'
+              ? 'high'
+              : 'medium';
 
           effectiveGaps.push({
             skillId: req.skillId,
@@ -97,7 +106,7 @@ export async function getPersonalizedRecommendations(
             requiredLevel: req.requiredProficiency,
             currentLevel: null,
             gap: req.requiredProficiency,
-            priority: req.priority as any,
+            priority: priorityCategory,
             weight: req.weight,
             priorityScore,
             isAssessed: false

@@ -65,6 +65,7 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
         {
           skillId: 'adv-sql',
           skillName: 'Advanced SQL',
+          domainName: 'Databases',
           requiredLevel: 3,
           currentLevel: 1.5,
           gap: 1.5,
@@ -75,6 +76,7 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
         {
           skillId: 'stakeholder-mgt',
           skillName: 'Stakeholder Communication',
+          domainName: 'Soft Skills',
           requiredLevel: 4,
           currentLevel: 2.72,
           gap: 1.28,
@@ -470,6 +472,7 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
         {
           skillId: 's1',
           skillName: 'React',
+          domainName: 'Frontend',
           requiredLevel: 4,
           currentLevel: 2,
           gap: 2,

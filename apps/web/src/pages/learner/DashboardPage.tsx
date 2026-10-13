@@ -64,6 +64,7 @@ export interface GapItem {
   domainName: string;
   isAssessed?: boolean;
   weight?: number;
+  priorityScore?: number;
 }
 
 export interface RecommendedCourseItem {
@@ -81,6 +82,7 @@ export interface RecommendedCourseItem {
   matchingSkill?: string;
   matchPercentage?: number;
   recommendationReason: string;
+  gapAddressed?: string;
 }
 
 export interface WhatIfAnalysisResult {
@@ -1016,7 +1018,8 @@ export function DashboardPage() {
                       </a>
                     </div>
                   </div>
-                ))}
+                ))
+              )}
               </div>
             </div>
           </div>
