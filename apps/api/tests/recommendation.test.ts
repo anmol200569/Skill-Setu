@@ -49,16 +49,22 @@ describe('Course Recommendation Scoring Engine', () => {
       weeklyStudyHours: 10
     });
 
-    expect(score).toBeGreaterThanOrEqual(70);
+    // Real coverage: ts-js weighted gap (2 * 1.5 = 3) / total weighted gap (3 + 1.5 = 4.5) = 67%
+    expect(score).toBe(67);
     expect(matchedGap?.skillId).toBe('ts-js');
     expect(reason).toContain('TypeScript & JavaScript');
   });
 
-  it('applies preference boosts for free status and high ratings', () => {
-    const freeRated = calculateCourseMatchScore(sampleCourse, sampleGaps);
-    const paidCourse: Course = { ...sampleCourse, isFree: false, rating: 4.0 };
-    const paidResult = calculateCourseMatchScore(paidCourse, sampleGaps);
+  it('computes 0 match score when course does not cover any user gaps', () => {
+    const unrelatedCourse: Course = {
+      ...sampleCourse,
+      id: 'rust-intro',
+      title: 'Intro to Rust',
+      skillsCovered: ['rust-lang']
+    };
+    const result = calculateCourseMatchScore(unrelatedCourse, sampleGaps);
 
-    expect(freeRated.score).toBeGreaterThan(paidResult.score);
+    expect(result.score).toBe(0);
+    expect(result.matchedGap).toBeNull();
   });
 });

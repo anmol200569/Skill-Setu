@@ -180,7 +180,7 @@ export async function generateGeminiCompletion(
     }
 
     if (prompt.includes('Explain the key skill gaps') || prompt.includes('skill gap summary')) {
-      return 'Based on your diagnostic evaluations, your core strengths lie in fundamental programming concepts. However, to meet the target requirements for this role, you should prioritize bridging gaps in Advanced SQL query optimization and System Design fundamentals. Completing the recommended courses in these two areas will improve your readiness score by up to 28%.';
+      return '';
     }
 
     return `Hello! As your Skill Setu AI Learning Assistant, I am here to help you bridge your target role skill gaps. Focus on your top-priority gaps first by completing hands-on projects and diagnostic quizzes. Let me know which topic you would like to explore today!`;

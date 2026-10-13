@@ -12,62 +12,41 @@ export function calculateCourseMatchScore(
   topGaps: SkillGapItem[],
   preferences?: RecommendationPreferences
 ): { score: number; matchedGap: SkillGapItem | null; reason: string } {
-  let score = 0;
-  let primaryMatchedGap: SkillGapItem | null = null;
   const courseSkills = (course.skillsCovered || []).map((s) => s.toLowerCase());
 
-  // Check overlap with gaps
-  for (let i = 0; i < topGaps.length; i++) {
-    const gap = topGaps[i];
+  // Find all user gaps that this course actually covers
+  const matchedGaps = topGaps.filter((gap) => {
     const skillNameLower = gap.skillName.toLowerCase();
     const skillIdLower = gap.skillId.toLowerCase();
-
-    const isMatch = courseSkills.some(
+    return courseSkills.some(
       (cs) =>
         cs === skillIdLower ||
         cs === skillNameLower ||
         skillNameLower.includes(cs) ||
         cs.includes(skillNameLower)
     );
+  });
 
-    if (isMatch) {
-      if (!primaryMatchedGap) {
-        primaryMatchedGap = gap;
-        // Priority weight
-        if (gap.priority === 'critical') score += 50;
-        else if (gap.priority === 'high') score += 40;
-        else score += 25;
-      } else {
-        score += 15; // Additional gap addressed
-      }
+  const primaryMatchedGap = matchedGaps.length > 0 ? matchedGaps[0] : null;
+
+  // Real gap coverage computation: percentage of total weighted gap deficit covered
+  let realCoverageScore = 0;
+  if (topGaps.length > 0) {
+    const totalWeightedDeficit = topGaps.reduce((acc, g) => acc + (g.gap || 1) * (g.weight || 1), 0);
+    const coveredWeightedDeficit = matchedGaps.reduce((acc, g) => acc + (g.gap || 1) * (g.weight || 1), 0);
+    if (totalWeightedDeficit > 0 && coveredWeightedDeficit > 0) {
+      realCoverageScore = Math.min(100, Math.round((coveredWeightedDeficit / totalWeightedDeficit) * 100));
     }
   }
-
-  // Preference boosts
-  if (preferences?.preferredLanguage) {
-    const courseLang = (course.language || '').toLowerCase();
-    const prefLang = preferences.preferredLanguage.toLowerCase();
-    if (courseLang.includes(prefLang) || courseLang.includes('bilingual') || prefLang === 'en') {
-      score += 15;
-    }
-  }
-
-  if (course.isFree) {
-    score += 10;
-  }
-
-  if (course.rating && course.rating >= 4.7) {
-    score += 10;
-  }
-
-  const normalizedScore = Math.min(100, Math.max(10, score));
 
   const reason = primaryMatchedGap
-    ? `Directly bridges your ${primaryMatchedGap.priority} skill gap in ${primaryMatchedGap.skillName} (Current: ${primaryMatchedGap.currentLevel}/5, Required: ${primaryMatchedGap.requiredLevel}/5).`
-    : `Strengthens core competency foundation with hands-on practice from ${course.provider}.`;
+    ? primaryMatchedGap.currentLevel !== null && primaryMatchedGap.isAssessed
+      ? `Directly bridges your ${primaryMatchedGap.priority} skill gap in ${primaryMatchedGap.skillName} (Current: ${primaryMatchedGap.currentLevel}/5, Required: ${primaryMatchedGap.requiredLevel}/5).`
+      : `Directly bridges your target requirement in ${primaryMatchedGap.skillName} (Required: Level ${primaryMatchedGap.requiredLevel}/5).`
+    : `Strengthens core foundation with hands-on practice from ${course.provider}.`;
 
   return {
-    score: normalizedScore,
+    score: realCoverageScore,
     matchedGap: primaryMatchedGap,
     reason
   };

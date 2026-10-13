@@ -54,11 +54,12 @@ export interface CareerRoleItem {
 export interface GapItem {
   skillId: string;
   skillName: string;
-  currentLevel: number;
+  currentLevel: number | null;
   requiredLevel: number;
   gap: number;
-  priority: 'critical' | 'high' | 'medium';
+  priority: 'critical' | 'high' | 'medium' | 'low';
   domainName: string;
+  isAssessed?: boolean;
   weight?: number;
 }
 
@@ -71,6 +72,7 @@ export interface RecommendedCourseItem {
     difficulty: string;
     destinationUrl: string;
     isFree?: boolean;
+    skillsCovered?: string[];
   };
   matchScore?: number;
   matchingSkill?: string;
@@ -440,14 +442,35 @@ export function DashboardPage() {
                   <div className="text-xs text-muted-foreground font-medium">
                     {t('dashboard.readinessTitle')}
                   </div>
-                  <div className="flex items-baseline gap-1 mt-1">
-                    <span className="text-2xl sm:text-3xl font-serif font-bold text-[#C2410C]">
-                      {readiness ?? '--'}
-                    </span>
-                    <span className="text-xs text-muted-foreground font-medium">
-                      {t('dashboard.readinessOutOf')}
-                    </span>
-                  </div>
+                  {readiness !== null ? (
+                    <>
+                      <div className="flex items-baseline gap-1 mt-1">
+                        <span className="text-2xl sm:text-3xl font-serif font-bold text-[#C2410C]">
+                          {readiness}
+                        </span>
+                        <span className="text-xs text-muted-foreground font-medium">
+                          {t('dashboard.readinessOutOf')}
+                        </span>
+                      </div>
+                      <div className="text-[10px] text-muted-foreground mt-0.5">
+                        {stats?.assessedRatioText ||
+                          `Based on ${stats?.assessedSkillsCount ?? 0} of ${stats?.totalSkillsCount ?? stats?.topGaps?.length ?? 0} skills assessed`}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="mt-1 space-y-1.5">
+                      <span className="inline-block text-xs font-semibold px-2 py-0.5 rounded-full bg-secondary text-muted-foreground">
+                        {t('dashboard.notStartedTag', { defaultValue: 'not started' })}
+                      </span>
+                      <div>
+                        <Link to="/assessments">
+                          <Button size="sm" variant="outline" className="h-7 text-[11px] px-2 py-0 mt-1 border-[#C2410C]/40 text-[#C2410C]">
+                            {t('dashboard.takeFirstDiagnostic', { defaultValue: 'Take your first diagnostic' })}
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="w-10 h-10 rounded-full bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center flex-shrink-0">
                   <TrendingUp className="w-5 h-5" />
@@ -518,11 +541,13 @@ export function DashboardPage() {
                   <span className="text-[11px] font-bold uppercase tracking-wider text-[#C2410C]">
                     {t('dashboard.nextAction.tag')}
                   </span>
-                  <Badge variant="outline" className="text-[10px]">
-                    {t('dashboard.nextAction.impactLabel', {
-                      pts: estimatedGain
-                    })}
-                  </Badge>
+                  {readiness !== null && estimatedGain > 0 && (
+                    <Badge variant="outline" className="text-[10px]">
+                      {t('dashboard.nextAction.impactLabel', {
+                        pts: estimatedGain
+                      })}
+                    </Badge>
+                  )}
                 </div>
                 <h3 className="text-base sm:text-lg font-serif font-bold text-foreground">
                   {topGap
@@ -532,6 +557,10 @@ export function DashboardPage() {
                 <p className="text-xs text-muted-foreground leading-relaxed">
                   {topCourse
                     ? `${topCourse.recommendationReason} (${topCourse.course.title} • ${topCourse.course.estimatedHours} hrs)`
+                    : topGap
+                    ? t('dashboard.nextAction.noCourseCoveringGap', {
+                        defaultValue: 'No curated course currently covers this specific gap in the catalog. Explore all catalog courses or start with foundational practice.'
+                      })
                     : 'Complete your competency evaluation to isolate specific skill deficiencies against industry benchmarks.'}
                 </p>
               </div>
@@ -549,10 +578,17 @@ export function DashboardPage() {
                       <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                     </Button>
                   </a>
-                ) : (
+                ) : topGap && !topGap.isAssessed ? (
                   <Link to="/assessments" className="inline-block w-full sm:w-auto">
                     <Button size="sm" className="w-full sm:w-auto text-xs font-semibold shadow-sm">
-                      <span>{t('dashboard.nextAction.button')}</span>
+                      <span>{t('dashboard.takeFirstDiagnostic', { defaultValue: 'Take your first diagnostic' })}</span>
+                      <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link to="/courses" className="inline-block w-full sm:w-auto">
+                    <Button size="sm" className="w-full sm:w-auto text-xs font-semibold shadow-sm">
+                      <span>{t('dashboard.browseCatalogue', { count: 61 })}</span>
                       <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                     </Button>
                   </Link>
@@ -670,7 +706,8 @@ export function DashboardPage() {
                   </div>
                 ) : (
                   sortedGaps.slice(0, 5).map((gap) => {
-                    const currentPct = Math.min(100, (gap.currentLevel / 5) * 100);
+                    const isAssessed = gap.isAssessed !== false && gap.currentLevel !== null && gap.currentLevel !== undefined;
+                    const currentPct = isAssessed ? Math.min(100, ((gap.currentLevel as number) / 5) * 100) : 0;
                     const requiredPct = Math.min(100, (gap.requiredLevel / 5) * 100);
                     const isCritical = Math.abs(gap.gap) >= 1.5;
                     const isHigh = Math.abs(gap.gap) >= 1.0;
@@ -686,7 +723,9 @@ export function DashboardPage() {
                               {gap.skillName}
                             </div>
                             <div className="text-[11px] text-muted-foreground">
-                              {t('dashboard.gapBars.current', { current: gap.currentLevel })} •{' '}
+                              {isAssessed
+                                ? t('dashboard.gapBars.current', { current: gap.currentLevel })
+                                : t('dashboard.gapBars.notAssessed', { defaultValue: 'Not assessed' })} •{' '}
                               {t('dashboard.gapBars.required', { required: gap.requiredLevel })}
                             </div>
                           </div>
@@ -694,7 +733,9 @@ export function DashboardPage() {
                             variant={isCritical ? 'critical' : isHigh ? 'high' : 'medium'}
                             className="text-[10px] whitespace-nowrap flex-shrink-0"
                           >
-                            {t('dashboard.gapBars.gapTag', { gap: Math.abs(gap.gap).toFixed(1) })}
+                            {isAssessed
+                              ? t('dashboard.gapBars.gapTag', { gap: Math.abs(gap.gap).toFixed(1) })
+                              : t('dashboard.gapBars.notAssessed', { defaultValue: 'Not assessed' })}
                           </Badge>
                         </div>
 
@@ -717,7 +758,7 @@ export function DashboardPage() {
                 )}
 
                 {/* AI Strategy Synthesis */}
-                {stats?.aiExplanation && (
+                {stats?.aiExplanation && stats.aiExplanation.trim().length > 0 && stats?.assessedSkillsCount !== 0 && (
                   <div className="p-3.5 rounded-xl border border-[#C2410C]/20 bg-[#C2410C]/5 text-xs text-foreground/90 space-y-1 mt-2">
                     <div className="font-bold flex items-center gap-1.5 text-[#C2410C]">
                       <BrainCircuit className="w-3.5 h-3.5" />
@@ -754,21 +795,23 @@ export function DashboardPage() {
                 {[
                   {
                     idx: 1,
-                    text: topGap
-                      ? `Core Module: Focus on ${topGap.skillName} (2.5 hrs)`
-                      : t('dashboard.thisWeek.item1')
+                    text: topCourse
+                      ? `Core Module: ${topGap ? topGap.skillName : 'Target Skill'} via ${topCourse.course.title} (${(weeklyHours * 0.4).toFixed(1)} hrs)`
+                      : topGap
+                      ? `Core Module: Focus on ${topGap.skillName} (${(weeklyHours * 0.4).toFixed(1)} hrs)`
+                      : `Core Module: Foundational Competencies (${(weeklyHours * 0.4).toFixed(1)} hrs)`
                   },
                   {
                     idx: 2,
-                    text: t('dashboard.thisWeek.item2') + ' (3.0 hrs)'
+                    text: `Hands-on Lab Practice & Problem Sets (${(weeklyHours * 0.3).toFixed(1)} hrs)`
                   },
                   {
                     idx: 3,
-                    text: t('dashboard.thisWeek.item3') + ' (1.5 hrs)'
+                    text: `Diagnostic & Knowledge Check Quizzes (${(weeklyHours * 0.15).toFixed(1)} hrs)`
                   },
                   {
                     idx: 4,
-                    text: t('dashboard.thisWeek.item4') + ' (1.0 hr)'
+                    text: `Concept Revision & Code Reflection (${(weeklyHours * 0.15).toFixed(1)} hrs)`
                   }
                 ].map((item) => {
                   const isChecked = Boolean(completedMilestones[item.idx]);
@@ -821,7 +864,7 @@ export function DashboardPage() {
                   to="/courses"
                   className="text-xs text-[#C2410C] hover:underline font-semibold whitespace-nowrap"
                 >
-                  {t('dashboard.browseCatalogue', { count: 60 })}
+                  {t('dashboard.browseCatalogue', { count: 61 })}
                 </Link>
               </div>
 
@@ -836,9 +879,11 @@ export function DashboardPage() {
                         <Badge variant="outline" className="text-[10px]">
                           {rec.course.provider}
                         </Badge>
-                        <Badge variant="default" className="text-[10px]">
-                          Match {rec.matchScore}%
-                        </Badge>
+                        {rec.matchScore && rec.matchScore > 0 ? (
+                          <Badge variant="default" className="text-[10px]">
+                            Match {rec.matchScore}%
+                          </Badge>
+                        ) : null}
                       </div>
                       <h4 className="font-semibold text-xs sm:text-sm text-foreground line-clamp-2">
                         {rec.course.title}
