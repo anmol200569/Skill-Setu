@@ -408,7 +408,7 @@ export function QuizzesPage() {
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept=".pdf,.docx,.pptx,.txt,.ppt"
+                  accept=".pdf,.docx,.pptx,.txt"
                   className="hidden"
                   onChange={handleFileUpload}
                 />

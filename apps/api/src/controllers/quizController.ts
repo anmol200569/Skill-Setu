@@ -65,7 +65,9 @@ export async function uploadStudyMaterial(req: Request, res: Response): Promise<
     console.error('[uploadStudyMaterial] Internal file extraction error:', err);
 
     let clientMessage = err.message || 'File processing failed';
-    if (clientMessage.includes('exceeds maximum allowed limit') || clientMessage.includes('limit of 4 MB')) {
+    if (clientMessage.includes('Please save it as .pptx and upload again.')) {
+      clientMessage = 'Please save it as .pptx and upload again.';
+    } else if (clientMessage.includes('exceeds maximum allowed limit') || clientMessage.includes('limit of 4 MB')) {
       clientMessage = 'File size exceeds the 4 MB upload limit. Please upload a smaller document.';
     } else if (clientMessage.includes('Unsupported file')) {
       clientMessage = 'Unsupported file format. Please upload a PDF, DOCX, PPTX, or TXT file.';

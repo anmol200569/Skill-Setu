@@ -640,5 +640,16 @@ describe('AI Quiz Module & Gemini Model Configuration', () => {
       expect(createdUploadData.extractedText).toBe('');
       expect(createdUploadData.extractedText).not.toContain('Comprehensive distributed');
     });
+
+    it('rejects .ppt files with explicit guidance to save as .pptx (TASK A2)', async () => {
+      const res = await request(app)
+        .post('/api/v1/quizzes/upload')
+        .set('Authorization', 'Bearer test-learner-token')
+        .attach('file', Buffer.from('legacy presentation binary contents'), 'deck.ppt');
+
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBe('UploadError');
+      expect(res.body.message).toBe('Please save it as .pptx and upload again.');
+    });
   });
 });

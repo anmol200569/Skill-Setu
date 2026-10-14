@@ -12,7 +12,7 @@ export const ALLOWED_MIME_TYPES = [
   'application/octet-stream' // fallback for some browsers uploading txt or pptx
 ];
 
-export const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.pptx', '.txt', '.ppt'];
+export const ALLOWED_EXTENSIONS = ['.pdf', '.docx', '.pptx', '.txt'];
 
 export function validateFileMetadata(filename: string, mimeType: string, sizeBytes: number): void {
   if (sizeBytes > MAX_FILE_SIZE_BYTES) {
@@ -20,6 +20,9 @@ export function validateFileMetadata(filename: string, mimeType: string, sizeByt
   }
 
   const ext = filename.substring(filename.lastIndexOf('.')).toLowerCase();
+  if (ext === '.ppt') {
+    throw new Error('Please save it as .pptx and upload again.');
+  }
   if (!ALLOWED_EXTENSIONS.includes(ext)) {
     throw new Error(`Unsupported file format. Please upload a PDF, DOCX, PPTX, or TXT file.`);
   }
