@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiClient } from '../../lib/api';
 import { Button } from '../../components/ui/Button';
@@ -38,11 +39,20 @@ interface Question {
 
 export function AssessmentsPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const skillParam = searchParams.get('skillId');
+  const startBaselineParam = searchParams.get('startBaseline') === 'true';
+
   const [skills, setSkills] = useState<Skill[]>([]);
   const [userSkills, setUserSkills] = useState<any[]>([]);
   const [selectedDomain, setSelectedDomain] = useState<string>('all');
   const [history, setHistory] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Baseline prompt state (Task D1)
+  const [isBaselinePromptVisible, setIsBaselinePromptVisible] = useState(false);
+  const [preselectedSkill, setPreselectedSkill] = useState<Skill | null>(null);
 
   // Active Assessment State
   const [activeSkill, setActiveSkill] = useState<Skill | null>(null);
@@ -61,13 +71,24 @@ export function AssessmentsPage() {
       apiClient<any[]>('/assessment/history')
     ])
       .then(([skillsData, profileData, historyData]) => {
-        setSkills(skillsData || []);
+        const fetchedSkills = skillsData || [];
+        setSkills(fetchedSkills);
         setUserSkills(profileData?.userSkills || []);
         setHistory(historyData || []);
+
+        if (startBaselineParam) {
+          setIsBaselinePromptVisible(true);
+          const matched = skillParam
+            ? fetchedSkills.find((s) => s.id === skillParam || s.name.toLowerCase() === skillParam.toLowerCase())
+            : fetchedSkills[0];
+          if (matched) {
+            setPreselectedSkill(matched);
+          }
+        }
       })
       .catch((err) => console.warn('Could not load assessments:', err))
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [skillParam, startBaselineParam]);
 
   const startAssessment = async (skill: Skill) => {
     setActiveSkill(skill);
@@ -152,6 +173,41 @@ export function AssessmentsPage() {
           Take targeted question sets to establish verified proficiency scores (1 to 5 scale).
         </p>
       </div>
+
+      {/* D1: Start your baseline prompt */}
+      {isBaselinePromptVisible && (
+        <div className="p-5 rounded-2xl bg-gradient-to-r from-[#C2410C]/10 via-[#C2410C]/5 to-transparent border border-[#C2410C]/30 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in fade-in">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#C2410C] animate-pulse" />
+              <h3 className="font-serif font-bold text-base sm:text-lg text-foreground">
+                Start your baseline assessment
+              </h3>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Welcome to Skill Setu! Take a 5-minute diagnostic for <strong className="text-foreground">{preselectedSkill?.name || 'your first required skill'}</strong> to calculate your verified baseline readiness.
+            </p>
+          </div>
+          <div className="flex items-center gap-2.5 flex-shrink-0">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate('/dashboard')}
+              className="text-xs"
+            >
+              Skip to Dashboard
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => preselectedSkill && startAssessment(preselectedSkill)}
+              className="text-xs font-semibold shadow-md"
+            >
+              Start Baseline Now
+              <ArrowRight className="w-3.5 h-3.5 ml-1" />
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Domain Filter Pills */}
       <div className="flex flex-wrap gap-2 pt-2">

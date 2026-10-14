@@ -26,6 +26,7 @@ interface CareerRoleItem {
   description: string;
   industryDemand: string;
   roleCompetencies?: any[];
+  skillsRequired?: any[];
 }
 
 export function OnboardingPage() {
@@ -183,7 +184,19 @@ export function OnboardingPage() {
       });
 
       await refreshProfile();
-      navigate('/dashboard');
+
+      // D1: Navigate to /assessments with first required unassessed skill preselected and baseline prompt (not straight to /dashboard)
+      const selectedRole = roles.find((r) => r.id === selectedRoleId);
+      const firstSkillId =
+        selectedRole?.skillsRequired?.[0]?.skillId ||
+        selectedRole?.skillsRequired?.[0]?.skill?.id ||
+        '';
+
+      if (firstSkillId) {
+        navigate(`/assessments?skillId=${encodeURIComponent(firstSkillId)}&startBaseline=true`);
+      } else {
+        navigate('/assessments?startBaseline=true');
+      }
     } catch (err: any) {
       setErrorMsg(err.message || 'Failed to complete onboarding. Please try again.');
       setIsSubmitting(false);
