@@ -474,6 +474,249 @@ const skillDistractorBank: Record<string, {
       'Loading untrusted pickled DataFrame artifacts from external network drives without validation.',
       'Persisting database connection credentials in plaintext within exploratory Jupyter notebook cells.'
     ]
+  },
+  'bi-modeling': {
+    c0: [
+      'Constructing direct many-to-many relationship cardinality mappings without resolving bridge tables or intermediate junction keys.',
+      'Mixing atomic transactional fact records directly into slowly changing dimension lookup tables.',
+      'Defining conflicting business measure formulas independently across multiple downstream analytics tools.'
+    ],
+    c1: [
+      'Deploying unvalidated analytical measure formulas directly into production reporting marts without audit checks.',
+      'Bypassing standardized star schema dimensional modeling conventions in favor of deeply nested snowflake hierarchy chains and tables.',
+      'Creating circular relationship dependencies across semantic data model lookup tables in dashboards.'
+    ],
+    c2: [
+      'Releasing revised business metric formulas to leadership without conducting historical baseline reconciliations.',
+      'Modifying historical fact row definitions retroactively without establishing versioned deprecation timelines.',
+      'Deploying major semantic model architectural changes without documenting underlying calculated column assumptions in catalogs.'
+    ],
+    c3: [
+      'Materializing high-cardinality snowflake dimensions needlessly to represent low-volume categorical labels.',
+      'Running unindexed measure calculations on raw transactional fact tables during dashboard rendering time.',
+      'Rebuilding entire semantic tabular models on minor updates instead of using partition processing.'
+    ],
+    c4: [
+      'Bypassing role-based row-level security filters on semantic models to simplify cross-department report distribution workflows.',
+      'Granting unrestricted drill-through access to raw underlying financial and customer transactional logs.',
+      'Exposing proprietary organizational performance figures to unauthenticated embedded reporting links.'
+    ]
+  },
+  'docker-k8s': {
+    c0: [
+      'Running production containerized microservices as the root user without configuring unprivileged runtime security contexts or profiles.',
+      'Bypassing multi-stage container builds and inflating production container image layer sizes needlessly.',
+      'Pinning production container image references to mutable latest tags rather than immutable digest hashes.'
+    ],
+    c1: [
+      'Hardcoding plaintext environment credentials directly into immutable Dockerfile build instruction steps.',
+      'Coupling container storage volumes directly to transient ephemeral host paths without persistent volume claims or retention policies.',
+      'Omitting mandatory CPU and memory resource request and limit specifications on deployed workloads.'
+    ],
+    c2: [
+      'Pushing unverified container images directly to production registries without running vulnerability scans.',
+      'Deploying container workloads without configuring automated liveness and readiness probe health endpoints.',
+      'Terminating running container instances abruptly with SIGKILL without allowing graceful shutdown handler execution in worker processes.'
+    ],
+    c3: [
+      'Installing heavy interactive debugging utilities and development libraries inside production containers.',
+      'Layering volatile dependency installation lines near the top of the Dockerfile cache instruction tree.',
+      'Allocating excessive CPU resource limits that trigger host kernel throttling and latency spikes.'
+    ],
+    c4: [
+      'Mounting the host root filesystem directory into untrusted multi-tenant containers without read-only restrictions or volume limits.',
+      'Granting broad privileged Linux kernel capabilities to container processes during standard deployment.',
+      'Disabling container base image security scanning in automated continuous deployment build pipelines.'
+    ]
+  },
+  'k8s-orch': {
+    c0: [
+      'Deploying standalone raw pods directly into production namespaces without managing ReplicaSets or Deployment controllers in clusters.',
+      'Omitting namespace isolation boundaries and deploying unrelated multi-tenant workloads in default namespaces.',
+      'Configuring host networking mode indiscriminately across pods to bypass virtual software-defined networks.'
+    ],
+    c1: [
+      'Defining conflicting ingress routing rules with overlapping hostnames across independent development teams.',
+      'Coupling pod scheduling constraints statically to specific cluster node hostnames rather than flexible affinity or taint rules.',
+      'Omitting pod disruption budgets on mission-critical system microservices during node maintenance drain cycles.'
+    ],
+    c2: [
+      'Applying manual imperatively executed kubectl update commands directly against live production cluster states.',
+      'Ignoring continuous readiness probe failures during rolling updates and proceeding with deployment promotions.',
+      'Applying live configuration map mutations without triggering rolling restarts of dependent consumer deployment pods in clusters.'
+    ],
+    c3: [
+      'Configuring CPU requests equal to burstable limits on pods that experience unpredictable spike patterns.',
+      'Configuring horizontal pod autoscaler policies with over-sensitive scale metrics that cause thrashing.',
+      'Omitting hierarchical resource quotas and limit ranges on shared organizational cluster namespaces.'
+    ],
+    c4: [
+      'Granting unrestricted cluster-admin RBAC role bindings to default service accounts in public application namespaces without audits.',
+      'Disabling Kubernetes network policies and permitting unrestricted ingress and egress across all pods.',
+      'Exposing the Kubernetes control plane API server directly to the open public internet without mTLS.'
+    ]
+  },
+  'aws-cloud': {
+    c0: [
+      'Deploying mission-critical application database clusters into single public subnets without VPC network segmentation or isolation.',
+      'Using root cloud account credentials for day-to-day administrative deployment tasks across environments.',
+      'Omitting automated cloud billing spend alerts and real-time budget threshold notification triggers.'
+    ],
+    c1: [
+      'Deploying production application infrastructure into a single physical availability zone without redundancy.',
+      'Structuring cloud infrastructure through manual web console point-and-click operations rather than declarative code templates.',
+      'Mixing production workloads and experimental staging resources within a single AWS cloud account context.'
+    ],
+    c2: [
+      'Provisioning critical cloud infrastructure components manually through web management consoles without version control.',
+      'Ignoring automated CloudWatch alarm triggers indicating sustained operational compute capacity degradation.',
+      'Executing infrastructure configuration updates without generating automated pre-deployment plan dry runs or rollback templates.'
+    ],
+    c3: [
+      'Provisioning oversized static EC2 compute instances without configuring dynamic horizontal auto-scaling.',
+      'Routing high-volume internal service network traffic across public internet endpoints instead of VPC peering.',
+      'Omitting automated lifecycle expiration rules on high-volume S3 diagnostic object storage buckets.'
+    ],
+    c4: [
+      'Configuring Amazon S3 object storage buckets with public read and list permissions accessible to anyone on the internet without limits.',
+      'Authorizing permissive ingress security group rules with open 0.0.0.0/0 IP ranges on administrative SSH ports.',
+      'Hardcoding long-lived AWS IAM access key credentials directly inside client-facing application source code.'
+    ]
+  },
+  'cicd-github': {
+    c0: [
+      'Running automated deployment pipelines on unprotected git repository branches without pull request review approvals or status checks.',
+      'Skipping automated unit test execution and lint validation steps to accelerate rapid pull request merging.',
+      'Hardcoding plain text cloud deployment credentials directly inside repository workflow YAML files.'
+    ],
+    c1: [
+      'Chaining unisolated pipeline build steps that share dirty transient workspace directories across jobs.',
+      'Structuring production deployment pipelines with manual trigger buttons rather than automated git tag promotion workflows and release gates.',
+      'Omitting automated version tagging and immutable container release generation upon successful workflow builds.'
+    ],
+    c2: [
+      'Merging pull request branches that exhibit failing continuous integration status checks into main branch.',
+      'Omitting automated rollback triggers when canary deployment smoke test suites detect latency degradations.',
+      'Deploying application releases without executing automated software bill of materials and dependency vulnerability scanning.'
+    ],
+    c3: [
+      'Re-downloading identical third-party library dependencies on every build job without caching layers.',
+      'Running independent build and lint workflow steps sequentially rather than executing them in parallel.',
+      'Provisioning oversized self-hosted continuous integration runners for simple static code check jobs.'
+    ],
+    c4: [
+      'Referencing third-party GitHub Actions by mutable branch tags rather than immutable commit SHA hashes in production workflows.',
+      'Granting broad repository write permissions to automated workflow runs triggered by external public pull request forks.',
+      'Exposing sensitive operational environment variables and authorization tokens in public build console logs.'
+    ]
+  },
+  'ml-foundations': {
+    c0: [
+      'Evaluating predictive machine learning model performance exclusively on training datasets without holdout validation sets or cross-validation.',
+      'Leaking target prediction labels into feature preprocessing and imputation pipelines before train-test splits.',
+      'Ignoring severe dataset class imbalance and relying entirely on raw accuracy metrics to claim success.'
+    ],
+    c1: [
+      'Coupling feature engineering preprocessing scripts tightly to specific training data input file formats.',
+      'Structuring machine learning experimental pipelines without logging training hyperparameters, metrics, or dataset versions.',
+      'Mixing training data distributions collected across seasonal shifts without performing drift validation.'
+    ],
+    c2: [
+      'Deploying complex machine learning models without establishing simple baseline heuristic benchmark comparisons.',
+      'Ignoring distribution drift signals detected in live production inference data streams over time.',
+      'Shipping newly trained model weights to production serving endpoints without conducting automated offline validation audits.'
+    ],
+    c3: [
+      'Training deep neural network architectures on tiny tabular datasets where simpler linear models excel.',
+      'Recomputing complex feature transformations dynamically on every single incoming online inference request.',
+      'Running batch prediction inference using sequential unvectorized Python loops rather than matrix operations.'
+    ],
+    c4: [
+      'Training machine learning models on unscrubbed biased historical demographic data without fairness, disparity, and representation audits.',
+      'Exposing sensitive training dataset records through inverted model gradient attacks on public endpoints.',
+      'Deploying uninterpretable black-box models into high-stakes automated decision domains without explanation tools.'
+    ]
+  },
+  'llm-genai': {
+    c0: [
+      'Concatenating untrusted user input directly into system instruction prompts without delimiter boundaries or input sanitization.',
+      'Relying on temperature zero settings to eliminate all factual hallucinations and reasoning errors in LLMs.',
+      'Omitting token budget estimation when assembling conversational chat histories, causing silent prompt truncation.'
+    ],
+    c1: [
+      'Hardcoding proprietary AI provider API keys directly within client-side browser JavaScript application bundles.',
+      'Structuring conversational agent architectures without fallback model provider routing during cloud service outages or rate limits.',
+      'Coupling large language model prompts tightly to dynamic UI layout rendering code across components.'
+    ],
+    c2: [
+      'Deploying prompt template modifications to production without running automated regression test evaluation suites.',
+      'Ignoring factual hallucination rates on domain queries and relying solely on informal developer spot-checks.',
+      'Deploying generative AI features to production users without implementing automated output content safety moderation filters.'
+    ],
+    c3: [
+      'Injecting thousands of redundant context tokens into simple prompts that require concise classification answers.',
+      'Omitting semantic caching mechanisms for identical high-frequency user questions, driving up API token costs.',
+      'Using frontier reasoning models for simple deterministic string parsing tasks better handled by regex.'
+    ],
+    c4: [
+      'Allowing untrusted prompt injection payloads to override core system guardrails and access confidential backend functions.',
+      'Transmitting sensitive customer personal data to external third-party AI provider APIs without anonymization.',
+      'Executing arbitrary code generated by large language models directly within host environments without sandboxing.'
+    ]
+  },
+  'rag-vector': {
+    c0: [
+      'Splitting reference documents using arbitrary fixed character counts that sever semantic sentences and context in half across paragraph boundaries.',
+      'Omitting metadata attribute filters during similarity search, forcing global scans across unrelated documents.',
+      'Relying exclusively on dense vector embeddings without incorporating keyword-based sparse BM25 retrieval tiers.'
+    ],
+    c1: [
+      'Storing document vector embeddings without tracking the specific embedding model architecture and version used.',
+      'Structuring retrieval pipelines without secondary re-ranking models to filter out irrelevant top-k similarity candidates.',
+      'Coupling vector database connection parameters directly to client-facing search interface presentation layers.'
+    ],
+    c2: [
+      'Modifying source knowledge documents without triggering automated re-embedding and vector index update pipelines.',
+      'Omitting similarity threshold cutoffs when injecting retrieved document contexts into generative model prompts.',
+      'Deploying retrieval-augmented generation pipelines without evaluating precision, recall, and context faithfulness benchmarks.'
+    ],
+    c3: [
+      'Recomputing embeddings for unmodified reference documents continuously during routine scheduled ingestion runs.',
+      'Querying vector databases with oversized top-k parameters that overwhelm the generative model context window.',
+      'Omitting hierarchical indexing trees and running flat brute-force similarity calculations on millions of vectors.'
+    ],
+    c4: [
+      'Bypassing document-level access control permissions and returning confidential internal records to unauthorized users in chat responses.',
+      'Injecting untrusted retrieved document content directly into administrative LLM prompts without sanitization.',
+      'Storing sensitive customer vector embeddings and text chunks in unencrypted vector database cluster storage.'
+    ]
+  },
+  'pytorch-tf': {
+    c0: [
+      'Retaining computational graph history references across training iterations, causing progressive GPU memory accumulation and OOMs.',
+      'Training deep neural networks without standardizing or normalizing input feature distributions across batches.',
+      'Omitting learning rate warmup and decay schedules, resulting in unstable loss plateaus and training divergence.'
+    ],
+    c1: [
+      'Hardcoding static tensor dimension sizes throughout layer implementations, breaking dynamic batch size support.',
+      'Coupling data augmentation preprocessing directly to GPU training loops rather than utilizing asynchronous background workers.',
+      'Omitting deterministic random seed configuration across CUDA, NumPy, and framework runtimes during research.'
+    ],
+    c2: [
+      'Evaluating validation dataset performance metrics without setting the model to evaluation inference mode.',
+      'Omitting gradient norm clipping when training recurrent or deep transformer architectures prone to exploding gradients.',
+      'Training deep models across days without configuring automated checkpoint persistence on validation loss improvements in storage.'
+    ],
+    c3: [
+      'Transferring individual tensors synchronously between host CPU memory and GPU device memory inside inner loops.',
+      'Using standard Python lists and object structures instead of contiguous pinned memory tensors for batch loading.',
+      'Omitting automatic mixed-precision FP16 calculations on modern GPU architectures that support tensor cores.'
+    ],
+    c4: [
+      'Loading unverified third-party model checkpoint weights from untrusted public web URLs without cryptographic checksums or validation.',
+      'Persisting sensitive customer input training samples directly within saved model checkpoint metadata payloads.',
+      'Deploying unauthenticated model inference serving endpoints directly to public network interfaces without rate limiting.'
+    ]
   }
 };
 

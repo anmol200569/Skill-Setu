@@ -4255,15 +4255,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Defining conflicting business measure formulas independently across multiple downstream analytics tools."
           },
           {
             "id": "opt_2",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Constructing direct many-to-many relationship cardinality mappings without resolving bridge tables or intermediate junction keys."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Mixing atomic transactional fact records directly into slowly changing dimension lookup tables."
           },
           {
             "id": "opt_4",
@@ -4288,15 +4288,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Deploying unvalidated analytical measure formulas directly into production reporting marts without audit checks."
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Bypassing standardized star schema dimensional modeling conventions in favor of deeply nested snowflake hierarchy chains and tables."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Creating circular relationship dependencies across semantic data model lookup tables in dashboards."
           }
         ],
         "correctAnswers": [
@@ -4313,15 +4313,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying major semantic model architectural changes without documenting underlying calculated column assumptions in catalogs."
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Modifying historical fact row definitions retroactively without establishing versioned deprecation timelines."
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Releasing revised business metric formulas to leadership without conducting historical baseline reconciliations."
           },
           {
             "id": "opt_4",
@@ -4342,15 +4342,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Materializing high-cardinality snowflake dimensions needlessly to represent low-volume categorical labels."
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Running unindexed measure calculations on raw transactional fact tables during dashboard rendering time."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Rebuilding entire semantic tabular models on minor updates instead of using partition processing."
           },
           {
             "id": "opt_4",
@@ -4371,15 +4371,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Bypassing role-based row-level security filters on semantic models to simplify cross-department report distribution workflows."
           },
           {
             "id": "opt_2",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Exposing proprietary organizational performance figures to unauthenticated embedded reporting links."
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Granting unrestricted drill-through access to raw underlying financial and customer transactional logs."
           },
           {
             "id": "opt_4",
@@ -4416,15 +4416,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Constructing direct many-to-many relationship cardinality mappings without resolving bridge tables or intermediate junction keys."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Mixing atomic transactional fact records directly into slowly changing dimension lookup tables."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Defining conflicting business measure formulas independently across multiple downstream analytics tools."
           }
         ],
         "correctAnswers": [
@@ -4445,15 +4445,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Deploying unvalidated analytical measure formulas directly into production reporting marts without audit checks."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Creating circular relationship dependencies across semantic data model lookup tables in dashboards."
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Bypassing standardized star schema dimensional modeling conventions in favor of deeply nested snowflake hierarchy chains and tables."
           }
         ],
         "correctAnswers": [
@@ -4474,15 +4474,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Modifying historical fact row definitions retroactively without establishing versioned deprecation timelines."
           },
           {
             "id": "opt_3",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying major semantic model architectural changes without documenting underlying calculated column assumptions in catalogs."
           },
           {
             "id": "opt_4",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Releasing revised business metric formulas to leadership without conducting historical baseline reconciliations."
           }
         ],
         "correctAnswers": [
@@ -4499,15 +4499,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Running unindexed measure calculations on raw transactional fact tables during dashboard rendering time."
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Materializing high-cardinality snowflake dimensions needlessly to represent low-volume categorical labels."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Rebuilding entire semantic tabular models on minor updates instead of using partition processing."
           },
           {
             "id": "opt_4",
@@ -4528,7 +4528,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Exposing proprietary organizational performance figures to unauthenticated embedded reporting links."
           },
           {
             "id": "opt_2",
@@ -4536,11 +4536,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Granting unrestricted drill-through access to raw underlying financial and customer transactional logs."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Bypassing role-based row-level security filters on semantic models to simplify cross-department report distribution workflows."
           }
         ],
         "correctAnswers": [
@@ -4573,15 +4573,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Mixing atomic transactional fact records directly into slowly changing dimension lookup tables."
           },
           {
             "id": "opt_3",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Constructing direct many-to-many relationship cardinality mappings without resolving bridge tables or intermediate junction keys."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Defining conflicting business measure formulas independently across multiple downstream analytics tools."
           }
         ],
         "correctAnswers": [
@@ -4598,11 +4598,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Bypassing standardized star schema dimensional modeling conventions in favor of deeply nested snowflake hierarchy chains and tables."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Creating circular relationship dependencies across semantic data model lookup tables in dashboards."
           },
           {
             "id": "opt_3",
@@ -4610,7 +4610,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Deploying unvalidated analytical measure formulas directly into production reporting marts without audit checks."
           }
         ],
         "correctAnswers": [
@@ -4627,7 +4627,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Modifying historical fact row definitions retroactively without establishing versioned deprecation timelines."
           },
           {
             "id": "opt_2",
@@ -4635,11 +4635,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying major semantic model architectural changes without documenting underlying calculated column assumptions in catalogs."
           },
           {
             "id": "opt_4",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Releasing revised business metric formulas to leadership without conducting historical baseline reconciliations."
           }
         ],
         "correctAnswers": [
@@ -4660,15 +4660,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Materializing high-cardinality snowflake dimensions needlessly to represent low-volume categorical labels."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Rebuilding entire semantic tabular models on minor updates instead of using partition processing."
           },
           {
             "id": "opt_4",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Running unindexed measure calculations on raw transactional fact tables during dashboard rendering time."
           }
         ],
         "correctAnswers": [
@@ -4685,7 +4685,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Granting unrestricted drill-through access to raw underlying financial and customer transactional logs."
           },
           {
             "id": "opt_2",
@@ -4693,11 +4693,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Exposing proprietary organizational performance figures to unauthenticated embedded reporting links."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Bypassing role-based row-level security filters on semantic models to simplify cross-department report distribution workflows."
           }
         ],
         "correctAnswers": [
@@ -4730,15 +4730,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Pinning production container image references to mutable latest tags rather than immutable digest hashes."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Bypassing multi-stage container builds and inflating production container image layer sizes needlessly."
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Running production containerized microservices as the root user without configuring unprivileged runtime security contexts or profiles."
           }
         ],
         "correctAnswers": [
@@ -4755,11 +4755,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Hardcoding plaintext environment credentials directly into immutable Dockerfile build instruction steps."
           },
           {
             "id": "opt_2",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Coupling container storage volumes directly to transient ephemeral host paths without persistent volume claims or retention policies."
           },
           {
             "id": "opt_3",
@@ -4767,7 +4767,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting mandatory CPU and memory resource request and limit specifications on deployed workloads."
           }
         ],
         "correctAnswers": [
@@ -4784,15 +4784,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Pushing unverified container images directly to production registries without running vulnerability scans."
           },
           {
             "id": "opt_2",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Terminating running container instances abruptly with SIGKILL without allowing graceful shutdown handler execution in worker processes."
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Deploying container workloads without configuring automated liveness and readiness probe health endpoints."
           },
           {
             "id": "opt_4",
@@ -4817,15 +4817,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Allocating excessive CPU resource limits that trigger host kernel throttling and latency spikes."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Layering volatile dependency installation lines near the top of the Dockerfile cache instruction tree."
           },
           {
             "id": "opt_4",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Installing heavy interactive debugging utilities and development libraries inside production containers."
           }
         ],
         "correctAnswers": [
@@ -4846,15 +4846,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Granting broad privileged Linux kernel capabilities to container processes during standard deployment."
           },
           {
             "id": "opt_3",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Mounting the host root filesystem directory into untrusted multi-tenant containers without read-only restrictions or volume limits."
           },
           {
             "id": "opt_4",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Disabling container base image security scanning in automated continuous deployment build pipelines."
           }
         ],
         "correctAnswers": [
@@ -4883,7 +4883,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Bypassing multi-stage container builds and inflating production container image layer sizes needlessly."
           },
           {
             "id": "opt_2",
@@ -4891,11 +4891,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Pinning production container image references to mutable latest tags rather than immutable digest hashes."
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Running production containerized microservices as the root user without configuring unprivileged runtime security contexts or profiles."
           }
         ],
         "correctAnswers": [
@@ -4912,11 +4912,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Hardcoding plaintext environment credentials directly into immutable Dockerfile build instruction steps."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting mandatory CPU and memory resource request and limit specifications on deployed workloads."
           },
           {
             "id": "opt_3",
@@ -4924,7 +4924,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Coupling container storage volumes directly to transient ephemeral host paths without persistent volume claims or retention policies."
           }
         ],
         "correctAnswers": [
@@ -4945,15 +4945,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Terminating running container instances abruptly with SIGKILL without allowing graceful shutdown handler execution in worker processes."
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Pushing unverified container images directly to production registries without running vulnerability scans."
           },
           {
             "id": "opt_4",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Deploying container workloads without configuring automated liveness and readiness probe health endpoints."
           }
         ],
         "correctAnswers": [
@@ -4970,7 +4970,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Installing heavy interactive debugging utilities and development libraries inside production containers."
           },
           {
             "id": "opt_2",
@@ -4978,11 +4978,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Allocating excessive CPU resource limits that trigger host kernel throttling and latency spikes."
           },
           {
             "id": "opt_4",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Layering volatile dependency installation lines near the top of the Dockerfile cache instruction tree."
           }
         ],
         "correctAnswers": [
@@ -4999,15 +4999,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Granting broad privileged Linux kernel capabilities to container processes during standard deployment."
           },
           {
             "id": "opt_2",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Disabling container base image security scanning in automated continuous deployment build pipelines."
           },
           {
             "id": "opt_3",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Mounting the host root filesystem directory into untrusted multi-tenant containers without read-only restrictions or volume limits."
           },
           {
             "id": "opt_4",
@@ -5044,15 +5044,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Pinning production container image references to mutable latest tags rather than immutable digest hashes."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Bypassing multi-stage container builds and inflating production container image layer sizes needlessly."
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Running production containerized microservices as the root user without configuring unprivileged runtime security contexts or profiles."
           }
         ],
         "correctAnswers": [
@@ -5069,7 +5069,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Coupling container storage volumes directly to transient ephemeral host paths without persistent volume claims or retention policies."
           },
           {
             "id": "opt_2",
@@ -5077,11 +5077,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting mandatory CPU and memory resource request and limit specifications on deployed workloads."
           },
           {
             "id": "opt_4",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Hardcoding plaintext environment credentials directly into immutable Dockerfile build instruction steps."
           }
         ],
         "correctAnswers": [
@@ -5098,7 +5098,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Pushing unverified container images directly to production registries without running vulnerability scans."
           },
           {
             "id": "opt_2",
@@ -5106,11 +5106,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Terminating running container instances abruptly with SIGKILL without allowing graceful shutdown handler execution in worker processes."
           },
           {
             "id": "opt_4",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Deploying container workloads without configuring automated liveness and readiness probe health endpoints."
           }
         ],
         "correctAnswers": [
@@ -5127,7 +5127,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Installing heavy interactive debugging utilities and development libraries inside production containers."
           },
           {
             "id": "opt_2",
@@ -5135,11 +5135,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Layering volatile dependency installation lines near the top of the Dockerfile cache instruction tree."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Allocating excessive CPU resource limits that trigger host kernel throttling and latency spikes."
           }
         ],
         "correctAnswers": [
@@ -5156,7 +5156,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Granting broad privileged Linux kernel capabilities to container processes during standard deployment."
           },
           {
             "id": "opt_2",
@@ -5164,11 +5164,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Disabling container base image security scanning in automated continuous deployment build pipelines."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Mounting the host root filesystem directory into untrusted multi-tenant containers without read-only restrictions or volume limits."
           }
         ],
         "correctAnswers": [
@@ -5197,15 +5197,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Omitting namespace isolation boundaries and deploying unrelated multi-tenant workloads in default namespaces."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Configuring host networking mode indiscriminately across pods to bypass virtual software-defined networks."
           },
           {
             "id": "opt_3",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Deploying standalone raw pods directly into production namespaces without managing ReplicaSets or Deployment controllers in clusters."
           },
           {
             "id": "opt_4",
@@ -5226,15 +5226,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting pod disruption budgets on mission-critical system microservices during node maintenance drain cycles."
           },
           {
             "id": "opt_2",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Coupling pod scheduling constraints statically to specific cluster node hostnames rather than flexible affinity or taint rules."
           },
           {
             "id": "opt_3",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Defining conflicting ingress routing rules with overlapping hostnames across independent development teams."
           },
           {
             "id": "opt_4",
@@ -5255,7 +5255,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Applying manual imperatively executed kubectl update commands directly against live production cluster states."
           },
           {
             "id": "opt_2",
@@ -5263,11 +5263,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring continuous readiness probe failures during rolling updates and proceeding with deployment promotions."
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Applying live configuration map mutations without triggering rolling restarts of dependent consumer deployment pods in clusters."
           }
         ],
         "correctAnswers": [
@@ -5284,11 +5284,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Configuring CPU requests equal to burstable limits on pods that experience unpredictable spike patterns."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting hierarchical resource quotas and limit ranges on shared organizational cluster namespaces."
           },
           {
             "id": "opt_3",
@@ -5296,7 +5296,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Configuring horizontal pod autoscaler policies with over-sensitive scale metrics that cause thrashing."
           }
         ],
         "correctAnswers": [
@@ -5313,7 +5313,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Exposing the Kubernetes control plane API server directly to the open public internet without mTLS."
           },
           {
             "id": "opt_2",
@@ -5321,11 +5321,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Granting unrestricted cluster-admin RBAC role bindings to default service accounts in public application namespaces without audits."
           },
           {
             "id": "opt_4",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Disabling Kubernetes network policies and permitting unrestricted ingress and egress across all pods."
           }
         ],
         "correctAnswers": [
@@ -5354,7 +5354,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Deploying standalone raw pods directly into production namespaces without managing ReplicaSets or Deployment controllers in clusters."
           },
           {
             "id": "opt_2",
@@ -5362,11 +5362,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Configuring host networking mode indiscriminately across pods to bypass virtual software-defined networks."
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Omitting namespace isolation boundaries and deploying unrelated multi-tenant workloads in default namespaces."
           }
         ],
         "correctAnswers": [
@@ -5383,15 +5383,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting pod disruption budgets on mission-critical system microservices during node maintenance drain cycles."
           },
           {
             "id": "opt_2",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Coupling pod scheduling constraints statically to specific cluster node hostnames rather than flexible affinity or taint rules."
           },
           {
             "id": "opt_3",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Defining conflicting ingress routing rules with overlapping hostnames across independent development teams."
           },
           {
             "id": "opt_4",
@@ -5412,7 +5412,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Applying live configuration map mutations without triggering rolling restarts of dependent consumer deployment pods in clusters."
           },
           {
             "id": "opt_2",
@@ -5420,11 +5420,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Applying manual imperatively executed kubectl update commands directly against live production cluster states."
           },
           {
             "id": "opt_4",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring continuous readiness probe failures during rolling updates and proceeding with deployment promotions."
           }
         ],
         "correctAnswers": [
@@ -5441,11 +5441,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Configuring horizontal pod autoscaler policies with over-sensitive scale metrics that cause thrashing."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting hierarchical resource quotas and limit ranges on shared organizational cluster namespaces."
           },
           {
             "id": "opt_3",
@@ -5453,7 +5453,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Configuring CPU requests equal to burstable limits on pods that experience unpredictable spike patterns."
           }
         ],
         "correctAnswers": [
@@ -5470,15 +5470,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Exposing the Kubernetes control plane API server directly to the open public internet without mTLS."
           },
           {
             "id": "opt_2",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Granting unrestricted cluster-admin RBAC role bindings to default service accounts in public application namespaces without audits."
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Disabling Kubernetes network policies and permitting unrestricted ingress and egress across all pods."
           },
           {
             "id": "opt_4",
@@ -5511,11 +5511,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Omitting namespace isolation boundaries and deploying unrelated multi-tenant workloads in default namespaces."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Configuring host networking mode indiscriminately across pods to bypass virtual software-defined networks."
           },
           {
             "id": "opt_3",
@@ -5523,7 +5523,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Deploying standalone raw pods directly into production namespaces without managing ReplicaSets or Deployment controllers in clusters."
           }
         ],
         "correctAnswers": [
@@ -5540,11 +5540,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Coupling pod scheduling constraints statically to specific cluster node hostnames rather than flexible affinity or taint rules."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting pod disruption budgets on mission-critical system microservices during node maintenance drain cycles."
           },
           {
             "id": "opt_3",
@@ -5552,7 +5552,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Defining conflicting ingress routing rules with overlapping hostnames across independent development teams."
           }
         ],
         "correctAnswers": [
@@ -5569,11 +5569,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring continuous readiness probe failures during rolling updates and proceeding with deployment promotions."
           },
           {
             "id": "opt_2",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Applying manual imperatively executed kubectl update commands directly against live production cluster states."
           },
           {
             "id": "opt_3",
@@ -5581,7 +5581,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Applying live configuration map mutations without triggering rolling restarts of dependent consumer deployment pods in clusters."
           }
         ],
         "correctAnswers": [
@@ -5602,15 +5602,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Configuring CPU requests equal to burstable limits on pods that experience unpredictable spike patterns."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Configuring horizontal pod autoscaler policies with over-sensitive scale metrics that cause thrashing."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting hierarchical resource quotas and limit ranges on shared organizational cluster namespaces."
           }
         ],
         "correctAnswers": [
@@ -5627,15 +5627,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Granting unrestricted cluster-admin RBAC role bindings to default service accounts in public application namespaces without audits."
           },
           {
             "id": "opt_2",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Exposing the Kubernetes control plane API server directly to the open public internet without mTLS."
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Disabling Kubernetes network policies and permitting unrestricted ingress and egress across all pods."
           },
           {
             "id": "opt_4",
@@ -5672,15 +5672,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Using root cloud account credentials for day-to-day administrative deployment tasks across environments."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Omitting automated cloud billing spend alerts and real-time budget threshold notification triggers."
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Deploying mission-critical application database clusters into single public subnets without VPC network segmentation or isolation."
           }
         ],
         "correctAnswers": [
@@ -5697,7 +5697,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring cloud infrastructure through manual web console point-and-click operations rather than declarative code templates."
           },
           {
             "id": "opt_2",
@@ -5705,11 +5705,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Mixing production workloads and experimental staging resources within a single AWS cloud account context."
           },
           {
             "id": "opt_4",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Deploying production application infrastructure into a single physical availability zone without redundancy."
           }
         ],
         "correctAnswers": [
@@ -5730,15 +5730,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring automated CloudWatch alarm triggers indicating sustained operational compute capacity degradation."
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Provisioning critical cloud infrastructure components manually through web management consoles without version control."
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Executing infrastructure configuration updates without generating automated pre-deployment plan dry runs or rollback templates."
           }
         ],
         "correctAnswers": [
@@ -5755,15 +5755,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Routing high-volume internal service network traffic across public internet endpoints instead of VPC peering."
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Provisioning oversized static EC2 compute instances without configuring dynamic horizontal auto-scaling."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting automated lifecycle expiration rules on high-volume S3 diagnostic object storage buckets."
           },
           {
             "id": "opt_4",
@@ -5784,7 +5784,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Authorizing permissive ingress security group rules with open 0.0.0.0/0 IP ranges on administrative SSH ports."
           },
           {
             "id": "opt_2",
@@ -5792,11 +5792,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Hardcoding long-lived AWS IAM access key credentials directly inside client-facing application source code."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Configuring Amazon S3 object storage buckets with public read and list permissions accessible to anyone on the internet without limits."
           }
         ],
         "correctAnswers": [
@@ -5829,15 +5829,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Omitting automated cloud billing spend alerts and real-time budget threshold notification triggers."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Using root cloud account credentials for day-to-day administrative deployment tasks across environments."
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Deploying mission-critical application database clusters into single public subnets without VPC network segmentation or isolation."
           }
         ],
         "correctAnswers": [
@@ -5854,15 +5854,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Deploying production application infrastructure into a single physical availability zone without redundancy."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Mixing production workloads and experimental staging resources within a single AWS cloud account context."
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring cloud infrastructure through manual web console point-and-click operations rather than declarative code templates."
           },
           {
             "id": "opt_4",
@@ -5887,15 +5887,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Executing infrastructure configuration updates without generating automated pre-deployment plan dry runs or rollback templates."
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring automated CloudWatch alarm triggers indicating sustained operational compute capacity degradation."
           },
           {
             "id": "opt_4",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Provisioning critical cloud infrastructure components manually through web management consoles without version control."
           }
         ],
         "correctAnswers": [
@@ -5912,7 +5912,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Routing high-volume internal service network traffic across public internet endpoints instead of VPC peering."
           },
           {
             "id": "opt_2",
@@ -5920,11 +5920,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Provisioning oversized static EC2 compute instances without configuring dynamic horizontal auto-scaling."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting automated lifecycle expiration rules on high-volume S3 diagnostic object storage buckets."
           }
         ],
         "correctAnswers": [
@@ -5945,15 +5945,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Authorizing permissive ingress security group rules with open 0.0.0.0/0 IP ranges on administrative SSH ports."
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Hardcoding long-lived AWS IAM access key credentials directly inside client-facing application source code."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Configuring Amazon S3 object storage buckets with public read and list permissions accessible to anyone on the internet without limits."
           }
         ],
         "correctAnswers": [
@@ -5982,11 +5982,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Deploying mission-critical application database clusters into single public subnets without VPC network segmentation or isolation."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Omitting automated cloud billing spend alerts and real-time budget threshold notification triggers."
           },
           {
             "id": "opt_3",
@@ -5994,7 +5994,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Using root cloud account credentials for day-to-day administrative deployment tasks across environments."
           }
         ],
         "correctAnswers": [
@@ -6015,15 +6015,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring cloud infrastructure through manual web console point-and-click operations rather than declarative code templates."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Mixing production workloads and experimental staging resources within a single AWS cloud account context."
           },
           {
             "id": "opt_4",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Deploying production application infrastructure into a single physical availability zone without redundancy."
           }
         ],
         "correctAnswers": [
@@ -6040,11 +6040,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Executing infrastructure configuration updates without generating automated pre-deployment plan dry runs or rollback templates."
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring automated CloudWatch alarm triggers indicating sustained operational compute capacity degradation."
           },
           {
             "id": "opt_3",
@@ -6052,7 +6052,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Provisioning critical cloud infrastructure components manually through web management consoles without version control."
           }
         ],
         "correctAnswers": [
@@ -6069,11 +6069,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting automated lifecycle expiration rules on high-volume S3 diagnostic object storage buckets."
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Routing high-volume internal service network traffic across public internet endpoints instead of VPC peering."
           },
           {
             "id": "opt_3",
@@ -6081,7 +6081,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Provisioning oversized static EC2 compute instances without configuring dynamic horizontal auto-scaling."
           }
         ],
         "correctAnswers": [
@@ -6098,7 +6098,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Authorizing permissive ingress security group rules with open 0.0.0.0/0 IP ranges on administrative SSH ports."
           },
           {
             "id": "opt_2",
@@ -6106,11 +6106,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Hardcoding long-lived AWS IAM access key credentials directly inside client-facing application source code."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Configuring Amazon S3 object storage buckets with public read and list permissions accessible to anyone on the internet without limits."
           }
         ],
         "correctAnswers": [
@@ -6143,15 +6143,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Hardcoding plain text cloud deployment credentials directly inside repository workflow YAML files."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Skipping automated unit test execution and lint validation steps to accelerate rapid pull request merging."
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Running automated deployment pipelines on unprotected git repository branches without pull request review approvals or status checks."
           }
         ],
         "correctAnswers": [
@@ -6168,11 +6168,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring production deployment pipelines with manual trigger buttons rather than automated git tag promotion workflows and release gates."
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Chaining unisolated pipeline build steps that share dirty transient workspace directories across jobs."
           },
           {
             "id": "opt_3",
@@ -6180,7 +6180,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting automated version tagging and immutable container release generation upon successful workflow builds."
           }
         ],
         "correctAnswers": [
@@ -6197,7 +6197,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Merging pull request branches that exhibit failing continuous integration status checks into main branch."
           },
           {
             "id": "opt_2",
@@ -6205,11 +6205,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Omitting automated rollback triggers when canary deployment smoke test suites detect latency degradations."
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying application releases without executing automated software bill of materials and dependency vulnerability scanning."
           }
         ],
         "correctAnswers": [
@@ -6226,11 +6226,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Provisioning oversized self-hosted continuous integration runners for simple static code check jobs."
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Re-downloading identical third-party library dependencies on every build job without caching layers."
           },
           {
             "id": "opt_3",
@@ -6238,7 +6238,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Running independent build and lint workflow steps sequentially rather than executing them in parallel."
           }
         ],
         "correctAnswers": [
@@ -6255,11 +6255,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Granting broad repository write permissions to automated workflow runs triggered by external public pull request forks."
           },
           {
             "id": "opt_2",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Referencing third-party GitHub Actions by mutable branch tags rather than immutable commit SHA hashes in production workflows."
           },
           {
             "id": "opt_3",
@@ -6267,7 +6267,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Exposing sensitive operational environment variables and authorization tokens in public build console logs."
           }
         ],
         "correctAnswers": [
@@ -6296,11 +6296,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Hardcoding plain text cloud deployment credentials directly inside repository workflow YAML files."
           },
           {
             "id": "opt_2",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Skipping automated unit test execution and lint validation steps to accelerate rapid pull request merging."
           },
           {
             "id": "opt_3",
@@ -6308,7 +6308,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Running automated deployment pipelines on unprotected git repository branches without pull request review approvals or status checks."
           }
         ],
         "correctAnswers": [
@@ -6325,11 +6325,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting automated version tagging and immutable container release generation upon successful workflow builds."
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Chaining unisolated pipeline build steps that share dirty transient workspace directories across jobs."
           },
           {
             "id": "opt_3",
@@ -6337,7 +6337,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring production deployment pipelines with manual trigger buttons rather than automated git tag promotion workflows and release gates."
           }
         ],
         "correctAnswers": [
@@ -6354,15 +6354,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Merging pull request branches that exhibit failing continuous integration status checks into main branch."
           },
           {
             "id": "opt_2",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying application releases without executing automated software bill of materials and dependency vulnerability scanning."
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Omitting automated rollback triggers when canary deployment smoke test suites detect latency degradations."
           },
           {
             "id": "opt_4",
@@ -6383,7 +6383,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Running independent build and lint workflow steps sequentially rather than executing them in parallel."
           },
           {
             "id": "opt_2",
@@ -6391,11 +6391,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Provisioning oversized self-hosted continuous integration runners for simple static code check jobs."
           },
           {
             "id": "opt_4",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Re-downloading identical third-party library dependencies on every build job without caching layers."
           }
         ],
         "correctAnswers": [
@@ -6412,11 +6412,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Exposing sensitive operational environment variables and authorization tokens in public build console logs."
           },
           {
             "id": "opt_2",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Granting broad repository write permissions to automated workflow runs triggered by external public pull request forks."
           },
           {
             "id": "opt_3",
@@ -6424,7 +6424,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Referencing third-party GitHub Actions by mutable branch tags rather than immutable commit SHA hashes in production workflows."
           }
         ],
         "correctAnswers": [
@@ -6453,15 +6453,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Running automated deployment pipelines on unprotected git repository branches without pull request review approvals or status checks."
           },
           {
             "id": "opt_2",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Skipping automated unit test execution and lint validation steps to accelerate rapid pull request merging."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Hardcoding plain text cloud deployment credentials directly inside repository workflow YAML files."
           },
           {
             "id": "opt_4",
@@ -6486,15 +6486,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting automated version tagging and immutable container release generation upon successful workflow builds."
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring production deployment pipelines with manual trigger buttons rather than automated git tag promotion workflows and release gates."
           },
           {
             "id": "opt_4",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Chaining unisolated pipeline build steps that share dirty transient workspace directories across jobs."
           }
         ],
         "correctAnswers": [
@@ -6511,15 +6511,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Merging pull request branches that exhibit failing continuous integration status checks into main branch."
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Omitting automated rollback triggers when canary deployment smoke test suites detect latency degradations."
           },
           {
             "id": "opt_3",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying application releases without executing automated software bill of materials and dependency vulnerability scanning."
           },
           {
             "id": "opt_4",
@@ -6540,7 +6540,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Provisioning oversized self-hosted continuous integration runners for simple static code check jobs."
           },
           {
             "id": "opt_2",
@@ -6548,11 +6548,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Re-downloading identical third-party library dependencies on every build job without caching layers."
           },
           {
             "id": "opt_4",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Running independent build and lint workflow steps sequentially rather than executing them in parallel."
           }
         ],
         "correctAnswers": [
@@ -6569,11 +6569,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Exposing sensitive operational environment variables and authorization tokens in public build console logs."
           },
           {
             "id": "opt_2",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Granting broad repository write permissions to automated workflow runs triggered by external public pull request forks."
           },
           {
             "id": "opt_3",
@@ -6581,7 +6581,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Referencing third-party GitHub Actions by mutable branch tags rather than immutable commit SHA hashes in production workflows."
           }
         ],
         "correctAnswers": [
@@ -6610,7 +6610,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Ignoring severe dataset class imbalance and relying entirely on raw accuracy metrics to claim success."
           },
           {
             "id": "opt_2",
@@ -6618,11 +6618,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Evaluating predictive machine learning model performance exclusively on training datasets without holdout validation sets or cross-validation."
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Leaking target prediction labels into feature preprocessing and imputation pipelines before train-test splits."
           }
         ],
         "correctAnswers": [
@@ -6639,11 +6639,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring machine learning experimental pipelines without logging training hyperparameters, metrics, or dataset versions."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Mixing training data distributions collected across seasonal shifts without performing drift validation."
           },
           {
             "id": "opt_3",
@@ -6651,7 +6651,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Coupling feature engineering preprocessing scripts tightly to specific training data input file formats."
           }
         ],
         "correctAnswers": [
@@ -6668,7 +6668,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring distribution drift signals detected in live production inference data streams over time."
           },
           {
             "id": "opt_2",
@@ -6676,11 +6676,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Deploying complex machine learning models without establishing simple baseline heuristic benchmark comparisons."
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Shipping newly trained model weights to production serving endpoints without conducting automated offline validation audits."
           }
         ],
         "correctAnswers": [
@@ -6697,15 +6697,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Training deep neural network architectures on tiny tabular datasets where simpler linear models excel."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Running batch prediction inference using sequential unvectorized Python loops rather than matrix operations."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Recomputing complex feature transformations dynamically on every single incoming online inference request."
           },
           {
             "id": "opt_4",
@@ -6726,15 +6726,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Training machine learning models on unscrubbed biased historical demographic data without fairness, disparity, and representation audits."
           },
           {
             "id": "opt_2",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Deploying uninterpretable black-box models into high-stakes automated decision domains without explanation tools."
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Exposing sensitive training dataset records through inverted model gradient attacks on public endpoints."
           },
           {
             "id": "opt_4",
@@ -6767,15 +6767,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Evaluating predictive machine learning model performance exclusively on training datasets without holdout validation sets or cross-validation."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Ignoring severe dataset class imbalance and relying entirely on raw accuracy metrics to claim success."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Leaking target prediction labels into feature preprocessing and imputation pipelines before train-test splits."
           },
           {
             "id": "opt_4",
@@ -6796,7 +6796,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Mixing training data distributions collected across seasonal shifts without performing drift validation."
           },
           {
             "id": "opt_2",
@@ -6804,11 +6804,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring machine learning experimental pipelines without logging training hyperparameters, metrics, or dataset versions."
           },
           {
             "id": "opt_4",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Coupling feature engineering preprocessing scripts tightly to specific training data input file formats."
           }
         ],
         "correctAnswers": [
@@ -6829,15 +6829,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Deploying complex machine learning models without establishing simple baseline heuristic benchmark comparisons."
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring distribution drift signals detected in live production inference data streams over time."
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Shipping newly trained model weights to production serving endpoints without conducting automated offline validation audits."
           }
         ],
         "correctAnswers": [
@@ -6854,15 +6854,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Running batch prediction inference using sequential unvectorized Python loops rather than matrix operations."
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Training deep neural network architectures on tiny tabular datasets where simpler linear models excel."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Recomputing complex feature transformations dynamically on every single incoming online inference request."
           },
           {
             "id": "opt_4",
@@ -6883,7 +6883,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Deploying uninterpretable black-box models into high-stakes automated decision domains without explanation tools."
           },
           {
             "id": "opt_2",
@@ -6891,11 +6891,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Exposing sensitive training dataset records through inverted model gradient attacks on public endpoints."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Training machine learning models on unscrubbed biased historical demographic data without fairness, disparity, and representation audits."
           }
         ],
         "correctAnswers": [
@@ -6924,15 +6924,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Evaluating predictive machine learning model performance exclusively on training datasets without holdout validation sets or cross-validation."
           },
           {
             "id": "opt_2",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Leaking target prediction labels into feature preprocessing and imputation pipelines before train-test splits."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Ignoring severe dataset class imbalance and relying entirely on raw accuracy metrics to claim success."
           },
           {
             "id": "opt_4",
@@ -6953,15 +6953,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Mixing training data distributions collected across seasonal shifts without performing drift validation."
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Coupling feature engineering preprocessing scripts tightly to specific training data input file formats."
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring machine learning experimental pipelines without logging training hyperparameters, metrics, or dataset versions."
           },
           {
             "id": "opt_4",
@@ -6986,15 +6986,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Deploying complex machine learning models without establishing simple baseline heuristic benchmark comparisons."
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring distribution drift signals detected in live production inference data streams over time."
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Shipping newly trained model weights to production serving endpoints without conducting automated offline validation audits."
           }
         ],
         "correctAnswers": [
@@ -7011,15 +7011,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Training deep neural network architectures on tiny tabular datasets where simpler linear models excel."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Running batch prediction inference using sequential unvectorized Python loops rather than matrix operations."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Recomputing complex feature transformations dynamically on every single incoming online inference request."
           },
           {
             "id": "opt_4",
@@ -7040,15 +7040,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Deploying uninterpretable black-box models into high-stakes automated decision domains without explanation tools."
           },
           {
             "id": "opt_2",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Training machine learning models on unscrubbed biased historical demographic data without fairness, disparity, and representation audits."
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Exposing sensitive training dataset records through inverted model gradient attacks on public endpoints."
           },
           {
             "id": "opt_4",
@@ -7081,7 +7081,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Relying on temperature zero settings to eliminate all factual hallucinations and reasoning errors in LLMs."
           },
           {
             "id": "opt_2",
@@ -7089,11 +7089,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Concatenating untrusted user input directly into system instruction prompts without delimiter boundaries or input sanitization."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Omitting token budget estimation when assembling conversational chat histories, causing silent prompt truncation."
           }
         ],
         "correctAnswers": [
@@ -7110,11 +7110,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling large language model prompts tightly to dynamic UI layout rendering code across components."
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Hardcoding proprietary AI provider API keys directly within client-side browser JavaScript application bundles."
           },
           {
             "id": "opt_3",
@@ -7122,7 +7122,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring conversational agent architectures without fallback model provider routing during cloud service outages or rate limits."
           }
         ],
         "correctAnswers": [
@@ -7139,11 +7139,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Deploying prompt template modifications to production without running automated regression test evaluation suites."
           },
           {
             "id": "opt_2",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying generative AI features to production users without implementing automated output content safety moderation filters."
           },
           {
             "id": "opt_3",
@@ -7151,7 +7151,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring factual hallucination rates on domain queries and relying solely on informal developer spot-checks."
           }
         ],
         "correctAnswers": [
@@ -7168,11 +7168,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Using frontier reasoning models for simple deterministic string parsing tasks better handled by regex."
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Omitting semantic caching mechanisms for identical high-frequency user questions, driving up API token costs."
           },
           {
             "id": "opt_3",
@@ -7180,7 +7180,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Injecting thousands of redundant context tokens into simple prompts that require concise classification answers."
           }
         ],
         "correctAnswers": [
@@ -7197,15 +7197,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Transmitting sensitive customer personal data to external third-party AI provider APIs without anonymization."
           },
           {
             "id": "opt_2",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Allowing untrusted prompt injection payloads to override core system guardrails and access confidential backend functions."
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Executing arbitrary code generated by large language models directly within host environments without sandboxing."
           },
           {
             "id": "opt_4",
@@ -7238,15 +7238,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Relying on temperature zero settings to eliminate all factual hallucinations and reasoning errors in LLMs."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Omitting token budget estimation when assembling conversational chat histories, causing silent prompt truncation."
           },
           {
             "id": "opt_3",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Concatenating untrusted user input directly into system instruction prompts without delimiter boundaries or input sanitization."
           },
           {
             "id": "opt_4",
@@ -7267,11 +7267,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring conversational agent architectures without fallback model provider routing during cloud service outages or rate limits."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling large language model prompts tightly to dynamic UI layout rendering code across components."
           },
           {
             "id": "opt_3",
@@ -7279,7 +7279,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Hardcoding proprietary AI provider API keys directly within client-side browser JavaScript application bundles."
           }
         ],
         "correctAnswers": [
@@ -7296,11 +7296,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying generative AI features to production users without implementing automated output content safety moderation filters."
           },
           {
             "id": "opt_2",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Deploying prompt template modifications to production without running automated regression test evaluation suites."
           },
           {
             "id": "opt_3",
@@ -7308,7 +7308,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring factual hallucination rates on domain queries and relying solely on informal developer spot-checks."
           }
         ],
         "correctAnswers": [
@@ -7325,15 +7325,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Injecting thousands of redundant context tokens into simple prompts that require concise classification answers."
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Omitting semantic caching mechanisms for identical high-frequency user questions, driving up API token costs."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Using frontier reasoning models for simple deterministic string parsing tasks better handled by regex."
           },
           {
             "id": "opt_4",
@@ -7354,7 +7354,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Transmitting sensitive customer personal data to external third-party AI provider APIs without anonymization."
           },
           {
             "id": "opt_2",
@@ -7362,11 +7362,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Allowing untrusted prompt injection payloads to override core system guardrails and access confidential backend functions."
           },
           {
             "id": "opt_4",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Executing arbitrary code generated by large language models directly within host environments without sandboxing."
           }
         ],
         "correctAnswers": [
@@ -7399,15 +7399,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Concatenating untrusted user input directly into system instruction prompts without delimiter boundaries or input sanitization."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Omitting token budget estimation when assembling conversational chat histories, causing silent prompt truncation."
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Relying on temperature zero settings to eliminate all factual hallucinations and reasoning errors in LLMs."
           }
         ],
         "correctAnswers": [
@@ -7424,15 +7424,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling large language model prompts tightly to dynamic UI layout rendering code across components."
           },
           {
             "id": "opt_2",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring conversational agent architectures without fallback model provider routing during cloud service outages or rate limits."
           },
           {
             "id": "opt_3",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Hardcoding proprietary AI provider API keys directly within client-side browser JavaScript application bundles."
           },
           {
             "id": "opt_4",
@@ -7453,11 +7453,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring factual hallucination rates on domain queries and relying solely on informal developer spot-checks."
           },
           {
             "id": "opt_2",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying generative AI features to production users without implementing automated output content safety moderation filters."
           },
           {
             "id": "opt_3",
@@ -7465,7 +7465,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Deploying prompt template modifications to production without running automated regression test evaluation suites."
           }
         ],
         "correctAnswers": [
@@ -7486,15 +7486,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Omitting semantic caching mechanisms for identical high-frequency user questions, driving up API token costs."
           },
           {
             "id": "opt_3",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Injecting thousands of redundant context tokens into simple prompts that require concise classification answers."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Using frontier reasoning models for simple deterministic string parsing tasks better handled by regex."
           }
         ],
         "correctAnswers": [
@@ -7515,15 +7515,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Transmitting sensitive customer personal data to external third-party AI provider APIs without anonymization."
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Executing arbitrary code generated by large language models directly within host environments without sandboxing."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Allowing untrusted prompt injection payloads to override core system guardrails and access confidential backend functions."
           }
         ],
         "correctAnswers": [
@@ -7552,11 +7552,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Omitting metadata attribute filters during similarity search, forcing global scans across unrelated documents."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Relying exclusively on dense vector embeddings without incorporating keyword-based sparse BM25 retrieval tiers."
           },
           {
             "id": "opt_3",
@@ -7564,7 +7564,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Splitting reference documents using arbitrary fixed character counts that sever semantic sentences and context in half across paragraph boundaries."
           }
         ],
         "correctAnswers": [
@@ -7581,7 +7581,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling vector database connection parameters directly to client-facing search interface presentation layers."
           },
           {
             "id": "opt_2",
@@ -7589,11 +7589,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring retrieval pipelines without secondary re-ranking models to filter out irrelevant top-k similarity candidates."
           },
           {
             "id": "opt_4",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Storing document vector embeddings without tracking the specific embedding model architecture and version used."
           }
         ],
         "correctAnswers": [
@@ -7614,15 +7614,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Omitting similarity threshold cutoffs when injecting retrieved document contexts into generative model prompts."
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Modifying source knowledge documents without triggering automated re-embedding and vector index update pipelines."
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying retrieval-augmented generation pipelines without evaluating precision, recall, and context faithfulness benchmarks."
           }
         ],
         "correctAnswers": [
@@ -7639,7 +7639,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting hierarchical indexing trees and running flat brute-force similarity calculations on millions of vectors."
           },
           {
             "id": "opt_2",
@@ -7647,11 +7647,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Recomputing embeddings for unmodified reference documents continuously during routine scheduled ingestion runs."
           },
           {
             "id": "opt_4",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Querying vector databases with oversized top-k parameters that overwhelm the generative model context window."
           }
         ],
         "correctAnswers": [
@@ -7668,7 +7668,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Injecting untrusted retrieved document content directly into administrative LLM prompts without sanitization."
           },
           {
             "id": "opt_2",
@@ -7676,11 +7676,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Bypassing document-level access control permissions and returning confidential internal records to unauthorized users in chat responses."
           },
           {
             "id": "opt_4",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Storing sensitive customer vector embeddings and text chunks in unencrypted vector database cluster storage."
           }
         ],
         "correctAnswers": [
@@ -7709,15 +7709,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Omitting metadata attribute filters during similarity search, forcing global scans across unrelated documents."
           },
           {
             "id": "opt_2",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Splitting reference documents using arbitrary fixed character counts that sever semantic sentences and context in half across paragraph boundaries."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Relying exclusively on dense vector embeddings without incorporating keyword-based sparse BM25 retrieval tiers."
           },
           {
             "id": "opt_4",
@@ -7738,7 +7738,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring retrieval pipelines without secondary re-ranking models to filter out irrelevant top-k similarity candidates."
           },
           {
             "id": "opt_2",
@@ -7746,11 +7746,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Storing document vector embeddings without tracking the specific embedding model architecture and version used."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling vector database connection parameters directly to client-facing search interface presentation layers."
           }
         ],
         "correctAnswers": [
@@ -7771,15 +7771,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Omitting similarity threshold cutoffs when injecting retrieved document contexts into generative model prompts."
           },
           {
             "id": "opt_3",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying retrieval-augmented generation pipelines without evaluating precision, recall, and context faithfulness benchmarks."
           },
           {
             "id": "opt_4",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Modifying source knowledge documents without triggering automated re-embedding and vector index update pipelines."
           }
         ],
         "correctAnswers": [
@@ -7796,15 +7796,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting hierarchical indexing trees and running flat brute-force similarity calculations on millions of vectors."
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Recomputing embeddings for unmodified reference documents continuously during routine scheduled ingestion runs."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Querying vector databases with oversized top-k parameters that overwhelm the generative model context window."
           },
           {
             "id": "opt_4",
@@ -7825,11 +7825,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Storing sensitive customer vector embeddings and text chunks in unencrypted vector database cluster storage."
           },
           {
             "id": "opt_2",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Injecting untrusted retrieved document content directly into administrative LLM prompts without sanitization."
           },
           {
             "id": "opt_3",
@@ -7837,7 +7837,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Bypassing document-level access control permissions and returning confidential internal records to unauthorized users in chat responses."
           }
         ],
         "correctAnswers": [
@@ -7866,15 +7866,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Relying exclusively on dense vector embeddings without incorporating keyword-based sparse BM25 retrieval tiers."
           },
           {
             "id": "opt_2",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Splitting reference documents using arbitrary fixed character counts that sever semantic sentences and context in half across paragraph boundaries."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Omitting metadata attribute filters during similarity search, forcing global scans across unrelated documents."
           },
           {
             "id": "opt_4",
@@ -7899,15 +7899,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling vector database connection parameters directly to client-facing search interface presentation layers."
           },
           {
             "id": "opt_3",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Storing document vector embeddings without tracking the specific embedding model architecture and version used."
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring retrieval pipelines without secondary re-ranking models to filter out irrelevant top-k similarity candidates."
           }
         ],
         "correctAnswers": [
@@ -7928,15 +7928,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying retrieval-augmented generation pipelines without evaluating precision, recall, and context faithfulness benchmarks."
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Modifying source knowledge documents without triggering automated re-embedding and vector index update pipelines."
           },
           {
             "id": "opt_4",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Omitting similarity threshold cutoffs when injecting retrieved document contexts into generative model prompts."
           }
         ],
         "correctAnswers": [
@@ -7953,15 +7953,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Recomputing embeddings for unmodified reference documents continuously during routine scheduled ingestion runs."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting hierarchical indexing trees and running flat brute-force similarity calculations on millions of vectors."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Querying vector databases with oversized top-k parameters that overwhelm the generative model context window."
           },
           {
             "id": "opt_4",
@@ -7982,11 +7982,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Bypassing document-level access control permissions and returning confidential internal records to unauthorized users in chat responses."
           },
           {
             "id": "opt_2",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Storing sensitive customer vector embeddings and text chunks in unencrypted vector database cluster storage."
           },
           {
             "id": "opt_3",
@@ -7994,7 +7994,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Injecting untrusted retrieved document content directly into administrative LLM prompts without sanitization."
           }
         ],
         "correctAnswers": [
@@ -8027,15 +8027,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Omitting learning rate warmup and decay schedules, resulting in unstable loss plateaus and training divergence."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Training deep neural networks without standardizing or normalizing input feature distributions across batches."
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Retaining computational graph history references across training iterations, causing progressive GPU memory accumulation and OOMs."
           }
         ],
         "correctAnswers": [
@@ -8052,11 +8052,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Hardcoding static tensor dimension sizes throughout layer implementations, breaking dynamic batch size support."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting deterministic random seed configuration across CUDA, NumPy, and framework runtimes during research."
           },
           {
             "id": "opt_3",
@@ -8064,7 +8064,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Coupling data augmentation preprocessing directly to GPU training loops rather than utilizing asynchronous background workers."
           }
         ],
         "correctAnswers": [
@@ -8085,15 +8085,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Evaluating validation dataset performance metrics without setting the model to evaluation inference mode."
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Omitting gradient norm clipping when training recurrent or deep transformer architectures prone to exploding gradients."
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Training deep models across days without configuring automated checkpoint persistence on validation loss improvements in storage."
           }
         ],
         "correctAnswers": [
@@ -8110,15 +8110,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting automatic mixed-precision FP16 calculations on modern GPU architectures that support tensor cores."
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Using standard Python lists and object structures instead of contiguous pinned memory tensors for batch loading."
           },
           {
             "id": "opt_3",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Transferring individual tensors synchronously between host CPU memory and GPU device memory inside inner loops."
           },
           {
             "id": "opt_4",
@@ -8139,7 +8139,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Deploying unauthenticated model inference serving endpoints directly to public network interfaces without rate limiting."
           },
           {
             "id": "opt_2",
@@ -8147,11 +8147,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Loading unverified third-party model checkpoint weights from untrusted public web URLs without cryptographic checksums or validation."
           },
           {
             "id": "opt_4",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Persisting sensitive customer input training samples directly within saved model checkpoint metadata payloads."
           }
         ],
         "correctAnswers": [
@@ -8184,15 +8184,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Training deep neural networks without standardizing or normalizing input feature distributions across batches."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Omitting learning rate warmup and decay schedules, resulting in unstable loss plateaus and training divergence."
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Retaining computational graph history references across training iterations, causing progressive GPU memory accumulation and OOMs."
           }
         ],
         "correctAnswers": [
@@ -8209,7 +8209,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Hardcoding static tensor dimension sizes throughout layer implementations, breaking dynamic batch size support."
           },
           {
             "id": "opt_2",
@@ -8217,11 +8217,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting deterministic random seed configuration across CUDA, NumPy, and framework runtimes during research."
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Coupling data augmentation preprocessing directly to GPU training loops rather than utilizing asynchronous background workers."
           }
         ],
         "correctAnswers": [
@@ -8238,15 +8238,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Training deep models across days without configuring automated checkpoint persistence on validation loss improvements in storage."
           },
           {
             "id": "opt_2",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Evaluating validation dataset performance metrics without setting the model to evaluation inference mode."
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Omitting gradient norm clipping when training recurrent or deep transformer architectures prone to exploding gradients."
           },
           {
             "id": "opt_4",
@@ -8267,15 +8267,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting automatic mixed-precision FP16 calculations on modern GPU architectures that support tensor cores."
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Transferring individual tensors synchronously between host CPU memory and GPU device memory inside inner loops."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Using standard Python lists and object structures instead of contiguous pinned memory tensors for batch loading."
           },
           {
             "id": "opt_4",
@@ -8296,15 +8296,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Deploying unauthenticated model inference serving endpoints directly to public network interfaces without rate limiting."
           },
           {
             "id": "opt_2",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Persisting sensitive customer input training samples directly within saved model checkpoint metadata payloads."
           },
           {
             "id": "opt_3",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Loading unverified third-party model checkpoint weights from untrusted public web URLs without cryptographic checksums or validation."
           },
           {
             "id": "opt_4",
@@ -8341,15 +8341,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Omitting learning rate warmup and decay schedules, resulting in unstable loss plateaus and training divergence."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Training deep neural networks without standardizing or normalizing input feature distributions across batches."
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Retaining computational graph history references across training iterations, causing progressive GPU memory accumulation and OOMs."
           }
         ],
         "correctAnswers": [
@@ -8366,11 +8366,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Hardcoding static tensor dimension sizes throughout layer implementations, breaking dynamic batch size support."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting deterministic random seed configuration across CUDA, NumPy, and framework runtimes during research."
           },
           {
             "id": "opt_3",
@@ -8378,7 +8378,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Coupling data augmentation preprocessing directly to GPU training loops rather than utilizing asynchronous background workers."
           }
         ],
         "correctAnswers": [
@@ -8395,15 +8395,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Training deep models across days without configuring automated checkpoint persistence on validation loss improvements in storage."
           },
           {
             "id": "opt_2",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Evaluating validation dataset performance metrics without setting the model to evaluation inference mode."
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Omitting gradient norm clipping when training recurrent or deep transformer architectures prone to exploding gradients."
           },
           {
             "id": "opt_4",
@@ -8424,15 +8424,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting automatic mixed-precision FP16 calculations on modern GPU architectures that support tensor cores."
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Transferring individual tensors synchronously between host CPU memory and GPU device memory inside inner loops."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Using standard Python lists and object structures instead of contiguous pinned memory tensors for batch loading."
           },
           {
             "id": "opt_4",
@@ -8453,7 +8453,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Loading unverified third-party model checkpoint weights from untrusted public web URLs without cryptographic checksums or validation."
           },
           {
             "id": "opt_2",
@@ -8461,11 +8461,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Deploying unauthenticated model inference serving endpoints directly to public network interfaces without rate limiting."
           },
           {
             "id": "opt_4",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Persisting sensitive customer input training samples directly within saved model checkpoint metadata payloads."
           }
         ],
         "correctAnswers": [
