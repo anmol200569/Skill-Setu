@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import request from 'supertest';
+import fs from 'fs';
+import path from 'path';
 import { createApp } from '../src/app';
 import { prisma } from '../src/lib/prisma';
 import * as gapAnalysisEngine from '../src/services/gapAnalysisEngine';
@@ -459,4 +461,55 @@ describe('System Practice Quizzes & Recommended Endpoint (Bug 2)', () => {
       expect(receivedUpsertArgs.create.targetRoleId).toBe('role-fullstack-dev-uuid');
     });
   });
+
+  describe('6. System Quizzes JSON validation & position distribution', () => {
+    it('verifies every correctAnswers id exists in options, exactly one correct answer for single_mcq, and no position holds >40%', () => {
+      const jsonPath = path.join(__dirname, '../prisma/seed-quizzes/systemQuizzes.json');
+      expect(fs.existsSync(jsonPath)).toBe(true);
+
+      const quizzes = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+      expect(Array.isArray(quizzes)).toBe(true);
+      expect(quizzes.length).toBe(81);
+
+      let totalQuestions = 0;
+      const positionCounts: Record<string, number> = { opt_1: 0, opt_2: 0, opt_3: 0, opt_4: 0 };
+
+      for (const quiz of quizzes) {
+        expect(Array.isArray(quiz.questions)).toBe(true);
+        expect(quiz.questions.length).toBe(5);
+
+        for (const question of quiz.questions) {
+          totalQuestions++;
+          const optionIds = new Set(question.options.map((o: any) => o.id));
+
+          // 1. Every correctAnswers id exists in options
+          expect(Array.isArray(question.correctAnswers)).toBe(true);
+          expect(question.correctAnswers.length).toBeGreaterThan(0);
+          for (const ca of question.correctAnswers) {
+            expect(optionIds.has(ca)).toBe(true);
+          }
+
+          // 2. Exactly one correct answer for single_mcq
+          if (question.type === 'single_mcq') {
+            expect(question.correctAnswers).toHaveLength(1);
+          }
+
+          // Track position count
+          const correctId = question.correctAnswers[0];
+          expect(positionCounts[correctId]).toBeDefined();
+          positionCounts[correctId]++;
+        }
+      }
+
+      expect(totalQuestions).toBe(405);
+
+      // 3. No position holds more than 40% of correct answers (target roughly 20-30%)
+      for (const [pos, count] of Object.entries(positionCounts)) {
+        const percentage = (count / totalQuestions) * 100;
+        expect(percentage).toBeLessThanOrEqual(40);
+        expect(percentage).toBeGreaterThanOrEqual(15);
+      }
+    });
+  });
 });
+

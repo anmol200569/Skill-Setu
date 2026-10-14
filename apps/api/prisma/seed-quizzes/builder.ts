@@ -220,8 +220,52 @@ const questionBank: Record<string, Record<'beginner' | 'intermediate' | 'advance
   }
 };
 
+// Mulberry32 seeded deterministic PRNG
+function createPrng(seed: number = 20261014) {
+  let s = seed >>> 0;
+  return function next(): number {
+    s = (s + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function shuffleOptionsWithRng(
+  rawOptions: string[],
+  correctIndex: number,
+  rng: () => number
+): { options: QuestionOption[]; correctAnswers: string[] } {
+  const tagged = rawOptions.map((text, idx) => ({
+    text,
+    isCorrect: idx === correctIndex
+  }));
+
+  // Fisher-Yates shuffle
+  for (let i = tagged.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    const temp = tagged[i];
+    tagged[i] = tagged[j];
+    tagged[j] = temp;
+  }
+
+  const options: QuestionOption[] = tagged.map((item, idx) => ({
+    id: `opt_${idx + 1}`,
+    text: item.text
+  }));
+
+  const correctAnswers = tagged
+    .map((item, idx) => (item.isCorrect ? `opt_${idx + 1}` : null))
+    .filter((id): id is string => id !== null);
+
+  return { options, correctAnswers };
+}
+
 // General template factory for remaining skills to guarantee comprehensive 5-question sets for all 27 skills
-function createSkillQuizzes(skill: { code: string; name: string; domain: string }): SeedQuiz[] {
+function createSkillQuizzes(
+  skill: { code: string; name: string; domain: string },
+  rng: () => number
+): SeedQuiz[] {
   if (questionBank[skill.code]) {
     return (['beginner', 'intermediate', 'advanced'] as const).map((diff) => ({
       skillCode: skill.code,
@@ -232,16 +276,19 @@ function createSkillQuizzes(skill: { code: string; name: string; domain: string 
       sourceType: 'topic_prompt',
       isPublished: true,
       questionCount: 5,
-      questions: questionBank[skill.code][diff].map((item, idx) => ({
-        questionText: item.q,
-        type: 'single_mcq',
-        difficulty: diff,
-        options: item.opts.map((opt, optIdx) => ({ id: `opt_${optIdx + 1}`, text: opt })),
-        correctAnswers: [`opt_${item.correct + 1}`],
-        explanation: item.exp,
-        topicTag: item.topic,
-        orderIndex: idx + 1
-      }))
+      questions: questionBank[skill.code][diff].map((item, idx) => {
+        const { options, correctAnswers } = shuffleOptionsWithRng(item.opts, item.correct, rng);
+        return {
+          questionText: item.q,
+          type: 'single_mcq',
+          difficulty: diff,
+          options,
+          correctAnswers,
+          explanation: item.exp,
+          topicTag: item.topic,
+          orderIndex: idx + 1
+        };
+      })
     }));
   }
 
@@ -265,19 +312,21 @@ function createSkillQuizzes(skill: { code: string; name: string; domain: string 
         ? `When implementing ${concept.desc} within ${skill.name}, which approach represents the recommended standard?`
         : `At scale, what is the primary architectural trade-off when optimizing ${concept.name.toLowerCase()} for high-throughput ${skill.name} systems?`;
 
-      const options = [
-        { id: 'opt_1', text: `Adopting standardized patterns that provide predictable state isolation, robust typing, and clear operational boundaries.` },
-        { id: 'opt_2', text: `Bypassing validation boundaries to maximize raw throughput at the expense of traceability.` },
-        { id: 'opt_3', text: `Relying solely on external manual audits rather than automated enforcement mechanisms.` },
-        { id: 'opt_4', text: `Coupling components directly without modular interfaces or encapsulation.` }
+      const rawOptions = [
+        `Adopting standardized patterns that provide predictable state isolation, robust typing, and clear operational boundaries.`,
+        `Bypassing validation boundaries to maximize raw throughput at the expense of traceability.`,
+        `Relying solely on external manual audits rather than automated enforcement mechanisms.`,
+        `Coupling components directly without modular interfaces or encapsulation.`
       ];
+
+      const { options, correctAnswers } = shuffleOptionsWithRng(rawOptions, 0, rng);
 
       questions.push({
         questionText: qText,
         type: 'single_mcq',
         difficulty: diff,
         options,
-        correctAnswers: ['opt_1'],
+        correctAnswers,
         explanation: `In ${skill.name}, ${concept.name} demands adherence to verified best practices that maintain modularity, safety, and scalable operations.`,
         topicTag: `${skill.name} - ${concept.name}`,
         orderIndex: idx + 1
@@ -298,10 +347,11 @@ function createSkillQuizzes(skill: { code: string; name: string; domain: string 
   });
 }
 
-export function generateAllSystemQuizzes(): SeedQuiz[] {
+export function generateAllSystemQuizzes(seed: number = 20261014): SeedQuiz[] {
+  const rng = createPrng(seed);
   const allQuizzes: SeedQuiz[] = [];
   for (const skill of skillsMeta) {
-    const quizzes = createSkillQuizzes(skill);
+    const quizzes = createSkillQuizzes(skill, rng);
     allQuizzes.push(...quizzes);
   }
   return allQuizzes;
@@ -311,3 +361,4 @@ const outputPath = path.join(__dirname, 'systemQuizzes.json');
 const all = generateAllSystemQuizzes();
 fs.writeFileSync(outputPath, JSON.stringify(all, null, 2), 'utf-8');
 console.log(`Generated ${all.length} quizzes across ${skillsMeta.length} skills (total ${all.length * 5} questions) to ${outputPath}`);
+
