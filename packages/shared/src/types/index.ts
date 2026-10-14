@@ -18,6 +18,7 @@ export interface UserProfile {
   currentRole?: string | null;
   targetRoleId?: string | null;
   targetRoleName?: string | null;
+  targetRole?: CareerRole | null;
   careerGoals?: string | null;
   preferredLanguage: 'en' | 'hi';
   weeklyStudyHours: number;
@@ -47,11 +48,11 @@ export interface Skill {
 }
 
 export interface CareerRole {
-  id: string;
+  id?: string;
   code: string;
   title: string;
-  description: string;
-  industryDemand: 'High' | 'Very High' | 'Critical' | 'Moderate';
+  description?: string;
+  industryDemand?: 'High' | 'Very High' | 'Critical' | 'Moderate' | number;
   skillsRequired?: RoleSkillRequirement[];
 }
 

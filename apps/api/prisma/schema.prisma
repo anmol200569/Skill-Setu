@@ -312,6 +312,7 @@ model LearningPathItem {
   stepOrder      Int
   reason         String
   status         EnrollmentStatus @default(not_started)
+  source         String?          @default("system") // "system" | "manual"
 
   @@index([learningPathId])
 }
@@ -332,8 +333,8 @@ model Upload {
 
 model Quiz {
   id             String          @id @default(uuid())
-  creatorId      String
-  creator        User            @relation("QuizCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId      String?
+  creator        User?           @relation("QuizCreator", fields: [creatorId], references: [id], onDelete: Cascade)
   title          String
   description    String
   sourceType     String          @default("pasted_text") // uploaded_document, pasted_text, topic_prompt

@@ -26,9 +26,23 @@ export async function getLearnerLearningPath(req: Request, res: Response): Promi
   let path = await prisma.learningPath.findFirst({
     where: { userId, targetRoleId: profile.targetRoleId },
     include: {
-      targetRole: true,
+      targetRole: {
+        include: {
+          skillsRequired: {
+            include: { skill: true }
+          }
+        }
+      },
       items: {
-        include: { course: true },
+        include: {
+          course: {
+            include: {
+              courseSkills: {
+                include: { skill: true }
+              }
+            }
+          }
+        },
         orderBy: { stepOrder: 'asc' }
       }
     }
@@ -60,6 +74,10 @@ export async function getLearnerLearningPath(req: Request, res: Response): Promi
   });
   const enrollMap = new Map(enrollments.map((e) => [e.courseId, e]));
 
+  const requiredSkills = path.targetRole?.skillsRequired || [];
+  const roleSkillIds = new Set(requiredSkills.map((r) => r.skillId.toLowerCase()));
+  const roleSkillNames = new Set(requiredSkills.map((r) => (r.skill?.name || '').toLowerCase()));
+
   res.json({
     id: path.id,
     userId: path.userId,
@@ -68,13 +86,38 @@ export async function getLearnerLearningPath(req: Request, res: Response): Promi
     totalEstimatedHours: path.totalEstimatedHours,
     courses: path.items.map((item) => {
       const enr = enrollMap.get(item.courseId);
+
+      let matchesRole = false;
+      const course = item.course;
+      const csList = course?.courseSkills;
+      if (csList && Array.isArray(csList) && csList.length > 0) {
+        for (const cs of csList) {
+          if (roleSkillIds.has(cs.skillId.toLowerCase()) || (cs.skill?.name && roleSkillNames.has(cs.skill.name.toLowerCase()))) {
+            matchesRole = true;
+            break;
+          }
+        }
+      }
+      if (!matchesRole && course?.skillsCovered && Array.isArray(course.skillsCovered)) {
+        for (const sc of course.skillsCovered) {
+          const str = String(sc).toLowerCase();
+          if (roleSkillIds.has(str) || roleSkillNames.has(str)) {
+            matchesRole = true;
+            break;
+          }
+        }
+      }
+      const isOutsideRoleGaps = requiredSkills.length > 0 ? !matchesRole : false;
+
       return {
         step: item.stepOrder,
         courseId: item.courseId,
         course: item.course,
         status: enr?.status || item.status,
         progressPercent: enr?.progressPercent || (item.status === 'completed' ? 100 : 0),
-        reason: item.reason
+        reason: item.reason,
+        source: item.source || 'system',
+        isOutsideRoleGaps
       };
     }),
     createdAt: path.createdAt,
@@ -109,7 +152,7 @@ export async function regenerateLearningPath(req: Request, res: Response): Promi
 
 export async function updateCourseProgress(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
-  const { courseId, status, progressPercent } = req.body;
+  const { courseId, status, progressPercent, source, reason } = req.body;
 
   const validStatus = ['not_started', 'in_progress', 'completed'].includes(status)
     ? status
@@ -136,16 +179,66 @@ export async function updateCourseProgress(req: Request, res: Response): Promise
     }
   });
 
-  // Update item in learning path if exists
-  await prisma.learningPathItem.updateMany({
-    where: {
-      learningPath: { userId },
-      courseId
-    },
-    data: {
-      status: validStatus as any
-    }
+  // Find or create learning path for user
+  let learningPath = await prisma.learningPath.findFirst({
+    where: { userId },
+    orderBy: { createdAt: 'desc' },
+    include: { items: true }
   });
+
+  if (!learningPath) {
+    const profile = await prisma.profile.findFirst({
+      where: { userId },
+      select: { targetRoleId: true }
+    });
+    if (profile?.targetRoleId) {
+      learningPath = await prisma.learningPath.create({
+        data: {
+          userId,
+          targetRoleId: profile.targetRoleId,
+          totalEstimatedHours: 0
+        },
+        include: { items: true }
+      });
+    }
+  }
+
+  // Ensure course is tracked in LearningPathItem with source = 'manual' if user-added
+  if (learningPath) {
+    const existingItem = (learningPath.items || []).find((it) => it.courseId === courseId);
+    if (existingItem) {
+      await prisma.learningPathItem.update({
+        where: { id: existingItem.id },
+        data: {
+          status: validStatus as any,
+          source: source || existingItem.source || 'manual'
+        }
+      });
+    } else {
+      const maxStep = (learningPath.items || []).reduce((max, it) => Math.max(max, it.stepOrder), 0);
+      await prisma.learningPathItem.create({
+        data: {
+          learningPathId: learningPath.id,
+          courseId,
+          stepOrder: maxStep + 1,
+          status: validStatus as any,
+          source: source || 'manual',
+          reason: reason || 'Added manually from course catalogue'
+        }
+      });
+    }
+  } else {
+    // Fallback if no learning path could be created yet
+    await prisma.learningPathItem.updateMany({
+      where: {
+        learningPath: { userId },
+        courseId
+      },
+      data: {
+        status: validStatus as any
+      }
+    });
+  }
 
   const updatedSkills: Array<{
     skillId: string;

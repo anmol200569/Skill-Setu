@@ -33,6 +33,8 @@ interface PathItem {
   status: 'not_started' | 'in_progress' | 'completed';
   progressPercent: number;
   reason: string;
+  source?: string;
+  isOutsideRoleGaps?: boolean;
 }
 
 export function LearningPathPage() {
@@ -204,7 +206,7 @@ export function LearningPathPage() {
                 <Card className="hover:border-[#C2410C]/50 transition-colors">
                   <CardHeader className="pb-3">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-xs font-bold uppercase tracking-wider text-[#C2410C]">
                           Step {item.step}
                         </span>
@@ -212,6 +214,16 @@ export function LearningPathPage() {
                         <Badge variant={isDone ? 'success' : isInProgress ? 'high' : 'neutral'}>
                           {isDone ? 'Completed' : isInProgress ? 'In Progress' : 'Not Started'}
                         </Badge>
+                        {item.source === 'manual' && (
+                          <Badge variant="outline" className="text-[10px] bg-[#C2410C]/10 text-[#C2410C] border-[#C2410C]/30 font-semibold">
+                            Added by you
+                          </Badge>
+                        )}
+                        {item.isOutsideRoleGaps && (
+                          <Badge variant="outline" className="text-[10px] bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 font-semibold">
+                            Outside your target role gaps
+                          </Badge>
+                        )}
                       </div>
 
                       <div className="text-xs text-muted-foreground flex items-center gap-2">

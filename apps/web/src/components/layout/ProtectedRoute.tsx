@@ -34,6 +34,11 @@ export function getProtectedRouteRedirect({
     return '/onboarding';
   }
 
+  // If learner is already onboarded with target role, do not stay on /onboarding
+  if (isLearner && profile?.isOnboarded && profile?.targetRoleId && pathname === '/onboarding') {
+    return '/dashboard';
+  }
+
   // Check role restrictions
   if (allowedRoles && !allowedRoles.includes(role)) {
     return '/dashboard';
