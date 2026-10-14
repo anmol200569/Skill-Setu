@@ -21,6 +21,9 @@ export interface GenerateQuizParams {
   sourceFilename?: string;
 }
 
+export const TOTAL_QUIZ_BUDGET_MS = 55000;
+export const DEFAULT_PRIMARY_QUIZ_TIMEOUT_MS = 30000;
+
 export async function generateAndSaveQuiz(params: GenerateQuizParams) {
   // Sanitize prompt inputs to defend against prompt injection
   const sanitizedTitle = aiService.sanitizePromptInput(params.title);
@@ -74,16 +77,25 @@ JSON Output Format Specification:
   ]
 }`;
 
+  const startTime = Date.now();
+  const getRemainingBudget = (elapsedMs?: number) => {
+    const elapsed = elapsedMs !== undefined ? elapsedMs : (Date.now() - startTime);
+    return Math.max(0, TOTAL_QUIZ_BUDGET_MS - elapsed);
+  };
+
   const primaryModel = config.gemini.model || 'gemini-3.5-flash-lite';
   const fallbackModel = config.gemini.fallbackModel || 'gemini-3.1-flash-lite';
-  const quizTimeout = Math.max(45000, config.gemini.timeoutMs || 45000);
 
-  const callAndValidateQuiz = async (model: string, temp: number) => {
+  // Primary timeout respects GEMINI_TIMEOUT_MS as primary cap, but never exceeds remaining budget or 35s
+  const primaryCap = config.gemini.timeoutMs ? Math.min(config.gemini.timeoutMs, 35000) : DEFAULT_PRIMARY_QUIZ_TIMEOUT_MS;
+  const primaryTimeout = Math.min(primaryCap, getRemainingBudget());
+
+  const callAndValidateQuiz = async (model: string, temp: number, timeoutMs: number) => {
     const responseText = await aiService.generateGeminiCompletion(
       prompt,
       systemInstruction,
       temp,
-      { model, responseMimeType: 'application/json', timeoutMs: quizTimeout, thinkingLevel: 'LOW' }
+      { model, responseMimeType: 'application/json', timeoutMs, thinkingLevel: 'LOW' }
     );
     const parsed = aiService.extractJsonFromText<any>(responseText);
     return aiGeneratedQuizOutputSchema.parse(parsed);
@@ -95,16 +107,20 @@ JSON Output Format Specification:
   try {
     // 1. Attempt generation with primary model
     try {
-      parsedQuizOutput = await callAndValidateQuiz(primaryModel, 0.2);
+      parsedQuizOutput = await callAndValidateQuiz(primaryModel, 0.2, primaryTimeout);
     } catch (primaryOutputErr: any) {
       if (aiService.isFallbackEligibleError(primaryOutputErr)) {
         throw primaryOutputErr;
       }
-      // Invalid output on primary: retry ONCE
+      // Invalid output on primary: retry ONCE if budget permits
       if (!hasRetriedInvalid) {
         hasRetriedInvalid = true;
+        const retryBudget = Math.min(primaryTimeout, getRemainingBudget());
+        if (retryBudget < 2000) {
+          throw primaryOutputErr;
+        }
         console.warn(`[QuizGeneration] Primary model invalid output, retrying once:`, primaryOutputErr.message);
-        parsedQuizOutput = await callAndValidateQuiz(primaryModel, 0.4);
+        parsedQuizOutput = await callAndValidateQuiz(primaryModel, 0.4, retryBudget);
       } else {
         throw primaryOutputErr;
       }
@@ -113,18 +129,39 @@ JSON Output Format Specification:
     if (aiService.isFallbackEligibleError(primaryErr)) {
       console.warn(`[QuizGeneration] Primary model (${primaryModel}) failed (${primaryErr.message}). Attempting fallback model (${fallbackModel})...`);
       if (fallbackModel && fallbackModel !== primaryModel) {
+        // Calculate remaining budget for fallback
+        const isTimeout =
+          primaryErr?.message?.includes('timed out') ||
+          primaryErr?.message?.includes('timeout') ||
+          primaryErr?.status === 504;
+        const realElapsed = Date.now() - startTime;
+        const effectiveElapsed = isTimeout ? Math.max(realElapsed, primaryTimeout) : realElapsed;
+        const remainingBudget = getRemainingBudget(effectiveElapsed);
+
+        if (remainingBudget < 2000) {
+          console.warn(`[QuizGeneration] Insufficient budget remaining for fallback (${remainingBudget}ms). Failing fast.`);
+          const busyErr = new Error('The AI quiz service is busy right now. Please try again in a few minutes.');
+          (busyErr as any).status = 503;
+          (busyErr as any).statusCode = 503;
+          throw busyErr;
+        }
+
         try {
-          // Attempt fallback model ONCE
+          // Attempt fallback model ONCE with remaining budget
           try {
-            parsedQuizOutput = await callAndValidateQuiz(fallbackModel, 0.2);
+            parsedQuizOutput = await callAndValidateQuiz(fallbackModel, 0.2, remainingBudget);
           } catch (fallbackOutputErr: any) {
             if (aiService.isFallbackEligibleError(fallbackOutputErr)) {
               throw fallbackOutputErr;
             }
             if (!hasRetriedInvalid) {
               hasRetriedInvalid = true;
+              const fbRemaining = getRemainingBudget();
+              if (fbRemaining < 2000) {
+                throw fallbackOutputErr;
+              }
               console.warn(`[QuizGeneration] Fallback model invalid output, retrying once:`, fallbackOutputErr.message);
-              parsedQuizOutput = await callAndValidateQuiz(fallbackModel, 0.4);
+              parsedQuizOutput = await callAndValidateQuiz(fallbackModel, 0.4, fbRemaining);
             } else {
               throw fallbackOutputErr;
             }

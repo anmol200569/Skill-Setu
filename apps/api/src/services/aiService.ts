@@ -71,7 +71,7 @@ export function supportsThinkingConfig(model: string): boolean {
 export function isFallbackEligibleError(err: any): boolean {
   if (!err) return false;
   const status = err.status || err.statusCode || err.code;
-  if (status === 429 || status === 503) return true;
+  if (status === 429 || status === 503 || status === 504) return true;
   const msg = (err.message || '').toLowerCase();
   return (
     msg.includes('429') ||
@@ -81,7 +81,9 @@ export function isFallbackEligibleError(err: any): boolean {
     msg.includes('503') ||
     msg.includes('unavailable') ||
     msg.includes('service is busy') ||
-    msg.includes('high demand')
+    msg.includes('high demand') ||
+    msg.includes('timed out') ||
+    msg.includes('timeout')
   );
 }
 

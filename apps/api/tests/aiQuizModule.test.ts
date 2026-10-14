@@ -246,6 +246,116 @@ describe('AI Quiz Module & Gemini Model Configuration', () => {
       expect(geminiSpy.mock.calls[0][3]?.model).toBe('gemini-3.5-flash-lite');
       expect(geminiSpy.mock.calls[1][3]?.model).toBe('gemini-3.1-flash-lite');
     });
+
+    it('primary times out then fallback gets only the remaining budget', async () => {
+      const mockValidQuizJson = JSON.stringify({
+        quizTitle: 'Fallback Timed Quiz',
+        description: 'Generated via fallback model within remaining budget',
+        questions: [
+          {
+            questionText: 'What is event sourcing in distributed architecture?',
+            type: 'single_mcq',
+            difficulty: 'intermediate',
+            options: [
+              { id: 'opt_1', text: 'State is stored as an immutable log of events' },
+              { id: 'opt_2', text: 'State is updated destructively in place' }
+            ],
+            correctAnswers: ['opt_1'],
+            explanation: 'Event sourcing models state changes as an append-only event stream.',
+            topicTag: 'Distributed Systems'
+          }
+        ]
+      });
+
+      const geminiSpy = vi.spyOn(aiService, 'generateGeminiCompletion')
+        .mockImplementation(async (_prompt: any, _system: any, _temp: any, options: any) => {
+          if (options?.model === 'gemini-3.5-flash-lite') {
+            const timeoutUsed = options?.timeoutMs || 30000;
+            const err = new Error(`AI service timeout: Inference exceeded ${timeoutUsed}ms limit.`);
+            (err as any).status = 503;
+            throw err;
+          }
+          if (options?.model === 'gemini-3.1-flash-lite') {
+            return mockValidQuizJson;
+          }
+          throw new Error(`Unexpected model: ${options?.model}`);
+        });
+
+      vi.spyOn(prisma.quiz, 'create').mockResolvedValueOnce({
+        id: 'quiz-fallback-budget-123',
+        title: 'Fallback Timed Quiz',
+        description: 'Generated via fallback model',
+        questionCount: 1,
+        questions: [{ id: 'q-budget-1' }]
+      } as any);
+
+      const result = await quizGenerator.generateAndSaveQuiz({
+        creatorId: 'user-1',
+        creatorRole: 'learner',
+        title: 'Fallback Timed Quiz',
+        topicOrText: 'Long technical text about event sourcing and CQRS patterns with sufficient length to pass validation.',
+        questionCount: 5,
+        difficulty: 'intermediate',
+        language: 'en',
+        allowedTypes: ['single_mcq'],
+        sourceType: 'pasted_text'
+      });
+
+      expect(result).toBeDefined();
+      expect(result.id).toBe('quiz-fallback-budget-123');
+      expect(geminiSpy).toHaveBeenCalledTimes(2);
+
+      const primaryTimeout = geminiSpy.mock.calls[0][3]?.timeoutMs;
+      const fallbackTimeout = geminiSpy.mock.calls[1][3]?.timeoutMs;
+
+      expect(primaryTimeout).toBeDefined();
+      expect(fallbackTimeout).toBeDefined();
+      // Primary capped to preserve fallback budget (<= 35000)
+      expect(primaryTimeout).toBeLessThanOrEqual(35000);
+      // Fallback receives only the remaining budget
+      expect(fallbackTimeout).toBe(55000 - primaryTimeout);
+      // Combined total stays strictly under 55 seconds
+      expect(primaryTimeout + fallbackTimeout).toBeLessThanOrEqual(55000);
+    });
+
+    it('both fail within budget returns 503', async () => {
+      const geminiSpy = vi.spyOn(aiService, 'generateGeminiCompletion')
+        .mockImplementation(async (_prompt: any, _system: any, _temp: any, options: any) => {
+          if (options?.model === 'gemini-3.5-flash-lite') {
+            const err = new Error('AI service timeout: Inference exceeded 30000ms limit.');
+            (err as any).status = 503;
+            throw err;
+          }
+          if (options?.model === 'gemini-3.1-flash-lite') {
+            const err = new Error('AI service timeout: Inference exceeded 25000ms limit.');
+            (err as any).status = 503;
+            throw err;
+          }
+          throw new Error('Unexpected call');
+        });
+
+      await expect(
+        quizGenerator.generateAndSaveQuiz({
+          creatorId: 'user-1',
+          creatorRole: 'learner',
+          title: 'Resilience Test Quiz',
+          topicOrText: 'Long technical text about system resilience and timeouts with sufficient length to pass validation.',
+          questionCount: 5,
+          difficulty: 'intermediate',
+          language: 'en',
+          allowedTypes: ['single_mcq'],
+          sourceType: 'pasted_text'
+        })
+      ).rejects.toMatchObject({
+        status: 503,
+        message: expect.stringContaining('The AI quiz service is busy right now. Please try again in a few minutes.')
+      });
+
+      expect(geminiSpy).toHaveBeenCalledTimes(2);
+      const primaryTimeout = geminiSpy.mock.calls[0][3]?.timeoutMs;
+      const fallbackTimeout = geminiSpy.mock.calls[1][3]?.timeoutMs;
+      expect(primaryTimeout + fallbackTimeout).toBeLessThanOrEqual(55000);
+    });
   });
 
   describe('Quiz Privacy & Ownership Isolation (C2)', () => {
