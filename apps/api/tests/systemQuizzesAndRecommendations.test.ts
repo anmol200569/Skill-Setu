@@ -3,7 +3,6 @@ import request from 'supertest';
 import { createApp } from '../src/app';
 import { prisma } from '../src/lib/prisma';
 import * as gapAnalysisEngine from '../src/services/gapAnalysisEngine';
-import * as quizGenerator from '../src/services/quizGenerator';
 
 const app = createApp();
 
@@ -122,7 +121,6 @@ describe('System Practice Quizzes & Recommended Endpoint (Bug 2)', () => {
 
       vi.spyOn(prisma.quiz, 'findFirst').mockImplementation(async (args: any) => {
         if (args?.where?.id === systemQuizId) {
-          // Check that query allows creatorId: null
           const orConditions = args?.where?.OR || [];
           const allowsSystem = orConditions.some((cond: any) => cond.creatorId === null);
           if (allowsSystem) {
@@ -140,39 +138,93 @@ describe('System Practice Quizzes & Recommended Endpoint (Bug 2)', () => {
       expect(res.body.id).toBe(systemQuizId);
       expect(res.body.title).toBe('PostgreSQL Architecture System Quiz');
       expect(res.body.questions).toHaveLength(1);
-      // Privacy check: creatorId is not exposed
       expect(res.body.creatorId).toBeUndefined();
     });
 
-    it('allows a learner to submit an attempt for a system quiz (creatorId: null)', async () => {
+    it('rejects submitting a quiz owned by another user with 404', async () => {
+      // Mock only prisma: findUnique returns quiz owned by Learner A
+      vi.spyOn(prisma.quiz, 'findUnique').mockResolvedValue({
+        id: userAQuizId,
+        creatorId: learnerAId,
+        skillId: 's-sql'
+      } as any);
+
+      // Learner B submits attempt for Learner A's quiz
+      const res = await request(app)
+        .post('/api/v1/quizzes/submit')
+        .set('Authorization', 'Bearer test-empty-token') // Learner B
+        .send({
+          quizId: userAQuizId,
+          timeSpentSeconds: 30,
+          answers: [{ questionId: 'q-1', selectedOptions: ['opt_1'] }]
+        });
+
+      // Assert that submitting a quiz owned by another user returns 404 (or 403)
+      expect([403, 404]).toContain(res.status);
+      expect(res.body.error).toBe('NotFound');
+    });
+
+    it('allows a learner to submit an attempt for a system quiz (creatorId: null) returning 200 without wholesale evaluateQuizAttempt mocking', async () => {
+      // Mock ONLY prisma models used by submitQuiz & evaluateQuizAttempt (no evaluateQuizAttempt mock)
       vi.spyOn(prisma.quiz, 'findUnique').mockImplementation(async (args: any) => {
         if (args?.where?.id === systemQuizId) {
-          return { id: systemQuizId, creatorId: null, skillId: 's-sql' } as any;
+          return {
+            id: systemQuizId,
+            creatorId: null,
+            skillId: 's-sql',
+            title: 'PostgreSQL Architecture System Quiz',
+            questions: [
+              {
+                id: 'q-sys-1',
+                questionText: 'What is MVCC in PostgreSQL?',
+                type: 'single_mcq',
+                difficulty: 'intermediate',
+                options: [
+                  { id: 'opt_1', text: 'Multi-Version Concurrency Control' },
+                  { id: 'opt_2', text: 'Main Version Control Cache' }
+                ],
+                correctAnswers: ['opt_1'],
+                explanation: 'MVCC allows readers not to block writers in PostgreSQL',
+                topicTag: 'Databases',
+                orderIndex: 1
+              }
+            ]
+          } as any;
         }
         return null;
       });
 
-      vi.spyOn(quizGenerator, 'evaluateQuizAttempt').mockResolvedValue({
-        attemptId: 'att-sys-1',
-        quizId: systemQuizId,
-        scorePercentage: 100,
-        earnedPoints: 50,
-        passed: true,
-        correctCount: 1,
-        totalQuestions: 1,
-        timeSpentSeconds: 45,
-        skillBoostApplied: true,
-        boostAmount: 0.5,
-        newSelfAssessedLevel: 2.5,
-        submittedAnswers: [
-          {
-            questionId: 'q-sys-1',
-            selectedOptions: ['opt_1'],
-            isCorrect: true,
-            explanation: 'MVCC allows readers not to block writers'
-          }
-        ]
+      vi.spyOn(prisma.quizAttempt, 'create').mockImplementation(async (args: any) => {
+        return {
+          id: 'att-sys-101',
+          quizId: systemQuizId,
+          userId: learnerAId,
+          scorePercentage: args.data.scorePercentage,
+          totalQuestions: args.data.totalQuestions,
+          correctAnswersCount: args.data.correctAnswersCount,
+          timeSpentSeconds: args.data.timeSpentSeconds,
+          submittedAt: new Date('2026-10-14T10:00:00Z')
+        } as any;
+      });
+
+      vi.spyOn(prisma.userSkill, 'findUnique').mockResolvedValue({
+        id: 'us-sql-1',
+        userId: learnerAId,
+        skillId: 's-sql',
+        selfAssessedLevel: 2,
+        verifiedScore: null,
+        effectiveScore: 2
       } as any);
+
+      vi.spyOn(prisma.userSkill, 'upsert').mockResolvedValue({
+        id: 'us-sql-1',
+        userId: learnerAId,
+        skillId: 's-sql',
+        selfAssessedLevel: 2.5,
+        effectiveScore: 2.5
+      } as any);
+
+      vi.spyOn(prisma.profile, 'findFirst').mockResolvedValue(null);
 
       const res = await request(app)
         .post('/api/v1/quizzes/submit')
@@ -184,33 +236,105 @@ describe('System Practice Quizzes & Recommended Endpoint (Bug 2)', () => {
         });
 
       expect(res.status).toBe(200);
+      expect(res.body.quizId).toBe(systemQuizId);
       expect(res.body.scorePercentage).toBe(100);
+      expect(res.body.correctAnswersCount).toBe(1);
+      expect(res.body.totalQuestions).toBe(1);
       expect(res.body.skillBoostApplied).toBe(true);
+      expect(res.body.answers).toBeDefined();
+      expect(res.body.answers[0].isCorrect).toBe(true);
     });
   });
 
   describe('3. Learner B cannot read Learner A\'s uploaded quiz', () => {
-    it('returns 404 when learner B attempts to get learner A\'s custom quiz', async () => {
-      vi.spyOn(prisma.quiz, 'findFirst').mockImplementation(async (args: any) => {
-        // Query looks for: where: { id: userAQuizId, OR: [{ creatorId: user.id }, { creatorId: null }] }
-        if (args?.where?.id === userAQuizId) {
-          const orConditions = args?.where?.OR || [];
-          const allowsUserB = orConditions.some((c: any) => c.creatorId === learnerBId);
-          const allowsSystem = orConditions.some((c: any) => c.creatorId === null);
-          // Since the quiz belongs to Learner A (creatorId: learnerAId), it matches neither Learner B nor null
-          if (allowsUserB || allowsSystem) {
-            return null; // Not found for user B
+    it('returns 404 when learner B attempts to get learner A\'s custom quiz, but 200 when learner A accesses it', async () => {
+      const mockLearnerAQuiz = {
+        id: userAQuizId,
+        creatorId: learnerAId,
+        title: 'Learner A Secret Study Notes Quiz',
+        description: 'Private uploaded quiz',
+        difficulty: 'intermediate',
+        language: 'en',
+        skillId: 's-sql',
+        questionCount: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        questions: [
+          {
+            id: 'q-a-1',
+            questionText: 'Learner A private question?',
+            type: 'single_mcq',
+            difficulty: 'intermediate',
+            options: [{ id: 'opt_1', text: 'Private Option 1' }],
+            correctAnswers: ['opt_1'],
+            explanation: 'Private explanation',
+            topicTag: 'Private Topic',
+            orderIndex: 1
           }
+        ]
+      };
+
+      const capturedWheres: any[] = [];
+
+      // The prisma.quiz.findFirst mock returns learner A's quiz ONLY when the received where
+      // would actually match it: id equals the quiz id AND (creatorId equals the requesting user's id OR creatorId is null).
+      vi.spyOn(prisma.quiz, 'findFirst').mockImplementation(async (args: any) => {
+        const where = args?.where;
+        capturedWheres.push(where);
+
+        if (!where || where.id !== mockLearnerAQuiz.id) {
+          return null;
         }
-        return null;
+
+        // If where specifies OR conditions (as built by getQuizById)
+        if (Array.isArray(where.OR)) {
+          const matches = where.OR.some((cond: any) => {
+            if (cond.creatorId === mockLearnerAQuiz.creatorId) return true;
+            if (cond.creatorId === null && mockLearnerAQuiz.creatorId === null) return true;
+            return false;
+          });
+          return matches ? (mockLearnerAQuiz as any) : null;
+        }
+
+        // If where specifies creatorId directly
+        if ('creatorId' in where) {
+          return where.creatorId === mockLearnerAQuiz.creatorId ? (mockLearnerAQuiz as any) : null;
+        }
+
+        // If where did not constrain creatorId at all (e.g. buggy where: { id }),
+        // it matches the row and returns mockLearnerAQuiz, causing the 404 assertion to fail.
+        return mockLearnerAQuiz as any;
       });
 
-      const res = await request(app)
+      // 1. Learner B attempts to get Learner A's quiz -> MUST get 404
+      const resB = await request(app)
         .get(`/api/v1/quizzes/${userAQuizId}`)
         .set('Authorization', 'Bearer test-empty-token'); // Learner B
 
-      expect(res.status).toBe(404);
-      expect(res.body).toEqual({ error: 'NotFound', message: 'Quiz not found' });
+      expect(resB.status).toBe(404);
+      expect(resB.body).toEqual({ error: 'NotFound', message: 'Quiz not found' });
+
+      // 2. Learner A attempts to get their own quiz -> MUST get 200
+      const resA = await request(app)
+        .get(`/api/v1/quizzes/${userAQuizId}`)
+        .set('Authorization', 'Bearer test-learner-token'); // Learner A
+
+      expect(resA.status).toBe(200);
+      expect(resA.body.id).toBe(userAQuizId);
+      expect(resA.body.title).toBe(mockLearnerAQuiz.title);
+
+      // 3. Assert where clause built for Learner B never contains Learner A's id as creatorId
+      const whereBuiltForB = capturedWheres[0];
+      expect(whereBuiltForB).toBeDefined();
+      expect(whereBuiltForB.id).toBe(userAQuizId);
+
+      const creatorIdsInB = Array.isArray(whereBuiltForB.OR)
+        ? whereBuiltForB.OR.map((cond: any) => cond.creatorId)
+        : [whereBuiltForB.creatorId];
+
+      expect(creatorIdsInB).not.toContain(learnerAId);
+      expect(creatorIdsInB).toContain(learnerBId);
+      expect(creatorIdsInB).toContain(null);
     });
   });
 
@@ -269,6 +393,70 @@ describe('System Practice Quizzes & Recommended Endpoint (Bug 2)', () => {
           { creatorId: null }
         ]
       });
+    });
+  });
+
+  describe('5. Onboarding submit sets Profile.isOnboarded = true and saves targetRoleId', () => {
+    it('sets Profile.isOnboarded = true and saves targetRoleId in database upsert', async () => {
+      let receivedUpsertArgs: any = null;
+
+      vi.spyOn(prisma.profile, 'upsert').mockImplementation(async (args: any) => {
+        receivedUpsertArgs = args;
+        return {
+          id: 'prof-learner-a',
+          userId: learnerAId,
+          fullName: args.create.fullName,
+          education: args.create.education,
+          experienceYears: args.create.experienceYears,
+          currentStatus: args.create.currentStatus,
+          currentRole: args.create.currentRole,
+          targetRoleId: args.create.targetRoleId,
+          careerGoals: args.create.careerGoals,
+          preferredLanguage: args.create.preferredLanguage,
+          weeklyStudyHours: args.create.weeklyStudyHours,
+          learningPreferences: args.create.learningPreferences,
+          isOnboarded: args.create.isOnboarded,
+          targetRole: {
+            id: args.create.targetRoleId,
+            title: 'Full Stack Engineer',
+            code: 'full-stack-eng'
+          },
+          createdAt: new Date(),
+          updatedAt: new Date()
+        } as any;
+      });
+
+      const onboardingPayload = {
+        fullName: 'Learner A User',
+        education: 'Bachelor of Technology',
+        experienceYears: 2,
+        currentStatus: 'student',
+        currentRole: 'Junior Intern',
+        targetRoleId: 'role-fullstack-dev-uuid',
+        careerGoals: 'Become a Senior Full Stack Engineer',
+        preferredLanguage: 'en',
+        weeklyStudyHours: 15,
+        learningPreferences: ['hands-on', 'video-tutorials']
+      };
+
+      const res = await request(app)
+        .post('/api/v1/profile/onboarding')
+        .set('Authorization', 'Bearer test-learner-token')
+        .send(onboardingPayload);
+
+      expect(res.status).toBe(200);
+      expect(res.body.message).toBe('Onboarding completed successfully');
+      expect(res.body.profile.isOnboarded).toBe(true);
+      expect(res.body.profile.targetRoleId).toBe('role-fullstack-dev-uuid');
+      expect(res.body.profile.targetRoleName).toBe('Full Stack Engineer');
+
+      // Assert prisma.profile.upsert received isOnboarded: true and targetRoleId in both update and create
+      expect(receivedUpsertArgs).toBeDefined();
+      expect(receivedUpsertArgs.where).toEqual({ userId: learnerAId });
+      expect(receivedUpsertArgs.update.isOnboarded).toBe(true);
+      expect(receivedUpsertArgs.update.targetRoleId).toBe('role-fullstack-dev-uuid');
+      expect(receivedUpsertArgs.create.isOnboarded).toBe(true);
+      expect(receivedUpsertArgs.create.targetRoleId).toBe('role-fullstack-dev-uuid');
     });
   });
 });
