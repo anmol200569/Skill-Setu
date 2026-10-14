@@ -94,8 +94,8 @@ export function OnboardingPage() {
             (r) => r.id === profile.targetRoleId || r.code === profile.targetRoleId
           );
         }
-        if (!profileRoleMatch && ((profile as any)?.targetRole?.code || profile?.targetRoleName)) {
-          const nameToMatch = ((profile as any)?.targetRole?.code || profile?.targetRoleName || '').toLowerCase();
+        if (!profileRoleMatch && (profile?.targetRole?.code || profile?.targetRoleName)) {
+          const nameToMatch = (profile.targetRole?.code || profile.targetRoleName || '').toLowerCase();
           profileRoleMatch = fetchedRoles.find(
             (r) => r.code.toLowerCase().includes(nameToMatch) || r.title.toLowerCase().includes(nameToMatch)
           );

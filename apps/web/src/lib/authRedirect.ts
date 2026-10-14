@@ -1,8 +1,8 @@
-import { UserRole } from '@skill-setu/shared';
+import { UserRole, UserProfile } from '@skill-setu/shared';
 
 export interface AuthRedirectParams {
   user: any;
-  profile: any;
+  profile: Partial<UserProfile> | null | undefined;
   role?: UserRole;
 }
 
@@ -35,7 +35,7 @@ export function getLandingPageRedirect({
  * avoiding hardcoded defaults (e.g. Data Analyst profile role must preselect data-analyst).
  */
 export function getPrefilledWizardRole(
-  profile: any,
+  profile: Partial<UserProfile> | null | undefined,
   fallback: string = 'fullstack-dev'
 ): string {
   if (!profile) return fallback;
