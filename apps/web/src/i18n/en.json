@@ -315,17 +315,128 @@
     "heroSubtitle": "Objective diagnostic assessments mapped to real industry competencies. Discover your proficiency, benchmark against role requirements, and follow curated open-source courses.",
     "heroCta": "Configure Your Pathway",
     "goToDashboard": "Go to Dashboard",
+    "hero": {
+      "pill": "VERIFIED OPEN TECHNICAL EDUCATION",
+      "titleLine1": "Skills Today",
+      "titleLine2": "A Brighter",
+      "titleLine3": "Tomorrow",
+      "subtitle": "World-class online courses, AI skill gap diagnostics, and personalized role roadmaps to help you grow, switch careers, or master in-demand skills with Skill-Setu.",
+      "exploreCourses": "Explore Courses",
+      "aiSkillAssessment": "AI Skill Assessment",
+      "statCourses": "60+",
+      "statCoursesLabel": "Curated Tracks",
+      "statMentors": "Expert",
+      "statMentorsLabel": "AI Study Mentors",
+      "statAccess": "100% Free",
+      "statAccessLabel": "Open Access",
+      "note": "A Brighter You Starts Here ↗",
+      "badgeTitle": "Skill Setu",
+      "badgeSubtitle": "Diagnostic Bridge",
+      "badgeItem1": "1.0 to 5.0 Diagnostic Scoring",
+      "badgeItem2": "Role-Calibrated Gap Analysis",
+      "badgeItem3": "Prioritized Open Curricula",
+      "badgeItem4": "AI Practice Studio & Mentor",
+      "mugBadgeTitle": "Better Skills",
+      "mugBadgeSubtitle": "Brighter You"
+    },
+    "categories": {
+      "tag": "Competency Domains",
+      "title": "Popular Categories",
+      "subtitle": "Explore in-demand skills and find the right course for your career goals.",
+      "viewAll": "View All Categories",
+      "progSoftDev": "Programming & Software Development",
+      "dataAnalytics": "Data & Analytics",
+      "cloudDevops": "Cloud Architecture & DevOps",
+      "aiMl": "AI & Machine Learning",
+      "cybersecurity": "Cybersecurity & AppSec",
+      "commLeadership": "Communication & Leadership",
+      "productManagement": "Product & Project Management"
+    },
+    "featuredCourses": {
+      "tag": "Verified Open Curricula",
+      "title": "Featured Courses",
+      "subtitle": "Handpicked verified courses and roadmaps from world-class institutions to help you build real skills.",
+      "viewAll": "View All Courses",
+      "curatedTrack": "Skill-Setu Curated Track",
+      "freeOpenAccess": "100% Free Open Access",
+      "hours": "{{hours}} hours",
+      "courses": {
+        "cs50x": {
+          "title": "CS50x: Introduction to Computer Science",
+          "provider": "Harvard CS50",
+          "instructor": "Prof. David J. Malan",
+          "description": "An introduction to the intellectual enterprises of computer science and the art of programming with C, Python, SQL, and algorithms."
+        },
+        "fullstack": {
+          "title": "Full Stack Open: Modern Web Development",
+          "provider": "University of Helsinki",
+          "instructor": "Matti Luukkainen",
+          "description": "Hands-on deep dive into React, Redux, Node.js, Express, REST APIs, GraphQL, TypeScript, and CI/CD pipelines."
+        },
+        "cs50sql": {
+          "title": "CS50: Introduction to Databases with SQL",
+          "provider": "Harvard CS50",
+          "instructor": "Carter Zenke",
+          "description": "Relational database modeling, 3NF normalization, indexing, transactions, and query execution plans with PostgreSQL."
+        },
+        "fccMl": {
+          "title": "Machine Learning with Python Certification",
+          "provider": "freeCodeCamp",
+          "instructor": "Beau Carnes & FCC",
+          "description": "Supervised and unsupervised ML algorithms, TensorFlow neural networks, and end-to-end model training pipelines."
+        }
+      }
+    },
+    "why": {
+      "title": "Why Learn with Skill-Setu?",
+      "subtitle": "We're more than courses — we're your partner in lifelong career growth and skill verification.",
+      "note": "Real Skills, Real Opportunities ✍️",
+      "f1Title": "Objective Diagnostics",
+      "f1Desc": "Calibrated 1.0 to 5.0 proficiency scores derived from genuine technical scenario evaluations.",
+      "f2Title": "100% Free Curricula",
+      "f2Desc": "Curated exclusively from world-class open institutions including Harvard, Helsinki, freeCodeCamp, Microsoft, Google, and NPTEL.",
+      "f3Title": "Personalized Roadmaps",
+      "f3Desc": "Identifies exact competency gaps and builds a prioritized step-by-step path to reach your industry target.",
+      "f4Title": "AI Study Mentor & Quizzes",
+      "f4Desc": "Generate interactive revision quizzes and receive 24/7 AI-guided concept explanations anytime."
+    },
+    "methodology": {
+      "tag": "Transparency First",
+      "title": "Verified Educational Framework & Partners",
+      "subtitle": "Grounded in empirical evaluation, open access curricula, and transparent 1–5 Bloom skill diagnostics.",
+      "viewAll": "Explore Open Curricula",
+      "card1Title": "Verified Open Curricula",
+      "card1Desc": "Curated from Harvard CS50, University of Helsinki, freeCodeCamp, Microsoft Learn, Google Cloud Skills Boost, and NPTEL. No paywalls, ever.",
+      "card1Badge": "60+ Open Tracks",
+      "card2Title": "1.0 to 5.0 Competency Scale",
+      "card2Desc": "Clear Bloom-calibrated rubric mapping foundational concepts to workplace architecture and hands-on implementation.",
+      "card2Badge": "27 Industry Skills",
+      "card3Title": "Role-Calibrated Readiness",
+      "card3Desc": "Diagnostic tests measure your verified competency against employer benchmarks, identifying exact gaps to prioritize.",
+      "card3Badge": "5 Core Career Roles",
+      "partnersLabel": "Open Education Curators & Reference Institutions"
+    },
+    "newsletter": {
+      "pill": "STAY IN THE LOOP",
+      "title": "Get the latest courses, tips and platform updates.",
+      "subtitle": "Join our community of learners building verified, in-demand technical skills every day.",
+      "placeholder": "Enter your email address",
+      "button": "Subscribe",
+      "subscribed": "Subscribed! ✓",
+      "note": "Learn, Grow, Belong"
+    },
     "constellation": {
       "tag": "Skill Bridge (Setu)",
       "interactive": "Interactive Skill Bridge • Move mouse to explore",
       "description": "Diagnostic skills connecting directly to your verified career goal."
     },
     "wizard": {
-      "tag": "Step-by-Step Setup",
-      "title": "Plan Your Diagnostic Pathway in 30 Seconds",
-      "badge": "No credit card • Answers carry into signup",
-      "step1Title": "Select Target Role",
-      "step2Title": "Self-Assessed Level",
+      "tag": "AI DIAGNOSTIC BENCHMARK",
+      "title": "Plan Your Pathway in 30 Seconds",
+      "subtitle": "Select your goal and weekly commitment. We map your current competencies against employer benchmarks.",
+      "badge": "Zero credit card required • Selections auto-configure your custom diagnostic",
+      "step1Title": "Target Career Role",
+      "step2Title": "Current Experience",
       "step3Title": "Weekly Commitment",
       "roles": {
         "fullstack-dev": "Full-Stack Developer",
@@ -367,7 +478,9 @@
         }
       },
       "summary": "Ready to initialize your benchmark audit with these selections.",
-      "cta": "Continue with This Pathway"
+      "cta": "Continue with This Pathway",
+      "constellationShow": "Explore Interactive 3D Skill Constellation →",
+      "constellationHide": "Hide 3D Skill Constellation"
     },
     "sampleResult": {
       "tag": "What You Will Receive",
@@ -452,9 +565,9 @@
       }
     },
     "faq": {
-      "tag": "Transparency First",
+      "tag": "TRANSPARENCY FIRST",
       "title": "Frequently Asked Questions",
-      "subtitle": "Clear, honest answers about our methodology, scope, and guarantees.",
+      "subtitle": "Clear, honest answers about our learning tracks, diagnostics, and free model.",
       "items": {
         "q1": {
           "question": "Does Skill Setu guarantee a job, placement, or interview?",
@@ -476,9 +589,24 @@
     },
     "footer": {
       "tagline": "Open Skill Intelligence & Learning Platform",
+      "about": "Skills for a brighter tomorrow. Objective skill gap diagnostics, personalized learning paths, and curated courses for your career goals.",
       "courses": "Courses Catalog",
       "login": "Learner Login",
       "signup": "Sign Up",
+      "colProducts": "Products",
+      "colResources": "Resources",
+      "colFollow": "Follow Us",
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "cookies": "Cookies",
+      "allCourses": "All Courses",
+      "careerRoadmaps": "Career Roadmaps",
+      "skillDiagnostics": "Skill Diagnostics",
+      "aiPracticeQuizzes": "AI Practice Quizzes",
+      "popularCategories": "Popular Categories",
+      "whySkillSetu": "Why Skill-Setu",
+      "diagnosticWizard": "Diagnostic Wizard",
+      "learningGuides": "Learning Guides",
       "copyright": "© {{year}} Skill Setu. Open-source educational diagnostics platform. All course trademarks belong to their respective owners."
     }
   },

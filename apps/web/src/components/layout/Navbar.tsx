@@ -360,13 +360,13 @@ export function Navbar() {
             ) : (
               <>
                 <Link to="/courses" className="block px-4 py-2 rounded-xl text-sm font-medium hover:bg-secondary">
-                  Courses
+                  {t('nav.courses', { defaultValue: 'Courses' })}
                 </Link>
                 <Link to="/login" className="block px-4 py-2 rounded-xl text-sm font-medium hover:bg-secondary">
-                  Log In
+                  {t('nav.login', { defaultValue: 'Log In' })}
                 </Link>
                 <Link to="/signup" className="block px-4 py-2 rounded-xl text-sm font-bold text-blue-600 hover:bg-secondary">
-                  Sign Up
+                  {t('nav.signup', { defaultValue: 'Sign Up' })}
                 </Link>
               </>
             )}
