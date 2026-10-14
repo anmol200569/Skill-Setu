@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { apiClient } from '../../lib/api';
-import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
 import { Modal } from '../../components/ui/Modal';
 import { Toast } from '../../components/ui/Toast';
+import { Breadcrumbs } from '../../components/layout/Breadcrumbs';
+import { EmptyState } from '../../components/ui/EmptyState';
+import { Skeleton } from '../../components/ui/Skeleton';
 import {
   BookOpen,
   Search,
   ExternalLink,
   Clock,
-  Globe,
-  Star,
-  CheckCircle,
   Filter,
-  Play
+  PlusCircle,
+  CheckCircle2,
+  X,
+  Layers,
+  Sparkles
 } from 'lucide-react';
 
 interface Course {
@@ -34,15 +39,21 @@ interface Course {
 }
 
 export function CoursesPage() {
+  const { t } = useTranslation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialSkill = searchParams.get('skill') || '';
+
   const [courses, setCourses] = useState<Course[]>([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialSkill);
   const [difficultyFilter, setDifficultyFilter] = useState('all');
   const [languageFilter, setLanguageFilter] = useState('all');
   const [freeOnly, setFreeOnly] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [totalCount, setTotalCount] = useState<number>(61);
 
   // Detail Modal
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [toast, setToast] = useState<{ message: string; type?: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     fetchCourses();
@@ -56,10 +67,13 @@ export function CoursesPage() {
       if (difficultyFilter !== 'all') queryParams.set('difficulty', difficultyFilter);
       if (languageFilter !== 'all') queryParams.set('language', languageFilter);
       if (freeOnly) queryParams.set('isFree', 'true');
-      queryParams.set('limit', '50');
+      queryParams.set('limit', '100');
 
-      const res = await apiClient<{ data: Course[] }>(`/courses?${queryParams.toString()}`);
+      const res = await apiClient<{ data: Course[]; totalCount?: number }>(`/courses?${queryParams.toString()}`);
       setCourses(res.data || []);
+      if (typeof res.totalCount === 'number') {
+        setTotalCount(res.totalCount);
+      }
     } catch (err: any) {
       console.warn('Failed to load courses:', err);
     } finally {
@@ -72,7 +86,20 @@ export function CoursesPage() {
     fetchCourses();
   };
 
-  const [toast, setToast] = useState<{ message: string; type?: 'success' | 'error' } | null>(null);
+  const clearSearch = () => {
+    setSearch('');
+    searchParams.delete('skill');
+    setSearchParams(searchParams);
+    const queryParams = new URLSearchParams();
+    if (difficultyFilter !== 'all') queryParams.set('difficulty', difficultyFilter);
+    if (languageFilter !== 'all') queryParams.set('language', languageFilter);
+    if (freeOnly) queryParams.set('isFree', 'true');
+    queryParams.set('limit', '100');
+
+    apiClient<{ data: Course[] }>(`/courses?${queryParams.toString()}`)
+      .then((res) => setCourses(res.data || []))
+      .catch(() => {});
+  };
 
   const enrollCourse = async (courseId: string) => {
     try {
@@ -87,11 +114,10 @@ export function CoursesPage() {
         })
       });
 
-      // Refetch the path after adding to keep client cache updated
       apiClient('/learning-paths').catch(() => {});
 
       setToast({
-        message: 'Enrolled! Added to your Learning Path.',
+        message: t('coursesPage.enrolledToast'),
         type: 'success'
       });
     } catch (err: any) {
@@ -104,51 +130,89 @@ export function CoursesPage() {
   };
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <span className="text-xs font-bold uppercase tracking-wider text-[#C2410C]">
-          Verified Learning Tracks
-        </span>
-        <h1 className="text-3xl font-serif font-bold text-foreground mt-1">
-          Curated Course Catalogue
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Over 50 zero-cost and industry-aligned tracks from Microsoft Learn, freeCodeCamp, NPTEL, and Google Cloud.
-        </p>
+    <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto pb-20">
+      {/* Toast Feedback */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
+      {/* Breadcrumb Hierarchy */}
+      <Breadcrumbs items={[{ label: t('nav.courses') }]} />
+
+      {/* Header with Explicit "61 courses" count label */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-border">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#C2410C] dark:text-[#FB923C]">
+              {t('coursesPage.verifiedTracks')}
+            </span>
+            <span className="text-muted-foreground text-xs">•</span>
+            <Badge variant="terracotta" className="text-xs font-semibold">
+              {totalCount} courses
+            </Badge>
+          </div>
+
+          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-foreground tracking-tight flex items-center gap-2.5">
+            <BookOpen className="w-6 h-6 text-[#C2410C] dark:text-[#FB923C]" />
+            <span>{t('coursesPage.title')}</span>
+          </h1>
+
+          <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
+            {t('coursesPage.subtitle')}
+          </p>
+        </div>
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="bg-card p-4 rounded-xl border border-border shadow-sm space-y-4">
+      <div className="bg-card p-4 sm:p-5 rounded-2xl border border-border shadow-card space-y-4">
         <form onSubmit={handleSearchSubmit} className="flex gap-2">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-3" />
+            <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by topic, skill (e.g. React, SQL, RAG), or provider..."
-              className="w-full bg-secondary rounded-lg pl-9 pr-4 py-2 text-sm border border-border focus:outline-none focus:ring-1 focus:ring-[#C2410C]"
+              placeholder={t('coursesPage.searchPlaceholder')}
+              className="w-full bg-secondary rounded-xl pl-9 pr-8 py-2 text-xs sm:text-sm border border-border focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C]"
             />
+            {search && (
+              <button
+                type="button"
+                onClick={clearSearch}
+                aria-label="Clear search query"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
-          <Button type="submit" size="sm" className="font-semibold px-4">
-            Search
+          <Button
+            type="submit"
+            size="sm"
+            className="font-semibold px-4 text-xs bg-[#C2410C] hover:bg-[#9A3412] text-white"
+          >
+            {t('coursesPage.searchBtn')}
           </Button>
         </form>
 
-        <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-border/60 text-xs">
+        <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-border text-xs">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
-            <Filter className="w-3.5 h-3.5" />
-            <span>Filters:</span>
+            <Filter className="w-3.5 h-3.5 text-[#C2410C]" />
+            <span>{t('coursesPage.filters')}</span>
           </div>
 
           {/* Difficulty filter */}
           <select
             value={difficultyFilter}
             onChange={(e) => setDifficultyFilter(e.target.value)}
-            className="bg-secondary rounded-md px-2.5 py-1.5 border border-border text-xs focus:outline-none focus:ring-1 focus:ring-[#C2410C]"
+            aria-label="Filter courses by difficulty level"
+            className="bg-secondary text-foreground rounded-lg px-2.5 py-1.5 border border-border text-xs focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C]"
           >
-            <option value="all">All Difficulties</option>
+            <option value="all">{t('coursesPage.allDifficulties')}</option>
             <option value="Beginner">Beginner</option>
             <option value="Intermediate">Intermediate</option>
             <option value="Advanced">Advanced</option>
@@ -158,107 +222,131 @@ export function CoursesPage() {
           <select
             value={languageFilter}
             onChange={(e) => setLanguageFilter(e.target.value)}
-            className="bg-secondary rounded-md px-2.5 py-1.5 border border-border text-xs focus:outline-none focus:ring-1 focus:ring-[#C2410C]"
+            aria-label="Filter courses by instructional language"
+            className="bg-secondary text-foreground rounded-lg px-2.5 py-1.5 border border-border text-xs focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C]"
           >
-            <option value="all">All Languages</option>
+            <option value="all">{t('coursesPage.allLanguages')}</option>
             <option value="English">English</option>
             <option value="Hindi">Hindi / Hinglish</option>
             <option value="Bilingual">Bilingual</option>
           </select>
 
-          {/* Free toggle */}
-          <label className="flex items-center gap-1.5 cursor-pointer text-muted-foreground hover:text-foreground">
+          {/* Free Only Checkbox */}
+          <label className="flex items-center gap-1.5 cursor-pointer text-muted-foreground hover:text-foreground select-none">
             <input
               type="checkbox"
               checked={freeOnly}
               onChange={(e) => setFreeOnly(e.target.checked)}
               className="rounded accent-[#C2410C]"
             />
-            <span>Free Only</span>
+            <span>{t('coursesPage.freeOnly')}</span>
           </label>
+
+          <span className="ml-auto text-muted-foreground tabular-nums">
+            Showing {courses.length} of {totalCount} courses
+          </span>
         </div>
       </div>
 
       {/* Courses Grid */}
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-pulse">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-64 rounded-xl bg-card border border-border" />
+            <Skeleton key={i} variant="card" className="h-64" />
           ))}
         </div>
       ) : courses.length === 0 ? (
-        <div className="text-center py-16 bg-card rounded-2xl border border-border text-muted-foreground">
-          <BookOpen className="w-10 h-10 mx-auto mb-2 text-muted-foreground/60" />
-          <p className="text-base font-semibold text-foreground">No courses found matching your criteria</p>
-          <p className="text-xs mt-1">Try relaxing filters or searching for broader terms.</p>
-        </div>
+        <EmptyState
+          icon={BookOpen}
+          title={t('coursesPage.emptyTitle')}
+          description={t('coursesPage.emptyDesc')}
+          primaryAction={{
+            label: 'Clear Filters',
+            onClick: clearSearch,
+          }}
+        />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {courses.map((course) => (
             <Card
               key={course.id}
-              className="flex flex-col justify-between hover:border-[#C2410C]/60 hover:shadow-md transition-all group"
+              hoverEffect
+              className="flex flex-col justify-between border border-border bg-card shadow-card group"
             >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between gap-2 mb-2.5">
+              <CardHeader className="p-5 pb-3 space-y-3">
+                <div className="flex items-center justify-between gap-2">
                   <Badge variant="outline" className="text-[10px] font-semibold">
                     {course.provider}
                   </Badge>
-                  {course.isFree && <Badge variant="success">100% Free</Badge>}
-                </div>
-
-                <CardTitle
-                  onClick={() => setSelectedCourse(course)}
-                  className="text-base font-serif line-clamp-2 cursor-pointer group-hover:text-[#C2410C] transition-colors"
-                >
-                  {course.title}
-                </CardTitle>
-
-                <p className="text-xs text-muted-foreground mt-2 line-clamp-2 leading-relaxed">
-                  {course.description}
-                </p>
-
-                {/* Covered skills */}
-                <div className="flex flex-wrap gap-1.5 pt-3">
-                  {course.skillsCovered.slice(0, 3).map((sk, idx) => (
-                    <span
-                      key={idx}
-                      className="text-[10px] font-mono bg-secondary px-2 py-0.5 rounded text-foreground/80 border border-border/60"
-                    >
-                      {sk}
-                    </span>
-                  ))}
-                </div>
-              </CardHeader>
-
-              <CardContent className="pt-0 border-t border-border mt-3 pt-3 flex items-center justify-between text-xs text-muted-foreground">
-                <div className="flex items-center gap-3">
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5" />
-                    {course.estimatedHours} hrs
-                  </span>
-                  {course.rating && (
-                    <span className="flex items-center gap-1 text-amber-600 font-semibold">
-                      <Star className="w-3.5 h-3.5 fill-current" />
-                      {course.rating}
-                    </span>
+                  {course.isFree && (
+                    <Badge variant="strong" className="text-[10px]">
+                      100% Free
+                    </Badge>
                   )}
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <button
+                <div>
+                  <CardTitle
                     onClick={() => setSelectedCourse(course)}
-                    className="font-semibold text-foreground hover:text-[#C2410C]"
+                    className="text-base font-serif font-bold text-foreground line-clamp-2 cursor-pointer group-hover:text-[#C2410C] dark:group-hover:text-[#FB923C] transition-colors"
                   >
-                    Details
-                  </button>
+                    {course.title}
+                  </CardTitle>
+                  <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2 leading-relaxed">
+                    {course.description}
+                  </p>
+                </div>
+
+                {/* Skills Covered Tags */}
+                <div className="space-y-1 pt-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                    {t('coursesPage.skillsCovered')}:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {course.skillsCovered.slice(0, 3).map((sk, idx) => (
+                      <span
+                        key={idx}
+                        className="text-[10px] font-mono bg-secondary px-2 py-0.5 rounded text-foreground/85 border border-border"
+                      >
+                        {sk}
+                      </span>
+                    ))}
+                    {course.skillsCovered.length > 3 && (
+                      <span className="text-[10px] text-muted-foreground self-center">
+                        +{course.skillsCovered.length - 3} more
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </CardHeader>
+
+              <CardContent className="p-5 pt-0 border-t border-border mt-3 pt-3 flex flex-col gap-3">
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1 font-medium">
+                    <Clock className="w-3.5 h-3.5 text-[#C2410C]" />
+                    {course.estimatedHours} hrs
+                  </span>
+                  <span className="capitalize">{course.difficulty}</span>
+                </div>
+
+                <div className="flex items-center justify-between gap-2 pt-1">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => enrollCourse(course.id)}
+                    className="text-xs flex-1 flex items-center justify-center gap-1.5"
+                  >
+                    <PlusCircle className="w-3.5 h-3.5 text-[#C2410C]" />
+                    <span>{t('coursesPage.enrollBtn')}</span>
+                  </Button>
+
                   <a
                     href={course.destinationUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="p-1.5 rounded-md bg-[#C2410C]/10 text-[#C2410C] hover:bg-[#C2410C] hover:text-white transition-colors"
-                    title="Open on provider website"
+                    className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg border border-border text-xs font-semibold text-[#C2410C] dark:text-[#FB923C] hover:bg-muted transition-colors"
                   >
+                    <span>{t('coursesPage.launch')}</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                 </div>
@@ -270,73 +358,66 @@ export function CoursesPage() {
 
       {/* Course Detail Modal */}
       <Modal
-        isOpen={!!selectedCourse}
+        isOpen={Boolean(selectedCourse)}
         onClose={() => setSelectedCourse(null)}
-        title={selectedCourse?.title || 'Course Overview'}
-        className="max-w-2xl"
+        title={selectedCourse?.title || 'Course Details'}
+        className="max-w-xl"
       >
         {selectedCourse && (
-          <div className="space-y-5 text-xs text-foreground">
-            <div className="flex flex-wrap items-center gap-2 pb-3 border-b border-border">
+          <div className="space-y-4 text-xs">
+            <div className="flex items-center justify-between gap-2 border-b border-border pb-3">
               <Badge variant="outline">{selectedCourse.provider}</Badge>
-              <Badge variant="neutral">{selectedCourse.difficulty}</Badge>
-              <Badge variant="neutral">{selectedCourse.language}</Badge>
-              {selectedCourse.isFree && <Badge variant="success">Free Track</Badge>}
-              {selectedCourse.rating && (
-                <span className="flex items-center gap-1 text-amber-600 font-bold ml-auto">
-                  <Star className="w-3.5 h-3.5 fill-current" />
-                  {selectedCourse.rating} ({selectedCourse.ratingSource || 'Verified Reviews'})
-                </span>
-              )}
+              <span className="text-muted-foreground">
+                {selectedCourse.estimatedHours} hrs • {selectedCourse.difficulty} • {selectedCourse.language}
+              </span>
             </div>
 
-            <div>
-              <h4 className="font-semibold text-sm mb-1 text-foreground">Course Description</h4>
-              <p className="text-muted-foreground leading-relaxed">{selectedCourse.description}</p>
+            <div className="space-y-1.5">
+              <h4 className="font-semibold text-foreground">Course Overview</h4>
+              <p className="text-muted-foreground leading-relaxed">
+                {selectedCourse.description}
+              </p>
             </div>
 
-            <div>
-              <h4 className="font-semibold text-sm mb-1.5 text-foreground">Target Skills Mastered</h4>
+            <div className="space-y-1.5">
+              <h4 className="font-semibold text-foreground">Target Competencies Covered</h4>
               <div className="flex flex-wrap gap-1.5">
-                {selectedCourse.skillsCovered.map((s, idx) => (
-                  <Badge key={idx} variant="default">{s}</Badge>
+                {selectedCourse.skillsCovered.map((sk) => (
+                  <span
+                    key={sk}
+                    className="text-[11px] font-mono bg-secondary px-2.5 py-1 rounded-md text-foreground border border-border"
+                  >
+                    {sk}
+                  </span>
                 ))}
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-secondary/50 border border-border flex items-center justify-between">
-              <div>
-                <span className="text-muted-foreground">Estimated Time Investment:</span>
-                <span className="font-bold text-foreground ml-1">{selectedCourse.estimatedHours} hours</span>
-              </div>
-              <Button size="sm" onClick={() => enrollCourse(selectedCourse.id)} className="font-semibold">
-                Add to My Learning Path
+            <div className="pt-4 border-t border-border flex items-center justify-end gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => enrollCourse(selectedCourse.id)}
+                className="flex items-center gap-1.5"
+              >
+                <PlusCircle className="w-3.5 h-3.5 text-[#C2410C]" />
+                <span>{t('coursesPage.enrollBtn')}</span>
               </Button>
-            </div>
-
-            <div className="pt-3 border-t border-border flex items-center justify-between">
-              <span className="text-muted-foreground">Direct Provider Destination</span>
               <a
                 href={selectedCourse.destinationUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 font-bold text-[#C2410C] hover:underline text-sm"
               >
-                <span>Go to course on {selectedCourse.provider}</span>
-                <ExternalLink className="w-4 h-4" />
+                <Button size="sm" className="bg-[#C2410C] hover:bg-[#9A3412] text-white flex items-center gap-1.5">
+                  <span>{t('coursesPage.launch')}</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </Button>
               </a>
             </div>
           </div>
         )}
       </Modal>
-
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
     </div>
   );
 }
+export default CoursesPage;
