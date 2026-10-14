@@ -15,6 +15,7 @@ import { CoursesPage } from './pages/learner/CoursesPage';
 import { LearningPathPage } from './pages/learner/LearningPathPage';
 import { QuizzesPage } from './pages/learner/QuizzesPage';
 import { ProfilePage } from './pages/learner/ProfilePage';
+import { SkillGapsPage } from './pages/learner/SkillGapsPage';
 
 // Admin pages & layout
 import { AdminLayout } from './components/layout/AdminLayout';
@@ -73,6 +74,8 @@ export function App() {
       >
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/assessments" element={<AssessmentsPage />} />
+        <Route path="/skill-gaps" element={<SkillGapsPage />} />
+        <Route path="/roadmap" element={<LearningPathPage />} />
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/learning-path" element={<LearningPathPage />} />
         <Route path="/quizzes" element={<QuizzesPage />} />
