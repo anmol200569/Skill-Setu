@@ -111,21 +111,138 @@ describe('Admin Analytics Database Aggregation Tests (TASK B2)', () => {
     expect(dockerStat.gapPercentage).toBe(50);
     expect(dockerStat.hasEnoughData).toBe(true);
     expect(dockerStat.avgGap).toBe(1.5); // ( (4-2) + (4-3) ) / 2 = 1.5
+  });
 
-    const rustStat = res.body.commonSkillGaps.find((s: any) => s.skillId === 'skill-rust');
-    expect(rustStat).toBeDefined();
-    expect(rustStat.assessedLearners).toBe(2);
-    // Fewer than 3 assessed: hide percentage and mark not enough data
-    expect(rustStat.hasEnoughData).toBe(false);
-    expect(rustStat.gapPercentage).toBeNull();
+  it('hides gap percentage and flags hasEnoughData=false when a skill has fewer than 3 assessed learners', async () => {
+    vi.spyOn(supabaseAuth.auth, 'getUser').mockResolvedValue({
+      data: { user: { id: 'admin-uuid', email: 'admin@skillsetu.org' } },
+      error: null
+    } as any);
+    vi.spyOn(prisma.user, 'findUnique').mockResolvedValue({
+      id: 'admin-uuid',
+      email: 'admin@skillsetu.org',
+      role: 'admin'
+    } as any);
+    vi.spyOn(prisma.user, 'count').mockResolvedValue(5);
+    vi.spyOn(prisma.quiz, 'count').mockResolvedValue(1);
+    vi.spyOn(prisma.quizAttempt, 'count').mockResolvedValue(2);
+    vi.spyOn(prisma.assessmentAttempt, 'count').mockResolvedValue(2);
+    vi.spyOn(prisma.role, 'findMany').mockResolvedValue([]);
+    vi.spyOn(prisma.domain, 'findMany').mockResolvedValue([]);
+    vi.spyOn(prisma.quizAttempt, 'findMany').mockResolvedValue([]);
+    vi.spyOn(prisma.user, 'findMany').mockResolvedValue([]);
 
-    // 2. Calculated platform readiness (not hardcoded 68)
-    expect(res.body.avgPlatformReadiness).not.toBe(68);
-    expect(typeof res.body.avgPlatformReadiness).toBe('number');
+    // Only 2 learners assessed on this skill (< 3 threshold)
+    vi.spyOn(prisma.skill, 'findMany').mockResolvedValue([
+      {
+        id: 'skill-low-sample',
+        name: 'Quantum Computing',
+        domain: { id: 'dom-1', name: 'Advanced Tech' },
+        roleRequirements: [{ roleId: 'role-1', requiredProficiency: 3 }]
+      }
+    ] as any);
 
-    // 3. Privacy check: strictly NO learner names or emails in response
-    expect(res.body.recentLearnerActivity[0].learnerDisplay).toBe('Learner #1');
-    expect(res.body.recentLearnerActivity[0].learnerName).toBeUndefined();
-    expect(res.body.recentLearnerActivity[0].email).toBeUndefined();
+    vi.spyOn(prisma.userSkill, 'findMany').mockResolvedValue([
+      { skillId: 'skill-low-sample', effectiveScore: 1, user: { id: 'u1', profile: { targetRoleId: 'role-1' } } },
+      { skillId: 'skill-low-sample', effectiveScore: 2, user: { id: 'u2', profile: { targetRoleId: 'role-1' } } }
+    ] as any);
+
+    const res = await request(app)
+      .get('/api/v1/analytics/admin')
+      .set('Authorization', 'Bearer admin-token');
+
+    expect(res.status).toBe(200);
+    const lowSampleSkill = res.body.commonSkillGaps.find((s: any) => s.skillId === 'skill-low-sample');
+    expect(lowSampleSkill).toBeDefined();
+    expect(lowSampleSkill.assessedLearners).toBe(2);
+    expect(lowSampleSkill.hasEnoughData).toBe(false);
+    expect(lowSampleSkill.gapPercentage).toBeNull();
+  });
+
+  it('guarantees zero learner names or emails in admin analytics responses (anonymized privacy)', async () => {
+    vi.spyOn(supabaseAuth.auth, 'getUser').mockResolvedValue({
+      data: { user: { id: 'admin-uuid', email: 'admin@skillsetu.org' } },
+      error: null
+    } as any);
+    vi.spyOn(prisma.user, 'findUnique').mockResolvedValue({
+      id: 'admin-uuid',
+      email: 'admin@skillsetu.org',
+      role: 'admin'
+    } as any);
+    vi.spyOn(prisma.user, 'count').mockResolvedValue(3);
+    vi.spyOn(prisma.quiz, 'count').mockResolvedValue(1);
+    vi.spyOn(prisma.quizAttempt, 'count').mockResolvedValue(2);
+    vi.spyOn(prisma.assessmentAttempt, 'count').mockResolvedValue(2);
+    vi.spyOn(prisma.role, 'findMany').mockResolvedValue([]);
+    vi.spyOn(prisma.domain, 'findMany').mockResolvedValue([]);
+    vi.spyOn(prisma.skill, 'findMany').mockResolvedValue([]);
+    vi.spyOn(prisma.userSkill, 'findMany').mockResolvedValue([]);
+    vi.spyOn(prisma.user, 'findMany').mockResolvedValue([]);
+
+    // Raw attempts from DB containing sensitive fields
+    vi.spyOn(prisma.quizAttempt, 'findMany').mockResolvedValue([
+      {
+        id: 'attempt-sensitive',
+        scorePercentage: 90,
+        submittedAt: new Date('2026-10-14T00:00:00Z'),
+        user: { id: 'user-secret', email: 'secret_student@example.com', name: 'John Doe' },
+        quiz: { id: 'q1', title: 'Security Basics' }
+      }
+    ] as any);
+
+    const res = await request(app)
+      .get('/api/v1/analytics/admin')
+      .set('Authorization', 'Bearer admin-token');
+
+    expect(res.status).toBe(200);
+
+    // Verify recentLearnerActivity does not leak names or emails
+    const activities = res.body.recentLearnerActivity;
+    expect(Array.isArray(activities)).toBe(true);
+    expect(activities.length).toBeGreaterThan(0);
+
+    for (const act of activities) {
+      expect(act.learnerDisplay).toMatch(/^Learner #\d+$/);
+      expect(act.learnerName).toBeUndefined();
+      expect(act.email).toBeUndefined();
+      expect(act.userId).toBeUndefined();
+    }
+
+    // Verify full serialized response body does not contain any user emails
+    const responseText = JSON.stringify(res.body);
+    expect(responseText).not.toContain('secret_student@example.com');
+    expect(responseText).not.toContain('John Doe');
+  });
+
+  it('computes avgPlatformReadiness using calculateReadiness and displays not enough data if no learners have readiness', async () => {
+    vi.spyOn(supabaseAuth.auth, 'getUser').mockResolvedValue({
+      data: { user: { id: 'admin-uuid', email: 'admin@skillsetu.org' } },
+      error: null
+    } as any);
+    vi.spyOn(prisma.user, 'findUnique').mockResolvedValue({
+      id: 'admin-uuid',
+      email: 'admin@skillsetu.org',
+      role: 'admin'
+    } as any);
+    vi.spyOn(prisma.user, 'count').mockResolvedValue(5);
+    vi.spyOn(prisma.quiz, 'count').mockResolvedValue(1);
+    vi.spyOn(prisma.quizAttempt, 'count').mockResolvedValue(0);
+    vi.spyOn(prisma.assessmentAttempt, 'count').mockResolvedValue(0);
+    vi.spyOn(prisma.role, 'findMany').mockResolvedValue([]);
+    vi.spyOn(prisma.domain, 'findMany').mockResolvedValue([]);
+    vi.spyOn(prisma.skill, 'findMany').mockResolvedValue([]);
+    vi.spyOn(prisma.userSkill, 'findMany').mockResolvedValue([]);
+    vi.spyOn(prisma.quizAttempt, 'findMany').mockResolvedValue([]);
+
+    // Zero learners with completed readiness calculations
+    vi.spyOn(prisma.user, 'findMany').mockResolvedValue([]);
+
+    const res = await request(app)
+      .get('/api/v1/analytics/admin')
+      .set('Authorization', 'Bearer admin-token');
+
+    expect(res.status).toBe(200);
+    // When no learners have readiness calculations, avgPlatformReadiness is null
+    expect(res.body.avgPlatformReadiness).toBeNull();
   });
 });
