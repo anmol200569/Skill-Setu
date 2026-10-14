@@ -5,6 +5,8 @@ import { Navbar } from '../components/layout/Navbar';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { apiClient } from '../lib/api';
+import { useAuth } from '../context/AuthContext';
+import { getLandingPageRedirect, getPrefilledWizardRole } from '../lib/authRedirect';
 import {
   Sparkles,
   ArrowRight,
@@ -82,6 +84,15 @@ const faqKeys = ['q1', 'q2', 'q3', 'q4'];
 export function LandingPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { user, profile, role } = useAuth();
+
+  // Logged-in users with a saved target role or completed onboarding navigate directly to dashboard
+  useEffect(() => {
+    const redirectPath = getLandingPageRedirect({ user, profile, role });
+    if (redirectPath) {
+      navigate(redirectPath, { replace: true });
+    }
+  }, [user, profile, role, navigate]);
 
   // Dynamic Competency Stats from DB
   const [stats, setStats] = useState<CompetencyStatsResponse | null>(null);
@@ -113,11 +124,17 @@ export function LandingPage() {
     };
   }, []);
 
-  // Inline 3-Step Mini Wizard State
-  const [selectedRole, setSelectedRole] = useState('fullstack-dev');
+  // Inline 3-Step Mini Wizard State - prefill from profile if available
+  const [selectedRole, setSelectedRole] = useState(() => getPrefilledWizardRole(profile, 'fullstack-dev'));
   const [selectedLevel, setSelectedLevel] = useState('intermediate');
   const [selectedHours, setSelectedHours] = useState('6-10');
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
+
+  useEffect(() => {
+    if (profile) {
+      setSelectedRole(getPrefilledWizardRole(profile, selectedRole));
+    }
+  }, [profile]);
 
   const handleFinishWizard = () => {
     const pathwayData = {
@@ -161,19 +178,31 @@ export function LandingPage() {
           </p>
 
           <div className="pt-2">
-            <Button
-              size="lg"
-              onClick={scrollToWizard}
-              className="px-8 py-6 text-base font-semibold shadow-md bg-[#C2410C] hover:bg-[#9A3412] text-white"
-            >
-              {t('landing.heroCta')}
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+            {user && profile?.targetRoleId ? (
+              <Button
+                size="lg"
+                onClick={() => navigate(role === 'admin' || role === 'trainer' ? '/admin' : '/dashboard')}
+                className="px-8 py-6 text-base font-semibold shadow-md bg-[#C2410C] hover:bg-[#9A3412] text-white"
+              >
+                Go to Dashboard
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            ) : (
+              <Button
+                size="lg"
+                onClick={scrollToWizard}
+                className="px-8 py-6 text-base font-semibold shadow-md bg-[#C2410C] hover:bg-[#9A3412] text-white"
+              >
+                {t('landing.heroCta')}
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            )}
           </div>
         </div>
 
-        {/* Inline 3-Step Mini Wizard */}
-        <div id="pathway-wizard" className="mt-16 sm:mt-20 max-w-4xl mx-auto">
+        {/* Inline 3-Step Mini Wizard: Never rendered for logged-in users with a saved target role */}
+        {(!user || !profile?.targetRoleId) && (
+          <div id="pathway-wizard" className="mt-16 sm:mt-20 max-w-4xl mx-auto">
           <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-8">
             <div className="border-b border-border pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
@@ -280,6 +309,7 @@ export function LandingPage() {
             </div>
           </div>
         </div>
+        )}
       </section>
 
       {/* Clearly Labelled Sample Result Card */}

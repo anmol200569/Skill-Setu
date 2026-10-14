@@ -30,10 +30,17 @@ interface CareerRoleItem {
 }
 
 export function OnboardingPage() {
-  const { user, refreshProfile } = useAuth();
+  const { user, profile, refreshProfile } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { t, i18n } = useTranslation();
+
+  // If user is already onboarded with a saved target role, redirect directly to dashboard
+  useEffect(() => {
+    if (profile?.isOnboarded && profile?.targetRoleId) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [profile, navigate]);
 
   const [step, setStep] = useState(1);
   const totalSteps = 3;
@@ -67,7 +74,7 @@ export function OnboardingPage() {
     }
   }, [i18n.language]);
 
-  // Fetch career roles on mount & prefill from landing wizard
+  // Fetch career roles on mount & prefill from profile / landing wizard
   useEffect(() => {
     let isMounted = true;
     setIsLoadingRoles(true);
@@ -78,11 +85,33 @@ export function OnboardingPage() {
         const fetchedRoles = data || [];
         setRoles(fetchedRoles);
 
-        // Check for landing wizard prefill
+        let prefilledApplied = false;
+
+        // Priority 1: User profile target role (e.g. Data Analyst)
+        let profileRoleMatch: CareerRoleItem | undefined;
+        if (profile?.targetRoleId) {
+          profileRoleMatch = fetchedRoles.find(
+            (r) => r.id === profile.targetRoleId || r.code === profile.targetRoleId
+          );
+        }
+        if (!profileRoleMatch && ((profile as any)?.targetRole?.code || profile?.targetRoleName)) {
+          const nameToMatch = ((profile as any)?.targetRole?.code || profile?.targetRoleName || '').toLowerCase();
+          profileRoleMatch = fetchedRoles.find(
+            (r) => r.code.toLowerCase().includes(nameToMatch) || r.title.toLowerCase().includes(nameToMatch)
+          );
+        }
+
+        if (profileRoleMatch) {
+          setSelectedRoleId(profileRoleMatch.id);
+          prefilledApplied = true;
+        }
+
+        // Priority 2: Query params from wizard
         let targetRoleCode = searchParams.get('role');
         let targetLevel = searchParams.get('level');
         let targetHours = searchParams.get('hours');
 
+        // Priority 3: localStorage from visitor wizard
         if (!targetRoleCode || !targetLevel || !targetHours) {
           try {
             const saved = localStorage.getItem('skill_setu_pathway');
@@ -95,11 +124,9 @@ export function OnboardingPage() {
           } catch (_) {}
         }
 
-        let prefilledApplied = false;
-
-        if (targetRoleCode) {
+        if (!profileRoleMatch && targetRoleCode) {
           const matched = fetchedRoles.find(
-            (r) => r.code === targetRoleCode || r.id === targetRoleCode
+            (r) => r.code === targetRoleCode || r.id === targetRoleCode || r.title.toLowerCase().includes(targetRoleCode.toLowerCase())
           );
           if (matched) {
             setSelectedRoleId(matched.id);

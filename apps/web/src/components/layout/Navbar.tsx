@@ -25,7 +25,10 @@ export function Navbar() {
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-3 sm:px-6">
         {/* Brand: Stays on one line, never wraps */}
-        <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+        <Link
+          to={user ? (role === 'admin' || role === 'trainer' ? '/admin' : '/dashboard') : '/'}
+          className="flex items-center gap-2 flex-shrink-0"
+        >
           <img src="/logo.svg" alt="Skill Setu" className="w-7 h-7 sm:w-8 sm:h-8 rounded-md flex-shrink-0" />
           <span className="font-serif text-lg sm:text-xl font-bold tracking-tight text-foreground whitespace-nowrap">
             Skill Setu
