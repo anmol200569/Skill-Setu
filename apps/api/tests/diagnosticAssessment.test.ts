@@ -8,6 +8,10 @@ import { z } from 'zod';
 const app = createApp();
 
 describe('Diagnostic Assessments & Seed Data Suite', () => {
+  beforeEach(() => {
+    vi.spyOn(prisma.profile, 'findFirst').mockResolvedValue(null as any);
+    vi.spyOn(prisma.profile, 'findUnique').mockResolvedValue(null as any);
+  });
   describe('Question Serving & Structure', () => {
     it('serves diagnostic questions for a skill without leaking correctAnswers', async () => {
       const mockQuestions = Array.from({ length: 10 }, (_, i) => ({

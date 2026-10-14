@@ -8,6 +8,7 @@ import {
   generateAndSaveQuiz,
   evaluateQuizAttempt
 } from '../services/quizGenerator';
+import { autoRecalculateLearningPath } from '../services/recommendationEngine';
 import { generateQuizPdf } from '../services/quizExportService';
 import {
   quizGenerateInputSchema,
@@ -294,6 +295,9 @@ export async function submitQuiz(req: Request, res: Response): Promise<void> {
       timeSpentSeconds: validated.timeSpentSeconds,
       submittedAnswers: validated.answers
     });
+
+    // C4: Auto recalculation of learning path after a practice quiz is submitted
+    await autoRecalculateLearningPath(userId);
 
     res.json(evaluation);
   } catch (err: any) {

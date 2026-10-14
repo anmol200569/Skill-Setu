@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../lib/prisma';
 import { submitAssessmentSchema, stripInactivePrefix } from '@skill-setu/shared';
+import { autoRecalculateLearningPath } from '../services/recommendationEngine';
 
 /**
  * Fisher-Yates array shuffle implementation
@@ -179,6 +180,9 @@ export async function submitAssessment(req: Request, res: Response): Promise<voi
       lastAssessedAt: new Date()
     }
   });
+
+  // C4: Auto recalculation of learning path after a diagnostic is submitted
+  await autoRecalculateLearningPath(userId);
 
   res.json({
     attemptId: attempt.id,

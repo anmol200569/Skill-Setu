@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../lib/prisma';
 import { analyzeLearnerSkillGaps } from '../services/gapAnalysisEngine';
-import { generateLearningPath } from '../services/recommendationEngine';
+import { generateLearningPath, autoRecalculateLearningPath } from '../services/recommendationEngine';
 
 export async function getLearnerLearningPath(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
@@ -251,6 +251,9 @@ export async function updateCourseProgress(req: Request, res: Response): Promise
         message: 'Retake the diagnostic to confirm'
       });
     }
+
+    // C4: Auto recalculation of learning path after course is completed
+    await autoRecalculateLearningPath(userId);
   }
 
   res.json({
