@@ -51,7 +51,9 @@ interface Question {
 export function QuizzesPage() {
   const { t } = useTranslation();
   const [quizzes, setQuizzes] = useState<QuizItem[]>([]);
+  const [recommendedQuizzes, setRecommendedQuizzes] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingRecs, setIsLoadingRecs] = useState(true);
 
   // Creation State
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -87,6 +89,7 @@ export function QuizzesPage() {
 
   useEffect(() => {
     loadQuizzes();
+    loadRecommendedQuizzes();
     apiClient<any>('/competency/skills')
       .then((res) => {
         if (Array.isArray(res)) {
@@ -107,6 +110,18 @@ export function QuizzesPage() {
       console.warn('Could not load quizzes:', err);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const loadRecommendedQuizzes = async () => {
+    setIsLoadingRecs(true);
+    try {
+      const recs = await apiClient<any[]>('/quizzes/recommended');
+      setRecommendedQuizzes(recs || []);
+    } catch (err: any) {
+      console.warn('Could not load recommended quizzes:', err);
+    } finally {
+      setIsLoadingRecs(false);
     }
   };
 
@@ -309,40 +324,132 @@ export function QuizzesPage() {
         </Button>
       </div>
 
-      {/* Quizzes List */}
-      {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-56 bg-card rounded-xl border border-border" />
-          ))}
+      {/* Recommended for You Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#C2410C]">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Recommended for You</span>
+            </div>
+            <h2 className="text-xl font-serif font-bold text-foreground mt-0.5">
+              Target Role Practice Quizzes
+            </h2>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Ranked by your biggest skill gaps and tailored to your verified competency level.
+            </p>
+          </div>
         </div>
-      ) : quizzes.length === 0 ? (
-        <div className="text-center py-16 bg-card rounded-2xl border border-border text-muted-foreground space-y-3">
-          <FileCheck className="w-12 h-12 text-[#C2410C] mx-auto" />
-          <h3 className="font-serif text-lg font-bold text-foreground">No quizzes generated yet</h3>
-          <p className="text-xs max-w-sm mx-auto">
-            Upload your first lecture PDF, slide deck, or paste notes to generate an interactive practice quiz.
+
+        {isLoadingRecs ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="h-48 bg-card rounded-xl border border-border" />
+            ))}
+          </div>
+        ) : recommendedQuizzes.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {recommendedQuizzes.map((quiz) => (
+              <Card
+                key={quiz.id}
+                className="flex flex-col justify-between hover:border-[#C2410C]/60 hover:shadow-sm transition-all border-l-4 border-l-[#C2410C]"
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <Badge variant="default" className="text-[10px] capitalize bg-[#C2410C]">
+                        {quiz.difficulty}
+                      </Badge>
+                      {quiz.skillName && (
+                        <Badge variant="outline" className="text-[10px]">
+                          {quiz.skillName}
+                        </Badge>
+                      )}
+                      {quiz.gapDeficit && (
+                        <Badge variant="outline" className="text-[10px] text-amber-600 dark:text-amber-400 border-amber-500/30">
+                          Gap: -{quiz.gapDeficit} pts
+                        </Badge>
+                      )}
+                    </div>
+                    <span className="text-[11px] text-muted-foreground font-mono">
+                      {quiz.questionCount} Qs
+                    </span>
+                  </div>
+                  <CardTitle className="text-base font-serif line-clamp-2">{quiz.title}</CardTitle>
+                  <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2">
+                    {quiz.recommendationReason || quiz.description}
+                  </p>
+                </CardHeader>
+
+                <CardContent className="pt-0 border-t border-border mt-3 pt-3 flex items-center justify-between">
+                  <button
+                    onClick={() => exportPdf(quiz.id)}
+                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>PDF</span>
+                  </button>
+
+                  <Button
+                    size="sm"
+                    onClick={() => startQuiz(quiz)}
+                    className="flex items-center gap-1 text-xs font-semibold shadow-sm bg-[#C2410C] hover:bg-[#9A3412] text-white"
+                  >
+                    <Play className="w-3 h-3 fill-current" />
+                    Start Practice Quiz
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : null}
+      </div>
+
+      {/* Your Created & Uploaded Quizzes Section */}
+      <div className="space-y-4 pt-4 border-t border-border">
+        <div>
+          <h2 className="text-xl font-serif font-bold text-foreground">
+            Your Uploaded & Custom Quizzes
+          </h2>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Quizzes generated from your lecture documents, slide decks, or custom topics.
           </p>
-          <Button onClick={() => setIsCreateModalOpen(true)} size="sm">
-            Generate Your First Quiz
-          </Button>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {quizzes.map((quiz) => (
-            <Card key={quiz.id} className="flex flex-col justify-between hover:border-[#C2410C]/50 transition-colors">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <Badge variant="outline" className="text-[10px] capitalize">
-                    {quiz.difficulty}
-                  </Badge>
-                  <span className="text-[11px] text-muted-foreground">
-                    {quiz.questionCount} Questions
-                  </span>
-                </div>
-                <CardTitle className="text-base font-serif line-clamp-2">{quiz.title}</CardTitle>
-                <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2">{quiz.description}</p>
-              </CardHeader>
+
+        {/* Quizzes List */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="h-48 bg-card rounded-xl border border-border" />
+            ))}
+          </div>
+        ) : quizzes.length === 0 ? (
+          <div className="text-center py-12 bg-card rounded-2xl border border-border text-muted-foreground space-y-3">
+            <FileCheck className="w-10 h-10 text-[#C2410C] mx-auto" />
+            <h3 className="font-serif text-base font-bold text-foreground">No custom quizzes uploaded yet</h3>
+            <p className="text-xs max-w-sm mx-auto">
+              Upload your lecture notes, PDFs, or paste text to generate interactive practice quizzes tailored to your studies.
+            </p>
+            <Button onClick={() => setIsCreateModalOpen(true)} size="sm">
+              Generate Custom Quiz
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {quizzes.map((quiz) => (
+              <Card key={quiz.id} className="flex flex-col justify-between hover:border-[#C2410C]/50 transition-colors">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <Badge variant="outline" className="text-[10px] capitalize">
+                      {quiz.difficulty}
+                    </Badge>
+                    <span className="text-[11px] text-muted-foreground">
+                      {quiz.questionCount} Questions
+                    </span>
+                  </div>
+                  <CardTitle className="text-base font-serif line-clamp-2">{quiz.title}</CardTitle>
+                  <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2">{quiz.description}</p>
+                </CardHeader>
 
               <CardContent className="pt-0 border-t border-border mt-3 pt-3 flex items-center justify-between">
                 <button
@@ -363,6 +470,7 @@ export function QuizzesPage() {
           ))}
         </div>
       )}
+      </div>
 
       {/* Create Quiz Modal */}
       <Modal

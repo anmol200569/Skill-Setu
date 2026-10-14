@@ -11,7 +11,8 @@ import {
   deleteQuiz,
   publishQuiz,
   getQuizHistory,
-  getQuizResultById
+  getQuizResultById,
+  getRecommendedQuizzes
 } from '../../controllers/quizController';
 import { authenticate } from '../../middleware/auth';
 import { aiRateLimiter } from '../../middleware/rateLimiter';
@@ -52,7 +53,8 @@ router.post(
 // Generate quiz via Gemini backend
 router.post('/generate', aiRateLimiter, generateQuiz);
 
-// Quiz listing & attempt
+// Quiz listing, recommendations & attempt
+router.get('/recommended', getRecommendedQuizzes);
 router.get('/', listQuizzes);
 router.get('/:id', getQuizById);
 router.post('/submit', submitQuiz);

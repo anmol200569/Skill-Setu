@@ -15,6 +15,7 @@ import {
   submitQuizAttemptSchema,
   stripInactivePrefix
 } from '@skill-setu/shared';
+import { analyzeLearnerSkillGaps } from '../services/gapAnalysisEngine';
 
 export async function uploadStudyMaterial(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
@@ -196,10 +197,22 @@ export async function generateQuiz(req: Request, res: Response): Promise<void> {
 export async function listQuizzes(req: Request, res: Response): Promise<void> {
   const user = req.user!;
 
-  // Strict ownership: Every user, including admin, sees ONLY quizzes they created
+  // Ownership isolation: Users see their own quizzes (or system quizzes if includeSystem=true).
+  // Other users' uploads are NEVER returned (C2 isolation maintained).
+  const includeSystem = req.query.includeSystem === 'true';
+  const where = includeSystem
+    ? {
+        OR: [
+          { creatorId: user.id },
+          { creatorId: null }
+        ]
+      }
+    : { creatorId: user.id };
+
   const quizzes = await prisma.quiz.findMany({
-    where: { creatorId: user.id },
+    where,
     include: {
+      skill: { select: { id: true, name: true, code: true } },
       _count: {
         select: { questions: true, attempts: true }
       }
@@ -219,6 +232,9 @@ export async function listQuizzes(req: Request, res: Response): Promise<void> {
       attemptCount: q._count.attempts,
       difficulty: q.difficulty,
       language: q.language,
+      skillId: q.skillId,
+      skillName: q.skill?.name || null,
+      isSystem: q.creatorId === null,
       createdAt: q.createdAt
     }))
   );
@@ -228,9 +244,16 @@ export async function getQuizById(req: Request, res: Response): Promise<void> {
   const { id } = req.params;
   const user = req.user!;
 
-  // Non-owned quiz must always return 404 for all users (including admin)
+  // Ownership isolation: Quiz must be owned by user OR be a system quiz (creatorId: null).
+  // Non-owned quiz from another user must always return 404 for all users.
   const quiz = await prisma.quiz.findFirst({
-    where: { id, creatorId: user.id },
+    where: {
+      id,
+      OR: [
+        { creatorId: user.id },
+        { creatorId: null }
+      ]
+    },
     include: {
       questions: {
         orderBy: { orderIndex: 'asc' }
@@ -257,6 +280,7 @@ export async function getQuizById(req: Request, res: Response): Promise<void> {
     questionCount: quiz.questionCount,
     difficulty: quiz.difficulty,
     language: quiz.language,
+    skillId: quiz.skillId,
     createdAt: quiz.createdAt,
     updatedAt: quiz.updatedAt,
     questions: quiz.questions.map((q) => ({
@@ -278,12 +302,13 @@ export async function submitQuiz(req: Request, res: Response): Promise<void> {
   const validated = submitQuizAttemptSchema.parse(req.body);
 
   // Enforce quiz ownership rule: Non-owned quiz must always return 404
+  // Exception: System quizzes (creatorId: null) can be submitted by any learner.
   const quiz = await prisma.quiz.findUnique({
     where: { id: validated.quizId },
-    select: { id: true, creatorId: true }
+    select: { id: true, creatorId: true, skillId: true }
   });
 
-  if (!quiz || quiz.creatorId !== userId) {
+  if (!quiz || (quiz.creatorId !== userId && quiz.creatorId !== null)) {
     res.status(404).json({ error: 'NotFound', message: 'Quiz not found' });
     return;
   }
@@ -309,9 +334,15 @@ export async function exportQuizPdfEndpoint(req: Request, res: Response): Promis
   const { id } = req.params;
   const userId = req.user!.id;
 
-  // Non-owned quiz must always return 404
+  // Non-owned quiz must always return 404 (system quizzes with creatorId = null are allowed)
   const quiz = await prisma.quiz.findFirst({
-    where: { id, creatorId: userId },
+    where: {
+      id,
+      OR: [
+        { creatorId: userId },
+        { creatorId: null }
+      ]
+    },
     include: {
       questions: { orderBy: { orderIndex: 'asc' } }
     }
@@ -343,6 +374,134 @@ export async function exportQuizPdfEndpoint(req: Request, res: Response): Promis
     `attachment; filename="${quiz.title.replace(/[^a-zA-Z0-9]/g, '_')}_quiz.pdf"`
   );
   res.send(pdfBuffer);
+}
+
+/**
+ * Returns "Recommended for you" quizzes ranked by the learner's biggest skill gaps
+ * and filtered/mapped to the learner's competency level.
+ */
+export async function getRecommendedQuizzes(req: Request, res: Response): Promise<void> {
+  const userId = req.user!.id;
+
+  try {
+    const profile = await prisma.profile.findUnique({
+      where: { userId },
+      select: { targetRoleId: true }
+    });
+
+    // Fetch learner's skill gap analysis
+    const gapAnalysis = await analyzeLearnerSkillGaps(userId, profile?.targetRoleId || undefined);
+    const gaps = gapAnalysis?.gaps || [];
+
+    // Rank gaps: largest gap deficit first, then high priority
+    const priorityRank = (p: string) => (p === 'high' ? 3 : p === 'medium' ? 2 : 1);
+    const sortedGaps = [...gaps].sort((a, b) => {
+      const defDiff = (b.gap || 0) - (a.gap || 0);
+      if (Math.abs(defDiff) > 0.05) return defDiff;
+      return priorityRank(b.priority) - priorityRank(a.priority);
+    });
+
+    const getTargetDifficulty = (currentLevel: number | null | undefined): 'beginner' | 'intermediate' | 'advanced' => {
+      if (currentLevel === null || currentLevel === undefined || currentLevel <= 1.5) {
+        return 'beginner';
+      }
+      if (currentLevel < 4) {
+        return 'intermediate';
+      }
+      return 'advanced';
+    };
+
+    const recommendedResults: any[] = [];
+    const usedSkillIds = new Set<string>();
+
+    for (const gap of sortedGaps) {
+      if (usedSkillIds.has(gap.skillId)) continue;
+
+      const targetDifficulty = getTargetDifficulty(gap.currentLevel);
+
+      let systemQuiz = await prisma.quiz.findFirst({
+        where: {
+          creatorId: null,
+          skillId: gap.skillId,
+          difficulty: targetDifficulty as any
+        },
+        include: {
+          skill: { select: { id: true, name: true, code: true } },
+          _count: { select: { questions: true, attempts: true } }
+        }
+      });
+
+      if (!systemQuiz) {
+        systemQuiz = await prisma.quiz.findFirst({
+          where: {
+            creatorId: null,
+            skillId: gap.skillId
+          },
+          include: {
+            skill: { select: { id: true, name: true, code: true } },
+            _count: { select: { questions: true, attempts: true } }
+          }
+        });
+      }
+
+      if (systemQuiz) {
+        usedSkillIds.add(gap.skillId);
+        recommendedResults.push({
+          id: systemQuiz.id,
+          title: systemQuiz.title,
+          description: systemQuiz.description,
+          difficulty: systemQuiz.difficulty,
+          questionCount: systemQuiz._count.questions || systemQuiz.questionCount,
+          attemptCount: systemQuiz._count.attempts,
+          skillId: systemQuiz.skillId,
+          skillName: systemQuiz.skill?.name || gap.skillName,
+          gapDeficit: gap.gap,
+          currentLevel: gap.currentLevel,
+          requiredLevel: gap.requiredLevel,
+          priority: gap.priority,
+          recommendationReason: `Bridges your top ${gap.priority} gap in ${gap.skillName} (Current: ${gap.currentLevel ?? 1}/5, Target: ${gap.requiredLevel}/5)`
+        });
+      }
+
+      if (recommendedResults.length >= 6) break;
+    }
+
+    // Fallback: If learner has no assessed gaps or no matched system quizzes, return any foundational system quizzes
+    if (recommendedResults.length === 0) {
+      const fallbackQuizzes = await prisma.quiz.findMany({
+        where: { creatorId: null },
+        take: 4,
+        include: {
+          skill: { select: { id: true, name: true, code: true } },
+          _count: { select: { questions: true, attempts: true } }
+        },
+        orderBy: { createdAt: 'desc' }
+      });
+
+      for (const fq of fallbackQuizzes) {
+        recommendedResults.push({
+          id: fq.id,
+          title: fq.title,
+          description: fq.description,
+          difficulty: fq.difficulty,
+          questionCount: fq._count.questions || fq.questionCount,
+          attemptCount: fq._count.attempts,
+          skillId: fq.skillId,
+          skillName: fq.skill?.name || null,
+          gapDeficit: null,
+          currentLevel: 1,
+          requiredLevel: 3,
+          priority: 'medium',
+          recommendationReason: 'Foundational benchmark quiz recommended for your track'
+        });
+      }
+    }
+
+    res.json(recommendedResults);
+  } catch (err: any) {
+    console.error('[getRecommendedQuizzes] Error:', err);
+    res.status(500).json({ error: 'RecommendationError', message: err.message });
+  }
 }
 
 // ---------------- Quiz Management (Owner only) ----------------
