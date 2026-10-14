@@ -324,6 +324,7 @@
     "notStartedTag": "not started",
     "takeFirstDiagnostic": "Take your first diagnostic",
     "takeDiagnostic": "Take diagnostic",
+    "retakePrompt": "Retake the diagnostic to confirm",
     "notAssessed": "Not assessed",
     "noCourseCoveringGap": "No course in catalog currently covers this gap.",
     "learningPathProgress": "Learning Path Progress",

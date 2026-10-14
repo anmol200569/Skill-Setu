@@ -65,6 +65,7 @@ export interface GapItem {
   isAssessed?: boolean;
   weight?: number;
   priorityScore?: number;
+  needsConfirmation?: boolean;
 }
 
 export interface RecommendedCourseItem {
@@ -807,8 +808,13 @@ export function DashboardPage() {
                       >
                         <div className="flex items-center justify-between gap-2">
                           <div className="min-w-0">
-                            <div className="font-semibold text-xs sm:text-sm text-foreground truncate">
-                              {gap.skillName}
+                            <div className="font-semibold text-xs sm:text-sm text-foreground truncate flex items-center gap-1.5 flex-wrap">
+                              <span>{gap.skillName}</span>
+                              {gap.needsConfirmation && (
+                                <span className="text-[10px] text-amber-600 dark:text-amber-400 font-normal">
+                                  ({t('dashboard.retakePrompt', { defaultValue: 'Retake the diagnostic to confirm' })})
+                                </span>
+                              )}
                             </div>
                             <div className="text-[11px] text-muted-foreground">
                               {isAssessed

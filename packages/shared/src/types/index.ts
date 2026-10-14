@@ -75,6 +75,8 @@ export interface UserSkillProficiency {
   effectiveScore: number; // calculated combined score
   confidenceLevel?: number; // 0 to 100
   lastAssessedAt?: string;
+  needsConfirmation?: boolean;
+  confirmationMessage?: string;
 }
 
 export type QuestionType = 'single_mcq' | 'multi_mcq' | 'true_false';
@@ -124,6 +126,8 @@ export interface SkillGapItem {
   priority: 'critical' | 'high' | 'medium' | 'low';
   priorityScore: number; // sorted by priority score
   weight: number;
+  needsConfirmation?: boolean;
+  confirmationMessage?: string;
 }
 
 export interface UnassessedSkillItem {
@@ -132,6 +136,8 @@ export interface UnassessedSkillItem {
   domainName?: string;
   requiredLevel: number;
   weight?: number;
+  needsConfirmation?: boolean;
+  confirmationMessage?: string;
 }
 
 export interface SkillGapAnalysisResult {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { apiClient } from '../../lib/api';
 import { Button } from '../../components/ui/Button';
@@ -8,6 +9,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Ca
 import { User, Briefcase, Globe, Clock, CheckCircle2, Award, Save } from 'lucide-react';
 
 export function ProfilePage() {
+  const { t } = useTranslation();
   const { user, profile, refreshProfile } = useAuth();
 
   const [fullName, setFullName] = useState(profile?.fullName || '');
@@ -213,7 +215,14 @@ export function ProfilePage() {
                 {userSkills.map((us) => (
                   <div key={us.id} className="p-3 rounded-lg border border-border bg-secondary/30 flex items-center justify-between">
                     <div>
-                      <div className="font-semibold text-xs text-foreground">{us.skillName}</div>
+                      <div className="font-semibold text-xs text-foreground flex items-center gap-1.5 flex-wrap">
+                        <span>{us.skillName}</span>
+                        {(us.needsConfirmation || (us.selfAssessedLevel > (us.verifiedScore ?? 0))) && (
+                          <span className="text-[10px] text-amber-600 dark:text-amber-400 font-normal">
+                            ({t('dashboard.retakePrompt', { defaultValue: 'Retake the diagnostic to confirm' })})
+                          </span>
+                        )}
+                      </div>
                       <div className="text-[11px] text-muted-foreground">
                         {us.verifiedScore !== null && us.verifiedScore !== undefined
                           ? `Self: ${us.selfAssessedLevel}/5 • Verified: ${us.verifiedScore}/5`

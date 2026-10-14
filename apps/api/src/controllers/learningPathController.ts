@@ -147,5 +147,116 @@ export async function updateCourseProgress(req: Request, res: Response): Promise
     }
   });
 
-  res.json({ message: 'Progress updated', enrollment });
+  const updatedSkills: Array<{
+    skillId: string;
+    skillName?: string;
+    selfAssessedLevel: number;
+    verifiedScore: number | null;
+    needsConfirmation: boolean;
+    message: string;
+  }> = [];
+
+  if (validStatus === 'completed') {
+    // 1. Fetch course details and covered skills
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      include: {
+        courseSkills: {
+          include: { skill: true }
+        }
+      }
+    });
+
+    const coveredSkillMap = new Map<string, string>();
+    if (course?.courseSkills) {
+      course.courseSkills.forEach((cs) => {
+        coveredSkillMap.set(cs.skillId, cs.skill.name);
+      });
+    }
+
+    if (course?.skillsCovered && Array.isArray(course.skillsCovered) && course.skillsCovered.length > 0) {
+      const skillsFromNames = await prisma.skill.findMany({
+        where: {
+          OR: [
+            { id: { in: course.skillsCovered as string[] } },
+            { name: { in: course.skillsCovered as string[] } },
+            { code: { in: course.skillsCovered as string[] } }
+          ]
+        },
+        select: { id: true, name: true }
+      });
+      (skillsFromNames || []).forEach((s) => {
+        if (!coveredSkillMap.has(s.id)) {
+          coveredSkillMap.set(s.id, s.name);
+        }
+      });
+    }
+
+    // 2. Fetch target role requirements to enforce role required level cap
+    const profile = await prisma.profile.findFirst({
+      where: { userId },
+      select: { targetRoleId: true }
+    });
+    const targetRoleId = profile?.targetRoleId;
+    const roleRequirements = targetRoleId
+      ? await prisma.roleSkillRequirement.findMany({
+          where: { roleId: targetRoleId }
+        })
+      : [];
+    const reqLevelMap = new Map(roleRequirements.map((r) => [r.skillId, r.requiredProficiency]));
+
+    // 3. Raise selfAssessedLevel by +1 (cap 5, and never above role required level) for each skill
+    for (const [skillId, skillName] of coveredSkillMap.entries()) {
+      const existing = await prisma.userSkill.findUnique({
+        where: {
+          userId_skillId: { userId, skillId }
+        }
+      });
+
+      const currentSelf = existing?.selfAssessedLevel ?? 1;
+      const roleReq = reqLevelMap.get(skillId);
+      const maxAllowed = roleReq !== undefined ? Math.min(5, roleReq) : 5;
+      const newSelf = Math.min(maxAllowed, currentSelf + 1);
+
+      // Never touch verifiedScore
+      const verified = existing?.verifiedScore ?? null;
+      const effectiveScore = verified !== null
+        ? Number((0.4 * newSelf + 0.6 * verified).toFixed(2))
+        : newSelf;
+
+      const saved = await prisma.userSkill.upsert({
+        where: {
+          userId_skillId: { userId, skillId }
+        },
+        update: {
+          selfAssessedLevel: newSelf,
+          effectiveScore
+        },
+        create: {
+          userId,
+          skillId,
+          selfAssessedLevel: newSelf,
+          verifiedScore: null,
+          effectiveScore,
+          confidenceLevel: 50.0
+        }
+      });
+
+      updatedSkills.push({
+        skillId,
+        skillName,
+        selfAssessedLevel: saved.selfAssessedLevel,
+        verifiedScore: saved.verifiedScore,
+        needsConfirmation: true,
+        message: 'Retake the diagnostic to confirm'
+      });
+    }
+  }
+
+  res.json({
+    message: 'Progress updated',
+    enrollment,
+    updatedSkills,
+    confirmationNotice: updatedSkills.length > 0 ? 'Retake the diagnostic to confirm' : null
+  });
 }
