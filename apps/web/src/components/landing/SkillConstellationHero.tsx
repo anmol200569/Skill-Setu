@@ -53,9 +53,9 @@ export function SkillConstellationHero({ forceFallback = false, className = '' }
       return;
     }
 
-    // 3. Performance guard: on very small mobile screens (<420px), prioritize battery and touch fps
-    const isVerySmallMobile = window.innerWidth < 420;
-    if (isVerySmallMobile) {
+    // 3. Performance guard: on mobile screens (<768px), show static fallback as specified
+    const isMobileDevice = window.innerWidth < 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
+    if (isMobileDevice) {
       setCanRender3D(false);
       return;
     }
