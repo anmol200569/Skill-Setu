@@ -163,7 +163,8 @@ export async function generateQuiz(req: Request, res: Response): Promise<void> {
       language: validated.language,
       allowedTypes: validated.allowedTypes,
       sourceType: validated.sourceType,
-      sourceFilename: validated.sourceFilename
+      sourceFilename: validated.sourceFilename,
+      skillId: validated.skillId || null
     });
 
     res.status(201).json(quiz);

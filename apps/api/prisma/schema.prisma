@@ -119,6 +119,7 @@ model Skill {
   assessmentQuestions AssessmentQuestion[]
   assessmentAttempts  AssessmentAttempt[]
   courseSkills        CourseSkill[]
+  quizzes             Quiz[]
 
   @@index([domainId])
 }
@@ -341,6 +342,8 @@ model Quiz {
   questionCount  Int             @default(5)
   difficulty     DifficultyLevel @default(intermediate)
   language       String          @default("en")
+  skillId        String?
+  skill          Skill?          @relation(fields: [skillId], references: [id], onDelete: SetNull)
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
 
@@ -349,6 +352,7 @@ model Quiz {
 
   @@index([creatorId])
   @@index([isPublished])
+  @@index([skillId])
 }
 
 model QuizQuestion {

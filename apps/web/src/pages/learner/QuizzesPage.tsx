@@ -56,6 +56,8 @@ export function QuizzesPage() {
   // Creation State
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [creationMode, setCreationMode] = useState<'upload' | 'paste' | 'topic'>('upload');
+  const [availableSkills, setAvailableSkills] = useState<Array<{ id: string; name: string }>>([]);
+  const [selectedSkillId, setSelectedSkillId] = useState<string>('');
   const [title, setTitle] = useState('');
   const [pastedText, setPastedText] = useState('');
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -85,6 +87,15 @@ export function QuizzesPage() {
 
   useEffect(() => {
     loadQuizzes();
+    apiClient<any>('/competency/skills')
+      .then((res) => {
+        if (Array.isArray(res)) {
+          setAvailableSkills(res);
+        } else if (res?.skills && Array.isArray(res.skills)) {
+          setAvailableSkills(res.skills);
+        }
+      })
+      .catch((err) => console.warn('Could not load skills:', err));
   }, []);
 
   const loadQuizzes = async () => {
@@ -168,7 +179,8 @@ export function QuizzesPage() {
           language,
           allowedTypes,
           sourceType: creationMode === 'upload' ? 'uploaded_document' : 'pasted_text',
-          sourceFilename: uploadedFile?.name
+          sourceFilename: uploadedFile?.name,
+          skillId: selectedSkillId || undefined
         })
       });
 
@@ -199,6 +211,7 @@ export function QuizzesPage() {
     setPastedText('');
     setUploadedFile(null);
     setExtractedPreview('');
+    setSelectedSkillId('');
     setErrorMsg(null);
   };
 
@@ -496,6 +509,24 @@ export function QuizzesPage() {
                 <option value="hi">हिंदी (Hindi)</option>
               </select>
             </div>
+
+            <div>
+              <label className="block text-[11px] font-medium text-foreground/80 mb-1">
+                Target Skill (Optional)
+              </label>
+              <select
+                value={selectedSkillId}
+                onChange={(e) => setSelectedSkillId(e.target.value)}
+                className="w-full bg-secondary rounded-md p-2 text-xs border border-border focus:ring-1 focus:ring-[#C2410C]"
+              >
+                <option value="">None / General Practice</option>
+                {availableSkills.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="pt-4 border-t border-border flex items-center justify-end gap-3">
@@ -541,6 +572,18 @@ export function QuizzesPage() {
                 Answered <strong className="text-foreground">{attemptResult.correctAnswersCount}</strong> out of <strong className="text-foreground">{attemptResult.totalQuestions}</strong> questions correctly.
               </p>
             </div>
+
+            {attemptResult.skillBoostApplied && (
+              <div className="p-4 rounded-xl border border-green-500/30 bg-green-500/10 text-xs text-green-700 dark:text-green-400 space-y-1 text-left">
+                <div className="font-bold flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-green-600" />
+                  <span>Practice Quiz Boost Applied!</span>
+                </div>
+                <p>
+                  Your score qualified for a +{attemptResult.boostAmount} boost! Your self-assessed level is now {attemptResult.newSelfAssessedLevel}/5. (Verified diagnostic score remains unchanged.)
+                </p>
+              </div>
+            )}
 
             {/* Weak Topics Feedback */}
             {attemptResult.weakTopics?.length > 0 && (

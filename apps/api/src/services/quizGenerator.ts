@@ -19,6 +19,7 @@ export interface GenerateQuizParams {
   allowedTypes: ('single_mcq' | 'multi_mcq' | 'true_false')[];
   sourceType: 'uploaded_document' | 'pasted_text' | 'topic_prompt';
   sourceFilename?: string;
+  skillId?: string | null;
 }
 
 export const TOTAL_QUIZ_BUDGET_MS = 55000;
@@ -196,6 +197,7 @@ JSON Output Format Specification:
       description: parsedQuizOutput.description || 'AI-generated technical assessment',
       sourceType: params.sourceType,
       sourceFilename: params.sourceFilename,
+      skillId: params.skillId || null,
       isPublished: true,
       questionCount: parsedQuizOutput.questions.length,
       difficulty: params.difficulty as any,
@@ -302,6 +304,66 @@ export async function evaluateQuizAttempt(params: QuizAttemptEvaluation) {
     }
   });
 
+  let skillBoostApplied = false;
+  let boostAmount = 0;
+  let updatedSelfLevel: number | null = null;
+
+  if (quiz.skillId) {
+    if (scorePercentage >= 80) {
+      boostAmount = 0.5;
+    } else if (scorePercentage >= 60) {
+      boostAmount = 0.25;
+    }
+
+    if (boostAmount > 0) {
+      const existing = await prisma.userSkill.findUnique({
+        where: {
+          userId_skillId: {
+            userId: params.userId,
+            skillId: quiz.skillId
+          }
+        }
+      });
+
+      const currentSelf = existing?.selfAssessedLevel ?? 1;
+      const verified = existing?.verifiedScore ?? null;
+      const isAssessed = verified !== null && verified !== undefined;
+
+      // Capped at (verifiedScore + 1) if assessed, otherwise at 3, never above 5
+      const cap = Math.min(5, isAssessed ? (verified! + 1) : 3);
+      const newSelf = Math.min(cap, Number((currentSelf + boostAmount).toFixed(2)));
+
+      // verifiedScore is never changed by practice quizzes
+      const effectiveScore = verified !== null
+        ? Number((0.4 * newSelf + 0.6 * verified).toFixed(2))
+        : newSelf;
+
+      await prisma.userSkill.upsert({
+        where: {
+          userId_skillId: {
+            userId: params.userId,
+            skillId: quiz.skillId
+          }
+        },
+        update: {
+          selfAssessedLevel: newSelf,
+          effectiveScore
+        },
+        create: {
+          userId: params.userId,
+          skillId: quiz.skillId,
+          selfAssessedLevel: newSelf,
+          verifiedScore: null,
+          effectiveScore,
+          confidenceLevel: 50.0
+        }
+      });
+
+      skillBoostApplied = true;
+      updatedSelfLevel = newSelf;
+    }
+  }
+
   return {
     id: attemptRecord.id,
     quizId: quiz.id,
@@ -313,6 +375,10 @@ export async function evaluateQuizAttempt(params: QuizAttemptEvaluation) {
     timeSpentSeconds: params.timeSpentSeconds,
     submittedAt: attemptRecord.submittedAt.toISOString(),
     weakTopics,
-    answers: answersDetail
+    answers: answersDetail,
+    skillId: quiz.skillId || null,
+    skillBoostApplied,
+    boostAmount,
+    newSelfAssessedLevel: updatedSelfLevel
   };
 }
