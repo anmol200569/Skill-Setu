@@ -4,23 +4,33 @@ This document provides a step-by-step checklist for configuring and verifying Sk
 
 ---
 
-## 1. Required Production Environment Variables
+## 1. Production Environment Variables
 
 Configure these variables in your Vercel Project Settings under **Environment Variables** (apply to **Production** environment).
 
-| Environment Variable | Description / Purpose | Example Placeholder |
-| :--- | :--- | :--- |
-| `SUPABASE_URL` | Supabase project API URL (HTTPS) | `https://your-project.supabase.co` |
-| `SUPABASE_ANON_KEY` | Public / Anonymous key for client JWT verification | `eyJh...` |
-| `SUPABASE_SERVICE_ROLE_KEY` | Elevated service-role key for server administration | `eyJh...` |
-| `INITIAL_ADMIN_EMAIL` | Verified email address designated for bootstrap administrator | `admin@yourdomain.com` |
-| `CORS_ORIGIN` | Exact production URL(s) allowed for CORS (comma-separated if multiple, trimmed, no trailing slashes). CORS_ORIGIN must be the exact production URL — there are no hardcoded fallbacks and wildcards like `*.vercel.app` are strictly rejected. Same-origin requests are automatically permitted. | `https://your-production-app.vercel.app, https://skill-setu.org` |
-| `GEMINI_API_KEY` | Google AI Studio API Key for Gemini model inference | `AIzaSy...` |
-| `GEMINI_MODEL` | Gemini primary generative model name | `gemini-3.5-flash-lite` |
-| `GEMINI_FALLBACK_MODEL` | Optional fallback model when primary is rate-limited / unavailable | `gemini-3.1-flash-lite` |
-| `GEMINI_TIMEOUT_MS` | Max API timeout for AI generation (default 45000ms) | `45000` |
-| `DATABASE_URL` | Connection-pooled PostgreSQL connection string | `postgresql://postgres:[PASSWORD]@[HOST]:6543/postgres?pgbouncer=true` |
-| `DIRECT_URL` | Direct PostgreSQL connection string for Prisma migrations | `postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres` |
+### A. Hard-Enforced Variables (Process Crash on Startup)
+If any of these 4 variables are missing or set to placeholder values, `apps/api/src/config/index.ts` immediately throws a `FATAL` error and crashes the serverless process at boot:
+
+| Environment Variable | Enforcement | Description / Purpose | Example Placeholder |
+| :--- | :--- | :--- | :--- |
+| `SUPABASE_URL` | **Hard (Fatal)** | Supabase project API URL (HTTPS) | `https://your-project.supabase.co` |
+| `SUPABASE_ANON_KEY` | **Hard (Fatal)** | Public / Anonymous key for client JWT verification | `eyJh...` |
+| `SUPABASE_SERVICE_ROLE_KEY` | **Hard (Fatal)** | Elevated service-role key for server administration | `eyJh...` |
+| `INITIAL_ADMIN_EMAIL` | **Hard (Fatal)** | Verified email address designated for bootstrap administrator | `admin@yourdomain.com` |
+
+### B. Soft-Enforced Variables (Runtime Functionality with Fallbacks)
+The server boots if these are omitted, but core features fail at runtime or default to fallbacks:
+
+| Environment Variable | Enforcement | Description / Purpose | Example Placeholder / Default |
+| :--- | :--- | :--- | :--- |
+| `DATABASE_URL` | **Soft at boot, required at runtime** | Connection-pooled PostgreSQL connection string (Transaction Pooler port 6543) | `postgresql://postgres:[PASSWORD]@[HOST]:6543/postgres?pgbouncer=true` |
+| `DIRECT_URL` | **Soft at boot, required for seeds/migrations** | Direct PostgreSQL connection string (Session/Direct port 5432) | `postgresql://postgres:[PASSWORD]@[HOST]:5432/postgres` |
+| `CORS_ORIGIN` | **Soft** (defaults to `http://localhost:5173`) | Exact production URL(s) allowed for CORS (comma-separated if multiple, trimmed, no trailing slashes). Wildcards like `*.vercel.app` are rejected. | `https://your-production-app.vercel.app, https://skill-setu.org` |
+| `GEMINI_API_KEY` | **Soft at boot, required for AI** | Google AI Studio API Key for Gemini inference (fails with 500 if missing when invoking AI) | `AIzaSy...` |
+| `GEMINI_MODEL` | **Soft** (defaults to `gemini-3.5-flash-lite`) | Gemini primary generative model name | `gemini-3.5-flash-lite` |
+| `GEMINI_FALLBACK_MODEL` | **Soft** (defaults to `gemini-3.1-flash-lite`) | Fallback model when primary is rate-limited (429) or unavailable (503) | `gemini-3.1-flash-lite` |
+| `GEMINI_TIMEOUT_MS` | **Soft** (defaults to `45000`) | Max API timeout for AI generation (shared total budget for quiz generation is capped at 55s) | `45000` |
+| `SUPABASE_JWT_SECRET` | **Optional** (defaults to `''`) | Supabase JWT Secret. Code reads `config.supabase.jwtSecret`, but the auth middleware verifies tokens directly via Supabase Auth API (`supabaseAuth.auth.getUser`), so local secret validation is not actively executed. | `your-supabase-jwt-secret` |
 
 > **Note:** Never commit real secrets or credentials to source control.
 
@@ -33,6 +43,7 @@ Configure these variables in your Vercel Project Settings under **Environment Va
    - Copy **Project URL** -> use as `SUPABASE_URL`.
    - Under **Project API keys**, copy `anon` `public` key -> use as `SUPABASE_ANON_KEY`.
    - Under **Project API keys**, copy `service_role` `secret` key -> use as `SUPABASE_SERVICE_ROLE_KEY`.
+   - Under **JWT Settings**, copy **JWT Secret** -> optional `SUPABASE_JWT_SECRET`.
 2. Go to **Project Settings** -> **Database**:
    - Scroll to **Connection string**.
    - Select **URI** tab.
@@ -45,7 +56,7 @@ Configure these variables in your Vercel Project Settings under **Environment Va
 1. Open your project on Vercel.
 2. Click on the **Settings** tab along the top navigation bar.
 3. In the left sidebar, click **Environment Variables**.
-4. Add each of the 10 variables listed above. Ensure the **Production** checkbox is checked for each variable.
+4. Add the production variables listed above. Ensure the **Production** checkbox is checked for each variable.
 5. Save each variable and trigger a new deployment (or redeploy the latest commit) for changes to take effect.
 
 ---
