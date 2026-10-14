@@ -238,6 +238,41 @@ describe('Skill Gap Analysis & Readiness Engine', () => {
       ]);
       expect(caseB.overallReadinessScore).toBe(25);
     });
+
+    it('guarantees unassessed skills never get a numeric deficit or priority score (TASK C1)', async () => {
+      const { calculateReadiness } = await import('@skill-setu/shared');
+      const reqs = [
+        { skillId: 's1', skillName: 'Kubernetes', requiredProficiency: 5, weight: 1.5, priority: 'must_have' as const },
+        { skillId: 's2', skillName: 'Go', requiredProficiency: 4, weight: 1.0, priority: 'good_to_have' as const },
+        { skillId: 's3', skillName: 'gRPC', requiredProficiency: 3, weight: 1.0, priority: 'optional' as const }
+      ];
+
+      // Learner assessed only s1
+      const userAssessments = [
+        { skillId: 's1', selfAssessedLevel: 3, verifiedScore: 2 },
+        { skillId: 's2', selfAssessedLevel: 4, verifiedScore: null },
+        { skillId: 's3' }
+      ];
+
+      const result = computeSkillGapMetrics(reqs, userAssessments);
+      const sharedResult = calculateReadiness(reqs, userAssessments);
+
+      // Exact parity
+      expect(result).toEqual(sharedResult);
+
+      // Only s1 should be in gaps
+      expect(result.gaps.length).toBe(1);
+      expect(result.gaps[0].skillId).toBe('s1');
+      expect(result.gaps[0].gap).toBeGreaterThan(0);
+
+      // s2 and s3 MUST be in unassessedSkills, with NO gap property
+      expect(result.unassessedSkills.length).toBe(2);
+      expect(result.unassessedSkills.map((u) => u.skillId)).toEqual(['s2', 's3']);
+      for (const u of result.unassessedSkills) {
+        expect((u as any).gap).toBeUndefined();
+        expect((u as any).priorityScore).toBeUndefined();
+      }
+    });
   });
 });
 
