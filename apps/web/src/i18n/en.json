@@ -48,6 +48,84 @@
     "closeGap": "Start closing this gap",
     "topicsCovered": "Topics inside this skill"
   },
+  "dashboard": {
+    "badge": "Skill Intelligence",
+    "welcome": "Welcome back",
+    "targetRoleLabel": "Current Career Goal",
+    "notSelectedRole": "Select target career role",
+    "readiness": {
+      "title": "Overall Readiness Score",
+      "disclaimer": "Estimate, not a guarantee of employment",
+      "tooltip": "Calculated using role requirement weights and verified skill proficiencies from diagnostic assessments.",
+      "coverageTitle": "Assessment Coverage",
+      "coverageTooltip": "Percentage of target role skill requirements that you have assessed.",
+      "coverageSub": "{{assessed}} of {{total}} role skills verified",
+      "incompleteTitle": "Incomplete Assessment",
+      "incompleteDesc": "Assess at least 3 skills to calculate your objective career readiness score.",
+      "continueAssessing": "Continue Assessing",
+      "viewDetails": "View Gap Breakdown"
+    },
+    "radar": {
+      "title": "Skill Proficiency vs Target Level",
+      "description": "Your achieved skill levels benchmarked against industry role targets.",
+      "achieved": "Achieved Level",
+      "target": "Role Target",
+      "emptyTitle": "No Assessed Skills Yet",
+      "emptyDesc": "Take diagnostic assessments to plot your competency radar.",
+      "tableSkill": "Skill Name",
+      "tableAchieved": "Achieved",
+      "tableTarget": "Target",
+      "tableGap": "Gap Size",
+      "tableStatus": "Status"
+    },
+    "topGaps": {
+      "title": "Top Priority Skill Gaps",
+      "description": "The 3 highest-leverage areas to focus on based on role importance and current deficit.",
+      "action": "Start closing this gap",
+      "emptyTitle": "No Active Skill Gaps",
+      "emptyDesc": "All assessed skills meet or exceed your target role requirements!"
+    },
+    "skillGapPanel": {
+      "title": "Differential Skill Gap Analysis",
+      "description": "Granular evaluation of each competency requirement for your target role.",
+      "filterAll": "All Skills",
+      "filterNeedsImprovement": "Needs Improvement",
+      "filterStrong": "Strong",
+      "filterNotAssessed": "Not Assessed",
+      "searchPlaceholder": "Search skills..."
+    },
+    "trend": {
+      "title": "Readiness Progress Over Time",
+      "description": "Track your readiness trajectory across reassessments as you learn.",
+      "singlePointEmptyTitle": "Trajectory Initialized",
+      "singlePointEmptyDesc": "Only 1 assessment recorded. Retake diagnostic modules as you complete courses to track your readiness growth over time.",
+      "noDataDesc": "Complete diagnostic assessments to see your readiness trajectory."
+    },
+    "roadmapSummary": {
+      "title": "Personalized Roadmap",
+      "description": "Your active sequence of courses and projects to bridge identified gaps.",
+      "nextStep": "Next Step",
+      "targetDate": "Target Completion",
+      "weeklyTime": "Weekly Study Commitment",
+      "hoursPerWeek": "{{hours}} hrs / week",
+      "progress": "Roadmap Progress",
+      "viewFullRoadmap": "Open Full Roadmap"
+    },
+    "whatIf": {
+      "switchButton": "Compare Role"
+    },
+    "emptyState": {
+      "tag": "Getting Started",
+      "title": "Configure your diagnostic journey",
+      "subtitle": "Follow these steps to unlock your personalized dashboard and readiness score.",
+      "checklistTitle": "Readiness Checklist",
+      "checklistProgress": "{{completed}} of {{total}} completed",
+      "step1Title": "Choose a Target Career Role",
+      "step2Title": "Take First Diagnostic Assessment",
+      "step3Title": "Review Identified Skill Gaps",
+      "step4Title": "Complete First Learning Module"
+    }
+  },
   "landing": {
     "badge": "Open Technical Skill Intelligence",
     "title": "Know your technical skill gaps. Bridge them with free learning.",
