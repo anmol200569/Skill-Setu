@@ -421,6 +421,38 @@
       "viewAll": "View All"
     }
   },
+  "admin": {
+    "title": "Administrator Studio",
+    "heading": "Organization Skill Intelligence",
+    "subheading": "Real-time analytics across learner cohorts, competency demand, and assessment metrics.",
+    "manageCompetencies": "Manage Competencies",
+    "manageCourses": "Manage Courses",
+    "totalLearners": "Total Learners",
+    "activeQuizzes": "AI Quizzes Active",
+    "diagnosticsCompleted": "Diagnostics Completed",
+    "avgPlatformReadiness": "Avg Platform Readiness",
+    "notEnoughData": "Not enough data",
+    "popularRolesTitle": "Target Career Role Distribution",
+    "noRoles": "No target career roles selected yet.",
+    "aspirants": "Aspirants",
+    "recentActivityTitle": "Recent Organization Activity",
+    "noRecentActivity": "No recent learner activities logged.",
+    "skillsAnalysis": {
+      "title": "Organization-Wide Skill Gap Frequency",
+      "subtitle": "Percentage of assessed learners exhibiting a competency gap per skill",
+      "chartTitle": "Cohort Skill Gap Distribution (% Affected)",
+      "tableTitle": "Detailed Skill Metrics",
+      "skillCol": "Skill & Domain",
+      "assessedCol": "Assessed Learners",
+      "withGapCol": "Learners with Gap",
+      "gapPercentCol": "Prevalence (% with gap)",
+      "avgGapCol": "Avg Deficit",
+      "notEnoughData": "Not enough data (< 3 assessed)",
+      "emptyChart": "Not enough assessment data to plot cohort trends (minimum 3 assessed learners per skill required).",
+      "error": "Failed to load organization analytics",
+      "retry": "Retry"
+    }
+  },
   "quiz": {
     "title": "AI Quiz Generator",
     "subtitle": "Transform lecture notes, slides, or documents into diagnostic quizzes",
