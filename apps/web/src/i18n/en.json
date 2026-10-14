@@ -126,6 +126,27 @@
       "step4Title": "Complete First Learning Module"
     }
   },
+  "skillGapsPage": {
+    "title": "Skill Gaps & Competency Differential",
+    "subtitle": "Objective comparison of your assessed proficiencies against your target career role requirements.",
+    "roleLabel": "Target Role",
+    "statTotal": "Target Competencies",
+    "statTotalTooltip": "Total skill requirements defined for your target career role.",
+    "statNeedsImprovement": "Active Gaps",
+    "statNeedsImprovementTooltip": "Skills where your verified level is currently below the required target.",
+    "statStrong": "Target Met",
+    "statStrongTooltip": "Skills where your verified level meets or exceeds the target benchmark.",
+    "statNotAssessed": "Pending Assessment",
+    "statNotAssessedTooltip": "Core role requirements that have not yet been evaluated via diagnostic assessment.",
+    "filterAll": "All Competencies",
+    "filterNeedsImprovement": "Needs Improvement",
+    "filterStrong": "Strong",
+    "filterNotAssessed": "Not Assessed",
+    "noRoleTitle": "No Target Role Selected",
+    "noRoleDesc": "Select your target career role to see your tailored competency gap differential.",
+    "selectRoleBtn": "Select Career Goal",
+    "takeDiagnostic": "Take Diagnostic Assessment"
+  },
   "landing": {
     "badge": "Open Technical Skill Intelligence",
     "title": "Know your technical skill gaps. Bridge them with free learning.",
