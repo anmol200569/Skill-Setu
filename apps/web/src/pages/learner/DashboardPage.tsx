@@ -65,6 +65,7 @@ export interface GapItem {
   isAssessed?: boolean;
   weight?: number;
   priorityScore?: number;
+  needsConfirmation?: boolean;
 }
 
 export interface RecommendedCourseItem {
@@ -101,6 +102,7 @@ export function DashboardPage() {
 
   const [stats, setStats] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [dashboardError, setDashboardError] = useState<string | null>(null);
   const [roles, setRoles] = useState<CareerRoleItem[]>([]);
 
   // What-If Compare Modal State
@@ -135,12 +137,14 @@ export function DashboardPage() {
 
   const fetchDashboardData = async () => {
     setIsLoading(true);
+    setDashboardError(null);
     try {
       const data = await apiClient<any>('/analytics/learner');
       setStats(data);
       return data;
-    } catch (err) {
+    } catch (err: any) {
       console.warn('Could not load learner stats:', err);
+      setDashboardError(err.message || 'Could not load learner stats');
       return null;
     } finally {
       setIsLoading(false);
@@ -804,8 +808,13 @@ export function DashboardPage() {
                       >
                         <div className="flex items-center justify-between gap-2">
                           <div className="min-w-0">
-                            <div className="font-semibold text-xs sm:text-sm text-foreground truncate">
-                              {gap.skillName}
+                            <div className="font-semibold text-xs sm:text-sm text-foreground truncate flex items-center gap-1.5 flex-wrap">
+                              <span>{gap.skillName}</span>
+                              {gap.needsConfirmation && (
+                                <span className="text-[10px] text-amber-600 dark:text-amber-400 font-normal">
+                                  ({t('dashboard.retakePrompt', { defaultValue: 'Retake the diagnostic to confirm' })})
+                                </span>
+                              )}
                             </div>
                             <div className="text-[11px] text-muted-foreground">
                               {isAssessed
@@ -1017,6 +1026,110 @@ export function DashboardPage() {
               )}
               </div>
             </div>
+          </div>
+
+          {/* ============================================================== */}
+          {/* RECENT QUIZ HISTORY CARD (MODULE B1)                          */}
+          {/* ============================================================== */}
+          <div className="pt-2">
+            {isLoading ? (
+              <Card className="border-border animate-pulse p-6">
+                <div className="h-5 w-48 bg-secondary rounded mb-4" />
+                <div className="space-y-3">
+                  <div className="h-12 bg-secondary rounded" />
+                  <div className="h-12 bg-secondary rounded" />
+                </div>
+              </Card>
+            ) : dashboardError ? (
+              <Card className="border-red-500/20 bg-red-500/5 p-5">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-2 text-red-600">
+                    <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+                    <span>{t('dashboard.quizHistory.error', 'Could not load quiz history')}</span>
+                  </div>
+                  <Button size="sm" variant="outline" onClick={fetchDashboardData} className="text-xs h-7">
+                    <RefreshCw className="w-3.5 h-3.5 mr-1" />
+                    {t('dashboard.quizHistory.retry', 'Retry')}
+                  </Button>
+                </div>
+              </Card>
+            ) : (!stats?.quizScoreHistory || stats.quizScoreHistory.length === 0) ? (
+              <Card className="border-border">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base font-serif flex items-center justify-between">
+                    <span className="flex items-center gap-2">
+                      <Award className="w-4 h-4 text-[#C2410C]" />
+                      <span>{t('dashboard.quizHistory.title', 'Recent Quiz History')}</span>
+                    </span>
+                    <Link to="/quizzes" className="text-xs font-sans text-[#C2410C] hover:underline flex items-center gap-1 font-semibold">
+                      <span>{t('dashboard.quizHistory.startQuiz', 'Practice AI Quiz')}</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="py-6 text-center space-y-2">
+                  <p className="text-xs font-medium text-foreground">
+                    {t('dashboard.quizHistory.emptyTitle', 'No quizzes attempted yet')}
+                  </p>
+                  <p className="text-[11px] text-muted-foreground max-w-sm mx-auto">
+                    {t('dashboard.quizHistory.emptySubtitle', 'Generate an AI quiz from your notes or attempt practice questions to test your skills.')}
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="border-border">
+                <CardHeader className="pb-3 flex flex-row items-center justify-between">
+                  <div>
+                    <CardTitle className="text-base font-serif flex items-center gap-2">
+                      <Award className="w-4 h-4 text-[#C2410C]" />
+                      <span>{t('dashboard.quizHistory.title', 'Recent Quiz History')}</span>
+                    </CardTitle>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">
+                      {t('dashboard.quizHistory.subtitle', 'Track your latest practice exam performances')}
+                    </p>
+                  </div>
+                  <Link
+                    to="/quizzes"
+                    className="text-xs text-[#C2410C] hover:underline font-semibold flex items-center gap-1"
+                  >
+                    <span>{t('dashboard.quizHistory.viewAll', 'View All')}</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </CardHeader>
+                <CardContent>
+                  <div className="divide-y divide-border">
+                    {stats.quizScoreHistory.map((item: any) => {
+                      const isHigh = item.score >= 80;
+                      const isMedium = item.score >= 60;
+                      return (
+                        <div key={item.id} className="py-3 flex items-center justify-between gap-3 text-xs">
+                          <div className="min-w-0">
+                            <div className="font-semibold text-foreground truncate">{item.title}</div>
+                            <div className="text-[11px] text-muted-foreground mt-0.5">
+                              {new Date(item.date).toLocaleDateString(undefined, {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                              })}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3 flex-shrink-0">
+                            <Badge variant={isHigh ? 'default' : isMedium ? 'outline' : 'critical'}>
+                              {item.score}%
+                            </Badge>
+                            <Link to={`/quizzes?attemptId=${item.id}`}>
+                              <Button size="sm" variant="ghost" className="h-7 text-xs text-[#C2410C] hover:text-[#C2410C] px-2.5">
+                                {t('dashboard.quizHistory.review', 'Review')}
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </>
       )}

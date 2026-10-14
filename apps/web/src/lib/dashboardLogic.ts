@@ -322,7 +322,7 @@ export function buildDisplayGaps(
         domainName: u.domainName || '',
         requiredLevel: u.requiredLevel,
         currentLevel: null,
-        gap: u.requiredLevel,
+        gap: 0,
         priority: u.priority || 'medium',
         weight: u.weight || 1.0,
         priorityScore: 0,

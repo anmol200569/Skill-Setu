@@ -119,6 +119,7 @@ export const quizGenerateInputSchema = z.object({
   allowedTypes: z.array(z.enum(['single_mcq', 'multi_mcq', 'true_false'])).default(['single_mcq']),
   sourceType: z.enum(['uploaded_document', 'pasted_text', 'topic_prompt']).default('pasted_text'),
   sourceFilename: z.string().optional(),
+  skillId: z.string().optional().nullable(),
 });
 
 export type QuizGenerateInput = z.infer<typeof quizGenerateInputSchema>;

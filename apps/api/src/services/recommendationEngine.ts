@@ -1,10 +1,33 @@
 import { prisma } from '../lib/prisma';
 import { Course, CourseRecommendation, LearningPath, SkillGapItem } from '@skill-setu/shared';
+import { analyzeLearnerSkillGaps } from './gapAnalysisEngine';
 
 export interface RecommendationPreferences {
   preferredLanguage?: 'en' | 'hi';
   weeklyStudyHours?: number;
   freeOnly?: boolean;
+}
+
+export function getDifficultyTierRank(difficulty: string): number {
+  const d = (difficulty || '').toLowerCase();
+  if (d.includes('beginner')) return 1;
+  if (d.includes('intermediate')) return 2;
+  if (d.includes('advanced')) return 3;
+  return 1;
+}
+
+export function isCourseClearlyBelowLearnerLevel(currentLevel: number, courseDifficulty: string): boolean {
+  const d = (courseDifficulty || '').toLowerCase();
+  if (d === 'all levels' || d === 'all_levels') return false;
+  if (currentLevel >= 4) {
+    // For level 4+, Beginner and Intermediate are clearly below
+    return d.includes('beginner') || d.includes('intermediate');
+  }
+  if (currentLevel >= 2) {
+    // For level 2-3, Beginner is clearly below
+    return d.includes('beginner');
+  }
+  return false;
 }
 
 export function calculateCourseMatchScore(
@@ -200,15 +223,10 @@ export async function getPersonalizedRecommendations(
     }
   }
 
-  // Sort by match score descending, promoting beginner courses for foundational gaps
+  // Sort recommendations by matchScore descending, then by rating
   recommendations.sort((a, b) => {
     if (b.matchScore !== a.matchScore) {
       return b.matchScore - a.matchScore;
-    }
-    const aBeginner = a.course.difficulty.toLowerCase() === 'beginner' ? 1 : 0;
-    const bBeginner = b.course.difficulty.toLowerCase() === 'beginner' ? 1 : 0;
-    if (bBeginner !== aBeginner) {
-      return bBeginner - aBeginner;
     }
     return (b.course.rating || 0) - (a.course.rating || 0);
   });
@@ -232,12 +250,29 @@ export async function generateLearningPath(
 
   const allRecs = await getPersonalizedRecommendations(userId, gaps, 10);
 
+  // D2: Choose each skill's course difficulty by the learner's current level:
+  // level <= 1 Beginner, 2-3 Intermediate, 4+ Advanced; skip courses clearly below learner level.
+  const gapLevelMap = new Map<string, number>();
+  for (const g of gaps) {
+    if (g.currentLevel !== null && g.currentLevel !== undefined) {
+      gapLevelMap.set(g.skillId.toLowerCase(), g.currentLevel);
+      gapLevelMap.set(g.skillName.toLowerCase(), g.currentLevel);
+    }
+  }
+
+  // Filter out courses that are clearly below the learner's level for the gap they address
+  const filteredRecs = allRecs.filter((r) => {
+    if (!r.gapAddressed) return true;
+    const currentLevel = gapLevelMap.get(r.gapAddressed.toLowerCase()) ?? 0;
+    return !isCourseClearlyBelowLearnerLevel(currentLevel, r.course.difficulty);
+  });
+
   // Pick recommendations covering diverse skill gaps where possible
   const seenGaps = new Set<string>();
   const diverseRecs: CourseRecommendation[] = [];
   const remainingRecs: CourseRecommendation[] = [];
 
-  for (const r of allRecs) {
+  for (const r of filteredRecs) {
     if (r.gapAddressed && !seenGaps.has(r.gapAddressed)) {
       seenGaps.add(r.gapAddressed);
       diverseRecs.push(r);
@@ -245,78 +280,186 @@ export async function generateLearningPath(
       remainingRecs.push(r);
     }
   }
-  const recommendations = [...diverseRecs, ...remainingRecs].slice(0, 5);
 
-  let totalEstimatedHours = 0;
-  for (const r of recommendations) {
-    totalEstimatedHours += r.course.estimatedHours;
-  }
+  // D2: Order steps by difficulty tier (Beginner, Intermediate, Advanced) and by matchScore inside tier
+  const sortedCandidates = [...diverseRecs, ...remainingRecs];
+  sortedCandidates.sort((a, b) => {
+    const tierA = getDifficultyTierRank(a.course.difficulty);
+    const tierB = getDifficultyTierRank(b.course.difficulty);
+    if (tierA !== tierB) {
+      return tierA - tierB;
+    }
+    return b.matchScore - a.matchScore;
+  });
 
-  // Upsert Learning Path in DB
+  const topRecommendations = sortedCandidates.slice(0, 5);
+  const neededCourseIds = new Set(topRecommendations.map((r) => r.course.id));
+
+  // 1. Fetch or create Learning Path in DB
   let existingPath = await prisma.learningPath.findFirst({
     where: { userId, targetRoleId },
     include: { items: { include: { course: true } } }
   });
 
-  if (existingPath) {
-    await prisma.learningPathItem.deleteMany({
-      where: { learningPathId: existingPath.id }
-    });
-  } else {
+  if (!existingPath) {
     existingPath = await prisma.learningPath.create({
       data: {
         userId,
         targetRoleId,
-        totalEstimatedHours
+        totalEstimatedHours: 0
       },
       include: { items: { include: { course: true } } }
     });
   }
 
-  // Create learning path items
-  const createdItems = [];
-  for (let i = 0; i < recommendations.length; i++) {
-    const rec = recommendations[i];
-    const item = await prisma.learningPathItem.create({
+  // 2. Fetch user enrollments to ensure accurate status retention
+  const userEnrollments = await prisma.enrollment.findMany({
+    where: { userId }
+  });
+  const enrollmentMap = new Map(userEnrollments.map((e) => [e.courseId, e]));
+
+  // 3. C4: KEEP completed and in-progress items (never delete their status or progress)
+  const existingItems = existingPath.items || [];
+  const keptItems: typeof existingItems = [];
+  const notStartedItems: typeof existingItems = [];
+
+  for (const item of existingItems) {
+    const enr = enrollmentMap.get(item.courseId);
+    const effectiveStatus = enr?.status || item.status;
+    if (effectiveStatus === 'completed' || effectiveStatus === 'in_progress') {
+      keptItems.push(item);
+    } else {
+      notStartedItems.push(item);
+    }
+  }
+
+  // 4. C4: Drop ONLY not-started items that are no longer needed
+  const itemsToDelete = notStartedItems.filter((it) => !neededCourseIds.has(it.courseId));
+  for (const item of itemsToDelete) {
+    await prisma.learningPathItem.delete({
+      where: { id: item.id }
+    });
+  }
+
+  const survivingNotStarted = notStartedItems.filter((it) => neededCourseIds.has(it.courseId));
+  const survivingCourseIds = new Set([
+    ...keptItems.map((it) => it.courseId),
+    ...survivingNotStarted.map((it) => it.courseId)
+  ]);
+
+  // 5. C4: Add new ones from recommendations not currently in the path
+  const newRecommendationsToAdd = topRecommendations.filter((r) => !survivingCourseIds.has(r.course.id));
+  for (const rec of newRecommendationsToAdd) {
+    const createdItem = await prisma.learningPathItem.create({
       data: {
         learningPathId: existingPath.id,
         courseId: rec.course.id,
-        stepOrder: i + 1,
+        stepOrder: 999, // temporary, renumbered below
         reason: rec.recommendationReason,
         status: 'not_started'
       },
       include: { course: true }
     });
-    createdItems.push(item);
+    survivingNotStarted.push(createdItem);
   }
+
+  // 6. C4 & D2: Renumber stepOrder idempotently
+  // Completed first, in-progress second, not-started ordered by difficulty tier then matchScore
+  const statusRank = (status: string) => {
+    if (status === 'completed') return 1;
+    if (status === 'in_progress') return 2;
+    return 3;
+  };
+
+  const allItems = [...keptItems, ...survivingNotStarted];
+  allItems.sort((a, b) => {
+    const rankA = statusRank(a.status);
+    const rankB = statusRank(b.status);
+    if (rankA !== rankB) return rankA - rankB;
+
+    if (rankA === 1 || rankA === 2) {
+      return a.stepOrder - b.stepOrder;
+    }
+
+    // For not-started items: difficulty tier first (Beginner < Intermediate < Advanced)
+    const tierA = getDifficultyTierRank(a.course.difficulty);
+    const tierB = getDifficultyTierRank(b.course.difficulty);
+    if (tierA !== tierB) return tierA - tierB;
+
+    return a.stepOrder - b.stepOrder;
+  });
+
+  let totalEstimatedHours = 0;
+  for (let i = 0; i < allItems.length; i++) {
+    const stepOrder = i + 1;
+    totalEstimatedHours += allItems[i].course.estimatedHours;
+    if (allItems[i].stepOrder !== stepOrder) {
+      await prisma.learningPathItem.update({
+        where: { id: allItems[i].id },
+        data: { stepOrder }
+      });
+      allItems[i].stepOrder = stepOrder;
+    }
+  }
+
+  await prisma.learningPath.update({
+    where: { id: existingPath.id },
+    data: { totalEstimatedHours }
+  });
 
   return {
     id: existingPath.id,
     userId,
     targetRoleTitle: role?.title || 'Target Role',
     totalEstimatedHours,
-    courses: createdItems.map((item) => ({
-      step: item.stepOrder,
-      courseId: item.courseId,
-      course: {
-        id: item.course.id,
-        title: item.course.title,
-        provider: item.course.provider,
-        destinationUrl: item.course.destinationUrl,
-        skillsCovered: item.course.skillsCovered as string[],
-        difficulty: item.course.difficulty as any,
-        estimatedHours: item.course.estimatedHours,
-        language: item.course.language as any,
-        isFree: item.course.isFree,
-        rating: item.course.rating,
-        ratingSource: item.course.ratingSource,
-        description: item.course.description
-      },
-      status: item.status as any,
-      progressPercent: 0,
-      reason: item.reason
-    })),
-    createdAt: existingPath.createdAt.toISOString(),
+    courses: allItems.map((item) => {
+      const enr = enrollmentMap.get(item.courseId);
+      return {
+        step: item.stepOrder,
+        courseId: item.courseId,
+        course: {
+          id: item.course.id,
+          title: item.course.title,
+          provider: item.course.provider,
+          destinationUrl: item.course.destinationUrl,
+          skillsCovered: item.course.skillsCovered as string[],
+          difficulty: item.course.difficulty as any,
+          estimatedHours: item.course.estimatedHours,
+          language: item.course.language as any,
+          isFree: item.course.isFree,
+          rating: item.course.rating,
+          ratingSource: item.course.ratingSource,
+          description: item.course.description
+        },
+        status: (enr?.status || item.status) as any,
+        progressPercent: enr?.progressPercent || (item.status === 'completed' ? 100 : item.status === 'in_progress' ? 50 : 0),
+        reason: item.reason
+      };
+    }),
+    createdAt: existingPath.createdAt ? new Date(existingPath.createdAt).toISOString() : new Date().toISOString(),
     updatedAt: new Date().toISOString()
   };
 }
+
+/**
+ * Automatically recalculates learning path for a user if target role is configured.
+ * Triggered after: course completed, diagnostic submitted, or practice quiz submitted (Task C4).
+ */
+export async function autoRecalculateLearningPath(userId: string): Promise<void> {
+  try {
+    const profile = await prisma.profile.findFirst({
+      where: { userId },
+      select: { targetRoleId: true }
+    });
+    const targetRoleId = profile?.targetRoleId;
+    if (!targetRoleId) return;
+
+    const gapResult = await analyzeLearnerSkillGaps(userId, targetRoleId);
+    if (gapResult.targetRoleId && gapResult.status !== 'not_started') {
+      await generateLearningPath(userId, gapResult.targetRoleId, gapResult.gaps);
+    }
+  } catch (err: any) {
+    console.warn(`[AutoRecalculate] Path recalculation for user ${userId} failed:`, err?.message);
+  }
+}
+

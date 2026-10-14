@@ -13,6 +13,7 @@ export interface UserSkillAssessmentInput {
   skillId: string;
   selfAssessedLevel?: number | null;
   verifiedScore?: number | null;
+  needsConfirmation?: boolean | null;
 }
 
 export type { UnassessedSkillItem };
@@ -126,6 +127,12 @@ export function calculateReadiness(
       priorityCategory = 'medium';
     }
 
+    const needsConfirmation = Boolean(
+      assessment?.needsConfirmation ||
+      (hasSelf && assessment!.selfAssessedLevel! > verified)
+    );
+    const confirmationMessage = needsConfirmation ? 'Retake the diagnostic to confirm' : undefined;
+
     if (gap > 0) {
       gaps.push({
         skillId: req.skillId,
@@ -137,7 +144,9 @@ export function calculateReadiness(
         gap,
         priority: priorityCategory,
         priorityScore,
-        weight
+        weight,
+        needsConfirmation,
+        confirmationMessage
       });
     } else {
       strengths.push({

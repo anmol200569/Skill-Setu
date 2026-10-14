@@ -506,9 +506,11 @@ describe('Dashboard Pure Logic & Metrics Unit Tests', () => {
       expect(merged[1].skillId).toBe('s2');
       expect(merged[1].isAssessed).toBe(false);
       expect(merged[1].currentLevel).toBeNull();
+      expect(merged[1].gap).toBe(0);
 
       expect(merged[2].skillId).toBe('s3');
       expect(merged[2].isAssessed).toBe(false);
+      expect(merged[2].gap).toBe(0);
     });
   });
 

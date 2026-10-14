@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { prisma } from '../lib/prisma';
 import { analyzeLearnerSkillGaps } from '../services/gapAnalysisEngine';
 import { getPersonalizedRecommendations } from '../services/recommendationEngine';
+import { calculateReadiness } from '@skill-setu/shared';
 
 export async function getLearnerDashboardStats(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
@@ -173,6 +174,7 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
       radarData: [],
       quizScoreHistory: quizAttempts.map((q) => ({
         id: q.id,
+        quizId: q.quiz.id,
         title: q.quiz.title,
         score: q.scorePercentage,
         date: q.submittedAt
@@ -269,6 +271,7 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
     radarData,
     quizScoreHistory: quizAttempts.map((q) => ({
       id: q.id,
+      quizId: q.quiz.id,
       title: q.quiz.title,
       score: q.scorePercentage,
       date: q.submittedAt
@@ -291,82 +294,203 @@ export async function getAdminAnalytics(req: Request, res: Response): Promise<vo
     totalQuizzes,
     totalAttempts,
     totalAssessments,
-    users,
     roles,
-    domains
+    domains,
+    allSkills,
+    userSkillsData,
+    learnersWithRoles
   ] = await Promise.all([
     prisma.user.count({ where: { role: 'learner' } }),
     prisma.quiz.count(),
     prisma.quizAttempt.count(),
     prisma.assessmentAttempt.count(),
-    prisma.user.findMany({
-      where: { role: 'learner' },
-      include: {
-        profile: { include: { targetRole: true } },
-        userSkills: { include: { skill: true } }
-      },
-      take: 100
-    }),
     prisma.role.findMany({
       include: { _count: { select: { profiles: true } } }
     }),
     prisma.domain.findMany({
       include: { _count: { select: { skills: true } } }
+    }),
+    prisma.skill.findMany({
+      include: {
+        domain: true,
+        roleRequirements: {
+          select: {
+            roleId: true,
+            requiredProficiency: true
+          }
+        }
+      }
+    }),
+    prisma.userSkill.findMany({
+      where: {
+        user: { role: 'learner' },
+        OR: [
+          { selfAssessedLevel: { gt: 0 } },
+          { verifiedScore: { not: null } },
+          { effectiveScore: { gt: 0 } }
+        ]
+      },
+      select: {
+        skillId: true,
+        effectiveScore: true,
+        user: {
+          select: {
+            id: true,
+            profile: {
+              select: {
+                targetRoleId: true
+              }
+            }
+          }
+        }
+      }
+    }),
+    prisma.user.findMany({
+      where: {
+        role: 'learner',
+        profile: {
+          targetRoleId: { not: null }
+        }
+      },
+      select: {
+        id: true,
+        profile: {
+          select: {
+            targetRoleId: true,
+            targetRole: {
+              select: {
+                skillsRequired: {
+                  select: {
+                    skillId: true,
+                    requiredProficiency: true,
+                    priority: true,
+                    weight: true,
+                    skill: { select: { id: true, name: true } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        userSkills: {
+          select: {
+            skillId: true,
+            selfAssessedLevel: true,
+            verifiedScore: true
+          }
+        }
+      }
     })
   ]);
 
-  // Popular Roles
+  // 1. Popular Roles
   const popularRoles = roles.map((r) => ({
     roleTitle: r.title,
     learnerCount: r._count.profiles
   })).sort((a, b) => b.learnerCount - a.learnerCount);
 
-  // Common Skill Gaps across learners
-  const skillGapFrequency = new Map<string, { count: number; totalGap: number }>();
-  for (const user of users) {
-    if (user.userSkills) {
-      for (const us of user.userSkills) {
-        if (us.selfAssessedLevel < 3 || (us.verifiedScore !== null && us.verifiedScore < 3)) {
-          const prev = skillGapFrequency.get(us.skill.name) || { count: 0, totalGap: 0 };
-          const gap = Math.max(0, 3 - us.effectiveScore);
-          skillGapFrequency.set(us.skill.name, {
-            count: prev.count + 1,
-            totalGap: prev.totalGap + gap
-          });
-        }
-      }
+  // 2. Average Platform Readiness (calculated across learners with a valid readiness score)
+  const validReadinessScores: number[] = [];
+  for (const learner of learnersWithRoles) {
+    const roleSkills = learner.profile?.targetRole?.skillsRequired || [];
+    if (roleSkills.length === 0) continue;
+    const requirements = roleSkills.map((rs: any) => ({
+      skillId: rs.skillId,
+      skillName: rs.skill.name,
+      requiredProficiency: rs.requiredProficiency,
+      priority: rs.priority as any,
+      weight: rs.weight
+    }));
+    const userAssessments = learner.userSkills.map((us: any) => ({
+      skillId: us.skillId,
+      selfAssessedLevel: us.selfAssessedLevel,
+      verifiedScore: us.verifiedScore
+    }));
+    const result = calculateReadiness(requirements, userAssessments);
+    if (result.overallReadinessScore !== null && result.overallReadinessScore !== undefined) {
+      validReadinessScores.push(result.overallReadinessScore);
     }
   }
 
-  const commonSkillGaps = Array.from(skillGapFrequency.entries())
-    .map(([skillName, data]) => ({
-      skillName,
-      gapFrequency: data.count,
-      avgGap: Number((data.totalGap / (data.count || 1)).toFixed(1))
-    }))
-    .sort((a, b) => b.gapFrequency - a.gapFrequency)
-    .slice(0, 8);
+  const avgPlatformReadiness = validReadinessScores.length > 0
+    ? Math.round(validReadinessScores.reduce((acc, curr) => acc + curr, 0) / validReadinessScores.length)
+    : null;
 
-  // Domain Distribution
+  // 3. Per-Skill Cohort Aggregation across all learners (database aggregation, never dividing by all learners)
+  // Group user skills by skillId
+  const userSkillsBySkill = new Map<string, typeof userSkillsData>();
+  for (const us of userSkillsData) {
+    const list = userSkillsBySkill.get(us.skillId) || [];
+    list.push(us);
+    userSkillsBySkill.set(us.skillId, list);
+  }
+
+  const commonSkillGaps = allSkills.map((skill) => {
+    const assessedRecords = userSkillsBySkill.get(skill.id) || [];
+    const assessedLearners = assessedRecords.length;
+
+    let learnersWithGap = 0;
+    let totalDeficit = 0;
+
+    for (const record of assessedRecords) {
+      const targetRoleId = record.user?.profile?.targetRoleId;
+      const roleReqs = (skill as any).roleRequirements || (skill as any).roleSkills || [];
+      const matchedRoleSkill = targetRoleId
+        ? roleReqs.find((rs: any) => rs.roleId === targetRoleId)
+        : null;
+      const requiredProficiency = matchedRoleSkill?.requiredProficiency ?? 3;
+
+      if (record.effectiveScore < requiredProficiency) {
+        learnersWithGap++;
+        totalDeficit += (requiredProficiency - record.effectiveScore);
+      }
+    }
+
+    const hasEnoughData = assessedLearners >= 3;
+    const gapPercentage = hasEnoughData
+      ? Math.round((learnersWithGap / assessedLearners) * 100)
+      : null;
+    const avgGap = learnersWithGap > 0
+      ? Number((totalDeficit / learnersWithGap).toFixed(1))
+      : 0;
+
+    return {
+      skillId: skill.id,
+      skillName: skill.name,
+      domainName: skill.domain?.name || 'General',
+      assessedLearners,
+      learnersWithGap,
+      gapPercentage,
+      avgGap,
+      hasEnoughData
+    };
+  }).sort((a, b) => {
+    // Skills with enough data first, sorted by gapPercentage descending, then by learnersWithGap
+    if (a.hasEnoughData && !b.hasEnoughData) return -1;
+    if (!a.hasEnoughData && b.hasEnoughData) return 1;
+    if (a.gapPercentage !== null && b.gapPercentage !== null && b.gapPercentage !== a.gapPercentage) {
+      return b.gapPercentage - a.gapPercentage;
+    }
+    return b.learnersWithGap - a.learnersWithGap;
+  });
+
+  // 4. Domain Distribution
   const domainDistribution = domains.map((d) => ({
     domainName: d.name,
     skillCount: d._count.skills,
-    learnerCount: Math.round(totalLearners * 0.4) // Proportional estimate
+    learnerCount: Math.round(totalLearners * 0.4)
   }));
 
-  // Average Platform Readiness Estimate
-  const avgPlatformReadiness = totalLearners > 0 ? 68 : 0;
-
-  // Recent Activity Feed
+  // 5. Recent Activity Feed (Anonymized: strictly NO learner names or emails in this view)
   const recentQuizLogs = await prisma.quizAttempt.findMany({
-    include: { user: { include: { profile: true } }, quiz: true },
+    include: { quiz: true },
     orderBy: { submittedAt: 'desc' },
     take: 5
   });
 
-  const recentLearnerActivity = recentQuizLogs.map((q) => ({
+  const recentLearnerActivity = recentQuizLogs.map((q, idx) => ({
     id: q.id,
-    learnerName: q.user.profile?.fullName || q.user.email,
+    learnerDisplay: `Learner #${idx + 1}`,
     action: 'Completed Quiz',
     detail: `Scored ${q.scorePercentage}% on "${q.quiz.title}"`,
     timestamp: q.submittedAt.toISOString()

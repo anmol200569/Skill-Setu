@@ -324,6 +324,7 @@
     "notStartedTag": "not started",
     "takeFirstDiagnostic": "Take your first diagnostic",
     "takeDiagnostic": "Take diagnostic",
+    "retakePrompt": "Retake the diagnostic to confirm",
     "notAssessed": "Not assessed",
     "noCourseCoveringGap": "No course in catalog currently covers this gap.",
     "learningPathProgress": "Learning Path Progress",
@@ -408,6 +409,49 @@
       "switchAction": "Switch Active Role to {{role}}",
       "switchingAction": "Updating active role...",
       "close": "Close Comparison"
+    },
+    "quizHistory": {
+      "title": "Recent Quiz History",
+      "subtitle": "Track your latest practice exam performances",
+      "emptyTitle": "No quizzes attempted yet",
+      "emptySubtitle": "Generate an AI quiz from your notes or attempt practice questions to test your skills.",
+      "startQuiz": "Practice AI Quiz",
+      "review": "Review",
+      "error": "Could not load quiz history",
+      "retry": "Retry",
+      "viewAll": "View All"
+    }
+  },
+  "admin": {
+    "title": "Administrator Studio",
+    "heading": "Organization Skill Intelligence",
+    "subheading": "Real-time analytics across learner cohorts, competency demand, and assessment metrics.",
+    "manageCompetencies": "Manage Competencies",
+    "manageCourses": "Manage Courses",
+    "totalLearners": "Total Learners",
+    "activeQuizzes": "AI Quizzes Active",
+    "diagnosticsCompleted": "Diagnostics Completed",
+    "avgPlatformReadiness": "Avg Platform Readiness",
+    "notEnoughData": "Not enough data",
+    "popularRolesTitle": "Target Career Role Distribution",
+    "noRoles": "No target career roles selected yet.",
+    "aspirants": "Aspirants",
+    "recentActivityTitle": "Recent Organization Activity",
+    "noRecentActivity": "No recent learner activities logged.",
+    "skillsAnalysis": {
+      "title": "Organization-Wide Skill Gap Frequency",
+      "subtitle": "Percentage of assessed learners exhibiting a competency gap per skill",
+      "chartTitle": "Cohort Skill Gap Distribution (% Affected)",
+      "tableTitle": "Detailed Skill Metrics",
+      "skillCol": "Skill & Domain",
+      "assessedCol": "Assessed Learners",
+      "withGapCol": "Learners with Gap",
+      "gapPercentCol": "Prevalence (% with gap)",
+      "avgGapCol": "Avg Deficit",
+      "notEnoughData": "Not enough data (< 3 assessed)",
+      "emptyChart": "Not enough assessment data to plot cohort trends (minimum 3 assessed learners per skill required).",
+      "error": "Failed to load organization analytics",
+      "retry": "Retry"
     }
   },
   "quiz": {
@@ -423,7 +467,8 @@
     "attemptButton": "Take Quiz",
     "submitQuiz": "Submit Answers",
     "scoreLabel": "Your Score",
-    "weakTopicsTitle": "Recommended Topic Reviews"
+    "weakTopicsTitle": "Recommended Topic Reviews",
+    "securityNotice": "Do not upload passwords, API keys or private data."
   },
   "assessment": {
     "title": "Diagnostic Competency Assessment",

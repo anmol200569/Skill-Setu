@@ -8,6 +8,7 @@ import {
   generateAndSaveQuiz,
   evaluateQuizAttempt
 } from '../services/quizGenerator';
+import { autoRecalculateLearningPath } from '../services/recommendationEngine';
 import { generateQuizPdf } from '../services/quizExportService';
 import {
   quizGenerateInputSchema,
@@ -48,7 +49,7 @@ export async function uploadStudyMaterial(req: Request, res: Response): Promise<
         storedFilename: `${Date.now()}-${file.originalname}`,
         mimeType: file.mimetype,
         sizeBytes: file.size,
-        extractedText
+        extractedText: '' // Metadata-only: extracted text is never persisted to database
       }
     });
 
@@ -65,7 +66,9 @@ export async function uploadStudyMaterial(req: Request, res: Response): Promise<
     console.error('[uploadStudyMaterial] Internal file extraction error:', err);
 
     let clientMessage = err.message || 'File processing failed';
-    if (clientMessage.includes('exceeds maximum allowed limit') || clientMessage.includes('limit of 4 MB')) {
+    if (clientMessage.includes('Please save it as .pptx and upload again.')) {
+      clientMessage = 'Please save it as .pptx and upload again.';
+    } else if (clientMessage.includes('exceeds maximum allowed limit') || clientMessage.includes('limit of 4 MB')) {
       clientMessage = 'File size exceeds the 4 MB upload limit. Please upload a smaller document.';
     } else if (clientMessage.includes('Unsupported file')) {
       clientMessage = 'Unsupported file format. Please upload a PDF, DOCX, PPTX, or TXT file.';
@@ -161,7 +164,8 @@ export async function generateQuiz(req: Request, res: Response): Promise<void> {
       language: validated.language,
       allowedTypes: validated.allowedTypes,
       sourceType: validated.sourceType,
-      sourceFilename: validated.sourceFilename
+      sourceFilename: validated.sourceFilename,
+      skillId: validated.skillId || null
     });
 
     res.status(201).json(quiz);
@@ -291,6 +295,9 @@ export async function submitQuiz(req: Request, res: Response): Promise<void> {
       timeSpentSeconds: validated.timeSpentSeconds,
       submittedAnswers: validated.answers
     });
+
+    // C4: Auto recalculation of learning path after a practice quiz is submitted
+    await autoRecalculateLearningPath(userId);
 
     res.json(evaluation);
   } catch (err: any) {

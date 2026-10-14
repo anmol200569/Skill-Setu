@@ -62,6 +62,7 @@ export interface RawSkillInput {
   skillId: string;
   selfAssessedLevel?: number | null;
   verifiedScore?: number | null;
+  needsConfirmation?: boolean | null;
 }
 
 export interface GapComputationInput {
@@ -144,7 +145,8 @@ export async function analyzeLearnerSkillGaps(
   const formattedUserSkills: RawSkillInput[] = dbUserSkills.map((s) => ({
     skillId: s.skillId,
     selfAssessedLevel: s.selfAssessedLevel,
-    verifiedScore: s.verifiedScore
+    verifiedScore: s.verifiedScore,
+    needsConfirmation: s.selfAssessedLevel > (s.verifiedScore ?? 0)
   }));
 
   const calculation = computeSkillGapMetrics(
