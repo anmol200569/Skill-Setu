@@ -213,7 +213,7 @@ export function LearningPathPage() {
             </div>
             <ProgressBar value={overallPercent} max={100} size="md" variant="primary" />
             <div className="text-[11px] text-muted-foreground text-right">
-              {completedTotal} of {totalItems} milestones done
+              {t('roadmapPage.milestonesDone', { completed: completedTotal, total: totalItems })}
             </div>
           </div>
 
@@ -282,7 +282,7 @@ export function LearningPathPage() {
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-xs font-bold uppercase tracking-wider text-[#C2410C] dark:text-[#FB923C]">
-                            Step {item.step}
+                            {t('roadmapPage.stepNumber', { step: item.step })}
                           </span>
                           <Badge variant="outline">{item.course.provider}</Badge>
                           <Badge variant={isDone ? 'strong' : isInProgress ? 'needsImprovement' : 'notAssessed'}>
@@ -306,7 +306,7 @@ export function LearningPathPage() {
 
                         <div className="text-xs text-muted-foreground flex items-center gap-1.5 font-medium">
                           <Clock className="w-3.5 h-3.5 text-[#C2410C]" />
-                          <span>{item.course.estimatedHours} hours</span>
+                          <span>{t('roadmapPage.hoursUnit', { hours: item.course.estimatedHours })}</span>
                           <span>•</span>
                           <span>{item.course.difficulty}</span>
                         </div>
@@ -317,7 +317,7 @@ export function LearningPathPage() {
                           {item.course.title}
                         </h3>
                         <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                          <strong className="text-foreground">Why this is shown:</strong>{' '}
+                          <strong className="text-foreground">{t('common.whyShown')}:</strong>{' '}
                           {item.reason || `Directly bridges identified competency deficit.`}
                         </p>
                       </div>
@@ -406,7 +406,7 @@ export function LearningPathPage() {
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-xs font-bold uppercase tracking-wider text-[#C2410C] dark:text-[#FB923C]">
-                          Capstone Project #{idx + 1}
+                          {t('roadmapPage.capstoneProject', { num: idx + 1 })}
                         </span>
                         <Badge variant={isDone ? 'strong' : isInProgress ? 'needsImprovement' : 'notAssessed'}>
                           {isDone ? t('roadmapPage.completed') : isInProgress ? t('roadmapPage.inProgress') : t('roadmapPage.notStarted')}
@@ -436,7 +436,7 @@ export function LearningPathPage() {
                     <div className="pt-3 border-t border-border flex items-center justify-between text-xs">
                       <span className="text-muted-foreground font-medium flex items-center gap-1">
                         <Clock className="w-3.5 h-3.5 text-[#C2410C]" />
-                        ~{proj.estimatedHours} hrs practical work
+                        {t('roadmapPage.practicalWork', { hours: proj.estimatedHours })}
                       </span>
 
                       <div className="flex items-center gap-1.5">
@@ -447,7 +447,7 @@ export function LearningPathPage() {
                             proj.status === 'not_started' ? 'bg-secondary font-bold' : 'hover:bg-muted'
                           }`}
                         >
-                          Not Started
+                          {t('roadmapPage.notStarted')}
                         </button>
                         <button
                           type="button"
@@ -456,7 +456,7 @@ export function LearningPathPage() {
                             proj.status === 'in_progress' ? 'bg-amber-500/10 text-amber-600 font-bold border-amber-500/20' : 'hover:bg-muted'
                           }`}
                         >
-                          In Progress
+                          {t('roadmapPage.inProgress')}
                         </button>
                         <button
                           type="button"
@@ -465,7 +465,7 @@ export function LearningPathPage() {
                             proj.status === 'completed' ? 'bg-emerald-500/10 text-emerald-600 font-bold border-emerald-500/20' : 'hover:bg-muted'
                           }`}
                         >
-                          Completed
+                          {t('roadmapPage.completed')}
                         </button>
                       </div>
                     </div>

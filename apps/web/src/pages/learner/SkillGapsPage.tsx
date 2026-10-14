@@ -152,7 +152,7 @@ export function SkillGapsPage() {
               className="text-xs font-semibold text-[#C2410C] dark:text-[#FB923C] hover:bg-[#C2410C]/10 flex items-center gap-1"
             >
               <SlidersHorizontal className="w-3.5 h-3.5" />
-              <span>Change Role</span>
+              <span>{t('skillGapsPage.changeRole')}</span>
             </Button>
           </Link>
         </div>
@@ -177,7 +177,7 @@ export function SkillGapsPage() {
           badge={
             needsImprovementCount > 0 ? (
               <Badge variant="needsImprovement" icon={AlertTriangle}>
-                High Leverage
+                {t('skillGapsPage.badgeHighLeverage')}
               </Badge>
             ) : undefined
           }
@@ -192,7 +192,7 @@ export function SkillGapsPage() {
           badge={
             strongCount > 0 ? (
               <Badge variant="strong" icon={CheckCircle2}>
-                Verified
+                {t('skillGapsPage.badgeVerified')}
               </Badge>
             ) : undefined
           }
@@ -207,7 +207,7 @@ export function SkillGapsPage() {
           badge={
             notAssessedCount > 0 ? (
               <Badge variant="notAssessed" icon={HelpCircle}>
-                Needs Test
+                {t('skillGapsPage.badgeNeedsTest')}
               </Badge>
             ) : undefined
           }

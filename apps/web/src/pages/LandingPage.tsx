@@ -158,7 +158,7 @@ export function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans">
+    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans overflow-x-hidden">
       <Navbar />
 
       {/* Hero Section: ONE Promise, ONE Button */}

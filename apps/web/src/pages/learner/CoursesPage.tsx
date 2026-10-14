@@ -152,7 +152,7 @@ export function CoursesPage() {
             </span>
             <span className="text-muted-foreground text-xs">•</span>
             <Badge variant="terracotta" className="text-xs font-semibold">
-              {totalCount} courses
+              {t('coursesPage.coursesCount', { count: totalCount })}
             </Badge>
           </div>
 
@@ -213,9 +213,9 @@ export function CoursesPage() {
             className="bg-secondary text-foreground rounded-lg px-2.5 py-1.5 border border-border text-xs focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C]"
           >
             <option value="all">{t('coursesPage.allDifficulties')}</option>
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-            <option value="Advanced">Advanced</option>
+            <option value="Beginner">{t('coursesPage.diffBeginner')}</option>
+            <option value="Intermediate">{t('coursesPage.diffIntermediate')}</option>
+            <option value="Advanced">{t('coursesPage.diffAdvanced')}</option>
           </select>
 
           {/* Language filter */}
@@ -226,9 +226,9 @@ export function CoursesPage() {
             className="bg-secondary text-foreground rounded-lg px-2.5 py-1.5 border border-border text-xs focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C]"
           >
             <option value="all">{t('coursesPage.allLanguages')}</option>
-            <option value="English">English</option>
-            <option value="Hindi">Hindi / Hinglish</option>
-            <option value="Bilingual">Bilingual</option>
+            <option value="English">{t('coursesPage.langEnglish')}</option>
+            <option value="Hindi">{t('coursesPage.langHindi')}</option>
+            <option value="Bilingual">{t('coursesPage.langBilingual')}</option>
           </select>
 
           {/* Free Only Checkbox */}
@@ -243,7 +243,7 @@ export function CoursesPage() {
           </label>
 
           <span className="ml-auto text-muted-foreground tabular-nums">
-            Showing {courses.length} of {totalCount} courses
+            {t('coursesPage.showingCount', { count: courses.length, total: totalCount })}
           </span>
         </div>
       </div>
@@ -261,7 +261,7 @@ export function CoursesPage() {
           title={t('coursesPage.emptyTitle')}
           description={t('coursesPage.emptyDesc')}
           primaryAction={{
-            label: 'Clear Filters',
+            label: t('coursesPage.clearFilters'),
             onClick: clearSearch,
           }}
         />
@@ -280,7 +280,7 @@ export function CoursesPage() {
                   </Badge>
                   {course.isFree && (
                     <Badge variant="strong" className="text-[10px]">
-                      100% Free
+                      {t('coursesPage.freeBadge')}
                     </Badge>
                   )}
                 </div>
@@ -313,7 +313,7 @@ export function CoursesPage() {
                     ))}
                     {course.skillsCovered.length > 3 && (
                       <span className="text-[10px] text-muted-foreground self-center">
-                        +{course.skillsCovered.length - 3} more
+                        {t('coursesPage.moreSkills', { count: course.skillsCovered.length - 3 })}
                       </span>
                     )}
                   </div>
@@ -324,7 +324,7 @@ export function CoursesPage() {
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                   <span className="flex items-center gap-1 font-medium">
                     <Clock className="w-3.5 h-3.5 text-[#C2410C]" />
-                    {course.estimatedHours} hrs
+                    {t('coursesPage.hoursUnit', { hours: course.estimatedHours })}
                   </span>
                   <span className="capitalize">{course.difficulty}</span>
                 </div>
@@ -360,7 +360,7 @@ export function CoursesPage() {
       <Modal
         isOpen={Boolean(selectedCourse)}
         onClose={() => setSelectedCourse(null)}
-        title={selectedCourse?.title || 'Course Details'}
+        title={selectedCourse?.title || t('coursesPage.courseDetails')}
         className="max-w-xl"
       >
         {selectedCourse && (
@@ -373,14 +373,14 @@ export function CoursesPage() {
             </div>
 
             <div className="space-y-1.5">
-              <h4 className="font-semibold text-foreground">Course Overview</h4>
+              <h4 className="font-semibold text-foreground">{t('coursesPage.overview')}</h4>
               <p className="text-muted-foreground leading-relaxed">
                 {selectedCourse.description}
               </p>
             </div>
 
             <div className="space-y-1.5">
-              <h4 className="font-semibold text-foreground">Target Competencies Covered</h4>
+              <h4 className="font-semibold text-foreground">{t('coursesPage.competenciesCovered')}</h4>
               <div className="flex flex-wrap gap-1.5">
                 {selectedCourse.skillsCovered.map((sk) => (
                   <span

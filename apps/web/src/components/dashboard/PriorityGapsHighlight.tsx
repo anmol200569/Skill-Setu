@@ -61,10 +61,10 @@ export function PriorityGapsHighlight({ gaps, onCloseGap }: PriorityGapsHighligh
               <div className="space-y-3">
                 <div className="flex items-start justify-between gap-2">
                   <Badge variant="needsImprovement" icon={AlertTriangle}>
-                    Priority #{index + 1}
+                    {t('dashboard.topGaps.priorityRank', { rank: index + 1 })}
                   </Badge>
                   <span className="text-[11px] font-semibold text-muted-foreground tabular-nums">
-                    Weight: {weight.toFixed(1)}x
+                    {t('dashboard.topGaps.weightLabel', { weight: weight.toFixed(1) })}
                   </span>
                 </div>
 
@@ -73,13 +73,13 @@ export function PriorityGapsHighlight({ gaps, onCloseGap }: PriorityGapsHighligh
                     {gap.skillName}
                   </h3>
                   <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
-                    {gap.domainName || 'Core Requirement'}
+                    {gap.domainName || t('dashboard.topGaps.coreRequirement')}
                   </p>
                 </div>
 
                 <div className="space-y-1.5 pt-1">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground font-medium">Achieved vs Target:</span>
+                    <span className="text-muted-foreground font-medium">{t('dashboard.topGaps.achievedVsTarget')}</span>
                     <span className="font-semibold text-foreground tabular-nums">
                       {current.toFixed(1)} / {required.toFixed(1)}
                     </span>
@@ -92,7 +92,7 @@ export function PriorityGapsHighlight({ gaps, onCloseGap }: PriorityGapsHighligh
                     variant="needsImprovement"
                   />
                   <div className="text-[11px] text-amber-600 dark:text-amber-400 font-medium text-right tabular-nums">
-                    Deficit: -{deficit.toFixed(1)} pts
+                    {t('dashboard.topGaps.deficitLabel', { deficit: deficit.toFixed(1) })}
                   </div>
                 </div>
               </div>

@@ -130,9 +130,9 @@ export function SkillGapPanel({
           </div>
 
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground self-start sm:self-auto font-medium">
-            <span>Sorted by:</span>
+            <span>{t('dashboard.skillGapPanel.sortedBy')}</span>
             <span className="font-semibold text-foreground bg-secondary px-2 py-0.5 rounded border border-border">
-              Priority (Weight × Gap)
+              {t('dashboard.skillGapPanel.sortPriority')}
             </span>
           </div>
         </div>
@@ -224,9 +224,9 @@ export function SkillGapPanel({
       <CardContent className="p-0">
         {filteredAndSortedGaps.length === 0 ? (
           <div className="p-8 text-center text-xs text-muted-foreground space-y-2">
-            <p>No competencies match the current filter or search criteria.</p>
+            <p>{t('dashboard.skillGapPanel.noMatchTitle')}</p>
             <Button variant="ghost" size="sm" onClick={() => { setFilter('all'); setSearchQuery(''); }}>
-              Clear Filters
+              {t('dashboard.skillGapPanel.clearFilters')}
             </Button>
           </div>
         ) : (
@@ -265,10 +265,10 @@ export function SkillGapPanel({
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <span>{item.domainName || 'Core Area'}</span>
+                        <span>{item.domainName || t('dashboard.skillGapPanel.coreArea')}</span>
                         <span>•</span>
                         <span className="tabular-nums font-medium text-foreground">
-                          Weight: {item.weight.toFixed(1)}x
+                          {t('dashboard.skillGapPanel.weightLabel', { weight: item.weight.toFixed(1) })}
                         </span>
                       </div>
                     </div>
@@ -277,10 +277,12 @@ export function SkillGapPanel({
                     <div className="sm:w-1/3 space-y-1">
                       <div className="flex items-center justify-between text-xs">
                         <span className="text-muted-foreground">
-                          Achieved: {item.isAssessed ? `${item.current.toFixed(1)} / 5` : 'Not Assessed'}
+                          {item.isAssessed
+                            ? t('dashboard.skillGapPanel.achievedLabel', { current: item.current.toFixed(1) })
+                            : t('dashboard.skillGapPanel.notAssessed')}
                         </span>
                         <span className="text-muted-foreground font-medium">
-                          Target: {item.required.toFixed(1)} / 5
+                          {t('dashboard.skillGapPanel.targetLabel', { required: item.required.toFixed(1) })}
                         </span>
                       </div>
                       <ProgressBar
@@ -305,15 +307,15 @@ export function SkillGapPanel({
                           {item.isAssessed ? (
                             item.gapSize > 0 ? (
                               <span className="text-amber-600 dark:text-amber-400">
-                                -{item.gapSize.toFixed(1)} gap
+                                {t('dashboard.skillGapPanel.gapPoints', { gap: item.gapSize.toFixed(1) })}
                               </span>
                             ) : (
                               <span className="text-emerald-600 dark:text-emerald-400">
-                                Meets Target
+                                {t('dashboard.skillGapPanel.meetsTarget')}
                               </span>
                             )
                           ) : (
-                            <span className="text-slate-500">Unassessed</span>
+                            <span className="text-slate-500">{t('dashboard.skillGapPanel.notAssessed')}</span>
                           )}
                         </div>
                       </div>
@@ -359,8 +361,7 @@ export function SkillGapPanel({
                             <span>{t('common.topicsCovered')}</span>
                           </div>
                           <p className="text-xs text-foreground leading-relaxed">
-                            Practical application, design tradeoffs, optimization techniques, and error handling for{' '}
-                            <strong>{item.skillName}</strong>.
+                            {t('dashboard.skillGapPanel.topicsInsideSkill', { skill: item.skillName })}
                           </p>
                         </div>
 
@@ -372,8 +373,8 @@ export function SkillGapPanel({
                           </div>
                           <p className="text-xs text-foreground leading-relaxed">
                             {item.isAssessed
-                              ? `Derived from Diagnostic Evaluation score (${item.current.toFixed(1)}/5) calibrated against standard rubrics.`
-                              : 'No assessment taken yet. Baseline level currently pending diagnostic verification.'}
+                              ? t('dashboard.skillGapPanel.evidenceAssessed', { current: item.current.toFixed(1) })
+                              : t('dashboard.skillGapPanel.evidenceNotAssessed')}
                           </p>
                         </div>
 
@@ -385,8 +386,14 @@ export function SkillGapPanel({
                           </div>
                           <p className="text-xs text-foreground leading-relaxed">
                             {item.gapSize > 0
-                              ? `Role requires Level ${item.required.toFixed(1)} with high priority (${(item.weight * item.gapSize).toFixed(1)} score impact).`
-                              : `Requirement satisfied for target role (${item.required.toFixed(1)} required, achieved ${item.current.toFixed(1)}).`}
+                              ? t('dashboard.skillGapPanel.whyShownGap', {
+                                  required: item.required.toFixed(1),
+                                  impact: (item.weight * item.gapSize).toFixed(1)
+                                })
+                              : t('dashboard.skillGapPanel.whyShownMet', {
+                                  required: item.required.toFixed(1),
+                                  current: item.current.toFixed(1)
+                                })}
                           </p>
                         </div>
                       </div>
@@ -395,10 +402,10 @@ export function SkillGapPanel({
                       <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
                         <div className="text-xs text-muted-foreground">
                           {item.status === 'notAssessed'
-                            ? 'Take the 10-minute diagnostic assessment to measure your baseline.'
+                            ? t('dashboard.skillGapPanel.actionNotAssessedSub')
                             : item.gapSize > 0
-                            ? `Recommended courses and hands-on modules available to close this -${item.gapSize.toFixed(1)} gap.`
-                            : 'Skill verified. Practice quiz available to maintain proficiency.'}
+                            ? t('dashboard.skillGapPanel.actionGapSub', { gap: item.gapSize.toFixed(1) })
+                            : t('dashboard.skillGapPanel.actionMetSub')}
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -406,7 +413,7 @@ export function SkillGapPanel({
                             <Link to={`/assessments?skill=${encodeURIComponent(item.skillId)}`}>
                               <Button size="sm" className="bg-[#C2410C] hover:bg-[#9A3412] text-white text-xs">
                                 <Target className="w-3.5 h-3.5 mr-1" />
-                                <span>Take Diagnostic</span>
+                                <span>{t('dashboard.skillGapPanel.takeDiagnostic')}</span>
                               </Button>
                             </Link>
                           ) : item.gapSize > 0 ? (
@@ -421,7 +428,7 @@ export function SkillGapPanel({
                             <Link to={`/quizzes?skill=${encodeURIComponent(item.skillId)}`}>
                               <Button variant="outline" size="sm" className="text-xs">
                                 <Sparkles className="w-3.5 h-3.5 mr-1 text-[#C2410C]" />
-                                <span>Practice Quiz</span>
+                                <span>{t('dashboard.skillGapPanel.practiceQuiz')}</span>
                               </Button>
                             </Link>
                           )}

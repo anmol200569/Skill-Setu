@@ -115,25 +115,25 @@ export function RoadmapSummaryCard({
             </h4>
 
             <p className="text-xs text-muted-foreground">
-              <strong className="text-foreground">Why this is shown:</strong>{' '}
+              <strong className="text-foreground">{t('common.whyShown')}:</strong>{' '}
               {nextStep.recommendationReason ||
                 `Directly addresses identified gap in ${nextStep.gapAddressed || 'core competency'}.`}
             </p>
 
             <div className="pt-2 flex items-center justify-between">
               <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
-                Addresses: {nextStep.gapAddressed || nextStep.matchingSkill || 'Core Gap'}
+                {t('dashboard.roadmapSummary.addresses')}: {nextStep.gapAddressed || nextStep.matchingSkill || 'Core Gap'}
               </span>
               <Link to="/roadmap">
                 <Button size="sm" className="h-7 text-xs bg-[#C2410C] hover:bg-[#9A3412] text-white">
-                  Continue Module
+                  {t('dashboard.roadmapSummary.continueModule')}
                 </Button>
               </Link>
             </div>
           </div>
         ) : (
           <div className="text-xs text-muted-foreground text-center py-4">
-            Complete a diagnostic assessment to generate your personalized step-by-step roadmap.
+            {t('dashboard.roadmapSummary.emptyRoadmap')}
           </div>
         )}
       </CardContent>

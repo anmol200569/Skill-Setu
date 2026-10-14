@@ -123,7 +123,7 @@ export function ReadinessGauge({
                       strokeDasharray={circumference}
                       strokeDashoffset={strokeDashoffset}
                       strokeLinecap="round"
-                      className="transition-all duration-1000 ease-out dark:stroke-[#FB923C]"
+                      className="transition-all duration-300 ease-out dark:stroke-[#FB923C]"
                     />
                   </svg>
 
@@ -198,11 +198,11 @@ export function ReadinessGauge({
                 </span>
                 {coveragePercentage >= 60 ? (
                   <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium text-[11px]">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Sufficient
+                    <CheckCircle2 className="w-3.5 h-3.5" /> {t('dashboard.readiness.coverageSufficient')}
                   </span>
                 ) : (
                   <span className="text-amber-600 dark:text-amber-400 font-medium text-[11px]">
-                    Under 60% threshold
+                    {t('dashboard.readiness.coverageUnderThreshold')}
                   </span>
                 )}
               </p>
@@ -214,13 +214,13 @@ export function ReadinessGauge({
                 {t('dashboard.targetRoleLabel')}
               </div>
               <div className="text-sm sm:text-base font-serif font-bold text-foreground">
-                {targetRoleTitle || 'Target Career Role'}
+                {targetRoleTitle || t('dashboard.readiness.targetRoleFallback')}
               </div>
               <div className="pt-2 flex flex-wrap gap-2">
                 <Link to="/assessments">
                   <Button variant="outline" size="sm" className="text-xs font-semibold h-8">
                     <Target className="w-3.5 h-3.5 mr-1 text-[#C2410C]" />
-                    <span>Take Diagnostic</span>
+                    <span>{t('dashboard.readiness.takeDiagnostic')}</span>
                   </Button>
                 </Link>
                 <Link to="/skill-gaps">

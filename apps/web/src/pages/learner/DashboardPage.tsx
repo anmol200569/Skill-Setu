@@ -277,7 +277,7 @@ export function DashboardPage() {
               className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold"
             >
               <Target className="w-3.5 h-3.5 text-[#C2410C] dark:text-[#FB923C]" />
-              <span>Diagnostic</span>
+              <span>{t('nav.assessments')}</span>
             </Button>
           </Link>
           <Link to="/quizzes" className="flex-1 sm:flex-none">
@@ -287,7 +287,7 @@ export function DashboardPage() {
               className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold bg-[#C2410C] hover:bg-[#9A3412] text-white shadow-sm"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>AI Quiz</span>
+              <span>{t('nav.quizzes')}</span>
             </Button>
           </Link>
         </div>
@@ -341,7 +341,7 @@ export function DashboardPage() {
                         1. {t('dashboard.emptyState.step1Title')}
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        Set your target career trajectory to calibrate industry benchmarks.
+                        {t('dashboard.emptyState.step1Desc')}
                       </p>
                     </div>
                   </div>
@@ -350,7 +350,7 @@ export function DashboardPage() {
                     onClick={() => setIsPickRoleOpen(true)}
                     className="text-xs w-full sm:w-auto bg-[#C2410C] hover:bg-[#9A3412] text-white"
                   >
-                    Select Role
+                    {t('dashboard.emptyState.selectRoleBtn')}
                   </Button>
                 </div>
 
@@ -367,13 +367,13 @@ export function DashboardPage() {
                         2. {t('dashboard.emptyState.step2Title')}
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        Assess core skills to generate an objective baseline readiness score.
+                        {t('dashboard.emptyState.step2Desc')}
                       </p>
                     </div>
                   </div>
                   <Link to="/assessments" className="w-full sm:w-auto">
                     <Button variant="outline" size="sm" className="text-xs w-full sm:w-auto">
-                      Take Diagnostic
+                      {t('dashboard.readiness.takeDiagnostic')}
                     </Button>
                   </Link>
                 </div>
@@ -387,13 +387,13 @@ export function DashboardPage() {
                         3. {t('dashboard.emptyState.step3Title')}
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        Inspect your exact skill gaps and prioritized recommendations.
+                        {t('dashboard.emptyState.step3Desc')}
                       </p>
                     </div>
                   </div>
                   <Link to="/skill-gaps" className="w-full sm:w-auto">
                     <Button variant="outline" size="sm" className="text-xs w-full sm:w-auto">
-                      View Gaps
+                      {t('dashboard.emptyState.viewGapsBtn')}
                     </Button>
                   </Link>
                 </div>
@@ -407,13 +407,13 @@ export function DashboardPage() {
                         4. {t('dashboard.emptyState.step4Title')}
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        Enroll in free, curated courses mapped to your largest deficit.
+                        {t('dashboard.emptyState.step4Desc')}
                       </p>
                     </div>
                   </div>
                   <Link to="/courses" className="w-full sm:w-auto">
                     <Button variant="outline" size="sm" className="text-xs w-full sm:w-auto">
-                      Explore Courses
+                      {t('dashboard.emptyState.exploreCoursesBtn')}
                     </Button>
                   </Link>
                 </div>
@@ -437,42 +437,42 @@ export function DashboardPage() {
           {/* Section 2: Reusable Stat Tiles (Every number labeled with unit + calculation tooltip) */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <StatTile
-              label="Assessed Competencies"
+              label={t('dashboard.statAssessed')}
               value={assessedSkills}
-              unit={`/ ${totalSkills} skills`}
-              tooltip="Total role requirements evaluated via diagnostic assessment modules."
+              unit={t('dashboard.statAssessedUnit', { total: totalSkills })}
+              tooltip={t('dashboard.statAssessedTooltip')}
               icon={Target}
               badge={
                 <Badge variant={coveragePercentage >= 60 ? 'strong' : 'needsImprovement'}>
-                  {coveragePercentage}% Coverage
+                  {coveragePercentage}% {t('dashboard.readiness.coverageTitle')}
                 </Badge>
               }
             />
 
             <StatTile
-              label="Learning Hours"
+              label={t('dashboard.statHours')}
               value={stats?.totalLearningHours || 0}
-              unit="hours"
-              tooltip="Total verified study time logged through completed courses and practice modules."
+              unit={t('dashboard.statHoursUnit')}
+              tooltip={t('dashboard.statHoursTooltip')}
               icon={Clock}
             />
 
             <StatTile
-              label="Completed Modules"
+              label={t('dashboard.statCompleted')}
               value={stats?.completedCoursesCount || 0}
-              unit="courses"
-              tooltip="Curated courses in your learning roadmap marked as completed."
+              unit={t('dashboard.statCompletedUnit')}
+              tooltip={t('dashboard.statCompletedTooltip')}
               icon={CheckCircle}
             />
 
             <StatTile
-              label="Quiz Average"
+              label={t('dashboard.statQuizAvg')}
               value={stats?.averageQuizScore || 0}
-              unit="%"
-              tooltip="Mean percentage scored across all AI revision quizzes and knowledge checks."
+              unit={t('dashboard.statQuizAvgUnit')}
+              tooltip={t('dashboard.statQuizAvgTooltip')}
               icon={Award}
               trend={{
-                value: 'Calibrated',
+                value: t('dashboard.statCalibrated'),
                 positive: (stats?.averageQuizScore || 0) >= 70,
               }}
             />
@@ -512,20 +512,20 @@ export function DashboardPage() {
                 <CardTitle className="text-base font-serif flex items-center justify-between">
                   <span className="flex items-center gap-2">
                     <Award className="w-4 h-4 text-[#C2410C]" />
-                    <span>Recent Quiz History</span>
+                    <span>{t('dashboard.quizHistory.title')}</span>
                   </span>
                   <Link to="/quizzes" className="text-xs text-[#C2410C] hover:underline flex items-center gap-1 font-semibold">
-                    <span>Practice AI Quiz</span>
+                    <span>{t('dashboard.quizHistory.practiceCta')}</span>
                     <ArrowRight className="w-3 h-3" />
                   </Link>
                 </CardTitle>
               </CardHeader>
               <CardContent className="py-6 text-center space-y-2">
                 <p className="text-xs font-medium text-foreground">
-                  No quizzes attempted yet
+                  {t('dashboard.quizHistory.emptyTitle')}
                 </p>
                 <p className="text-[11px] text-muted-foreground max-w-sm mx-auto">
-                  Generate an AI quiz from your notes or attempt practice questions to test your skills.
+                  {t('dashboard.quizHistory.emptyDesc')}
                 </p>
               </CardContent>
             </Card>
@@ -535,10 +535,10 @@ export function DashboardPage() {
                 <div>
                   <CardTitle className="text-base font-serif flex items-center gap-2">
                     <Award className="w-4 h-4 text-[#C2410C]" />
-                    <span>Recent Quiz History</span>
+                    <span>{t('dashboard.quizHistory.title')}</span>
                   </CardTitle>
                   <p className="text-[11px] text-muted-foreground mt-0.5">
-                    Track your latest practice exam performances
+                    {t('dashboard.quizHistory.subtitle')}
                   </p>
                 </div>
                 <Link
@@ -575,7 +575,7 @@ export function DashboardPage() {
                           </Badge>
                           <Link to={`/quizzes?attemptId=${item.id}`}>
                             <Button size="sm" variant="ghost" className="h-7 text-xs text-[#C2410C] hover:text-[#C2410C] px-2.5">
-                              Review
+                              {t('dashboard.quizHistory.review')}
                             </Button>
                           </Link>
                         </div>
@@ -593,16 +593,16 @@ export function DashboardPage() {
       <Modal
         isOpen={isWhatIfOpen}
         onClose={() => setIsWhatIfOpen(false)}
-        title="Compare Target Career Role"
+        title={t('dashboard.whatIfModal.title')}
         className="max-w-xl"
       >
         <div className="space-y-4 text-xs">
           <p className="text-muted-foreground leading-relaxed">
-            Simulate how your verified skill proficiencies map against other industry career requirements:
+            {t('dashboard.whatIfModal.desc')}
           </p>
 
           <div className="space-y-1.5">
-            <label className="font-semibold text-foreground">Select Comparison Role</label>
+            <label className="font-semibold text-foreground">{t('dashboard.whatIfModal.selectLabel')}</label>
             <select
               value={compareRoleId}
               onChange={(e) => setCompareRoleId(e.target.value)}
@@ -618,19 +618,19 @@ export function DashboardPage() {
 
           {isLoadingWhatIf ? (
             <div className="py-8 text-center text-muted-foreground animate-pulse">
-              Simulating readiness calculation for comparison role...
+              {t('dashboard.whatIfModal.simulating')}
             </div>
           ) : whatIfData ? (
             <div className="space-y-3 pt-2">
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-3.5 rounded-xl border border-border bg-card space-y-1">
-                  <Badge variant="outline" className="text-[9px]">Active Goal</Badge>
+                  <Badge variant="outline" className="text-[9px]">{t('dashboard.whatIfModal.activeGoal')}</Badge>
                   <div className="font-serif font-bold text-sm text-foreground truncate">{targetRoleTitle}</div>
                   <div className="text-lg font-bold text-[#C2410C]">{readiness ?? '--'}/100</div>
                 </div>
 
                 <div className="p-3.5 rounded-xl border border-[#C2410C]/40 bg-[#C2410C]/5 space-y-1">
-                  <Badge variant="terracotta" className="text-[9px]">Simulated Goal</Badge>
+                  <Badge variant="terracotta" className="text-[9px]">{t('dashboard.whatIfModal.simulatedGoal')}</Badge>
                   <div className="font-serif font-bold text-sm text-foreground truncate">
                     {roles.find((r) => r.id === compareRoleId)?.title || 'Compared Role'}
                   </div>
@@ -642,20 +642,20 @@ export function DashboardPage() {
                 {(() => {
                   const curr = readiness || 0;
                   const delta = whatIfData.overallReadinessScore - curr;
-                  if (delta > 0) return <span className="text-emerald-600">Potential readiness increase: +{delta} pts</span>;
-                  if (delta < 0) return <span className="text-amber-600">Readiness delta: {delta} pts</span>;
-                  return <span className="text-muted-foreground">Identical readiness score match</span>;
+                  if (delta > 0) return <span className="text-emerald-600">{t('dashboard.whatIfModal.increase', { delta })}</span>;
+                  if (delta < 0) return <span className="text-amber-600">{t('dashboard.whatIfModal.decrease', { delta })}</span>;
+                  return <span className="text-muted-foreground">{t('dashboard.whatIfModal.identical')}</span>;
                 })()}
               </div>
 
               <div className="space-y-1.5 pt-1">
                 <div className="font-semibold text-foreground text-[11px]">
-                  Top Gaps for {roles.find((r) => r.id === compareRoleId)?.title}
+                  {t('dashboard.whatIfModal.topGaps', { role: roles.find((r) => r.id === compareRoleId)?.title || '' })}
                 </div>
                 <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
                   {(whatIfData.gaps || []).length === 0 ? (
                     <div className="p-3 text-center text-muted-foreground text-[11px]">
-                      No competency gaps detected for this role.
+                      {t('dashboard.whatIfModal.noGaps')}
                     </div>
                   ) : (
                     (whatIfData.gaps || []).slice(0, 4).map((g) => (
@@ -664,7 +664,9 @@ export function DashboardPage() {
                         className="p-2 rounded-lg border border-border bg-background flex items-center justify-between text-[11px]"
                       >
                         <span className="text-foreground font-medium">{g.skillName}</span>
-                        <span className="text-[#C2410C] font-semibold">Gap -{Math.abs(g.gap).toFixed(1)}</span>
+                        <span className="text-[#C2410C] font-semibold">
+                          {t('dashboard.whatIfModal.gapLabel', { gap: Math.abs(g.gap).toFixed(1) })}
+                        </span>
                       </div>
                     ))
                   )}
@@ -680,7 +682,7 @@ export function DashboardPage() {
               size="sm"
               onClick={() => setIsWhatIfOpen(false)}
             >
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button
               type="button"
@@ -689,7 +691,9 @@ export function DashboardPage() {
               onClick={() => handleApplyRoleSwitch(compareRoleId)}
               className="bg-[#C2410C] hover:bg-[#9A3412] text-white"
             >
-              Switch Goal to {roles.find((r) => r.id === compareRoleId)?.title || 'Target Role'}
+              {t('dashboard.whatIfModal.switchGoal', {
+                role: roles.find((r) => r.id === compareRoleId)?.title || t('dashboard.readiness.targetRoleFallback')
+              })}
             </Button>
           </div>
         </div>
@@ -699,12 +703,12 @@ export function DashboardPage() {
       <Modal
         isOpen={isPickRoleOpen}
         onClose={() => setIsPickRoleOpen(false)}
-        title="Select Your Target Career Role"
+        title={t('dashboard.rolePickerModal.title')}
         className="max-w-lg"
       >
         <div className="space-y-3 text-xs">
           <p className="text-muted-foreground">
-            Choose your target role to calibrate your skills and generate customized course recommendations:
+            {t('dashboard.rolePickerModal.desc')}
           </p>
           <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
             {roles.map((r) => (

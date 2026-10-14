@@ -62,8 +62,8 @@ export function ReadinessTrendChart({ history = [], currentScore, className }: R
           </div>
           {dataPoints.length === 1 && (
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-secondary text-xs text-foreground font-medium border border-border">
-              <span>Baseline: {dataPoints[0].score}/100</span>
-              <span className="text-muted-foreground">• Needs 1 more reassessment</span>
+              <span>{t('dashboard.trend.baselineLabel', { score: dataPoints[0].score })}</span>
+              <span className="text-muted-foreground">• {t('dashboard.trend.needsMoreReassessments')}</span>
             </div>
           )}
         </div>

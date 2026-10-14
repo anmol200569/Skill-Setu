@@ -24,5 +24,56 @@ describe('Internationalization Translation Dictionaries', () => {
 
     expect(en.quiz.title).toBe('AI Quiz Generator');
     expect(hi.quiz.title).toBe('AI क्विज़ जनरेटर');
+
+    // Dashboard parity
+    expect(en.dashboard.readiness.title).toBeDefined();
+    expect(hi.dashboard.readiness.title).toBeDefined();
+    expect(en.dashboard.topGaps.title).toBeDefined();
+    expect(hi.dashboard.topGaps.title).toBeDefined();
+    expect(en.dashboard.skillGapPanel.title).toBeDefined();
+    expect(hi.dashboard.skillGapPanel.title).toBeDefined();
+
+    // Skill Gaps page parity
+    expect(en.skillGapsPage.title).toBeDefined();
+    expect(hi.skillGapsPage.title).toBeDefined();
+    expect(en.skillGapsPage.changeRole).toBeDefined();
+    expect(hi.skillGapsPage.changeRole).toBeDefined();
+
+    // Roadmap and Courses parity
+    expect(en.roadmapPage.title).toBeDefined();
+    expect(hi.roadmapPage.title).toBeDefined();
+    expect(en.coursesPage.title).toBeDefined();
+    expect(hi.coursesPage.title).toBeDefined();
+
+    // Landing 3D constellation parity
+    expect(en.landing.constellation.tag).toBeDefined();
+    expect(hi.landing.constellation.tag).toBeDefined();
+    expect(en.landing.constellation.interactive).toBeDefined();
+    expect(hi.landing.constellation.interactive).toBeDefined();
+  });
+
+  it('guarantees complete recursive key parity between en.json and hi.json', () => {
+    function getKeys(obj: Record<string, any>, prefix = ''): string[] {
+      let keys: string[] = [];
+      for (const [key, value] of Object.entries(obj)) {
+        const fullKey = prefix ? `${prefix}.${key}` : key;
+        if (value && typeof value === 'object' && !Array.isArray(value)) {
+          keys = keys.concat(getKeys(value, fullKey));
+        } else {
+          keys.push(fullKey);
+        }
+      }
+      return keys;
+    }
+
+    const enKeys = new Set(getKeys(en));
+    const hiKeys = new Set(getKeys(hi));
+
+    const missingInHi = [...enKeys].filter((k) => !hiKeys.has(k));
+    const missingInEn = [...hiKeys].filter((k) => !enKeys.has(k));
+
+    expect(missingInHi, `Keys present in en.json but missing in hi.json: ${missingInHi.join(', ')}`).toEqual([]);
+    expect(missingInEn, `Keys present in hi.json but missing in en.json: ${missingInEn.join(', ')}`).toEqual([]);
   });
 });
+
