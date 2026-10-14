@@ -173,6 +173,7 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
       radarData: [],
       quizScoreHistory: quizAttempts.map((q) => ({
         id: q.id,
+        quizId: q.quiz.id,
         title: q.quiz.title,
         score: q.scorePercentage,
         date: q.submittedAt
@@ -269,6 +270,7 @@ export async function getLearnerDashboardStats(req: Request, res: Response): Pro
     radarData,
     quizScoreHistory: quizAttempts.map((q) => ({
       id: q.id,
+      quizId: q.quiz.id,
       title: q.quiz.title,
       score: q.scorePercentage,
       date: q.submittedAt

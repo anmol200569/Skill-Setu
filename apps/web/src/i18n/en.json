@@ -408,6 +408,17 @@
       "switchAction": "Switch Active Role to {{role}}",
       "switchingAction": "Updating active role...",
       "close": "Close Comparison"
+    },
+    "quizHistory": {
+      "title": "Recent Quiz History",
+      "subtitle": "Track your latest practice exam performances",
+      "emptyTitle": "No quizzes attempted yet",
+      "emptySubtitle": "Generate an AI quiz from your notes or attempt practice questions to test your skills.",
+      "startQuiz": "Practice AI Quiz",
+      "review": "Review",
+      "error": "Could not load quiz history",
+      "retry": "Retry",
+      "viewAll": "View All"
     }
   },
   "quiz": {
