@@ -114,6 +114,7 @@ export interface GeminiCompletionOptions {
   responseMimeType?: string;
   timeoutMs?: number;
   thinkingLevel?: 'MINIMAL' | 'LOW' | 'MEDIUM' | 'HIGH';
+  maxOutputTokens?: number;
 }
 
 /**
@@ -194,7 +195,7 @@ export async function generateGeminiCompletion(
   const genConfig: any = {
     systemInstruction: systemInstruction || 'You are Skill Setu AI, an expert technical mentor and skill intelligence assistant.',
     temperature,
-    maxOutputTokens: 8192
+    maxOutputTokens: options?.maxOutputTokens ?? 8192
   };
 
   if (supportsThinkingConfig(modelName)) {

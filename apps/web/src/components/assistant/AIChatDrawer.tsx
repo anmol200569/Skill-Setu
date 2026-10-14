@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, X, Send, Bot, User, Loader2, ArrowRight, RotateCcw, Compass } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { apiClient } from '../../lib/api';
 import { useAuth } from '../../context/AuthContext';
 
@@ -185,13 +187,21 @@ export function AIChatDrawer() {
                 <div
                   className={`rounded-xl px-3.5 py-2.5 max-w-[85%] leading-relaxed ${
                     m.role === 'user'
-                      ? 'bg-[#C2410C] text-white'
+                      ? 'bg-[#C2410C] text-white whitespace-pre-wrap'
                       : m.isError
-                      ? 'bg-destructive/10 text-destructive border border-destructive/30'
-                      : 'bg-secondary text-secondary-foreground border border-border whitespace-pre-wrap'
+                      ? 'bg-destructive/10 text-destructive border border-destructive/30 whitespace-pre-wrap'
+                      : 'bg-secondary text-secondary-foreground border border-border'
                   }`}
                 >
-                  <div>{m.content}</div>
+                  {m.role === 'assistant' && !m.isError ? (
+                    <div className="prose prose-sm dark:prose-invert max-w-none break-words text-xs sm:text-sm [&>p]:mb-2 [&>p:last-child]:mb-0 [&>ul]:list-disc [&>ul]:pl-4 [&>ul]:mb-2 [&>ol]:list-decimal [&>ol]:pl-4 [&>ol]:mb-2 [&>pre]:bg-background/80 [&>pre]:p-2 [&>pre]:rounded-lg [&>pre]:overflow-x-auto [&>code]:bg-background/60 [&>code]:px-1 [&>code]:py-0.5 [&>code]:rounded">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {m.content}
+                      </ReactMarkdown>
+                    </div>
+                  ) : (
+                    <div>{m.content}</div>
+                  )}
                   {m.isError && m.retryMessage && (
                     <button
                       type="button"
