@@ -510,6 +510,39 @@ describe('System Practice Quizzes & Recommended Endpoint (Bug 2)', () => {
         expect(percentage).toBeGreaterThanOrEqual(15);
       }
     });
+
+    it('verifies correct option is longest in <= 40% of questions and no question has correct option > 1.5x average wrong length', () => {
+      const jsonPath = path.join(__dirname, '../prisma/seed-quizzes/systemQuizzes.json');
+      const quizzes = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+
+      let totalQuestions = 0;
+      let longestCorrectCount = 0;
+
+      for (const quiz of quizzes) {
+        for (const question of quiz.questions) {
+          totalQuestions++;
+          const correctOption = question.options.find((o: any) => question.correctAnswers.includes(o.id));
+          expect(correctOption).toBeDefined();
+
+          const wrongOptions = question.options.filter((o: any) => !question.correctAnswers.includes(o.id));
+          expect(wrongOptions.length).toBeGreaterThan(0);
+
+          const maxLen = Math.max(...question.options.map((o: any) => o.text.length));
+          if (correctOption.text.length === maxLen) {
+            longestCorrectCount++;
+          }
+
+          const avgWrongLen = wrongOptions.reduce((acc: number, o: any) => acc + o.text.length, 0) / wrongOptions.length;
+          const ratio = correctOption.text.length / avgWrongLen;
+
+          expect(ratio).toBeLessThanOrEqual(1.5);
+        }
+      }
+
+      expect(totalQuestions).toBe(405);
+      const longestPercentage = (longestCorrectCount / totalQuestions) * 100;
+      expect(longestPercentage).toBeLessThanOrEqual(40);
+    });
   });
 });
 

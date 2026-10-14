@@ -102,9 +102,9 @@ const questionBank: Record<string, Record<'beginner' | 'intermediate' | 'advance
         q: 'What is the return value of typeof null in JavaScript?',
         opts: [
           '"object"',
-          '"null"',
-          '"undefined"',
-          '"boolean"'
+          '"number"',
+          '"symbol"',
+          '"string"'
         ],
         correct: 0,
         exp: 'typeof null returns "object" due to a historical legacy artifact in early JavaScript engines.',
@@ -716,6 +716,249 @@ const skillDistractorBank: Record<string, {
       'Loading unverified third-party model checkpoint weights from untrusted public web URLs without cryptographic checksums or validation.',
       'Persisting sensitive customer input training samples directly within saved model checkpoint metadata payloads.',
       'Deploying unauthenticated model inference serving endpoints directly to public network interfaces without rate limiting.'
+    ]
+  },
+  'appsec-owasp': {
+    c0: [
+      'Concatenating raw untrusted user input directly into dynamic database queries without parameterized SQL prepared statements.',
+      'Relying solely on client-side form input validation while omitting defensive server-side data sanitization filters.',
+      'Disabling cross-site request forgery prevention tokens on sensitive state-changing transactional HTTP endpoints.'
+    ],
+    c1: [
+      'Storing user passwords using fast unsalted cryptographic hash algorithms like MD5 or SHA-1 rather than Argon2id.',
+      'Configuring overly permissive Cross-Origin Resource Sharing policies that permit wildcard origin access to authenticated APIs.',
+      'Omitting security response headers such as Content-Security-Policy, Strict-Transport-Security, and X-Frame-Options.'
+    ],
+    c2: [
+      'Deploying new software revisions to production without performing automated dynamic application security vulnerability scans.',
+      'Ignoring alerts from dependency vulnerability scanners regarding known remote code execution exploits in libraries.',
+      'Exposing sensitive stack traces, internal IP addresses, and database schema errors directly in client-facing HTTP responses.'
+    ],
+    c3: [
+      'Applying expensive cryptographic signature checks repeatedly on static unauthenticated asset delivery requests.',
+      'Running heavy recursive regular expressions on untrusted input strings that trigger catastrophic ReDoS stalling.',
+      'Omitting rate limiting on computational password hashing endpoints, leaving authentication clusters vulnerable to DoS.'
+    ],
+    c4: [
+      'Permitting direct object reference lookups without verifying tenant authorization boundaries on requested record primary keys.',
+      'Hardcoding cryptographic private keys and symmetric encryption secrets directly inside client-facing source code repos.',
+      'Granting broad read and write permissions to anonymous unauthenticated callers across administrative backend routes.'
+    ]
+  },
+  'auth-iam': {
+    c0: [
+      'Issuing unsigned or weakly signed JWT access tokens using vulnerable symmetric HMAC algorithms with default static secrets.',
+      'Storing unencrypted session tokens and sensitive JWT bearer credentials directly within browser localStorage storage.',
+      'Reusing identical JSON Web Token signing keys indefinitely across distinct development, staging, and production environments.'
+    ],
+    c1: [
+      'Coupling authorization logic directly to hardcoded UI role names rather than fine-grained declarative permission scopes.',
+      'Designing distributed identity authentication flows without establishing centralized OpenID Connect and OAuth 2.0 authority brokers.',
+      'Configuring excessively long refresh token validity lifespans without providing token revocation or rotation policies.'
+    ],
+    c2: [
+      'Deploying identity federation configuration changes directly to production directory tenants without staging rehearsals.',
+      'Omitting automated audit log collection for privileged administrative role assignments and cross-account delegations.',
+      'Failing to invalidate active user sessions immediately upon password resets, credential rotations, or account deactivations.'
+    ],
+    c3: [
+      'Validating JWT cryptographic signatures via remote network calls on every internal microservice hop.',
+      'Storing entire user profiles and excessive claim payloads inside access tokens, inflating token payload sizes.',
+      'Omitting local JWKS public key caching tiers, triggering rate-limited outbound requests to identity providers.'
+    ],
+    c4: [
+      'Allowing OAuth 2.0 authorization code exchange flows on public mobile clients without enforcing PKCE proof key challenges.',
+      'Granting wildcard IAM permissions across production cloud resource groups to standard developer role profiles.',
+      'Disabling multi-factor authentication requirements for administrative operations across enterprise directory infrastructure.'
+    ]
+  },
+  'netsec-threat': {
+    c0: [
+      'Deploying corporate internal workloads into flat unsegmented network topologies without micro-segmentation or firewall boundaries.',
+      'Transmitting sensitive administrative traffic across unencrypted protocols such as Telnet or plaintext HTTP in private subnets.',
+      'Relying on perimeter firewalls exclusively while leaving lateral east-west network traffic uninspected and unmonitored.'
+    ],
+    c1: [
+      'Configuring permissive border gateway routing policies that advertise private organizational CIDR blocks to public peers.',
+      'Designing enterprise network topologies without automated intrusion detection systems and threat telemetry collection agents.',
+      'Coupling core datacenter ingress routing statically to single physical switches without redundant multi-chassis failover links.'
+    ],
+    c2: [
+      'Applying complex firewall rule modifications directly to active perimeter gateways without change management review workflows.',
+      'Ignoring automated anomaly alerts indicating persistent outbound DNS tunneling or unusual beaconing activity on networks.',
+      'Omitting periodic red-team penetration testing and vulnerability assessments against outward-facing demilitarized zones.'
+    ],
+    c3: [
+      'Routing high-throughput inter-service traffic through deep packet inspection firewalls lacking hardware acceleration.',
+      'Configuring overly broad flow log capture retention on ephemeral high-frequency internal test container networks.',
+      'Omitting hardware-accelerated cryptographic offloading on high-volume VPN edge gateways during peak network loads.'
+    ],
+    c4: [
+      'Leaving obsolete administrative management interfaces exposed to untrusted external subnets without IP allowlisting or VPNs.',
+      'Disabling automated DDoS mitigation protections on mission-critical public edge reverse proxy endpoints during traffic spikes.',
+      'Failing to isolate compromise-prone legacy operational technology devices from sensitive corporate financial subnets.'
+    ]
+  },
+  'tech-writing': {
+    c0: [
+      'Documenting complex software architectures using ambiguous, jargon-heavy prose that lacks clear structural diagrams or concrete examples.',
+      'Relying on unversioned ad-hoc wiki pages that drift out of sync with active codebase implementations and production realities.',
+      'Omitting intended audience prerequisites, functional goals, and non-goals from technical design specifications and RFCs.'
+    ],
+    c1: [
+      'Publishing software architecture RFCs without defining formal problem statements, evaluation criteria, or alternative approaches.',
+      'Structuring API documentation with inconsistent naming conventions, missing parameter types, and unvalidated payload schemas.',
+      'Omitting standardized changelog versioning guidelines and deprecation policy timelines from public developer documentation.'
+    ],
+    c2: [
+      'Merging substantial API interface modifications into main branches without updating corresponding integration guides.',
+      'Relying entirely on manual peer reviews for documentation accuracy without automated markdown link and snippet testing.',
+      'Publishing breaking software release notes without providing automated migration scripts or step-by-step remediation instructions.'
+    ],
+    c3: [
+      'Embedding high-resolution uncompressed image diagrams that increase documentation portal page load times.',
+      'Structuring technical reference portals with deep pagination hierarchies that hinder search engine crawler discovery.',
+      'Omitting algorithmic full-text search indexing on documentation portals, forcing manual browsing.'
+    ],
+    c4: [
+      'Exposing internal infrastructure hostnames, credentials, and non-public API endpoints in public open-source repository documentation.',
+      'Publishing sensitive customer case study architectures without redacting proprietary internal telemetry and trade secrets.',
+      'Storing confidential architectural roadmap proposals in publicly accessible cloud documentation workspaces without access controls.'
+    ]
+  },
+  'stakeholder-mgt': {
+    c0: [
+      'Communicating technical delivery delays to executive leadership only after predetermined milestone deadlines have already elapsed.',
+      'Presenting deeply technical implementation details to business executives instead of quantifiable outcomes and business impacts.',
+      'Making unverified delivery commitments without consulting engineering teams regarding existing technical constraints.'
+    ],
+    c1: [
+      'Structuring project governance without clear decision-making frameworks, RACI matrices, or escalation channels across business units.',
+      'Allowing scope creep through informal verbal agreements rather than standardized written change request evaluation processes.',
+      'Omitting documented alignment milestones between cross-functional marketing, sales, product, and engineering leadership teams.'
+    ],
+    c2: [
+      'Canceling scheduled cross-functional status update briefings during critical delivery phases when obstacles arise.',
+      'Proceeding with controversial architectural changes without securing buy-in from impacted downstream consumer engineering teams.',
+      'Failing to document key decisions, actionable takeaways, and assigned owners following critical stakeholder alignment meetings.'
+    ],
+    c3: [
+      'Convening daily synchronous status meetings to deliver one-way updates better suited for written memos.',
+      'Distributing redundant executive presentation slide decks that require extensive manual formatting maintenance.',
+      'Scheduling recurring alignment calls with oversized attendee lists that lack focused agendas or outcomes.'
+    ],
+    c4: [
+      'Sharing confidential material product roadmap milestones with external partners without signed mutual non-disclosure agreements.',
+      'Committing to unattainable service level guarantees that compromise system security posture and engineering team sustainability.',
+      'Concealing critical operational security incidents or data breaches from executive leadership and legal compliance teams.'
+    ]
+  },
+  'agile-teamwork': {
+    c0: [
+      'Enforcing rigid process compliance over collaborative problem-solving, active team communication, and rapid incremental learning.',
+      'Treating sprint commitment forecasts as immutable contractual obligations rather than flexible empirical development goals.',
+      'Assigning work items hierarchically to individual silos without encouraging collective code ownership and peer mentorship.'
+    ],
+    c1: [
+      'Structuring sprints around fragmented component silos rather than cross-functional, vertically sliced deliverable features.',
+      'Establishing team performance benchmarks based on misleading output velocity metrics rather than customer value delivered.',
+      'Omitting explicit Definitions of Done and acceptance criteria from backlog user stories before commencing sprint implementation.'
+    ],
+    c2: [
+      'Skipping retrospective ceremonies to allocate more development hours to incomplete sprint backlog backlog tickets.',
+      'Refusing to adjust sprint workload forecasts when team velocity indicators show persistent overcommitment and burnout trends.',
+      'Allowing recurring blocker discussions to derail daily standup syncs instead of holding dedicated follow-up resolution sessions.'
+    ],
+    c3: [
+      'Conducting prolonged backlog estimation meetings debating minor point discrepancies on low-priority items.',
+      'Micro-managing individual task assignments rather than allowing team members to pull work autonomously.',
+      'Mandating redundant status updates across multiple issue-tracking platforms that duplicate sprint states.'
+    ],
+    c4: [
+      'Suppressing dissenting technical opinions and psychological safety during post-incident blameless post-mortem retrospectives.',
+      'Fostering hero culture where knowledge is hoarded by isolated senior engineers rather than systematically shared across peers.',
+      'Penalizing transparent disclosures of engineering defects and blockers, incentivizing silent technical debt accumulation.'
+    ]
+  },
+  'prod-discovery': {
+    c0: [
+      'Committing engineering resources to build extensive feature sets based on untested internal assumptions without customer validation.',
+      'Conflating stakeholder solution requests with root customer problems without investigating actual user workflows and pain points.',
+      'Relying solely on anecdotal executive opinions while disregarding quantitative usage metrics and qualitative customer feedback.'
+    ],
+    c1: [
+      'Drafting exhaustive hundred-page product specifications for uncertain features instead of iterative testable hypothesis documents.',
+      'Structuring product requirement documents without explicit success metrics, guardrail indicators, or defined target customer personas.',
+      'Coupling discovery exploration rigidly to annual planning cycles rather than conducting continuous opportunity space discovery.'
+    ],
+    c2: [
+      'Handing off product requirements documents to engineering teams over the wall without collaborative discovery and scoping workshops.',
+      'Ignoring early negative prototype test feedback and persisting with flawed initial feature assumptions through release.',
+      'Deploying major product enhancements without instrumenting feature flags or defining rollback trigger thresholds for regressions.'
+    ],
+    c3: [
+      'Building fully functional production-grade prototypes to test basic hypotheses when mockups would suffice.',
+      'Conducting exploratory user interviews without structured note-taking frameworks or synthesis processes.',
+      'Debating speculative edge case behaviors extensively during discovery before confirming customer interest.'
+    ],
+    c4: [
+      'Launching experimental discovery features that expose unverified beta users to data security vulnerabilities or data loss risks.',
+      'Collecting intrusive user behavioral telemetry during discovery studies without obtaining clear informed customer consent.',
+      'Promising non-existent enterprise compliance or privacy capabilities to prospective discovery interview candidates.'
+    ]
+  },
+  'product-analytics': {
+    c0: [
+      'Optimizing vanity acquisition metrics while ignoring fundamental customer retention cohorts, churn rates, and engagement depth.',
+      'Deploying telemetry tracking instrumentation without standardized naming schemas, causing duplicated and conflicting event names.',
+      'Confusing statistical correlation with true causation when analyzing observational user behavioral patterns across cohorts.'
+    ],
+    c1: [
+      'Structuring analytics pipelines without centralized tracking event governance, data dictionaries, and automated validation tests.',
+      'Designing product experiments without calculating minimum detectable effect sizes, sample size requirements, or test durations.',
+      'Coupling analytics tracking logic directly to fragile DOM CSS selectors rather than durable semantic telemetry data attributes.'
+    ],
+    c2: [
+      'Terminating A/B test experiments prematurely as soon as statistical significance is briefly reached before reaching required sample sizes.',
+      'Shipping significant user experience revisions without tracking instrumentation to evaluate post-launch metric impacts.',
+      'Modifying existing tracking event definitions retroactively without versioning, corrupting historical longitudinal data analysis.'
+    ],
+    c3: [
+      'Firing high-frequency telemetry events synchronously on every single user scroll and mousemove in browsers.',
+      'Materializing massive raw event data tables for daily reports without pre-aggregating metrics at day level.',
+      'Running full table scans across raw behavioral logs to compute simple daily active user engagement ratios.'
+    ],
+    c4: [
+      'Transmitting sensitive customer passwords, authentication tokens, or personal identifiers in unmasked analytics event payloads.',
+      'Bypassing international data privacy regulations such as GDPR and CCPA by tracking user activities without cookie consent.',
+      'Granting unrestricted organizational access to raw customer event logs containing granular location coordinates and identities.'
+    ]
+  },
+  'user-research': {
+    c0: [
+      'Asking leading interview questions that prompt users to validate personal design hypotheses rather than uncovering genuine behaviors.',
+      'Relying solely on what users say they would do in hypothetical scenarios rather than observing their actual task execution workflows.',
+      'Conducting usability evaluation sessions exclusively with internal corporate colleagues who possess deep domain familiarity.'
+    ],
+    c1: [
+      'Structuring user journey maps around optimistic idealized workflows while omitting critical edge cases, friction points, and failures.',
+      'Defining customer personas based on superficial demographic stereotypes rather than actionable behavioral patterns and core user goals.',
+      'Omitting standardized usability benchmarking metrics such as Task Success Rate and System Usability Scale from iterative studies.'
+    ],
+    c2: [
+      'Synthesizing customer research findings in isolation without inviting cross-functional product and engineering partners to observe.',
+      'Over-indexing on extreme feedback from a single vocal user while ignoring broader behavioral patterns across the representative cohort.',
+      'Delivering dense hundred-page qualitative research reports that fail to provide actionable, prioritized UX design recommendations.'
+    ],
+    c3: [
+      'Conducting dozens of repetitive usability test sessions past the point of insight saturation in user studies.',
+      'Creating high-fidelity animated prototypes when basic low-fidelity wireframes would test concepts faster.',
+      'Transcribing multi-hour user interview audio recordings manually instead of using transcription tools.'
+    ],
+    c4: [
+      'Sharing unredacted participant video recordings and identifiable personal information with broad audiences without participant consent.',
+      'Coercing vulnerable study participants into signing rights releases without providing adequate time to review compensation terms.',
+      'Storing sensitive customer usability interview recordings and research transcripts in unprotected cloud folders without access controls.'
     ]
   }
 };

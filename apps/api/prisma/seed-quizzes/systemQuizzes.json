@@ -103,11 +103,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "\"null\""
+            "text": "\"number\""
           },
           {
             "id": "opt_2",
-            "text": "\"boolean\""
+            "text": "\"string\""
           },
           {
             "id": "opt_3",
@@ -115,7 +115,7 @@
           },
           {
             "id": "opt_4",
-            "text": "\"undefined\""
+            "text": "\"symbol\""
           }
         ],
         "correctAnswers": [
@@ -8498,15 +8498,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Disabling cross-site request forgery prevention tokens on sensitive state-changing transactional HTTP endpoints."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Relying solely on client-side form input validation while omitting defensive server-side data sanitization filters."
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Concatenating raw untrusted user input directly into dynamic database queries without parameterized SQL prepared statements."
           }
         ],
         "correctAnswers": [
@@ -8523,11 +8523,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Configuring overly permissive Cross-Origin Resource Sharing policies that permit wildcard origin access to authenticated APIs."
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Storing user passwords using fast unsalted cryptographic hash algorithms like MD5 or SHA-1 rather than Argon2id."
           },
           {
             "id": "opt_3",
@@ -8535,7 +8535,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting security response headers such as Content-Security-Policy, Strict-Transport-Security, and X-Frame-Options."
           }
         ],
         "correctAnswers": [
@@ -8552,7 +8552,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Exposing sensitive stack traces, internal IP addresses, and database schema errors directly in client-facing HTTP responses."
           },
           {
             "id": "opt_2",
@@ -8560,11 +8560,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring alerts from dependency vulnerability scanners regarding known remote code execution exploits in libraries."
           },
           {
             "id": "opt_4",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Deploying new software revisions to production without performing automated dynamic application security vulnerability scans."
           }
         ],
         "correctAnswers": [
@@ -8581,15 +8581,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Applying expensive cryptographic signature checks repeatedly on static unauthenticated asset delivery requests."
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Running heavy recursive regular expressions on untrusted input strings that trigger catastrophic ReDoS stalling."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting rate limiting on computational password hashing endpoints, leaving authentication clusters vulnerable to DoS."
           },
           {
             "id": "opt_4",
@@ -8610,15 +8610,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Permitting direct object reference lookups without verifying tenant authorization boundaries on requested record primary keys."
           },
           {
             "id": "opt_2",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Granting broad read and write permissions to anonymous unauthenticated callers across administrative backend routes."
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Hardcoding cryptographic private keys and symmetric encryption secrets directly inside client-facing source code repos."
           },
           {
             "id": "opt_4",
@@ -8651,15 +8651,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Relying solely on client-side form input validation while omitting defensive server-side data sanitization filters."
           },
           {
             "id": "opt_2",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Concatenating raw untrusted user input directly into dynamic database queries without parameterized SQL prepared statements."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Disabling cross-site request forgery prevention tokens on sensitive state-changing transactional HTTP endpoints."
           },
           {
             "id": "opt_4",
@@ -8680,11 +8680,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Storing user passwords using fast unsalted cryptographic hash algorithms like MD5 or SHA-1 rather than Argon2id."
           },
           {
             "id": "opt_2",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Configuring overly permissive Cross-Origin Resource Sharing policies that permit wildcard origin access to authenticated APIs."
           },
           {
             "id": "opt_3",
@@ -8692,7 +8692,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting security response headers such as Content-Security-Policy, Strict-Transport-Security, and X-Frame-Options."
           }
         ],
         "correctAnswers": [
@@ -8709,11 +8709,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Deploying new software revisions to production without performing automated dynamic application security vulnerability scans."
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring alerts from dependency vulnerability scanners regarding known remote code execution exploits in libraries."
           },
           {
             "id": "opt_3",
@@ -8721,7 +8721,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Exposing sensitive stack traces, internal IP addresses, and database schema errors directly in client-facing HTTP responses."
           }
         ],
         "correctAnswers": [
@@ -8742,15 +8742,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Applying expensive cryptographic signature checks repeatedly on static unauthenticated asset delivery requests."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Running heavy recursive regular expressions on untrusted input strings that trigger catastrophic ReDoS stalling."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting rate limiting on computational password hashing endpoints, leaving authentication clusters vulnerable to DoS."
           }
         ],
         "correctAnswers": [
@@ -8771,15 +8771,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Hardcoding cryptographic private keys and symmetric encryption secrets directly inside client-facing source code repos."
           },
           {
             "id": "opt_3",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Permitting direct object reference lookups without verifying tenant authorization boundaries on requested record primary keys."
           },
           {
             "id": "opt_4",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Granting broad read and write permissions to anonymous unauthenticated callers across administrative backend routes."
           }
         ],
         "correctAnswers": [
@@ -8808,11 +8808,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Relying solely on client-side form input validation while omitting defensive server-side data sanitization filters."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Disabling cross-site request forgery prevention tokens on sensitive state-changing transactional HTTP endpoints."
           },
           {
             "id": "opt_3",
@@ -8820,7 +8820,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Concatenating raw untrusted user input directly into dynamic database queries without parameterized SQL prepared statements."
           }
         ],
         "correctAnswers": [
@@ -8837,15 +8837,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting security response headers such as Content-Security-Policy, Strict-Transport-Security, and X-Frame-Options."
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Storing user passwords using fast unsalted cryptographic hash algorithms like MD5 or SHA-1 rather than Argon2id."
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Configuring overly permissive Cross-Origin Resource Sharing policies that permit wildcard origin access to authenticated APIs."
           },
           {
             "id": "opt_4",
@@ -8866,11 +8866,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring alerts from dependency vulnerability scanners regarding known remote code execution exploits in libraries."
           },
           {
             "id": "opt_2",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Exposing sensitive stack traces, internal IP addresses, and database schema errors directly in client-facing HTTP responses."
           },
           {
             "id": "opt_3",
@@ -8878,7 +8878,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Deploying new software revisions to production without performing automated dynamic application security vulnerability scans."
           }
         ],
         "correctAnswers": [
@@ -8899,15 +8899,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Running heavy recursive regular expressions on untrusted input strings that trigger catastrophic ReDoS stalling."
           },
           {
             "id": "opt_3",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Applying expensive cryptographic signature checks repeatedly on static unauthenticated asset delivery requests."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting rate limiting on computational password hashing endpoints, leaving authentication clusters vulnerable to DoS."
           }
         ],
         "correctAnswers": [
@@ -8928,15 +8928,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Hardcoding cryptographic private keys and symmetric encryption secrets directly inside client-facing source code repos."
           },
           {
             "id": "opt_3",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Permitting direct object reference lookups without verifying tenant authorization boundaries on requested record primary keys."
           },
           {
             "id": "opt_4",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Granting broad read and write permissions to anonymous unauthenticated callers across administrative backend routes."
           }
         ],
         "correctAnswers": [
@@ -8969,15 +8969,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Issuing unsigned or weakly signed JWT access tokens using vulnerable symmetric HMAC algorithms with default static secrets."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Reusing identical JSON Web Token signing keys indefinitely across distinct development, staging, and production environments."
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Storing unencrypted session tokens and sensitive JWT bearer credentials directly within browser localStorage storage."
           }
         ],
         "correctAnswers": [
@@ -8998,15 +8998,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Coupling authorization logic directly to hardcoded UI role names rather than fine-grained declarative permission scopes."
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Designing distributed identity authentication flows without establishing centralized OpenID Connect and OAuth 2.0 authority brokers."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Configuring excessively long refresh token validity lifespans without providing token revocation or rotation policies."
           }
         ],
         "correctAnswers": [
@@ -9023,11 +9023,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Failing to invalidate active user sessions immediately upon password resets, credential rotations, or account deactivations."
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Omitting automated audit log collection for privileged administrative role assignments and cross-account delegations."
           },
           {
             "id": "opt_3",
@@ -9035,7 +9035,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Deploying identity federation configuration changes directly to production directory tenants without staging rehearsals."
           }
         ],
         "correctAnswers": [
@@ -9052,15 +9052,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Validating JWT cryptographic signatures via remote network calls on every internal microservice hop."
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Storing entire user profiles and excessive claim payloads inside access tokens, inflating token payload sizes."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting local JWKS public key caching tiers, triggering rate-limited outbound requests to identity providers."
           },
           {
             "id": "opt_4",
@@ -9081,7 +9081,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Granting wildcard IAM permissions across production cloud resource groups to standard developer role profiles."
           },
           {
             "id": "opt_2",
@@ -9089,11 +9089,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Disabling multi-factor authentication requirements for administrative operations across enterprise directory infrastructure."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Allowing OAuth 2.0 authorization code exchange flows on public mobile clients without enforcing PKCE proof key challenges."
           }
         ],
         "correctAnswers": [
@@ -9122,15 +9122,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Issuing unsigned or weakly signed JWT access tokens using vulnerable symmetric HMAC algorithms with default static secrets."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Reusing identical JSON Web Token signing keys indefinitely across distinct development, staging, and production environments."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Storing unencrypted session tokens and sensitive JWT bearer credentials directly within browser localStorage storage."
           },
           {
             "id": "opt_4",
@@ -9151,11 +9151,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Configuring excessively long refresh token validity lifespans without providing token revocation or rotation policies."
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Coupling authorization logic directly to hardcoded UI role names rather than fine-grained declarative permission scopes."
           },
           {
             "id": "opt_3",
@@ -9163,7 +9163,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Designing distributed identity authentication flows without establishing centralized OpenID Connect and OAuth 2.0 authority brokers."
           }
         ],
         "correctAnswers": [
@@ -9184,15 +9184,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Failing to invalidate active user sessions immediately upon password resets, credential rotations, or account deactivations."
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Deploying identity federation configuration changes directly to production directory tenants without staging rehearsals."
           },
           {
             "id": "opt_4",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Omitting automated audit log collection for privileged administrative role assignments and cross-account delegations."
           }
         ],
         "correctAnswers": [
@@ -9213,15 +9213,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Storing entire user profiles and excessive claim payloads inside access tokens, inflating token payload sizes."
           },
           {
             "id": "opt_3",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Validating JWT cryptographic signatures via remote network calls on every internal microservice hop."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting local JWKS public key caching tiers, triggering rate-limited outbound requests to identity providers."
           }
         ],
         "correctAnswers": [
@@ -9238,7 +9238,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Granting wildcard IAM permissions across production cloud resource groups to standard developer role profiles."
           },
           {
             "id": "opt_2",
@@ -9246,11 +9246,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Allowing OAuth 2.0 authorization code exchange flows on public mobile clients without enforcing PKCE proof key challenges."
           },
           {
             "id": "opt_4",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Disabling multi-factor authentication requirements for administrative operations across enterprise directory infrastructure."
           }
         ],
         "correctAnswers": [
@@ -9279,15 +9279,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Issuing unsigned or weakly signed JWT access tokens using vulnerable symmetric HMAC algorithms with default static secrets."
           },
           {
             "id": "opt_2",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Storing unencrypted session tokens and sensitive JWT bearer credentials directly within browser localStorage storage."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Reusing identical JSON Web Token signing keys indefinitely across distinct development, staging, and production environments."
           },
           {
             "id": "opt_4",
@@ -9308,15 +9308,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Configuring excessively long refresh token validity lifespans without providing token revocation or rotation policies."
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Coupling authorization logic directly to hardcoded UI role names rather than fine-grained declarative permission scopes."
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Designing distributed identity authentication flows without establishing centralized OpenID Connect and OAuth 2.0 authority brokers."
           },
           {
             "id": "opt_4",
@@ -9337,11 +9337,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Deploying identity federation configuration changes directly to production directory tenants without staging rehearsals."
           },
           {
             "id": "opt_2",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Failing to invalidate active user sessions immediately upon password resets, credential rotations, or account deactivations."
           },
           {
             "id": "opt_3",
@@ -9349,7 +9349,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Omitting automated audit log collection for privileged administrative role assignments and cross-account delegations."
           }
         ],
         "correctAnswers": [
@@ -9370,15 +9370,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Validating JWT cryptographic signatures via remote network calls on every internal microservice hop."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting local JWKS public key caching tiers, triggering rate-limited outbound requests to identity providers."
           },
           {
             "id": "opt_4",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Storing entire user profiles and excessive claim payloads inside access tokens, inflating token payload sizes."
           }
         ],
         "correctAnswers": [
@@ -9395,11 +9395,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Disabling multi-factor authentication requirements for administrative operations across enterprise directory infrastructure."
           },
           {
             "id": "opt_2",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Allowing OAuth 2.0 authorization code exchange flows on public mobile clients without enforcing PKCE proof key challenges."
           },
           {
             "id": "opt_3",
@@ -9407,7 +9407,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Granting wildcard IAM permissions across production cloud resource groups to standard developer role profiles."
           }
         ],
         "correctAnswers": [
@@ -9436,11 +9436,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Deploying corporate internal workloads into flat unsegmented network topologies without micro-segmentation or firewall boundaries."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Relying on perimeter firewalls exclusively while leaving lateral east-west network traffic uninspected and unmonitored."
           },
           {
             "id": "opt_3",
@@ -9448,7 +9448,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Transmitting sensitive administrative traffic across unencrypted protocols such as Telnet or plaintext HTTP in private subnets."
           }
         ],
         "correctAnswers": [
@@ -9469,15 +9469,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling core datacenter ingress routing statically to single physical switches without redundant multi-chassis failover links."
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Designing enterprise network topologies without automated intrusion detection systems and threat telemetry collection agents."
           },
           {
             "id": "opt_4",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Configuring permissive border gateway routing policies that advertise private organizational CIDR blocks to public peers."
           }
         ],
         "correctAnswers": [
@@ -9494,7 +9494,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring automated anomaly alerts indicating persistent outbound DNS tunneling or unusual beaconing activity on networks."
           },
           {
             "id": "opt_2",
@@ -9502,11 +9502,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Applying complex firewall rule modifications directly to active perimeter gateways without change management review workflows."
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Omitting periodic red-team penetration testing and vulnerability assessments against outward-facing demilitarized zones."
           }
         ],
         "correctAnswers": [
@@ -9523,15 +9523,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Configuring overly broad flow log capture retention on ephemeral high-frequency internal test container networks."
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Routing high-throughput inter-service traffic through deep packet inspection firewalls lacking hardware acceleration."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting hardware-accelerated cryptographic offloading on high-volume VPN edge gateways during peak network loads."
           },
           {
             "id": "opt_4",
@@ -9552,11 +9552,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Failing to isolate compromise-prone legacy operational technology devices from sensitive corporate financial subnets."
           },
           {
             "id": "opt_2",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Leaving obsolete administrative management interfaces exposed to untrusted external subnets without IP allowlisting or VPNs."
           },
           {
             "id": "opt_3",
@@ -9564,7 +9564,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Disabling automated DDoS mitigation protections on mission-critical public edge reverse proxy endpoints during traffic spikes."
           }
         ],
         "correctAnswers": [
@@ -9593,11 +9593,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Transmitting sensitive administrative traffic across unencrypted protocols such as Telnet or plaintext HTTP in private subnets."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Relying on perimeter firewalls exclusively while leaving lateral east-west network traffic uninspected and unmonitored."
           },
           {
             "id": "opt_3",
@@ -9605,7 +9605,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Deploying corporate internal workloads into flat unsegmented network topologies without micro-segmentation or firewall boundaries."
           }
         ],
         "correctAnswers": [
@@ -9622,15 +9622,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling core datacenter ingress routing statically to single physical switches without redundant multi-chassis failover links."
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Configuring permissive border gateway routing policies that advertise private organizational CIDR blocks to public peers."
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Designing enterprise network topologies without automated intrusion detection systems and threat telemetry collection agents."
           },
           {
             "id": "opt_4",
@@ -9651,15 +9651,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Omitting periodic red-team penetration testing and vulnerability assessments against outward-facing demilitarized zones."
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring automated anomaly alerts indicating persistent outbound DNS tunneling or unusual beaconing activity on networks."
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Applying complex firewall rule modifications directly to active perimeter gateways without change management review workflows."
           },
           {
             "id": "opt_4",
@@ -9680,11 +9680,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Configuring overly broad flow log capture retention on ephemeral high-frequency internal test container networks."
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Routing high-throughput inter-service traffic through deep packet inspection firewalls lacking hardware acceleration."
           },
           {
             "id": "opt_3",
@@ -9692,7 +9692,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting hardware-accelerated cryptographic offloading on high-volume VPN edge gateways during peak network loads."
           }
         ],
         "correctAnswers": [
@@ -9709,7 +9709,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Failing to isolate compromise-prone legacy operational technology devices from sensitive corporate financial subnets."
           },
           {
             "id": "opt_2",
@@ -9717,11 +9717,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Leaving obsolete administrative management interfaces exposed to untrusted external subnets without IP allowlisting or VPNs."
           },
           {
             "id": "opt_4",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Disabling automated DDoS mitigation protections on mission-critical public edge reverse proxy endpoints during traffic spikes."
           }
         ],
         "correctAnswers": [
@@ -9754,15 +9754,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Deploying corporate internal workloads into flat unsegmented network topologies without micro-segmentation or firewall boundaries."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Relying on perimeter firewalls exclusively while leaving lateral east-west network traffic uninspected and unmonitored."
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Transmitting sensitive administrative traffic across unencrypted protocols such as Telnet or plaintext HTTP in private subnets."
           }
         ],
         "correctAnswers": [
@@ -9779,11 +9779,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Designing enterprise network topologies without automated intrusion detection systems and threat telemetry collection agents."
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Configuring permissive border gateway routing policies that advertise private organizational CIDR blocks to public peers."
           },
           {
             "id": "opt_3",
@@ -9791,7 +9791,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling core datacenter ingress routing statically to single physical switches without redundant multi-chassis failover links."
           }
         ],
         "correctAnswers": [
@@ -9808,7 +9808,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Applying complex firewall rule modifications directly to active perimeter gateways without change management review workflows."
           },
           {
             "id": "opt_2",
@@ -9816,11 +9816,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring automated anomaly alerts indicating persistent outbound DNS tunneling or unusual beaconing activity on networks."
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Omitting periodic red-team penetration testing and vulnerability assessments against outward-facing demilitarized zones."
           }
         ],
         "correctAnswers": [
@@ -9837,15 +9837,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Routing high-throughput inter-service traffic through deep packet inspection firewalls lacking hardware acceleration."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting hardware-accelerated cryptographic offloading on high-volume VPN edge gateways during peak network loads."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Configuring overly broad flow log capture retention on ephemeral high-frequency internal test container networks."
           },
           {
             "id": "opt_4",
@@ -9866,15 +9866,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Disabling automated DDoS mitigation protections on mission-critical public edge reverse proxy endpoints during traffic spikes."
           },
           {
             "id": "opt_2",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Leaving obsolete administrative management interfaces exposed to untrusted external subnets without IP allowlisting or VPNs."
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Failing to isolate compromise-prone legacy operational technology devices from sensitive corporate financial subnets."
           },
           {
             "id": "opt_4",
@@ -9907,11 +9907,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Documenting complex software architectures using ambiguous, jargon-heavy prose that lacks clear structural diagrams or concrete examples."
           },
           {
             "id": "opt_2",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Relying on unversioned ad-hoc wiki pages that drift out of sync with active codebase implementations and production realities."
           },
           {
             "id": "opt_3",
@@ -9919,7 +9919,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Omitting intended audience prerequisites, functional goals, and non-goals from technical design specifications and RFCs."
           }
         ],
         "correctAnswers": [
@@ -9940,15 +9940,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting standardized changelog versioning guidelines and deprecation policy timelines from public developer documentation."
           },
           {
             "id": "opt_3",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Publishing software architecture RFCs without defining formal problem statements, evaluation criteria, or alternative approaches."
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring API documentation with inconsistent naming conventions, missing parameter types, and unvalidated payload schemas."
           }
         ],
         "correctAnswers": [
@@ -9965,11 +9965,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Merging substantial API interface modifications into main branches without updating corresponding integration guides."
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Relying entirely on manual peer reviews for documentation accuracy without automated markdown link and snippet testing."
           },
           {
             "id": "opt_3",
@@ -9977,7 +9977,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Publishing breaking software release notes without providing automated migration scripts or step-by-step remediation instructions."
           }
         ],
         "correctAnswers": [
@@ -9994,15 +9994,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Embedding high-resolution uncompressed image diagrams that increase documentation portal page load times."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting algorithmic full-text search indexing on documentation portals, forcing manual browsing."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Structuring technical reference portals with deep pagination hierarchies that hinder search engine crawler discovery."
           },
           {
             "id": "opt_4",
@@ -10023,15 +10023,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Storing confidential architectural roadmap proposals in publicly accessible cloud documentation workspaces without access controls."
           },
           {
             "id": "opt_2",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Publishing sensitive customer case study architectures without redacting proprietary internal telemetry and trade secrets."
           },
           {
             "id": "opt_3",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Exposing internal infrastructure hostnames, credentials, and non-public API endpoints in public open-source repository documentation."
           },
           {
             "id": "opt_4",
@@ -10068,15 +10068,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Relying on unversioned ad-hoc wiki pages that drift out of sync with active codebase implementations and production realities."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Omitting intended audience prerequisites, functional goals, and non-goals from technical design specifications and RFCs."
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Documenting complex software architectures using ambiguous, jargon-heavy prose that lacks clear structural diagrams or concrete examples."
           }
         ],
         "correctAnswers": [
@@ -10093,7 +10093,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting standardized changelog versioning guidelines and deprecation policy timelines from public developer documentation."
           },
           {
             "id": "opt_2",
@@ -10101,11 +10101,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Publishing software architecture RFCs without defining formal problem statements, evaluation criteria, or alternative approaches."
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring API documentation with inconsistent naming conventions, missing parameter types, and unvalidated payload schemas."
           }
         ],
         "correctAnswers": [
@@ -10122,15 +10122,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Publishing breaking software release notes without providing automated migration scripts or step-by-step remediation instructions."
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Relying entirely on manual peer reviews for documentation accuracy without automated markdown link and snippet testing."
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Merging substantial API interface modifications into main branches without updating corresponding integration guides."
           },
           {
             "id": "opt_4",
@@ -10151,15 +10151,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Embedding high-resolution uncompressed image diagrams that increase documentation portal page load times."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting algorithmic full-text search indexing on documentation portals, forcing manual browsing."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Structuring technical reference portals with deep pagination hierarchies that hinder search engine crawler discovery."
           },
           {
             "id": "opt_4",
@@ -10180,7 +10180,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Publishing sensitive customer case study architectures without redacting proprietary internal telemetry and trade secrets."
           },
           {
             "id": "opt_2",
@@ -10188,11 +10188,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Storing confidential architectural roadmap proposals in publicly accessible cloud documentation workspaces without access controls."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Exposing internal infrastructure hostnames, credentials, and non-public API endpoints in public open-source repository documentation."
           }
         ],
         "correctAnswers": [
@@ -10225,15 +10225,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Documenting complex software architectures using ambiguous, jargon-heavy prose that lacks clear structural diagrams or concrete examples."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Omitting intended audience prerequisites, functional goals, and non-goals from technical design specifications and RFCs."
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Relying on unversioned ad-hoc wiki pages that drift out of sync with active codebase implementations and production realities."
           }
         ],
         "correctAnswers": [
@@ -10254,15 +10254,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring API documentation with inconsistent naming conventions, missing parameter types, and unvalidated payload schemas."
           },
           {
             "id": "opt_3",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Publishing software architecture RFCs without defining formal problem statements, evaluation criteria, or alternative approaches."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting standardized changelog versioning guidelines and deprecation policy timelines from public developer documentation."
           }
         ],
         "correctAnswers": [
@@ -10279,7 +10279,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Publishing breaking software release notes without providing automated migration scripts or step-by-step remediation instructions."
           },
           {
             "id": "opt_2",
@@ -10287,11 +10287,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Merging substantial API interface modifications into main branches without updating corresponding integration guides."
           },
           {
             "id": "opt_4",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Relying entirely on manual peer reviews for documentation accuracy without automated markdown link and snippet testing."
           }
         ],
         "correctAnswers": [
@@ -10308,15 +10308,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Omitting algorithmic full-text search indexing on documentation portals, forcing manual browsing."
           },
           {
             "id": "opt_2",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Embedding high-resolution uncompressed image diagrams that increase documentation portal page load times."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Structuring technical reference portals with deep pagination hierarchies that hinder search engine crawler discovery."
           },
           {
             "id": "opt_4",
@@ -10341,15 +10341,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Storing confidential architectural roadmap proposals in publicly accessible cloud documentation workspaces without access controls."
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Publishing sensitive customer case study architectures without redacting proprietary internal telemetry and trade secrets."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Exposing internal infrastructure hostnames, credentials, and non-public API endpoints in public open-source repository documentation."
           }
         ],
         "correctAnswers": [
@@ -10378,11 +10378,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Communicating technical delivery delays to executive leadership only after predetermined milestone deadlines have already elapsed."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Making unverified delivery commitments without consulting engineering teams regarding existing technical constraints."
           },
           {
             "id": "opt_3",
@@ -10390,7 +10390,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Presenting deeply technical implementation details to business executives instead of quantifiable outcomes and business impacts."
           }
         ],
         "correctAnswers": [
@@ -10407,7 +10407,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Structuring project governance without clear decision-making frameworks, RACI matrices, or escalation channels across business units."
           },
           {
             "id": "opt_2",
@@ -10415,11 +10415,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Allowing scope creep through informal verbal agreements rather than standardized written change request evaluation processes."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting documented alignment milestones between cross-functional marketing, sales, product, and engineering leadership teams."
           }
         ],
         "correctAnswers": [
@@ -10436,15 +10436,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Proceeding with controversial architectural changes without securing buy-in from impacted downstream consumer engineering teams."
           },
           {
             "id": "opt_2",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Failing to document key decisions, actionable takeaways, and assigned owners following critical stakeholder alignment meetings."
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Canceling scheduled cross-functional status update briefings during critical delivery phases when obstacles arise."
           },
           {
             "id": "opt_4",
@@ -10465,7 +10465,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Scheduling recurring alignment calls with oversized attendee lists that lack focused agendas or outcomes."
           },
           {
             "id": "opt_2",
@@ -10473,11 +10473,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Convening daily synchronous status meetings to deliver one-way updates better suited for written memos."
           },
           {
             "id": "opt_4",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Distributing redundant executive presentation slide decks that require extensive manual formatting maintenance."
           }
         ],
         "correctAnswers": [
@@ -10494,15 +10494,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Committing to unattainable service level guarantees that compromise system security posture and engineering team sustainability."
           },
           {
             "id": "opt_2",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Sharing confidential material product roadmap milestones with external partners without signed mutual non-disclosure agreements."
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Concealing critical operational security incidents or data breaches from executive leadership and legal compliance teams."
           },
           {
             "id": "opt_4",
@@ -10535,11 +10535,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Making unverified delivery commitments without consulting engineering teams regarding existing technical constraints."
           },
           {
             "id": "opt_2",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Presenting deeply technical implementation details to business executives instead of quantifiable outcomes and business impacts."
           },
           {
             "id": "opt_3",
@@ -10547,7 +10547,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Communicating technical delivery delays to executive leadership only after predetermined milestone deadlines have already elapsed."
           }
         ],
         "correctAnswers": [
@@ -10568,15 +10568,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Structuring project governance without clear decision-making frameworks, RACI matrices, or escalation channels across business units."
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Allowing scope creep through informal verbal agreements rather than standardized written change request evaluation processes."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting documented alignment milestones between cross-functional marketing, sales, product, and engineering leadership teams."
           }
         ],
         "correctAnswers": [
@@ -10593,7 +10593,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Failing to document key decisions, actionable takeaways, and assigned owners following critical stakeholder alignment meetings."
           },
           {
             "id": "opt_2",
@@ -10601,11 +10601,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Proceeding with controversial architectural changes without securing buy-in from impacted downstream consumer engineering teams."
           },
           {
             "id": "opt_4",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Canceling scheduled cross-functional status update briefings during critical delivery phases when obstacles arise."
           }
         ],
         "correctAnswers": [
@@ -10622,11 +10622,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Distributing redundant executive presentation slide decks that require extensive manual formatting maintenance."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Scheduling recurring alignment calls with oversized attendee lists that lack focused agendas or outcomes."
           },
           {
             "id": "opt_3",
@@ -10634,7 +10634,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Convening daily synchronous status meetings to deliver one-way updates better suited for written memos."
           }
         ],
         "correctAnswers": [
@@ -10651,7 +10651,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Committing to unattainable service level guarantees that compromise system security posture and engineering team sustainability."
           },
           {
             "id": "opt_2",
@@ -10659,11 +10659,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Concealing critical operational security incidents or data breaches from executive leadership and legal compliance teams."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Sharing confidential material product roadmap milestones with external partners without signed mutual non-disclosure agreements."
           }
         ],
         "correctAnswers": [
@@ -10692,15 +10692,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Communicating technical delivery delays to executive leadership only after predetermined milestone deadlines have already elapsed."
           },
           {
             "id": "opt_2",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Presenting deeply technical implementation details to business executives instead of quantifiable outcomes and business impacts."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Making unverified delivery commitments without consulting engineering teams regarding existing technical constraints."
           },
           {
             "id": "opt_4",
@@ -10721,7 +10721,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting documented alignment milestones between cross-functional marketing, sales, product, and engineering leadership teams."
           },
           {
             "id": "opt_2",
@@ -10729,11 +10729,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Structuring project governance without clear decision-making frameworks, RACI matrices, or escalation channels across business units."
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Allowing scope creep through informal verbal agreements rather than standardized written change request evaluation processes."
           }
         ],
         "correctAnswers": [
@@ -10750,15 +10750,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Failing to document key decisions, actionable takeaways, and assigned owners following critical stakeholder alignment meetings."
           },
           {
             "id": "opt_2",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Canceling scheduled cross-functional status update briefings during critical delivery phases when obstacles arise."
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Proceeding with controversial architectural changes without securing buy-in from impacted downstream consumer engineering teams."
           },
           {
             "id": "opt_4",
@@ -10783,15 +10783,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Distributing redundant executive presentation slide decks that require extensive manual formatting maintenance."
           },
           {
             "id": "opt_3",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Convening daily synchronous status meetings to deliver one-way updates better suited for written memos."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Scheduling recurring alignment calls with oversized attendee lists that lack focused agendas or outcomes."
           }
         ],
         "correctAnswers": [
@@ -10808,11 +10808,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Sharing confidential material product roadmap milestones with external partners without signed mutual non-disclosure agreements."
           },
           {
             "id": "opt_2",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Concealing critical operational security incidents or data breaches from executive leadership and legal compliance teams."
           },
           {
             "id": "opt_3",
@@ -10820,7 +10820,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Committing to unattainable service level guarantees that compromise system security posture and engineering team sustainability."
           }
         ],
         "correctAnswers": [
@@ -10849,15 +10849,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Enforcing rigid process compliance over collaborative problem-solving, active team communication, and rapid incremental learning."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Assigning work items hierarchically to individual silos without encouraging collective code ownership and peer mentorship."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Treating sprint commitment forecasts as immutable contractual obligations rather than flexible empirical development goals."
           },
           {
             "id": "opt_4",
@@ -10882,15 +10882,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Establishing team performance benchmarks based on misleading output velocity metrics rather than customer value delivered."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting explicit Definitions of Done and acceptance criteria from backlog user stories before commencing sprint implementation."
           },
           {
             "id": "opt_4",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Structuring sprints around fragmented component silos rather than cross-functional, vertically sliced deliverable features."
           }
         ],
         "correctAnswers": [
@@ -10907,7 +10907,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Refusing to adjust sprint workload forecasts when team velocity indicators show persistent overcommitment and burnout trends."
           },
           {
             "id": "opt_2",
@@ -10915,11 +10915,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Skipping retrospective ceremonies to allocate more development hours to incomplete sprint backlog backlog tickets."
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Allowing recurring blocker discussions to derail daily standup syncs instead of holding dedicated follow-up resolution sessions."
           }
         ],
         "correctAnswers": [
@@ -10936,11 +10936,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Conducting prolonged backlog estimation meetings debating minor point discrepancies on low-priority items."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Mandating redundant status updates across multiple issue-tracking platforms that duplicate sprint states."
           },
           {
             "id": "opt_3",
@@ -10948,7 +10948,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Micro-managing individual task assignments rather than allowing team members to pull work autonomously."
           }
         ],
         "correctAnswers": [
@@ -10965,7 +10965,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Fostering hero culture where knowledge is hoarded by isolated senior engineers rather than systematically shared across peers."
           },
           {
             "id": "opt_2",
@@ -10973,11 +10973,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Suppressing dissenting technical opinions and psychological safety during post-incident blameless post-mortem retrospectives."
           },
           {
             "id": "opt_4",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Penalizing transparent disclosures of engineering defects and blockers, incentivizing silent technical debt accumulation."
           }
         ],
         "correctAnswers": [
@@ -11006,11 +11006,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Assigning work items hierarchically to individual silos without encouraging collective code ownership and peer mentorship."
           },
           {
             "id": "opt_2",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Enforcing rigid process compliance over collaborative problem-solving, active team communication, and rapid incremental learning."
           },
           {
             "id": "opt_3",
@@ -11018,7 +11018,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Treating sprint commitment forecasts as immutable contractual obligations rather than flexible empirical development goals."
           }
         ],
         "correctAnswers": [
@@ -11039,15 +11039,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting explicit Definitions of Done and acceptance criteria from backlog user stories before commencing sprint implementation."
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Establishing team performance benchmarks based on misleading output velocity metrics rather than customer value delivered."
           },
           {
             "id": "opt_4",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Structuring sprints around fragmented component silos rather than cross-functional, vertically sliced deliverable features."
           }
         ],
         "correctAnswers": [
@@ -11068,15 +11068,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Skipping retrospective ceremonies to allocate more development hours to incomplete sprint backlog backlog tickets."
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Refusing to adjust sprint workload forecasts when team velocity indicators show persistent overcommitment and burnout trends."
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Allowing recurring blocker discussions to derail daily standup syncs instead of holding dedicated follow-up resolution sessions."
           }
         ],
         "correctAnswers": [
@@ -11093,15 +11093,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Conducting prolonged backlog estimation meetings debating minor point discrepancies on low-priority items."
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Micro-managing individual task assignments rather than allowing team members to pull work autonomously."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Mandating redundant status updates across multiple issue-tracking platforms that duplicate sprint states."
           },
           {
             "id": "opt_4",
@@ -11126,15 +11126,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Suppressing dissenting technical opinions and psychological safety during post-incident blameless post-mortem retrospectives."
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Fostering hero culture where knowledge is hoarded by isolated senior engineers rather than systematically shared across peers."
           },
           {
             "id": "opt_4",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Penalizing transparent disclosures of engineering defects and blockers, incentivizing silent technical debt accumulation."
           }
         ],
         "correctAnswers": [
@@ -11163,15 +11163,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Enforcing rigid process compliance over collaborative problem-solving, active team communication, and rapid incremental learning."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Assigning work items hierarchically to individual silos without encouraging collective code ownership and peer mentorship."
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Treating sprint commitment forecasts as immutable contractual obligations rather than flexible empirical development goals."
           },
           {
             "id": "opt_4",
@@ -11192,15 +11192,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Establishing team performance benchmarks based on misleading output velocity metrics rather than customer value delivered."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting explicit Definitions of Done and acceptance criteria from backlog user stories before commencing sprint implementation."
           },
           {
             "id": "opt_3",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Structuring sprints around fragmented component silos rather than cross-functional, vertically sliced deliverable features."
           },
           {
             "id": "opt_4",
@@ -11221,15 +11221,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Allowing recurring blocker discussions to derail daily standup syncs instead of holding dedicated follow-up resolution sessions."
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Refusing to adjust sprint workload forecasts when team velocity indicators show persistent overcommitment and burnout trends."
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Skipping retrospective ceremonies to allocate more development hours to incomplete sprint backlog backlog tickets."
           },
           {
             "id": "opt_4",
@@ -11250,15 +11250,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Conducting prolonged backlog estimation meetings debating minor point discrepancies on low-priority items."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Mandating redundant status updates across multiple issue-tracking platforms that duplicate sprint states."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Micro-managing individual task assignments rather than allowing team members to pull work autonomously."
           },
           {
             "id": "opt_4",
@@ -11279,7 +11279,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Suppressing dissenting technical opinions and psychological safety during post-incident blameless post-mortem retrospectives."
           },
           {
             "id": "opt_2",
@@ -11287,11 +11287,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Fostering hero culture where knowledge is hoarded by isolated senior engineers rather than systematically shared across peers."
           },
           {
             "id": "opt_4",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Penalizing transparent disclosures of engineering defects and blockers, incentivizing silent technical debt accumulation."
           }
         ],
         "correctAnswers": [
@@ -11320,11 +11320,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Conflating stakeholder solution requests with root customer problems without investigating actual user workflows and pain points."
           },
           {
             "id": "opt_2",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Committing engineering resources to build extensive feature sets based on untested internal assumptions without customer validation."
           },
           {
             "id": "opt_3",
@@ -11332,7 +11332,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Relying solely on anecdotal executive opinions while disregarding quantitative usage metrics and qualitative customer feedback."
           }
         ],
         "correctAnswers": [
@@ -11349,15 +11349,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Drafting exhaustive hundred-page product specifications for uncertain features instead of iterative testable hypothesis documents."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling discovery exploration rigidly to annual planning cycles rather than conducting continuous opportunity space discovery."
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring product requirement documents without explicit success metrics, guardrail indicators, or defined target customer personas."
           },
           {
             "id": "opt_4",
@@ -11382,15 +11382,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring early negative prototype test feedback and persisting with flawed initial feature assumptions through release."
           },
           {
             "id": "opt_3",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying major product enhancements without instrumenting feature flags or defining rollback trigger thresholds for regressions."
           },
           {
             "id": "opt_4",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Handing off product requirements documents to engineering teams over the wall without collaborative discovery and scoping workshops."
           }
         ],
         "correctAnswers": [
@@ -11407,15 +11407,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Conducting exploratory user interviews without structured note-taking frameworks or synthesis processes."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Debating speculative edge case behaviors extensively during discovery before confirming customer interest."
           },
           {
             "id": "opt_3",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Building fully functional production-grade prototypes to test basic hypotheses when mockups would suffice."
           },
           {
             "id": "opt_4",
@@ -11436,7 +11436,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Launching experimental discovery features that expose unverified beta users to data security vulnerabilities or data loss risks."
           },
           {
             "id": "opt_2",
@@ -11444,11 +11444,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Promising non-existent enterprise compliance or privacy capabilities to prospective discovery interview candidates."
           },
           {
             "id": "opt_4",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Collecting intrusive user behavioral telemetry during discovery studies without obtaining clear informed customer consent."
           }
         ],
         "correctAnswers": [
@@ -11477,15 +11477,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Relying solely on anecdotal executive opinions while disregarding quantitative usage metrics and qualitative customer feedback."
           },
           {
             "id": "opt_2",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Conflating stakeholder solution requests with root customer problems without investigating actual user workflows and pain points."
           },
           {
             "id": "opt_3",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Committing engineering resources to build extensive feature sets based on untested internal assumptions without customer validation."
           },
           {
             "id": "opt_4",
@@ -11506,7 +11506,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Drafting exhaustive hundred-page product specifications for uncertain features instead of iterative testable hypothesis documents."
           },
           {
             "id": "opt_2",
@@ -11514,11 +11514,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring product requirement documents without explicit success metrics, guardrail indicators, or defined target customer personas."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling discovery exploration rigidly to annual planning cycles rather than conducting continuous opportunity space discovery."
           }
         ],
         "correctAnswers": [
@@ -11535,7 +11535,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying major product enhancements without instrumenting feature flags or defining rollback trigger thresholds for regressions."
           },
           {
             "id": "opt_2",
@@ -11543,11 +11543,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Handing off product requirements documents to engineering teams over the wall without collaborative discovery and scoping workshops."
           },
           {
             "id": "opt_4",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring early negative prototype test feedback and persisting with flawed initial feature assumptions through release."
           }
         ],
         "correctAnswers": [
@@ -11564,15 +11564,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Building fully functional production-grade prototypes to test basic hypotheses when mockups would suffice."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Debating speculative edge case behaviors extensively during discovery before confirming customer interest."
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Conducting exploratory user interviews without structured note-taking frameworks or synthesis processes."
           },
           {
             "id": "opt_4",
@@ -11597,15 +11597,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Promising non-existent enterprise compliance or privacy capabilities to prospective discovery interview candidates."
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Collecting intrusive user behavioral telemetry during discovery studies without obtaining clear informed customer consent."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Launching experimental discovery features that expose unverified beta users to data security vulnerabilities or data loss risks."
           }
         ],
         "correctAnswers": [
@@ -11638,15 +11638,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Committing engineering resources to build extensive feature sets based on untested internal assumptions without customer validation."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Relying solely on anecdotal executive opinions while disregarding quantitative usage metrics and qualitative customer feedback."
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Conflating stakeholder solution requests with root customer problems without investigating actual user workflows and pain points."
           }
         ],
         "correctAnswers": [
@@ -11667,15 +11667,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling discovery exploration rigidly to annual planning cycles rather than conducting continuous opportunity space discovery."
           },
           {
             "id": "opt_3",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Drafting exhaustive hundred-page product specifications for uncertain features instead of iterative testable hypothesis documents."
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Structuring product requirement documents without explicit success metrics, guardrail indicators, or defined target customer personas."
           }
         ],
         "correctAnswers": [
@@ -11692,7 +11692,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Handing off product requirements documents to engineering teams over the wall without collaborative discovery and scoping workshops."
           },
           {
             "id": "opt_2",
@@ -11700,11 +11700,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Ignoring early negative prototype test feedback and persisting with flawed initial feature assumptions through release."
           },
           {
             "id": "opt_4",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Deploying major product enhancements without instrumenting feature flags or defining rollback trigger thresholds for regressions."
           }
         ],
         "correctAnswers": [
@@ -11721,11 +11721,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Debating speculative edge case behaviors extensively during discovery before confirming customer interest."
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Conducting exploratory user interviews without structured note-taking frameworks or synthesis processes."
           },
           {
             "id": "opt_3",
@@ -11733,7 +11733,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Building fully functional production-grade prototypes to test basic hypotheses when mockups would suffice."
           }
         ],
         "correctAnswers": [
@@ -11750,15 +11750,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Collecting intrusive user behavioral telemetry during discovery studies without obtaining clear informed customer consent."
           },
           {
             "id": "opt_2",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Launching experimental discovery features that expose unverified beta users to data security vulnerabilities or data loss risks."
           },
           {
             "id": "opt_3",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Promising non-existent enterprise compliance or privacy capabilities to prospective discovery interview candidates."
           },
           {
             "id": "opt_4",
@@ -11795,15 +11795,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Confusing statistical correlation with true causation when analyzing observational user behavioral patterns across cohorts."
           },
           {
             "id": "opt_3",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Optimizing vanity acquisition metrics while ignoring fundamental customer retention cohorts, churn rates, and engagement depth."
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Deploying telemetry tracking instrumentation without standardized naming schemas, causing duplicated and conflicting event names."
           }
         ],
         "correctAnswers": [
@@ -11820,15 +11820,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Structuring analytics pipelines without centralized tracking event governance, data dictionaries, and automated validation tests."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling analytics tracking logic directly to fragile DOM CSS selectors rather than durable semantic telemetry data attributes."
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Designing product experiments without calculating minimum detectable effect sizes, sample size requirements, or test durations."
           },
           {
             "id": "opt_4",
@@ -11849,7 +11849,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Modifying existing tracking event definitions retroactively without versioning, corrupting historical longitudinal data analysis."
           },
           {
             "id": "opt_2",
@@ -11857,11 +11857,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Terminating A/B test experiments prematurely as soon as statistical significance is briefly reached before reaching required sample sizes."
           },
           {
             "id": "opt_4",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Shipping significant user experience revisions without tracking instrumentation to evaluate post-launch metric impacts."
           }
         ],
         "correctAnswers": [
@@ -11878,11 +11878,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Firing high-frequency telemetry events synchronously on every single user scroll and mousemove in browsers."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Running full table scans across raw behavioral logs to compute simple daily active user engagement ratios."
           },
           {
             "id": "opt_3",
@@ -11890,7 +11890,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Materializing massive raw event data tables for daily reports without pre-aggregating metrics at day level."
           }
         ],
         "correctAnswers": [
@@ -11907,7 +11907,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Transmitting sensitive customer passwords, authentication tokens, or personal identifiers in unmasked analytics event payloads."
           },
           {
             "id": "opt_2",
@@ -11915,11 +11915,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Bypassing international data privacy regulations such as GDPR and CCPA by tracking user activities without cookie consent."
           },
           {
             "id": "opt_4",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Granting unrestricted organizational access to raw customer event logs containing granular location coordinates and identities."
           }
         ],
         "correctAnswers": [
@@ -11948,11 +11948,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Optimizing vanity acquisition metrics while ignoring fundamental customer retention cohorts, churn rates, and engagement depth."
           },
           {
             "id": "opt_2",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Deploying telemetry tracking instrumentation without standardized naming schemas, causing duplicated and conflicting event names."
           },
           {
             "id": "opt_3",
@@ -11960,7 +11960,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Confusing statistical correlation with true causation when analyzing observational user behavioral patterns across cohorts."
           }
         ],
         "correctAnswers": [
@@ -11981,15 +11981,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Structuring analytics pipelines without centralized tracking event governance, data dictionaries, and automated validation tests."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling analytics tracking logic directly to fragile DOM CSS selectors rather than durable semantic telemetry data attributes."
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Designing product experiments without calculating minimum detectable effect sizes, sample size requirements, or test durations."
           }
         ],
         "correctAnswers": [
@@ -12006,7 +12006,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Modifying existing tracking event definitions retroactively without versioning, corrupting historical longitudinal data analysis."
           },
           {
             "id": "opt_2",
@@ -12014,11 +12014,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Shipping significant user experience revisions without tracking instrumentation to evaluate post-launch metric impacts."
           },
           {
             "id": "opt_4",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Terminating A/B test experiments prematurely as soon as statistical significance is briefly reached before reaching required sample sizes."
           }
         ],
         "correctAnswers": [
@@ -12035,15 +12035,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Materializing massive raw event data tables for daily reports without pre-aggregating metrics at day level."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Running full table scans across raw behavioral logs to compute simple daily active user engagement ratios."
           },
           {
             "id": "opt_3",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Firing high-frequency telemetry events synchronously on every single user scroll and mousemove in browsers."
           },
           {
             "id": "opt_4",
@@ -12064,15 +12064,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Granting unrestricted organizational access to raw customer event logs containing granular location coordinates and identities."
           },
           {
             "id": "opt_2",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Transmitting sensitive customer passwords, authentication tokens, or personal identifiers in unmasked analytics event payloads."
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Bypassing international data privacy regulations such as GDPR and CCPA by tracking user activities without cookie consent."
           },
           {
             "id": "opt_4",
@@ -12105,7 +12105,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Confusing statistical correlation with true causation when analyzing observational user behavioral patterns across cohorts."
           },
           {
             "id": "opt_2",
@@ -12113,11 +12113,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Optimizing vanity acquisition metrics while ignoring fundamental customer retention cohorts, churn rates, and engagement depth."
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Deploying telemetry tracking instrumentation without standardized naming schemas, causing duplicated and conflicting event names."
           }
         ],
         "correctAnswers": [
@@ -12134,11 +12134,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Structuring analytics pipelines without centralized tracking event governance, data dictionaries, and automated validation tests."
           },
           {
             "id": "opt_2",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Coupling analytics tracking logic directly to fragile DOM CSS selectors rather than durable semantic telemetry data attributes."
           },
           {
             "id": "opt_3",
@@ -12146,7 +12146,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Designing product experiments without calculating minimum detectable effect sizes, sample size requirements, or test durations."
           }
         ],
         "correctAnswers": [
@@ -12163,15 +12163,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Terminating A/B test experiments prematurely as soon as statistical significance is briefly reached before reaching required sample sizes."
           },
           {
             "id": "opt_2",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Modifying existing tracking event definitions retroactively without versioning, corrupting historical longitudinal data analysis."
           },
           {
             "id": "opt_3",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Shipping significant user experience revisions without tracking instrumentation to evaluate post-launch metric impacts."
           },
           {
             "id": "opt_4",
@@ -12196,15 +12196,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Materializing massive raw event data tables for daily reports without pre-aggregating metrics at day level."
           },
           {
             "id": "opt_3",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Firing high-frequency telemetry events synchronously on every single user scroll and mousemove in browsers."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Running full table scans across raw behavioral logs to compute simple daily active user engagement ratios."
           }
         ],
         "correctAnswers": [
@@ -12225,15 +12225,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Transmitting sensitive customer passwords, authentication tokens, or personal identifiers in unmasked analytics event payloads."
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Bypassing international data privacy regulations such as GDPR and CCPA by tracking user activities without cookie consent."
           },
           {
             "id": "opt_4",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Granting unrestricted organizational access to raw customer event logs containing granular location coordinates and identities."
           }
         ],
         "correctAnswers": [
@@ -12262,7 +12262,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Conducting usability evaluation sessions exclusively with internal corporate colleagues who possess deep domain familiarity."
           },
           {
             "id": "opt_2",
@@ -12270,11 +12270,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Relying solely on what users say they would do in hypothetical scenarios rather than observing their actual task execution workflows."
           },
           {
             "id": "opt_4",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Asking leading interview questions that prompt users to validate personal design hypotheses rather than uncovering genuine behaviors."
           }
         ],
         "correctAnswers": [
@@ -12291,7 +12291,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Structuring user journey maps around optimistic idealized workflows while omitting critical edge cases, friction points, and failures."
           },
           {
             "id": "opt_2",
@@ -12299,11 +12299,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Defining customer personas based on superficial demographic stereotypes rather than actionable behavioral patterns and core user goals."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting standardized usability benchmarking metrics such as Task Success Rate and System Usability Scale from iterative studies."
           }
         ],
         "correctAnswers": [
@@ -12320,7 +12320,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Delivering dense hundred-page qualitative research reports that fail to provide actionable, prioritized UX design recommendations."
           },
           {
             "id": "opt_2",
@@ -12328,11 +12328,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Synthesizing customer research findings in isolation without inviting cross-functional product and engineering partners to observe."
           },
           {
             "id": "opt_4",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Over-indexing on extreme feedback from a single vocal user while ignoring broader behavioral patterns across the representative cohort."
           }
         ],
         "correctAnswers": [
@@ -12349,7 +12349,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Transcribing multi-hour user interview audio recordings manually instead of using transcription tools."
           },
           {
             "id": "opt_2",
@@ -12357,11 +12357,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Creating high-fidelity animated prototypes when basic low-fidelity wireframes would test concepts faster."
           },
           {
             "id": "opt_4",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Conducting dozens of repetitive usability test sessions past the point of insight saturation in user studies."
           }
         ],
         "correctAnswers": [
@@ -12382,15 +12382,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Storing sensitive customer usability interview recordings and research transcripts in unprotected cloud folders without access controls."
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Coercing vulnerable study participants into signing rights releases without providing adequate time to review compensation terms."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Sharing unredacted participant video recordings and identifiable personal information with broad audiences without participant consent."
           }
         ],
         "correctAnswers": [
@@ -12423,15 +12423,15 @@
           },
           {
             "id": "opt_2",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Asking leading interview questions that prompt users to validate personal design hypotheses rather than uncovering genuine behaviors."
           },
           {
             "id": "opt_3",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Conducting usability evaluation sessions exclusively with internal corporate colleagues who possess deep domain familiarity."
           },
           {
             "id": "opt_4",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Relying solely on what users say they would do in hypothetical scenarios rather than observing their actual task execution workflows."
           }
         ],
         "correctAnswers": [
@@ -12448,11 +12448,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Defining customer personas based on superficial demographic stereotypes rather than actionable behavioral patterns and core user goals."
           },
           {
             "id": "opt_2",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Structuring user journey maps around optimistic idealized workflows while omitting critical edge cases, friction points, and failures."
           },
           {
             "id": "opt_3",
@@ -12460,7 +12460,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting standardized usability benchmarking metrics such as Task Success Rate and System Usability Scale from iterative studies."
           }
         ],
         "correctAnswers": [
@@ -12477,11 +12477,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Over-indexing on extreme feedback from a single vocal user while ignoring broader behavioral patterns across the representative cohort."
           },
           {
             "id": "opt_2",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Delivering dense hundred-page qualitative research reports that fail to provide actionable, prioritized UX design recommendations."
           },
           {
             "id": "opt_3",
@@ -12489,7 +12489,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Synthesizing customer research findings in isolation without inviting cross-functional product and engineering partners to observe."
           }
         ],
         "correctAnswers": [
@@ -12506,7 +12506,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Creating high-fidelity animated prototypes when basic low-fidelity wireframes would test concepts faster."
           },
           {
             "id": "opt_2",
@@ -12514,11 +12514,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Transcribing multi-hour user interview audio recordings manually instead of using transcription tools."
           },
           {
             "id": "opt_4",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Conducting dozens of repetitive usability test sessions past the point of insight saturation in user studies."
           }
         ],
         "correctAnswers": [
@@ -12535,11 +12535,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Storing sensitive customer usability interview recordings and research transcripts in unprotected cloud folders without access controls."
           },
           {
             "id": "opt_2",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Sharing unredacted participant video recordings and identifiable personal information with broad audiences without participant consent."
           },
           {
             "id": "opt_3",
@@ -12547,7 +12547,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Coercing vulnerable study participants into signing rights releases without providing adequate time to review compensation terms."
           }
         ],
         "correctAnswers": [
@@ -12576,7 +12576,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Relying on unverified ad-hoc execution patterns that bypass structural contracts, type checks, and state boundaries in modules."
+            "text": "Asking leading interview questions that prompt users to validate personal design hypotheses rather than uncovering genuine behaviors."
           },
           {
             "id": "opt_2",
@@ -12584,11 +12584,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Coupling component lifecycle states directly to global environment singletons without clean state isolation."
+            "text": "Relying solely on what users say they would do in hypothetical scenarios rather than observing their actual task execution workflows."
           },
           {
             "id": "opt_4",
-            "text": "Bypassing foundational type abstractions in favor of runtime dynamic evaluation across internal modules."
+            "text": "Conducting usability evaluation sessions exclusively with internal corporate colleagues who possess deep domain familiarity."
           }
         ],
         "correctAnswers": [
@@ -12605,11 +12605,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enforcing rigid point-to-point bindings that tightly couple distinct application components together."
+            "text": "Structuring user journey maps around optimistic idealized workflows while omitting critical edge cases, friction points, and failures."
           },
           {
             "id": "opt_2",
-            "text": "Structuring internal system boundaries through informal agreements rather than declarative interface specifications and contracts."
+            "text": "Defining customer personas based on superficial demographic stereotypes rather than actionable behavioral patterns and core user goals."
           },
           {
             "id": "opt_3",
@@ -12617,7 +12617,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Bypassing architectural standards to prioritize rapid single-use scripts without documentation or review."
+            "text": "Omitting standardized usability benchmarking metrics such as Task Success Rate and System Usability Scale from iterative studies."
           }
         ],
         "correctAnswers": [
@@ -12634,15 +12634,15 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Deploying implementation modifications directly to live environments without staging validation checks."
+            "text": "Synthesizing customer research findings in isolation without inviting cross-functional product and engineering partners to observe."
           },
           {
             "id": "opt_2",
-            "text": "Relying solely on external post-release monitoring rather than automated integration test suites."
+            "text": "Over-indexing on extreme feedback from a single vocal user while ignoring broader behavioral patterns across the representative cohort."
           },
           {
             "id": "opt_3",
-            "text": "Executing uncoordinated manual deployment steps without immutable version tags or automated rollback safety procedures in production."
+            "text": "Delivering dense hundred-page qualitative research reports that fail to provide actionable, prioritized UX design recommendations."
           },
           {
             "id": "opt_4",
@@ -12663,11 +12663,11 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Enabling premature caching tiers across internal variables without profiling real bottleneck latencies."
+            "text": "Conducting dozens of repetitive usability test sessions past the point of insight saturation in user studies."
           },
           {
             "id": "opt_2",
-            "text": "Allocating oversized hardware capacity indiscriminately to mask underlying execution inefficiencies."
+            "text": "Creating high-fidelity animated prototypes when basic low-fidelity wireframes would test concepts faster."
           },
           {
             "id": "opt_3",
@@ -12675,7 +12675,7 @@
           },
           {
             "id": "opt_4",
-            "text": "Bypassing standard resource pools and executing synchronous blocking loops to maximize raw throughput."
+            "text": "Transcribing multi-hour user interview audio recordings manually instead of using transcription tools."
           }
         ],
         "correctAnswers": [
@@ -12692,7 +12692,7 @@
         "options": [
           {
             "id": "opt_1",
-            "text": "Omitting centralized resilience logging and automated failover policies across production cluster nodes."
+            "text": "Storing sensitive customer usability interview recordings and research transcripts in unprotected cloud folders without access controls."
           },
           {
             "id": "opt_2",
@@ -12700,11 +12700,11 @@
           },
           {
             "id": "opt_3",
-            "text": "Trusting incoming external payloads implicitly without cryptographic signature or schema verification."
+            "text": "Coercing vulnerable study participants into signing rights releases without providing adequate time to review compensation terms."
           },
           {
             "id": "opt_4",
-            "text": "Disabling automated security validation boundaries and authorization checks to accelerate internal communication workflows."
+            "text": "Sharing unredacted participant video recordings and identifiable personal information with broad audiences without participant consent."
           }
         ],
         "correctAnswers": [
