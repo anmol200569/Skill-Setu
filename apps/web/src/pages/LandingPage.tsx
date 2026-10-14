@@ -21,6 +21,7 @@ import {
   ChevronDown,
   Layers
 } from 'lucide-react';
+import { SkillConstellationHero } from '../components/landing/SkillConstellationHero';
 
 interface CompetencyStatsResponse {
   totalDomains: number;
@@ -184,7 +185,7 @@ export function LandingPage() {
                 onClick={() => navigate(role === 'admin' || role === 'trainer' ? '/admin' : '/dashboard')}
                 className="px-8 py-6 text-base font-semibold shadow-md bg-[#C2410C] hover:bg-[#9A3412] text-white"
               >
-                Go to Dashboard
+                {t('landing.goToDashboard')}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             ) : (
@@ -198,6 +199,11 @@ export function LandingPage() {
               </Button>
             )}
           </div>
+        </div>
+
+        {/* 3D Interactive Skill Constellation Hero with Fallback */}
+        <div className="mt-8 sm:mt-12 max-w-4xl mx-auto">
+          <SkillConstellationHero />
         </div>
 
         {/* Inline 3-Step Mini Wizard: Never rendered for logged-in users with a saved target role */}

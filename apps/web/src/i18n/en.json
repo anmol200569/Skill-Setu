@@ -201,6 +201,12 @@
     "heroTitle": "Know your technical skill gaps. Bridge them with free learning.",
     "heroSubtitle": "Objective diagnostic assessments mapped to real industry competencies. Discover your proficiency, benchmark against role requirements, and follow curated open-source courses.",
     "heroCta": "Configure Your Pathway",
+    "goToDashboard": "Go to Dashboard",
+    "constellation": {
+      "tag": "Skill Bridge (Setu)",
+      "interactive": "Interactive Skill Bridge • Move mouse to explore",
+      "description": "Diagnostic skills connecting directly to your verified career goal."
+    },
     "wizard": {
       "tag": "Step-by-Step Setup",
       "title": "Plan Your Diagnostic Pathway in 30 Seconds",
