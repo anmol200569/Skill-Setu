@@ -52,18 +52,6 @@ export function calculateCourseMatchScore(
 
   const primaryMatchedGap = matchedGaps.length > 0 ? matchedGaps[0] : null;
 
-  if (primaryMatchedGap) {
-    const currentLevel = primaryMatchedGap.currentLevel ?? 0;
-    // D2: Skip courses clearly below the learner's level
-    if (isCourseClearlyBelowLearnerLevel(currentLevel, course.difficulty)) {
-      return {
-        score: 0,
-        matchedGap: null,
-        reason: `Course difficulty (${course.difficulty}) is below learner current proficiency (Level ${currentLevel}).`
-      };
-    }
-  }
-
   // Real gap coverage computation: percentage of total weighted gap deficit covered
   let realCoverageScore = 0;
   if (topGaps.length > 0) {
@@ -71,16 +59,6 @@ export function calculateCourseMatchScore(
     const coveredWeightedDeficit = matchedGaps.reduce((acc, g) => acc + (g.gap || 1) * (g.weight || 1), 0);
     if (totalWeightedDeficit > 0 && coveredWeightedDeficit > 0) {
       realCoverageScore = Math.min(100, Math.round((coveredWeightedDeficit / totalWeightedDeficit) * 100));
-
-      // D2: Reward courses whose difficulty tier matches the learner's current level
-      if (primaryMatchedGap) {
-        const currentLevel = primaryMatchedGap.currentLevel ?? 0;
-        const targetTier = currentLevel <= 1 ? 1 : currentLevel <= 3 ? 2 : 3;
-        const courseTier = getDifficultyTierRank(course.difficulty);
-        if (targetTier === courseTier) {
-          realCoverageScore = Math.min(100, realCoverageScore + 10);
-        }
-      }
     }
   }
 
@@ -245,13 +223,8 @@ export async function getPersonalizedRecommendations(
     }
   }
 
-  // D2: Sort candidates by difficulty tier (Beginner, Intermediate, Advanced) and matchScore within tier
+  // Sort recommendations by matchScore descending, then by rating
   recommendations.sort((a, b) => {
-    const tierA = getDifficultyTierRank(a.course.difficulty);
-    const tierB = getDifficultyTierRank(b.course.difficulty);
-    if (tierA !== tierB) {
-      return tierA - tierB;
-    }
     if (b.matchScore !== a.matchScore) {
       return b.matchScore - a.matchScore;
     }
@@ -277,12 +250,29 @@ export async function generateLearningPath(
 
   const allRecs = await getPersonalizedRecommendations(userId, gaps, 10);
 
+  // D2: Choose each skill's course difficulty by the learner's current level:
+  // level <= 1 Beginner, 2-3 Intermediate, 4+ Advanced; skip courses clearly below learner level.
+  const gapLevelMap = new Map<string, number>();
+  for (const g of gaps) {
+    if (g.currentLevel !== null && g.currentLevel !== undefined) {
+      gapLevelMap.set(g.skillId.toLowerCase(), g.currentLevel);
+      gapLevelMap.set(g.skillName.toLowerCase(), g.currentLevel);
+    }
+  }
+
+  // Filter out courses that are clearly below the learner's level for the gap they address
+  const filteredRecs = allRecs.filter((r) => {
+    if (!r.gapAddressed) return true;
+    const currentLevel = gapLevelMap.get(r.gapAddressed.toLowerCase()) ?? 0;
+    return !isCourseClearlyBelowLearnerLevel(currentLevel, r.course.difficulty);
+  });
+
   // Pick recommendations covering diverse skill gaps where possible
   const seenGaps = new Set<string>();
   const diverseRecs: CourseRecommendation[] = [];
   const remainingRecs: CourseRecommendation[] = [];
 
-  for (const r of allRecs) {
+  for (const r of filteredRecs) {
     if (r.gapAddressed && !seenGaps.has(r.gapAddressed)) {
       seenGaps.add(r.gapAddressed);
       diverseRecs.push(r);
@@ -446,7 +436,7 @@ export async function generateLearningPath(
         reason: item.reason
       };
     }),
-    createdAt: existingPath.createdAt.toISOString(),
+    createdAt: existingPath.createdAt ? new Date(existingPath.createdAt).toISOString() : new Date().toISOString(),
     updatedAt: new Date().toISOString()
   };
 }
