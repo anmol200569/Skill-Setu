@@ -130,7 +130,7 @@ export function CoursesPage() {
   };
 
   return (
-    <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto pb-20">
+    <div className="space-y-6 sm:space-y-8 w-full max-w-[1720px] mx-auto pb-20">
       {/* Toast Feedback */}
       {toast && (
         <Toast

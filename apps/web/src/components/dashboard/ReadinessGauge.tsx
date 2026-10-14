@@ -37,7 +37,7 @@ export function ReadinessGauge({
   const strokeDashoffset = circumference - (safeScore / 100) * circumference;
 
   return (
-    <Card className="overflow-hidden border border-border shadow-card bg-gradient-to-br from-card via-card to-secondary/30">
+    <Card className="overflow-hidden border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_14px_40px_rgb(0,0,0,0.45)] bg-white/75 dark:bg-slate-900/65 backdrop-blur-xl rounded-3xl">
       <CardContent className="p-6 sm:p-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           {/* Left Column: Readiness Ring or Incomplete State */}

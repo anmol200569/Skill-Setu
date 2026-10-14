@@ -83,7 +83,7 @@ export function SkillGapsPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6 max-w-7xl mx-auto animate-pulse">
+      <div className="space-y-6 w-full max-w-[1720px] mx-auto animate-pulse">
         <Skeleton variant="title" className="w-48 h-8" />
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -97,7 +97,7 @@ export function SkillGapsPage() {
 
   if (!targetRoleId && displayGaps.length === 0) {
     return (
-      <div className="space-y-6 max-w-7xl mx-auto">
+      <div className="space-y-6 w-full max-w-[1720px] mx-auto">
         <Breadcrumbs items={[{ label: t('nav.skillGaps') }]} />
         <EmptyState
           icon={Compass}
@@ -113,7 +113,7 @@ export function SkillGapsPage() {
   }
 
   return (
-    <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto pb-20">
+    <div className="space-y-6 sm:space-y-8 w-full max-w-[1720px] mx-auto pb-20">
       {/* Breadcrumb Hierarchy */}
       <Breadcrumbs items={[{ label: t('nav.skillGaps') }]} />
 

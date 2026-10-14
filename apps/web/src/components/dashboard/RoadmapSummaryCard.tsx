@@ -42,7 +42,7 @@ export function RoadmapSummaryCard({
   const nextStep = recommendations.length > 0 ? recommendations[0] : null;
 
   return (
-    <Card className="border border-border bg-card shadow-card">
+    <Card className="border border-white/60 dark:border-white/10 bg-white/75 dark:bg-slate-900/65 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_12px_36px_rgb(0,0,0,0.45)] rounded-3xl">
       <CardHeader className="flex flex-row items-start justify-between gap-4 pb-4">
         <div>
           <div className="flex items-center gap-2">

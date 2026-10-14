@@ -87,6 +87,73 @@
   border-radius: 4px;
 }
 
+/* Glassmorphism & Liquid Glass System */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 30px 0 rgba(31, 38, 135, 0.05), inset 0 1px 1px 0 rgba(255, 255, 255, 0.8);
+}
+.dark .glass-panel {
+  background: rgba(17, 24, 39, 0.70);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.liquid-glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.55) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 32px 0 rgba(37, 99, 235, 0.08), inset 0 1px 2px 0 rgba(255, 255, 255, 0.9);
+}
+.dark .liquid-glass {
+  background: linear-gradient(135deg, rgba(26, 36, 54, 0.75) 0%, rgba(15, 23, 42, 0.6) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.55), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Neumorphic tactile depth */
+.neumorphic-flat {
+  background: #FFFFFF;
+  box-shadow: 6px 6px 16px rgba(209, 217, 230, 0.55), -6px -6px 16px rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(226, 232, 240, 0.7);
+}
+.dark .neumorphic-flat {
+  background: #111827;
+  box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.55), -4px -4px 14px rgba(30, 41, 59, 0.25);
+  border: 1px solid rgba(31, 41, 55, 0.7);
+}
+
+.neumorphic-inset {
+  background: #F8FAFC;
+  box-shadow: inset 2px 2px 5px rgba(209, 217, 230, 0.65), inset -2px -2px 5px rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(226, 232, 240, 0.7);
+}
+.dark .neumorphic-inset {
+  background: #0D131F;
+  box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.6), inset -2px -2px 6px rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(31, 41, 55, 0.8);
+}
+
+.liquid-glow {
+  position: relative;
+}
+.liquid-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.35), rgba(96, 165, 250, 0.1), transparent 70%);
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+}
+
 /* Reduced motion preference support */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {

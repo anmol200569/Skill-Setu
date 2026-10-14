@@ -7,6 +7,7 @@ import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { ProgressBar } from '../ui/ProgressBar';
 import { GapItem } from '../../pages/learner/DashboardPage';
+import { cn } from '../../lib/utils';
 
 export interface PriorityGapsHighlightProps {
   gaps: GapItem[];
@@ -45,7 +46,12 @@ export function PriorityGapsHighlight({ gaps, onCloseGap }: PriorityGapsHighligh
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div
+        className={cn(
+          'grid gap-4 sm:gap-5',
+          top3.length === 1 ? 'grid-cols-1' : top3.length === 2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-3'
+        )}
+      >
         {top3.map((gap, index) => {
           const current = gap.currentLevel ?? 0;
           const required = gap.requiredLevel;
@@ -56,7 +62,7 @@ export function PriorityGapsHighlight({ gaps, onCloseGap }: PriorityGapsHighligh
             <Card
               key={gap.skillId || index}
               hoverEffect
-              className="flex flex-col justify-between p-5 border-slate-200 dark:border-slate-800 bg-card rounded-2xl"
+              className="flex flex-col justify-between p-6 border-white/40 dark:border-white/10 bg-card/90 backdrop-blur-xl rounded-3xl shadow-sm hover:shadow-md transition-all"
             >
               <div className="space-y-3">
                 <div className="flex items-start justify-between gap-2">

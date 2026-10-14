@@ -3,14 +3,19 @@ import { cn } from '../../lib/utils';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   hoverEffect?: boolean;
+  glass?: boolean;
 }
 
-export function Card({ className, hoverEffect = false, ...props }: CardProps) {
+export function Card({ className, hoverEffect = false, glass = true, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'rounded-2xl border border-border bg-card text-card-foreground shadow-card transition-all duration-200',
-        hoverEffect && 'hover:shadow-card-hover hover:-translate-y-1 hover:border-blue-500/40 dark:hover:border-blue-400/40',
+        'rounded-3xl border text-card-foreground transition-all duration-200 relative overflow-hidden',
+        glass
+          ? 'border-white/60 dark:border-white/10 bg-white/80 dark:bg-slate-900/70 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_14px_40px_rgb(0,0,0,0.45)]'
+          : 'border-border bg-card shadow-card',
+        hoverEffect &&
+          'hover:shadow-[0_16px_40px_rgba(37,99,235,0.12)] dark:hover:shadow-[0_16px_40px_rgba(37,99,235,0.25)] hover:-translate-y-1 hover:border-blue-500/40 dark:hover:border-blue-400/40',
         className
       )}
       {...props}

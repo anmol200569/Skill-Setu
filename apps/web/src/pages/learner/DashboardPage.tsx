@@ -226,7 +226,7 @@ export function DashboardPage() {
   const coveragePercentage = totalSkills > 0 ? Math.min(100, Math.round((assessedSkills / totalSkills) * 100)) : 0;
 
   return (
-    <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto pb-20">
+    <div className="space-y-6 sm:space-y-8 w-full max-w-[1720px] mx-auto pb-20">
       {/* Breadcrumbs Navigation */}
       <Breadcrumbs items={[{ label: t('nav.dashboard') }]} />
 

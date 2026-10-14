@@ -154,7 +154,7 @@ export function LearningPathPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6 max-w-7xl mx-auto animate-pulse">
+      <div className="space-y-6 w-full max-w-[1720px] mx-auto animate-pulse">
         <Skeleton variant="title" className="w-48 h-8" />
         <Skeleton variant="card" className="h-32" />
         <div className="space-y-4">
@@ -175,7 +175,7 @@ export function LearningPathPage() {
   const totalHours = (learningPath?.totalEstimatedHours || 0) + 56;
 
   return (
-    <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto pb-20">
+    <div className="space-y-6 sm:space-y-8 w-full max-w-[1720px] mx-auto pb-20">
       {/* Breadcrumb Hierarchy */}
       <Breadcrumbs items={[{ label: t('nav.roadmap') }]} />
 

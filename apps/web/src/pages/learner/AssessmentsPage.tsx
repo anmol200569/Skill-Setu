@@ -14,7 +14,8 @@ import {
   AlertCircle,
   HelpCircle,
   ArrowRight,
-  Loader2
+  Loader2,
+  BookOpen
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { stripInactivePrefix } from '@skill-setu/shared';
@@ -349,18 +350,19 @@ export function AssessmentsPage() {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={activeSkill ? `Diagnostic: ${activeSkill.name}` : 'Assessment'}
-        className="max-w-2xl"
+        title={activeSkill ? `Diagnostic Assessment: ${activeSkill.name}` : 'Skill Assessment'}
+        size="3xl"
       >
         {isLoadingQuestions ? (
-          <div className="py-12 text-center text-sm text-muted-foreground space-y-2">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-600 mx-auto" />
-            <p>Loading curated diagnostic questions...</p>
+          <div className="py-16 text-center text-sm text-muted-foreground space-y-3">
+            <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto" />
+            <p className="font-semibold text-foreground">Preparing curated diagnostic questions...</p>
+            <p className="text-xs text-muted-foreground">Evaluating competency benchmarks for {activeSkill?.name}</p>
           </div>
         ) : questions.length === 0 ? (
-          <div className="py-12 text-center text-sm text-muted-foreground space-y-3">
-            <HelpCircle className="w-10 h-10 text-muted-foreground/50 mx-auto" />
-            <h3 className="font-semibold text-foreground text-base">No Questions Available</h3>
+          <div className="py-14 text-center text-sm text-muted-foreground space-y-3">
+            <HelpCircle className="w-12 h-12 text-muted-foreground/40 mx-auto" />
+            <h3 className="font-bold text-foreground text-lg">No Questions Available</h3>
             <p className="text-xs max-w-sm mx-auto text-muted-foreground">
               There are currently no diagnostic questions configured for {activeSkill?.name || 'this skill'}. Please check back later or explore other skills.
             </p>
@@ -371,67 +373,114 @@ export function AssessmentsPage() {
             </div>
           </div>
         ) : assessmentResult ? (
-          /* Result View */
+          /* Result View (Spacious Question Breakdown 1 to 10) */
           <div className="space-y-6 py-2">
-            <div className="p-6 rounded-2xl bg-secondary/50 border border-border text-center space-y-2">
-              <Award className="w-12 h-12 text-blue-600 mx-auto" />
-              <h3 className="text-2xl font-sans font-bold text-foreground">
+            <div className="p-6 rounded-3xl bg-gradient-to-tr from-blue-600/10 via-indigo-500/5 to-transparent border border-blue-500/20 text-center space-y-3 shadow-sm">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center mx-auto shadow-lg shadow-blue-500/30">
+                <Award className="w-8 h-8" />
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
                 Diagnostic Complete!
               </h3>
               <p className="text-sm text-muted-foreground">
-                You scored <strong className="text-foreground">{assessmentResult.scorePercentage}%</strong> ({assessmentResult.correctQuestions}/{assessmentResult.totalQuestions} questions correct)
+                You scored <strong className="text-foreground font-bold text-base">{assessmentResult.scorePercentage}%</strong> ({assessmentResult.correctQuestions} of {assessmentResult.totalQuestions} questions correct)
               </p>
-              <div className="pt-2">
-                <Badge variant="success" className="text-sm px-4 py-1 font-semibold">
+              <div className="pt-1">
+                <Badge variant="success" className="text-sm px-4 py-1.5 font-bold shadow-sm">
                   Assessed Proficiency: Level {assessmentResult.assessedLevel} of 5
                 </Badge>
               </div>
             </div>
 
-            <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
-              {assessmentResult.evaluatedAnswers?.map((ans: any, idx: number) => (
-                <div
-                  key={ans.questionId}
-                  className={`p-3.5 rounded-lg border text-xs space-y-1 ${
-                    ans.isCorrect ? 'border-green-500/30 bg-green-500/5' : 'border-red-500/30 bg-red-500/5'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 font-semibold">
-                    {ans.isCorrect ? (
-                      <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
-                    ) : (
-                      <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+            {/* Questions Review List: Generous height and comfortable breathing room */}
+            <div>
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-border">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  Question-by-Question Evaluation ({assessmentResult.evaluatedAnswers?.length || 0} Questions)
+                </h4>
+                <span className="text-xs text-muted-foreground">Scroll to review detailed rationale</span>
+              </div>
+
+              <div className="space-y-4 max-h-[58vh] overflow-y-auto pr-2">
+                {assessmentResult.evaluatedAnswers?.map((ans: any, idx: number) => (
+                  <div
+                    key={ans.questionId || idx}
+                    className={`p-5 sm:p-6 rounded-2xl border text-sm space-y-3 transition-all ${
+                      ans.isCorrect
+                        ? 'border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-950/20 shadow-sm'
+                        : 'border-rose-500/30 bg-rose-500/5 dark:bg-rose-950/20 shadow-sm'
+                    }`}
+                  >
+                    {/* Header with Question Index and Status Pill */}
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-mono text-xs font-bold px-2.5 py-1 rounded-lg bg-secondary text-foreground/80 border border-border">
+                        Question {idx + 1} of {assessmentResult.totalQuestions || 10}
+                      </span>
+                      {ans.isCorrect ? (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          Correct Answer
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/30">
+                          <AlertCircle className="w-3.5 h-3.5" />
+                          Needs Review
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Question Stem */}
+                    {ans.questionText && (
+                      <p className="text-sm sm:text-base font-bold text-foreground leading-relaxed pt-1">
+                        {stripInactivePrefix(ans.questionText)}
+                      </p>
                     )}
-                    <span>Question {idx + 1}: {ans.isCorrect ? 'Correct' : 'Incorrect'}</span>
+
+                    {/* Explanation Box */}
+                    {ans.explanation && (
+                      <div className="p-4 rounded-xl bg-slate-100/80 dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/5 space-y-1">
+                        <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                          <BookOpen className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                          <span>Core Concept & Rationale</span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed">
+                          {ans.explanation}
+                        </p>
+                      </div>
+                    )}
                   </div>
-                  {ans.questionText && (
-                    <p className="text-foreground/90 font-medium pl-6">{stripInactivePrefix(ans.questionText)}</p>
-                  )}
-                  <p className="text-muted-foreground pl-6">{ans.explanation}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
-            <Button onClick={() => setIsModalOpen(false)} className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20">
+            <Button
+              onClick={() => setIsModalOpen(false)}
+              className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-lg shadow-blue-500/25 transition-all text-sm"
+            >
               Close & Update Skill Dashboard
             </Button>
           </div>
         ) : (
-          /* Question View */
+          /* Active Question View with Spacious Options */
           <div className="space-y-6 py-2">
-            <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
-              <span>Question {currentQuestionIdx + 1} of {questions.length}</span>
-              <span className="capitalize">{questions[currentQuestionIdx].difficulty}</span>
+            <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+              <span className="font-semibold text-foreground">
+                Question {currentQuestionIdx + 1} of {questions.length}
+              </span>
+              <span className="capitalize px-2.5 py-0.5 rounded-full bg-secondary border border-border text-[11px] font-medium">
+                {questions[currentQuestionIdx].difficulty} level
+              </span>
             </div>
 
-            <div className="text-sm font-semibold text-foreground leading-relaxed">
+            <div className="text-base sm:text-lg font-bold text-foreground leading-relaxed py-1">
               {stripInactivePrefix(questions[currentQuestionIdx].questionText)}
             </div>
 
-            {/* Options */}
-            <div className="space-y-2.5">
-              {questions[currentQuestionIdx].options.map((opt) => {
+            {/* Options with Generous Breathing Room and Letter Tags */}
+            <div className="space-y-3.5 pt-1">
+              {questions[currentQuestionIdx].options.map((opt, optIdx) => {
                 const isSelected = (selectedAnswers[questions[currentQuestionIdx].id] || []).includes(opt.id);
+                const letter = String.fromCharCode(65 + optIdx);
                 return (
                   <button
                     key={opt.id}
@@ -443,30 +492,32 @@ export function AssessmentsPage() {
                         questions[currentQuestionIdx].type
                       )
                     }
-                    className={`w-full text-left p-3.5 rounded-xl border text-xs transition-all flex items-start gap-3 ${
+                    className={`w-full text-left p-4 sm:p-5 rounded-2xl border text-sm transition-all flex items-center gap-4 ${
                       isSelected
-                        ? 'border-blue-600 bg-blue-50 dark:bg-blue-950/40 text-foreground ring-1 ring-blue-600'
-                        : 'border-border bg-card text-foreground/80 hover:bg-secondary/60'
+                        ? 'border-blue-600 bg-blue-500/10 dark:bg-blue-950/40 text-foreground ring-2 ring-blue-600 shadow-sm font-semibold'
+                        : 'border-border bg-card text-foreground/85 hover:bg-slate-100/70 dark:hover:bg-slate-800/60 hover:border-slate-300 dark:hover:border-slate-700'
                     }`}
                   >
                     <div
-                      className={`w-4 h-4 rounded mt-0.5 border flex items-center justify-center flex-shrink-0 ${
-                        isSelected ? 'bg-blue-600 border-blue-600 text-white' : 'border-muted-foreground'
+                      className={`w-7 h-7 rounded-xl flex items-center justify-center text-xs font-bold flex-shrink-0 transition-colors ${
+                        isSelected
+                          ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30'
+                          : 'bg-secondary text-muted-foreground border border-border'
                       }`}
                     >
-                      {isSelected && <CheckCircle2 className="w-3 h-3" />}
+                      {isSelected ? <CheckCircle2 className="w-4 h-4" /> : letter}
                     </div>
-                    <span>{opt.text}</span>
+                    <span className="leading-relaxed flex-1">{opt.text}</span>
                   </button>
                 );
               })}
             </div>
 
             {/* Navigation buttons */}
-            <div className="flex items-center justify-between pt-4 border-t border-border">
+            <div className="flex items-center justify-between pt-5 border-t border-border">
               <Button
                 variant="outline"
-                size="sm"
+                size="md"
                 disabled={currentQuestionIdx === 0}
                 onClick={() => setCurrentQuestionIdx((prev) => Math.max(0, prev - 1))}
               >
@@ -475,19 +526,20 @@ export function AssessmentsPage() {
 
               {currentQuestionIdx < questions.length - 1 ? (
                 <Button
-                  size="sm"
+                  size="md"
                   onClick={() => setCurrentQuestionIdx((prev) => Math.min(questions.length - 1, prev + 1))}
                 >
                   Next Question
                 </Button>
               ) : (
                 <Button
-                  size="sm"
+                  size="md"
+                  variant="primary"
                   onClick={submitTest}
                   isLoading={isSubmitting}
-                  className="font-semibold shadow-md"
+                  className="bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-600/20"
                 >
-                  Submit Assessment
+                  Complete Diagnostic
                 </Button>
               )}
             </div>

@@ -61,7 +61,7 @@ export function Badge({ className, variant = 'default', icon, children, ...props
   return (
     <div
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full border px-3 py-0.5 text-xs font-medium transition-colors select-none',
+        'inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold backdrop-blur-md shadow-sm transition-all select-none',
         variants[variant],
         className
       )}

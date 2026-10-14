@@ -659,7 +659,7 @@ export function QuizzesPage() {
         isOpen={isAttemptModalOpen}
         onClose={() => setIsAttemptModalOpen(false)}
         title={activeQuiz?.title || 'Quiz Attempt'}
-        className="max-w-2xl"
+        size="3xl"
       >
         {quizQuestions.length === 0 ? (
           <div className="py-12 text-center text-sm text-muted-foreground space-y-2">
@@ -669,20 +669,20 @@ export function QuizzesPage() {
         ) : attemptResult ? (
           /* Result View with Weak Topics */
           <div className="space-y-6 py-2">
-            <div className="p-6 rounded-2xl bg-secondary/50 border border-border text-center space-y-2">
+            <div className="p-6 rounded-3xl bg-gradient-to-tr from-blue-600/10 via-indigo-500/5 to-transparent border border-blue-500/20 text-center space-y-2 shadow-sm">
               <h3 className="text-2xl font-sans font-bold text-foreground">
                 Quiz Evaluation Result
               </h3>
-              <div className="text-4xl font-sans font-bold text-blue-600 py-1">
+              <div className="text-4xl font-sans font-extrabold text-blue-600 py-1">
                 {attemptResult.scorePercentage}%
               </div>
-              <p className="text-xs text-muted-foreground">
-                Answered <strong className="text-foreground">{attemptResult.correctAnswersCount}</strong> out of <strong className="text-foreground">{attemptResult.totalQuestions}</strong> questions correctly.
+              <p className="text-sm text-muted-foreground">
+                Answered <strong className="text-foreground font-bold">{attemptResult.correctAnswersCount}</strong> out of <strong className="text-foreground font-bold">{attemptResult.totalQuestions}</strong> questions correctly.
               </p>
             </div>
 
             {attemptResult.skillBoostApplied && (
-              <div className="p-4 rounded-xl border border-green-500/30 bg-green-500/10 text-xs text-green-700 dark:text-green-400 space-y-1 text-left">
+              <div className="p-4 rounded-2xl border border-green-500/30 bg-green-500/10 text-xs text-green-700 dark:text-green-400 space-y-1 text-left">
                 <div className="font-bold flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-green-600" />
                   <span>Practice Quiz Boost Applied!</span>
@@ -695,10 +695,10 @@ export function QuizzesPage() {
 
             {/* Weak Topics Feedback */}
             {attemptResult.weakTopics?.length > 0 && (
-              <div className="p-4 rounded-xl border border-amber-500/30 bg-amber-500/5 space-y-2 text-xs">
+              <div className="p-5 rounded-2xl border border-amber-500/30 bg-amber-500/5 space-y-2 text-xs">
                 <div className="font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
                   <AlertCircle className="w-4 h-4" />
-                  Identified Weak Topics to Review
+                  <span>Identified Weak Topics to Review</span>
                 </div>
                 {attemptResult.weakTopics.map((wt: any, idx: number) => (
                   <div key={idx} className="pl-5 border-l-2 border-amber-500/50 py-1">
@@ -709,63 +709,95 @@ export function QuizzesPage() {
               </div>
             )}
 
-            {/* Detailed Answers breakdown */}
-            <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
-              {attemptResult.answers?.map((ans: any, idx: number) => (
-                <div
-                  key={idx}
-                  className={`p-3.5 rounded-lg border text-xs space-y-1 ${
-                    ans.isCorrect ? 'border-green-500/30 bg-green-500/5' : 'border-red-500/30 bg-red-500/5'
-                  }`}
-                >
-                  <div className="flex items-center gap-2 font-semibold">
-                    {ans.isCorrect ? (
-                      <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
-                    ) : (
-                      <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+            {/* Detailed Answers breakdown: Generous height and comfortable breathing room */}
+            <div>
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-border">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  Question Review ({attemptResult.answers?.length || 0} Questions)
+                </h4>
+                <span className="text-xs text-muted-foreground">Detailed feedback</span>
+              </div>
+
+              <div className="space-y-4 max-h-[58vh] overflow-y-auto pr-2">
+                {attemptResult.answers?.map((ans: any, idx: number) => (
+                  <div
+                    key={idx}
+                    className={`p-5 sm:p-6 rounded-2xl border text-sm space-y-3 transition-all ${
+                      ans.isCorrect ? 'border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-950/20 shadow-sm' : 'border-rose-500/30 bg-rose-500/5 dark:bg-rose-950/20 shadow-sm'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-mono text-xs font-bold px-2.5 py-1 rounded-lg bg-secondary text-foreground/80 border border-border">
+                        Question {idx + 1}
+                      </span>
+                      {ans.isCorrect ? (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
+                          <CheckCircle2 className="w-3.5 h-3.5" /> Correct
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/30">
+                          <AlertCircle className="w-3.5 h-3.5" /> Incorrect
+                        </span>
+                      )}
+                    </div>
+
+                    {ans.questionText && (
+                      <p className="text-sm sm:text-base font-bold text-foreground leading-relaxed pt-1">
+                        {stripInactivePrefix(ans.questionText)}
+                      </p>
                     )}
-                    <span>Q{idx + 1}: {ans.isCorrect ? 'Correct' : 'Incorrect'}</span>
+
+                    {ans.explanation && (
+                      <div className="p-4 rounded-xl bg-slate-100/80 dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/5 space-y-1">
+                        <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                          <BookOpen className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                          <span>Explanation</span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed">{ans.explanation}</p>
+                      </div>
+                    )}
                   </div>
-                  {ans.questionText && (
-                    <p className="text-foreground/90 font-medium pl-6">{stripInactivePrefix(ans.questionText)}</p>
-                  )}
-                  <p className="text-muted-foreground pl-6">{ans.explanation}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex gap-3 pt-2">
               <Button
                 variant="outline"
+                size="md"
                 onClick={() => exportPdf(activeQuiz.id)}
-                className="flex-1 flex items-center justify-center gap-1.5"
+                className="flex-1 flex items-center justify-center gap-2 rounded-2xl"
               >
                 <Download className="w-4 h-4" />
                 Export Quiz PDF
               </Button>
-              <Button onClick={() => setIsAttemptModalOpen(false)} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20">
-                Done
+              <Button
+                onClick={() => setIsAttemptModalOpen(false)}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl shadow-lg shadow-blue-500/20 font-bold"
+              >
+                Done & Update Dashboard
               </Button>
             </div>
           </div>
         ) : (
           /* Question View */
           <div className="space-y-6 py-2">
-            <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
-              <span>Question {currentIdx + 1} of {quizQuestions.length}</span>
-              <span className="font-mono text-[10px] bg-secondary px-2 py-0.5 rounded">
+            <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+              <span className="font-semibold text-foreground">Question {currentIdx + 1} of {quizQuestions.length}</span>
+              <span className="font-mono text-xs bg-secondary px-2.5 py-1 rounded-lg border border-border">
                 {quizQuestions[currentIdx].topicTag}
               </span>
             </div>
 
-            <div className="text-sm font-semibold text-foreground leading-relaxed">
+            <div className="text-base sm:text-lg font-bold text-foreground leading-relaxed py-1">
               {stripInactivePrefix(quizQuestions[currentIdx].questionText)}
             </div>
 
-            {/* Options */}
-            <div className="space-y-2.5">
-              {quizQuestions[currentIdx].options.map((opt) => {
+            {/* Options with spacious padding and letter badges */}
+            <div className="space-y-3.5 pt-1">
+              {quizQuestions[currentIdx].options.map((opt, optIdx) => {
                 const isSelected = (userSelections[quizQuestions[currentIdx].id] || []).includes(opt.id);
+                const letter = String.fromCharCode(65 + optIdx);
                 return (
                   <button
                     key={opt.id}
@@ -777,20 +809,22 @@ export function QuizzesPage() {
                         quizQuestions[currentIdx].type
                       )
                     }
-                    className={`w-full text-left p-3.5 rounded-xl border text-xs transition-all flex items-start gap-3 ${
+                    className={`w-full text-left p-4 sm:p-5 rounded-2xl border text-sm transition-all flex items-center gap-4 ${
                       isSelected
-                        ? 'border-blue-600 bg-blue-50 dark:bg-blue-950/40 text-foreground ring-1 ring-blue-600'
-                        : 'border-border bg-card text-foreground/80 hover:bg-secondary/60'
+                        ? 'border-blue-600 bg-blue-500/10 dark:bg-blue-950/40 text-foreground ring-2 ring-blue-600 shadow-sm font-semibold'
+                        : 'border-border bg-card text-foreground/85 hover:bg-slate-100/70 dark:hover:bg-slate-800/60'
                     }`}
                   >
                     <div
-                      className={`w-4 h-4 rounded mt-0.5 border flex items-center justify-center flex-shrink-0 ${
-                        isSelected ? 'bg-blue-600 border-blue-600 text-white' : 'border-muted-foreground'
+                      className={`w-7 h-7 rounded-xl flex items-center justify-center text-xs font-bold flex-shrink-0 transition-colors ${
+                        isSelected
+                          ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30'
+                          : 'bg-secondary text-muted-foreground border border-border'
                       }`}
                     >
-                      {isSelected && <CheckCircle2 className="w-3 h-3" />}
+                      {isSelected ? <CheckCircle2 className="w-4 h-4" /> : letter}
                     </div>
-                    <span>{opt.text}</span>
+                    <span className="leading-relaxed flex-1">{opt.text}</span>
                   </button>
                 );
               })}

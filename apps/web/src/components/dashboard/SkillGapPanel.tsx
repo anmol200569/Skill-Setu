@@ -118,7 +118,7 @@ export function SkillGapPanel({
   const panelDescription = description || t('dashboard.skillGapPanel.description');
 
   return (
-    <Card className={cn('border border-border shadow-card bg-card', className)}>
+    <Card className={cn('border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_14px_40px_rgb(0,0,0,0.45)] bg-white/75 dark:bg-slate-900/65 backdrop-blur-xl rounded-3xl', className)}>
       <CardHeader className="space-y-4 pb-4 border-b border-border">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
