@@ -163,10 +163,10 @@ export function AssessmentsPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <span className="text-xs font-bold uppercase tracking-wider text-[#C2410C]">
+        <span className="text-xs font-bold uppercase tracking-wider text-blue-600">
           Practical Competency Verification
         </span>
-        <h1 className="text-3xl font-serif font-bold text-foreground mt-1">
+        <h1 className="text-3xl font-bold text-foreground mt-1 tracking-tight">
           Diagnostic Assessments
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -176,11 +176,11 @@ export function AssessmentsPage() {
 
       {/* D1: Start your baseline prompt */}
       {isBaselinePromptVisible && (
-        <div className="p-5 rounded-2xl bg-gradient-to-r from-[#C2410C]/10 via-[#C2410C]/5 to-transparent border border-[#C2410C]/30 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in fade-in">
+        <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-600/10 via-blue-500/5 to-transparent border border-blue-200 dark:border-blue-900/40 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-in fade-in">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#C2410C] animate-pulse" />
-              <h3 className="font-serif font-bold text-base sm:text-lg text-foreground">
+              <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
+              <h3 className="font-bold text-base sm:text-lg text-foreground">
                 Start your baseline assessment
               </h3>
             </div>
@@ -213,9 +213,9 @@ export function AssessmentsPage() {
       <div className="flex flex-wrap gap-2 pt-2">
         <button
           onClick={() => setSelectedDomain('all')}
-          className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+          className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
             selectedDomain === 'all'
-              ? 'bg-[#C2410C] text-white'
+              ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/20'
               : 'bg-secondary text-secondary-foreground hover:bg-muted'
           }`}
         >
@@ -225,9 +225,9 @@ export function AssessmentsPage() {
           <button
             key={dom}
             onClick={() => setSelectedDomain(dom as string)}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
               selectedDomain === dom
-                ? 'bg-[#C2410C] text-white'
+                ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/20'
                 : 'bg-secondary text-secondary-foreground hover:bg-muted'
             }`}
           >
@@ -240,11 +240,11 @@ export function AssessmentsPage() {
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-pulse">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-44 rounded-xl bg-card border border-border" />
+            <div key={i} className="h-44 rounded-2xl bg-card border border-border" />
           ))}
         </div>
       ) : skills.length === 0 ? (
-        <Card className="p-12 text-center text-muted-foreground">
+        <Card className="p-12 text-center text-muted-foreground rounded-2xl">
           <Target className="w-10 h-10 text-muted-foreground/60 mx-auto mb-3" />
           <p className="font-semibold text-foreground text-base">
             {t('assessment.noAssessmentsTitle', 'No diagnostic assessments available yet')}
@@ -254,7 +254,7 @@ export function AssessmentsPage() {
           </p>
         </Card>
       ) : filteredSkills.length === 0 ? (
-        <Card className="p-12 text-center text-muted-foreground">
+        <Card className="p-12 text-center text-muted-foreground rounded-2xl">
           <p className="font-semibold text-foreground text-sm">
             {t('assessment.noDomainAssessments', 'No assessments found for this domain.')}
           </p>
@@ -262,7 +262,7 @@ export function AssessmentsPage() {
             size="sm"
             variant="outline"
             onClick={() => setSelectedDomain('all')}
-            className="mt-3 text-xs"
+            className="mt-3 text-xs rounded-xl"
           >
             {t('assessment.viewAllDomains', 'View All Domains')}
           </Button>
@@ -274,7 +274,7 @@ export function AssessmentsPage() {
             const hasVerified = userSkill?.verifiedScore !== null && userSkill?.verifiedScore !== undefined;
 
             return (
-              <Card key={skill.id} className="flex flex-col justify-between hover:border-[#C2410C]/50 transition-colors">
+              <Card key={skill.id} className="flex flex-col justify-between hover:border-blue-500/50 hover:shadow-md transition-all rounded-2xl">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <Badge variant="outline" className="text-[10px]">
@@ -286,7 +286,7 @@ export function AssessmentsPage() {
                       <Badge variant="neutral">Not assessed</Badge>
                     )}
                   </div>
-                  <CardTitle className="text-base font-serif">{skill.name}</CardTitle>
+                  <CardTitle className="text-base font-sans font-bold">{skill.name}</CardTitle>
                   <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{skill.description}</p>
                 </CardHeader>
 
@@ -304,7 +304,7 @@ export function AssessmentsPage() {
                     size="sm"
                     variant={hasVerified ? 'outline' : 'primary'}
                     onClick={() => startAssessment(skill)}
-                    className="text-xs"
+                    className="text-xs shadow-sm"
                   >
                     {hasVerified ? 'Re-assess' : 'Start Diagnostic'}
                   </Button>
@@ -317,10 +317,10 @@ export function AssessmentsPage() {
 
       {/* Recent Assessment History */}
       {history.length > 0 && (
-        <Card className="mt-8">
+        <Card className="mt-8 rounded-2xl">
           <CardHeader>
-            <CardTitle className="text-base font-serif flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[#C2410C]" />
+            <CardTitle className="text-base font-sans font-bold flex items-center gap-2">
+              <Clock className="w-4 h-4 text-blue-600" />
               Recent Diagnostic Attempts
             </CardTitle>
           </CardHeader>
@@ -354,7 +354,7 @@ export function AssessmentsPage() {
       >
         {isLoadingQuestions ? (
           <div className="py-12 text-center text-sm text-muted-foreground space-y-2">
-            <Loader2 className="w-6 h-6 animate-spin text-[#C2410C] mx-auto" />
+            <Loader2 className="w-6 h-6 animate-spin text-blue-600 mx-auto" />
             <p>Loading curated diagnostic questions...</p>
           </div>
         ) : questions.length === 0 ? (
@@ -374,8 +374,8 @@ export function AssessmentsPage() {
           /* Result View */
           <div className="space-y-6 py-2">
             <div className="p-6 rounded-2xl bg-secondary/50 border border-border text-center space-y-2">
-              <Award className="w-12 h-12 text-[#C2410C] mx-auto" />
-              <h3 className="text-2xl font-serif font-bold text-foreground">
+              <Award className="w-12 h-12 text-blue-600 mx-auto" />
+              <h3 className="text-2xl font-sans font-bold text-foreground">
                 Diagnostic Complete!
               </h3>
               <p className="text-sm text-muted-foreground">
@@ -412,7 +412,7 @@ export function AssessmentsPage() {
               ))}
             </div>
 
-            <Button onClick={() => setIsModalOpen(false)} className="w-full">
+            <Button onClick={() => setIsModalOpen(false)} className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20">
               Close & Update Skill Dashboard
             </Button>
           </div>
@@ -445,13 +445,13 @@ export function AssessmentsPage() {
                     }
                     className={`w-full text-left p-3.5 rounded-xl border text-xs transition-all flex items-start gap-3 ${
                       isSelected
-                        ? 'border-[#C2410C] bg-[#C2410C]/10 text-foreground ring-1 ring-[#C2410C]'
+                        ? 'border-blue-600 bg-blue-50 dark:bg-blue-950/40 text-foreground ring-1 ring-blue-600'
                         : 'border-border bg-card text-foreground/80 hover:bg-secondary/60'
                     }`}
                   >
                     <div
                       className={`w-4 h-4 rounded mt-0.5 border flex items-center justify-center flex-shrink-0 ${
-                        isSelected ? 'bg-[#C2410C] border-[#C2410C] text-white' : 'border-muted-foreground'
+                        isSelected ? 'bg-blue-600 border-blue-600 text-white' : 'border-muted-foreground'
                       }`}
                     >
                       {isSelected && <CheckCircle2 className="w-3 h-3" />}

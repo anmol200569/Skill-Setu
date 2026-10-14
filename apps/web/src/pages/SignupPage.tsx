@@ -143,7 +143,7 @@ export function SignupPage() {
           <div className="w-12 h-12 rounded-full bg-green-500/10 text-green-600 flex items-center justify-center mx-auto">
             <CheckCircle2 className="w-6 h-6" />
           </div>
-          <h2 className="text-2xl font-serif font-bold text-foreground">
+          <h2 className="text-2xl font-bold text-foreground">
             {t('auth.signup.verification.title')}
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">
@@ -165,12 +165,12 @@ export function SignupPage() {
     <div className="min-h-screen bg-background flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
-          <Link to="/" className="flex items-center gap-2">
-            <img src="/logo.svg" alt="Skill Setu" className="w-10 h-10 rounded-lg shadow-sm" />
-            <span className="font-serif text-2xl font-bold tracking-tight text-foreground">Skill Setu</span>
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <img src="/logo.svg" alt="Skill Setu" className="w-10 h-10 rounded-xl shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform" />
+            <span className="font-sans text-2xl font-extrabold tracking-tight text-foreground">Skill<span className="text-blue-600">Setu</span></span>
           </Link>
         </div>
-        <h2 className="mt-6 text-center text-3xl font-serif font-bold text-foreground">
+        <h2 className="mt-6 text-center text-3xl font-extrabold tracking-tight text-foreground">
           {t('auth.signup.title')}
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
@@ -193,8 +193,8 @@ export function SignupPage() {
           )}
 
           {pathwayConfig && (
-            <div className="mb-6 p-4 rounded-xl bg-[#C2410C]/10 border border-[#C2410C]/25 text-xs space-y-1.5">
-              <div className="flex items-center gap-1.5 font-semibold text-[#C2410C]">
+            <div className="mb-6 p-4 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-xs space-y-1.5">
+              <div className="flex items-center gap-1.5 font-semibold text-blue-700 dark:text-blue-300">
                 <Compass className="w-4 h-4 flex-shrink-0" />
                 <span>{t('auth.signup.pathwayTitle')}</span>
               </div>
@@ -203,7 +203,7 @@ export function SignupPage() {
                 {t('auth.signup.assessedLevel')}: <strong>{t(`landing.wizard.levels.${pathwayConfig.level}.label`, { defaultValue: pathwayConfig.level })}</strong><br />
                 {t('auth.signup.weeklyCommitment')}: <strong>{pathwayConfig.hours} hrs/week</strong>
               </p>
-              <p className="text-[10px] text-muted-foreground pt-1 border-t border-[#C2410C]/15">
+              <p className="text-[10px] text-muted-foreground pt-1 border-t border-blue-200 dark:border-blue-800/60">
                 {t('auth.signup.pathwayNote')}
               </p>
             </div>
@@ -217,7 +217,7 @@ export function SignupPage() {
                 <label
                   className={`flex items-center justify-center p-2.5 rounded-lg border text-xs font-semibold cursor-pointer transition-colors ${
                     selectedRole === 'learner'
-                      ? 'border-[#C2410C] bg-[#C2410C]/10 text-[#C2410C]'
+                      ? 'border-blue-600 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300'
                       : 'border-border bg-card text-foreground/80 hover:bg-muted'
                   }`}
                 >
@@ -227,7 +227,7 @@ export function SignupPage() {
                 <label
                   className={`flex items-center justify-center p-2.5 rounded-lg border text-xs font-semibold cursor-pointer transition-colors ${
                     selectedRole === 'trainer'
-                      ? 'border-[#C2410C] bg-[#C2410C]/10 text-[#C2410C]'
+                      ? 'border-blue-600 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300'
                       : 'border-border bg-card text-foreground/80 hover:bg-muted'
                   }`}
                 >
@@ -266,7 +266,7 @@ export function SignupPage() {
                   type="button"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-muted-foreground hover:text-foreground p-1 rounded focus:outline-none focus:ring-1 focus:ring-[#C2410C] flex items-center justify-center"
+                  className="text-muted-foreground hover:text-foreground p-1 rounded focus:outline-none focus:ring-1 focus:ring-blue-600 flex items-center justify-center"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -326,7 +326,7 @@ export function SignupPage() {
 
           <div className="mt-6 text-center text-xs text-muted-foreground">
             {t('auth.signup.alreadyAccount')}{' '}
-            <Link to="/login" className="font-semibold text-[#C2410C] hover:underline">
+            <Link to="/login" className="font-semibold text-blue-600 dark:text-blue-400 hover:underline">
               {t('auth.signup.signIn')}
             </Link>
           </div>

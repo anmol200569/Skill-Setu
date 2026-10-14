@@ -53,7 +53,7 @@ export function ResetPasswordPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="text-center text-3xl font-serif font-bold text-foreground">
+        <h2 className="text-center text-3xl font-extrabold tracking-tight text-foreground">
           Set new password
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
@@ -68,7 +68,7 @@ export function ResetPasswordPage() {
               <div className="w-12 h-12 rounded-full bg-green-500/10 text-green-600 flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
-              <h3 className="font-serif text-lg font-bold text-foreground">Password updated!</h3>
+              <h3 className="font-extrabold text-lg text-foreground">Password updated!</h3>
               <p className="text-xs text-muted-foreground">
                 Redirecting you to your Skill Setu dashboard...
               </p>
@@ -94,7 +94,7 @@ export function ResetPasswordPage() {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="text-muted-foreground hover:text-foreground p-1 rounded focus:outline-none focus:ring-1 focus:ring-[#C2410C] flex items-center justify-center"
+                      className="text-muted-foreground hover:text-foreground p-1 rounded focus:outline-none focus:ring-1 focus:ring-blue-600 flex items-center justify-center"
                       tabIndex={-1}
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}

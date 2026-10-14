@@ -16,7 +16,7 @@ export function Progress({ value, max = 100, className, indicatorClassName, ...p
       {...props}
     >
       <div
-        className={cn('h-full w-full flex-1 bg-[#C2410C] transition-all duration-300', indicatorClassName)}
+        className={cn('h-full w-full flex-1 bg-blue-600 dark:bg-blue-500 transition-all duration-300', indicatorClassName)}
         style={{ transform: `translateX(-${100 - percentage}%)` }}
       />
     </div>

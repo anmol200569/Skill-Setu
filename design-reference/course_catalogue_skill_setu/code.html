@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "tertiary-fixed": "#d3e4fe",
+          "surface-container-lowest": "#ffffff",
+          "background": "#fbf9f4",
+          "tertiary-container": "#68788f",
+          "surface-bright": "#fbf9f4",
+          "surface-container": "#f0eee9",
+          "on-secondary-fixed": "#0e1b31",
+          "on-error-container": "#93000a",
+          "surface-variant": "#e4e2dd",
+          "on-surface-variant": "#57423b",
+          "surface-container-highest": "#e4e2dd",
+          "on-surface": "#1b1c19",
+          "inverse-surface": "#30312e",
+          "on-primary": "#ffffff",
+          "tertiary-fixed-dim": "#b7c8e1",
+          "on-tertiary": "#ffffff",
+          "tertiary": "#4f5f75",
+          "inverse-on-surface": "#f2f1ec",
+          "on-secondary": "#ffffff",
+          "surface-dim": "#dbdad5",
+          "outline-variant": "#dec0b7",
+          "on-secondary-fixed-variant": "#3b475f",
+          "primary": "#a33c17",
+          "on-primary-fixed": "#390b00",
+          "secondary": "#525f78",
+          "on-background": "#1b1c19",
+          "secondary-fixed-dim": "#bac7e4",
+          "surface-container-low": "#f5f3ee",
+          "primary-fixed": "#ffdbd0",
+          "error-container": "#ffdad6",
+          "outline": "#8b726a",
+          "secondary-container": "#d3e0fe",
+          "on-primary-fixed-variant": "#832600",
+          "on-error": "#ffffff",
+          "surface-tint": "#a43d17",
+          "error": "#ba1a1a",
+          "on-tertiary-fixed": "#0b1c30",
+          "surface-container-high": "#eae8e3",
+          "on-tertiary-fixed-variant": "#38485d",
+          "primary-fixed-dim": "#ffb59d",
+          "on-primary-container": "#ffffff",
+          "on-secondary-container": "#56637c",
+          "surface": "#fbf9f4",
+          "on-tertiary-container": "#000510",
+          "secondary-fixed": "#d7e3ff",
+          "inverse-primary": "#ffb59d",
+          "primary-container": "#c4542d"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        "spacing": {
+          "margin-lg": "5rem",
+          "space-sm": "0.5rem",
+          "space-lg": "1.5rem",
+          "margin-md": "3rem",
+          "gutter": "1.5rem",
+          "space-md": "1rem",
+          "gutter-lg": "2rem",
+          "space-xs": "0.25rem",
+          "gutter-sm": "1rem",
+          "margin": "1.5rem",
+          "space-xl": "2.5rem"
+        },
+        "fontFamily": {
+          "headline-md": [
+            "Newsreader"
+          ],
+          "label-md": [
+            "Manrope"
+          ],
+          "headline-lg": [
+            "Newsreader"
+          ],
+          "body-md": [
+            "Manrope"
+          ],
+          "headline-sm": [
+            "Newsreader"
+          ],
+          "display-lg-mobile": [
+            "Newsreader"
+          ],
+          "body-lg": [
+            "Manrope"
+          ],
+          "body-sm": [
+            "Manrope"
+          ],
+          "label-sm": [
+            "Manrope"
+          ],
+          "display-lg": [
+            "Newsreader"
+          ],
+          "headline-lg-mobile": [
+            "Newsreader"
+          ],
+          "label-lg": [
+            "Manrope"
+          ]
+        },
+        "fontSize": {
+          "headline-md": [
+            "1.75rem",
+            {
+              "lineHeight": "1.3",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "500"
+            }
+          ],
+          "label-md": [
+            "0.75rem",
+            {
+              "lineHeight": "1.2",
+              "letterSpacing": "0.06em",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-lg": [
+            "2.5rem",
+            {
+              "lineHeight": "1.2",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "400"
+            }
+          ],
+          "body-md": [
+            "1rem",
+            {
+              "lineHeight": "1.5",
+              "letterSpacing": "0",
+              "fontWeight": "400"
+            }
+          ],
+          "headline-sm": [
+            "1.25rem",
+            {
+              "lineHeight": "1.4",
+              "letterSpacing": "0",
+              "fontWeight": "500"
+            }
+          ],
+          "display-lg-mobile": [
+            "2.25rem",
+            {
+              "lineHeight": "1.2",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "400"
+            }
+          ],
+          "body-lg": [
+            "1.125rem",
+            {
+              "lineHeight": "1.6",
+              "letterSpacing": "-0.005em",
+              "fontWeight": "400"
+            }
+          ],
+          "body-sm": [
+            "0.875rem",
+            {
+              "lineHeight": "1.45",
+              "letterSpacing": "0",
+              "fontWeight": "400"
+            }
+          ],
+          "label-sm": [
+            "0.6875rem",
+            {
+              "lineHeight": "1.2",
+              "letterSpacing": "0.08em",
+              "fontWeight": "700"
+            }
+          ],
+          "display-lg": [
+            "3.5rem",
+            {
+              "lineHeight": "1.15",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "400"
+            }
+          ],
+          "headline-lg-mobile": [
+            "1.875rem",
+            {
+              "lineHeight": "1.25",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "400"
+            }
+          ],
+          "label-lg": [
+            "0.875rem",
+            {
+              "lineHeight": "1.2",
+              "letterSpacing": "0.02em",
+              "fontWeight": "600"
+            }
+          ]
+        }
+      }
+    }
+  };</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg h-20 flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><a class="flex flex-col group" data-path="learning-path" href="#"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tight group-hover:text-primary transition-colors">Skill Setu</span><span class="inline-block w-1.5 h-1.5 rounded-full bg-primary-container"></span></div><span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary">Career Bridge / Readiness OS</span></a><nav class="hidden xl:flex items-center gap-space-md ml-space-xs" data-active-classes="text-on-surface font-semibold border-b-2 border-primary-container pb-1"><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-space-xs" data-path="assessments" href="#">Assessments</a><a aria-current="page" class="transition-colors py-space-xs text-on-surface font-semibold border-b-2 border-primary-container pb-1" data-path="courses" href="#">Courses</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-space-xs" data-path="learning-path" href="#">Learning Path</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-space-xs" data-path="ai-quizzes" href="#">AI Quizzes</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-space-xs" data-path="gap-analysis" href="#">Gap Analysis</a></nav></div><div class="flex items-center gap-space-md"><div class="hidden lg:flex items-center gap-space-xs px-space-md py-space-xs bg-surface-container-low rounded-xl"><span class="material-symbols-outlined text-secondary text-[18px]">verified</span><div class="flex flex-col"><span class="font-label-sm text-label-sm uppercase text-secondary">Active Cohort Track</span><span class="font-label-md text-label-md text-on-surface font-semibold">Cloud &amp; Systems Architect <span class="text-primary-container font-bold">(L1: 74%)</span></span></div></div><div class="relative flex items-center"><button aria-label="Notifications" class="p-space-xs rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors relative flex items-center justify-center" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary-container ring-2 ring-surface-container-lowest"></span></button></div><div class="flex items-center gap-space-sm pl-space-xs"><div class="relative"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-600 rounded-full ring-2 ring-surface-container-lowest"></span></div><div class="hidden md:flex flex-col text-left"><span class="font-label-md text-label-md font-semibold text-on-surface leading-tight">Aarav Sharma</span><span class="font-label-sm text-label-sm text-secondary leading-none">B.Tech CS Senior • IIT Roorkee</span></div><span class="material-symbols-outlined text-secondary text-[16px] hidden md:inline-block">expand_more</span></div></div></div></header><main class="w-full pt-20 bg-background min-h-screen"><div class="flex flex-col w-full">
+<div class="max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg py-space-lg w-full flex flex-col gap-space-xl">
+<!-- Screen Title & Context Bar -->
+<section class="flex flex-col gap-space-sm">
+<div class="flex flex-wrap items-center justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs text-secondary font-label-sm uppercase tracking-widest">
+<span>Engineering Readiness</span>
+<span>/</span>
+<span>Skill Remediations</span>
+<span>/</span>
+<span class="text-primary-container font-semibold">Catalogue</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mt-space-xs">
+            Course Catalogue &amp; Gap-Targeted Learning
+          </h1>
+<p class="font-body-lg text-body-lg text-secondary max-w-3xl mt-space-xs">
+            Curated, zero-fluff engineering courses explicitly mapped to bridge your identified hiring deficits for <span class="text-on-surface font-medium">Cloud &amp; Systems Architect</span>.
+          </p>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center gap-space-md shadow-sm">
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[28px]">radar</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase text-secondary">Gap Index Status</span>
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">2 Critical Gaps</span>
+<span class="px-space-xs py-0.5 rounded-lg bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm">High Priority</span>
+</div>
+<span class="font-body-sm text-body-sm text-secondary">Container Orchestration &amp; SQL Query Planning</span>
+</div>
+</div>
+</div>
+<!-- Live Search, Level & Category Filter Bar -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col gap-space-md mt-space-md">
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md">
+<!-- Search input -->
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary text-[20px]">search</span>
+<input class="w-full bg-surface-container-low text-on-surface placeholder-secondary/60 pl-10 pr-space-md py-space-sm rounded-lg font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest transition-colors" id="course-search-input" placeholder="Search topics, frameworks, protocols (e.g., eBPF, Docker, Raft, gRPC, PostgreSQL)..." type="text"/>
+</div>
+<!-- Multi-tier filters -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<!-- Level Filter dropdown simulation -->
+<div class="relative">
+<select class="appearance-none bg-surface-container-low text-on-surface font-label-lg text-label-lg py-space-sm pl-space-md pr-8 rounded-lg cursor-pointer focus:outline-none" id="level-filter">
+<option value="all">Level: All Tiers</option>
+<option value="Foundational">Foundational</option>
+<option value="Intermediate">Intermediate</option>
+<option value="Advanced">Advanced</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-secondary text-[18px]">expand_more</span>
+</div>
+<!-- Duration Filter -->
+<div class="relative">
+<select class="appearance-none bg-surface-container-low text-on-surface font-label-lg text-label-lg py-space-sm pl-space-md pr-8 rounded-lg cursor-pointer focus:outline-none" id="duration-filter">
+<option value="all">Duration: Any</option>
+<option value="short">&lt; 5 hrs</option>
+<option value="medium">5 – 15 hrs</option>
+<option value="long">15+ hrs</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-secondary text-[18px]">expand_more</span>
+</div>
+<!-- Clear button -->
+<button class="px-space-md py-space-sm text-secondary hover:text-on-surface font-label-sm text-label-sm uppercase transition-colors" id="clear-filters-btn">
+              Reset Filters
+            </button>
+</div>
+</div>
+<!-- Pill Category Tabs -->
+<div class="flex items-center gap-space-xs overflow-x-auto pb-space-xs pt-space-xs text-nowrap">
+<button class="category-pill px-space-md py-1.5 rounded-lg font-label-lg text-label-lg bg-secondary text-on-secondary transition-all" data-cat="all">
+            All Courses
+          </button>
+<button class="category-pill px-space-md py-1.5 rounded-lg font-label-lg text-label-lg bg-surface-container-low text-secondary hover:text-on-surface transition-all flex items-center gap-1.5" data-cat="recommended">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+            Recommended for Your Gaps (3)
+          </button>
+<button class="category-pill px-space-md py-1.5 rounded-lg font-label-lg text-label-lg bg-surface-container-low text-secondary hover:text-on-surface transition-all" data-cat="system-design">
+            System Design
+          </button>
+<button class="category-pill px-space-md py-1.5 rounded-lg font-label-lg text-label-lg bg-surface-container-low text-secondary hover:text-on-surface transition-all" data-cat="cloud-devops">
+            Cloud &amp; DevOps
+          </button>
+<button class="category-pill px-space-md py-1.5 rounded-lg font-label-lg text-label-lg bg-surface-container-low text-secondary hover:text-on-surface transition-all" data-cat="databases">
+            Databases
+          </button>
+</div>
+</div>
+</section>
+<!-- SECTION 2: Priority Deficit Remediation -->
+<section class="flex flex-col gap-space-md">
+<!-- Target Banner -->
+<div class="bg-primary/5 p-space-md rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="p-space-sm bg-primary text-on-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">troubleshoot</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold">Diagnostic Alignment</span>
+<span class="text-secondary">•</span>
+<span class="font-label-sm text-label-sm text-secondary">Verified against benchmark v4.2</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-medium">
+              These 3 courses directly remediate your Container Orchestration (-45%) and PostgreSQL Query Deficits.
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Projected Cohort Percentile Gain:</span>
+<span class="font-headline-sm text-headline-sm font-bold text-primary">+28%</span>
+</div>
+</div>
+<!-- Priority Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-lg">
+<!-- Course Card 1: Top Pick -->
+<article class="bg-surface-container-lowest rounded-xl p-space-lg shadow-md flex flex-col justify-between transition-all hover:shadow-xl group relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-bl-full pointer-events-none"></div>
+<div class="flex flex-col gap-space-md">
+<!-- Header chips -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="px-space-sm py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase font-semibold">
+                Addresses: Container Orchestration Deficit (-45%)
+              </span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-low text-secondary font-label-sm text-label-sm">
+                Intermediate
+              </span>
+</div>
+<!-- Title & Context -->
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs text-primary font-label-sm text-label-sm font-bold uppercase tracking-wider mb-1">
+<span class="material-symbols-outlined text-[16px]">stars</span>
+                Top Priority Match
+              </div>
+<h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">
+                Production Containerization with Docker &amp; Podman
+              </h2>
+<p class="font-body-sm text-body-sm text-secondary mt-space-xs">
+                Multi-stage container builds, rootless daemon configuration, cgroups v2 resource quotas, and namespace isolation.
+              </p>
+</div>
+<!-- Why Recommended Box -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5">verified_user</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase text-secondary font-semibold">Why Recommended</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium leading-tight">
+                  Required by Target Role: Junior Cloud &amp; Systems Architect
+                </span>
+</div>
+</div>
+<!-- Key metadata row -->
+<div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+<div class="flex items-center gap-space-xs text-secondary">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+<span class="font-label-md text-label-md">18 Hours</span>
+</div>
+<div class="flex items-center gap-space-xs text-secondary">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span class="font-label-md text-label-md">14 Hands-on Labs</span>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-space-xs mt-space-lg pt-space-md bg-surface-container-lowest">
+<button class="w-full bg-primary text-on-primary hover:bg-primary-container font-label-lg text-label-lg py-space-sm px-space-md rounded-lg flex items-center justify-center gap-space-xs transition-colors shadow-sm" onclick="openCourseDrawer('docker-podman')">
+<span>Start Course (Free Access)</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<button class="w-full text-secondary hover:text-on-surface font-label-sm text-label-sm py-1 transition-colors text-center" onclick="openCourseDrawer('docker-podman')">
+              Inspect Syllabus &amp; Sandbox Labs
+            </button>
+</div>
+</article>
+<!-- Course Card 2: In Progress -->
+<article class="bg-surface-container-lowest rounded-xl p-space-lg shadow-md flex flex-col justify-between transition-all hover:shadow-xl group">
+<div class="flex flex-col gap-space-md">
+<!-- Header chips -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="px-space-sm py-0.5 rounded bg-surface-container-low text-secondary font-label-sm text-label-sm uppercase font-semibold">
+                Addresses: Database &amp; DB Persistence
+              </span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-low text-secondary font-label-sm text-label-sm">
+                Advanced
+              </span>
+</div>
+<!-- Title & Context -->
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm font-semibold uppercase tracking-wider mb-1">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+                Active Cohort Sprint
+              </div>
+<h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">
+                Advanced PostgreSQL Architecture &amp; Index Optimization
+              </h2>
+<p class="font-body-sm text-body-sm text-secondary mt-space-xs">
+                WAL architecture, MVCC internal mechanics, B-tree vs GIN index cost models, and EXPLAIN ANALYZE execution profiling.
+              </p>
+</div>
+<!-- Progress Tracker -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-space-xs">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="font-semibold text-on-surface">Module 5: Buffer Cache Mechanics</span>
+<span class="text-primary font-bold">65% Completed</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 65%;"></div>
+</div>
+<span class="font-body-sm text-body-sm text-secondary text-xs">
+                Next lab: "Tuning Shared Buffers for High Write Pressure"
+              </span>
+</div>
+<!-- Key metadata row -->
+<div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+<div class="flex items-center gap-space-xs text-secondary">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+<span class="font-label-md text-label-md">14 Hours Total</span>
+</div>
+<div class="flex items-center gap-space-xs text-secondary">
+<span class="material-symbols-outlined text-[18px]">database</span>
+<span class="font-label-md text-label-md">8 Query Profiles</span>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-space-xs mt-space-lg pt-space-md">
+<button class="w-full bg-secondary text-on-secondary hover:bg-on-secondary-fixed font-label-lg text-label-lg py-space-sm px-space-md rounded-lg flex items-center justify-center gap-space-xs transition-colors shadow-sm" onclick="openCourseDrawer('postgres-arch')">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<span>Resume Learning (Lab 9)</span>
+</button>
+<button class="w-full text-secondary hover:text-on-surface font-label-sm text-label-sm py-1 transition-colors text-center" onclick="openCourseDrawer('postgres-arch')">
+              View Benchmarked Quiz Scores
+            </button>
+</div>
+</article>
+<!-- Course Card 3: Kubernetes -->
+<article class="bg-surface-container-lowest rounded-xl p-space-lg shadow-md flex flex-col justify-between transition-all hover:shadow-xl group">
+<div class="flex flex-col gap-space-md">
+<!-- Header chips -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="px-space-sm py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase font-semibold">
+                Cluster Management Deficit (-50%)
+              </span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-low text-secondary font-label-sm text-label-sm">
+                Advanced
+              </span>
+</div>
+<!-- Title & Context -->
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm font-semibold uppercase tracking-wider mb-1">
+<span class="material-symbols-outlined text-[16px]">device_hub</span>
+                Remediation Sequence 2 of 2
+              </div>
+<h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">
+                Kubernetes Cluster Management: Pods to Ingress
+              </h2>
+<p class="font-body-sm text-body-sm text-secondary mt-space-xs">
+                Declarative manifests, control-plane reconciliation loops, NetworkPolicies, CNI drivers, and production ingress controllers.
+              </p>
+</div>
+<!-- Prerequisite Note -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[18px] mt-0.5">lock_clock</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase text-secondary font-semibold">Suggested Prerequisite</span>
+<span class="font-body-sm text-body-sm text-secondary">
+                  Complete "Production Containerization" before starting Week 2 labs.
+                </span>
+</div>
+</div>
+<!-- Key metadata row -->
+<div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+<div class="flex items-center gap-space-xs text-secondary">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+<span class="font-label-md text-label-md">22 Hours</span>
+</div>
+<div class="flex items-center gap-space-xs text-secondary">
+<span class="material-symbols-outlined text-[18px]">lan</span>
+<span class="font-label-md text-label-md">11 Production Scenarios</span>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-space-xs mt-space-lg pt-space-md">
+<button class="w-full bg-surface-container-high hover:bg-surface-variant text-on-surface font-label-lg text-label-lg py-space-sm px-space-md rounded-lg flex items-center justify-center gap-space-xs transition-colors" onclick="openCourseDrawer('k8s-cluster')">
+<span>Start Course</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<button class="w-full text-secondary hover:text-on-surface font-label-sm text-label-sm py-1 transition-colors text-center" onclick="openCourseDrawer('k8s-cluster')">
+              Review Architecture Diagram Labs
+            </button>
+</div>
+</article>
+</div>
+</section>
+<!-- SECTION 3 & 4: General Catalogue + Sticky Drawer / Highlight Container -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-xl items-start">
+<!-- Left 8 Cols: General Catalogue -->
+<section class="xl:col-span-8 flex flex-col gap-space-lg">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface">Explore All Track Courseware</h2>
+<p class="font-body-sm text-body-sm text-secondary">
+              Verified syllabus breakdowns engineered to university honors standard. Zero promotional material.
+            </p>
+</div>
+<span class="font-label-sm text-label-sm uppercase text-secondary">Showing 5 Modular Courses</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md" id="course-grid">
+<!-- Course Card 1 -->
+<article class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between group" data-category="system-design" data-duration="24" data-level="Advanced" data-title="distributed systems reliability chaos engineering">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-0.5 rounded bg-surface-container-low text-secondary font-label-sm text-label-sm">
+                  Advanced
+                </span>
+<div class="flex items-center gap-1 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span>24 Hours</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
+                Distributed Systems Reliability &amp; Chaos Engineering
+              </h3>
+<p class="font-body-sm text-body-sm text-secondary">
+                Consensus protocols (Raft, Paxos), split-brain scenarios, network partition fault injections, and circuit breakers.
+              </p>
+<div class="flex flex-wrap gap-1 mt-space-xs">
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">Raft Protocol</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">Chaos Mesh</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">Resilience</span>
+</div>
+<!-- Syllabus peek -->
+<div class="bg-surface-container-low p-space-sm rounded-lg mt-space-xs text-secondary font-body-sm text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface uppercase font-bold block mb-1">Module Highlight:</span>
+                "Simulating 3-Node Split Brain under Packet Loss"
+              </div>
+</div>
+<div class="pt-space-md flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Diagnostic Lab: Ready</span>
+<button class="text-primary hover:text-primary-container font-label-lg text-label-lg flex items-center gap-1" onclick="openCourseDrawer('dist-systems')">
+<span>View Details</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</article>
+<!-- Course Card 2 -->
+<article class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between group" data-category="cloud-devops" data-duration="20" data-level="Advanced" data-title="linux kernel internals ebpf tracing">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-0.5 rounded bg-surface-container-low text-secondary font-label-sm text-label-sm">
+                  Advanced
+                </span>
+<div class="flex items-center gap-1 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span>20 Hours</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
+                Linux Kernel Internals &amp; eBPF Tracing
+              </h3>
+<p class="font-body-sm text-body-sm text-secondary">
+                VFS operations, kernel page tables, kprobes/uprobes, write-side eBPF programs using BCC and libbpf for low-overhead observation.
+              </p>
+<div class="flex flex-wrap gap-1 mt-space-xs">
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">eBPF</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">BCC</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">Kernel Tracing</span>
+</div>
+<!-- Syllabus peek -->
+<div class="bg-surface-container-low p-space-sm rounded-lg mt-space-xs text-secondary font-body-sm text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface uppercase font-bold block mb-1">Module Highlight:</span>
+                "Hooking sys_enter_connect to Monitor Outbound TCP Sockets"
+              </div>
+</div>
+<div class="pt-space-md flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Diagnostic Lab: Ready</span>
+<button class="text-primary hover:text-primary-container font-label-lg text-label-lg flex items-center gap-1" onclick="openCourseDrawer('ebpf-kernel')">
+<span>View Details</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</article>
+<!-- Course Card 3 -->
+<article class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between group" data-category="system-design" data-duration="12" data-level="Intermediate" data-title="api gateway high throughput grpc services">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-0.5 rounded bg-surface-container-low text-secondary font-label-sm text-label-sm">
+                  Intermediate
+                </span>
+<div class="flex items-center gap-1 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span>12 Hours</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
+                API Gateway &amp; High-Throughput gRPC Services
+              </h3>
+<p class="font-body-sm text-body-sm text-secondary">
+                HTTP/2 multiplexing, Protocol Buffers schema evolution, token bucket rate limiters, and Envoy proxy configuration.
+              </p>
+<div class="flex flex-wrap gap-1 mt-space-xs">
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">gRPC</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">Envoy Proxy</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">Rate Limiting</span>
+</div>
+<!-- Syllabus peek -->
+<div class="bg-surface-container-low p-space-sm rounded-lg mt-space-xs text-secondary font-body-sm text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface uppercase font-bold block mb-1">Module Highlight:</span>
+                "Benchmarking 50k RPS over Bi-Directional Streaming RPC"
+              </div>
+</div>
+<div class="pt-space-md flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Diagnostic Lab: Ready</span>
+<button class="text-primary hover:text-primary-container font-label-lg text-label-lg flex items-center gap-1" onclick="openCourseDrawer('grpc-gateway')">
+<span>View Details</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</article>
+<!-- Course Card 4 -->
+<article class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between group" data-category="databases" data-duration="9" data-level="Intermediate" data-title="redis memory caching strategies concurrency">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-0.5 rounded bg-surface-container-low text-secondary font-label-sm text-label-sm">
+                  Intermediate
+                </span>
+<div class="flex items-center gap-1 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span>9 Hours</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
+                Redis In-Memory Caching Strategies
+              </h3>
+<p class="font-body-sm text-body-sm text-secondary">
+                Cache stampede prevention, distributed redlock algorithm, Pub/Sub channels, stream consumers, and memory eviction policies.
+              </p>
+<div class="flex flex-wrap gap-1 mt-space-xs">
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">Redis</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">Cache Patterns</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">Distributed Locks</span>
+</div>
+<!-- Syllabus peek -->
+<div class="bg-surface-container-low p-space-sm rounded-lg mt-space-xs text-secondary font-body-sm text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface uppercase font-bold block mb-1">Module Highlight:</span>
+                "Probabilistic Early Expiration (XFetch) Implementation"
+              </div>
+</div>
+<div class="pt-space-md flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Diagnostic Lab: Ready</span>
+<button class="text-primary hover:text-primary-container font-label-lg text-label-lg flex items-center gap-1" onclick="openCourseDrawer('redis-caching')">
+<span>View Details</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</article>
+<!-- Course Card 5 -->
+<article class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between group" data-category="cloud-devops" data-duration="8" data-level="Foundational" data-title="cicd pipeline security static analysis container scanning">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-0.5 rounded bg-surface-container-low text-secondary font-label-sm text-label-sm">
+                  Foundational
+                </span>
+<div class="flex items-center gap-1 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span>8 Hours</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
+                CI/CD Pipeline Security &amp; Static Analysis
+              </h3>
+<p class="font-body-sm text-body-sm text-secondary">
+                Shift-left DevSecOps, Trivy container scanning, Semgrep AST rules, GitHub Actions runner hardening, and SBOM attestation.
+              </p>
+<div class="flex flex-wrap gap-1 mt-space-xs">
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">DevSecOps</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">Trivy</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm">Semgrep</span>
+</div>
+<!-- Syllabus peek -->
+<div class="bg-surface-container-low p-space-sm rounded-lg mt-space-xs text-secondary font-body-sm text-body-sm">
+<span class="font-label-sm text-label-sm text-on-surface uppercase font-bold block mb-1">Module Highlight:</span>
+                "Automated Cosign Image Signing in Protected Runners"
+              </div>
+</div>
+<div class="pt-space-md flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Diagnostic Lab: Ready</span>
+<button class="text-primary hover:text-primary-container font-label-lg text-label-lg flex items-center gap-1" onclick="openCourseDrawer('cicd-security')">
+<span>View Details</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</article>
+</div>
+</section>
+<!-- Right 4 Cols: Sticky Course Detail Preview Drawer / Inspector -->
+<aside class="xl:col-span-4 sticky top-24 flex flex-col gap-space-md">
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-md flex flex-col gap-space-md relative overflow-hidden transition-all" id="inspector-card">
+<div class="flex items-center justify-between border-b pb-space-sm" style="border-color: #E2E8F0;">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">Curriculum Dossier</span>
+</div>
+<span class="px-space-xs py-0.5 bg-primary/10 text-primary font-label-sm text-label-sm rounded font-medium">Gap Remediator</span>
+</div>
+<!-- Active Course Details -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm uppercase text-secondary" id="detail-tag">Focus Area: Linux Virtualization &amp; OCI</span>
+<h3 class="font-headline-md text-headline-md text-on-surface" id="detail-title">
+              Production Containerization with Docker &amp; Podman
+            </h3>
+<p class="font-body-sm text-body-sm text-secondary" id="detail-desc">
+              Zero-filler masterclass on Linux namespaces, cgroups, rootless isolation, and multi-stage container build optimizations for mission-critical systems.
+            </p>
+</div>
+<!-- Academic Prerequisites Checklist -->
+<div class="flex flex-col gap-space-xs bg-surface-container-low p-space-md rounded-lg">
+<span class="font-label-sm text-label-sm uppercase text-secondary font-bold tracking-wide">
+              Prerequisite Readiness Check
+            </span>
+<div class="flex flex-col gap-space-xs mt-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-emerald-600 text-[18px]">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface">Linux Shell Fundamentals</span>
+</div>
+<span class="font-label-sm text-label-sm text-emerald-600 font-semibold">Satisfied</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-emerald-600 text-[18px]">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface">Basic Networking (TCP/IP)</span>
+</div>
+<span class="font-label-sm text-label-sm text-emerald-600 font-semibold">Satisfied</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[18px]">radio_button_unchecked</span>
+<span class="font-body-sm text-body-sm text-secondary">Kernel Syscall Familiarity</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">Optional</span>
+</div>
+</div>
+</div>
+<!-- Core Learning Outcomes & Syllabus Checklist -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm uppercase text-secondary font-bold tracking-wide">
+              Verified Learning Outcomes
+            </span>
+<ul class="flex flex-col gap-space-xs text-body-sm font-body-sm text-on-surface" id="detail-outcomes">
+<li class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">task_alt</span>
+<span>Configure user namespace mapping for non-root OCI daemon engines.</span>
+</li>
+<li class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">task_alt</span>
+<span>Enforce CPU and RAM limits using systemd cgroups v2 slices.</span>
+</li>
+<li class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">task_alt</span>
+<span>Architect multi-stage scratch builds under 25MB final payload size.</span>
+</li>
+<li class="flex items-start gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">task_alt</span>
+<span>Debug container bridge network collisions using `ip netns exec`.</span>
+</li>
+</ul>
+</div>
+<!-- Associated Diagnostic Test Info Box -->
+<div class="p-space-sm bg-surface-container rounded-lg flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary shadow-sm shrink-0">
+<span class="material-symbols-outlined text-[20px]">assignment_turned_in</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase font-bold text-on-surface">Unlocks Benchmark Diagnostic #3</span>
+<span class="font-body-sm text-body-sm text-secondary text-xs">
+                45-minute timed terminal test. Proctored via ephemeral cloud sandbox.
+              </span>
+</div>
+</div>
+<!-- Action CTA -->
+<div class="flex flex-col gap-space-xs mt-space-xs">
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg py-space-sm px-space-md rounded-lg flex items-center justify-center gap-space-xs transition-colors shadow-sm">
+<span>Enroll In Track (Included)</span>
+<span class="material-symbols-outlined text-[18px]">login</span>
+</button>
+<p class="font-body-sm text-body-sm text-secondary text-xs text-center">
+              Progress auto-synchronizes with your IIT Roorkee Student Dossier
+            </p>
+</div>
+</div>
+<!-- Academic Accreditation Note -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[24px]">school</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase font-bold text-on-surface">Skill Setu Academic Protocol</span>
+<span class="font-body-sm text-body-sm text-secondary text-xs">
+              Every course lab is evaluated through automated unit tests against live Linux kernel telemetry.
+            </span>
+</div>
+</div>
+</aside>
+</div>
+</div>
+<!-- Client-side Interactive Filtering & Drawer Sync -->
+<script>
+    const courseData = {
+      'docker-podman': {
+        tag: 'Addresses: Container Orchestration Deficit (-45%)',
+        title: 'Production Containerization with Docker & Podman',
+        desc: 'Zero-filler masterclass on Linux namespaces, cgroups v2, rootless isolation, and multi-stage container build optimizations for mission-critical systems.',
+        outcomes: [
+          'Configure user namespace mapping for non-root OCI daemon engines.',
+          'Enforce CPU and RAM limits using systemd cgroups v2 slices.',
+          'Architect multi-stage scratch builds under 25MB final payload size.',
+          'Debug container bridge network collisions using ip netns exec.'
+        ]
+      },
+      'postgres-arch': {
+        tag: 'Addresses: Database & DB Persistence Deficit',
+        title: 'Advanced PostgreSQL Architecture & Index Optimization',
+        desc: 'Deep dive into Postgres internals: WAL replay mechanisms, vacuum cost limits, shared buffer eviction, and query execution planning.',
+        outcomes: [
+          'Deconstruct EXPLAIN ANALYZE execution trees for nested loop vs hash joins.',
+          'Tune autovacuum throttle parameters to prevent table bloat during write bursts.',
+          'Implement partial and expression indexes for high-frequency search vectors.',
+          'Manage transaction isolation levels and diagnose write serialization anomalies.'
+        ]
+      },
+      'k8s-cluster': {
+        tag: 'Addresses: Cluster Management Deficit (-50%)',
+        title: 'Kubernetes Cluster Management: Pods to Ingress',
+        desc: 'Architecting fault-tolerant production clusters. Master the control loop mechanics, kube-proxy iptables/IPVS translation, and ingress failover.',
+        outcomes: [
+          'Build custom controller logic for declarative reconciliation cycles.',
+          'Define robust NetworkPolicies isolating multi-tenant pod namespaces.',
+          'Troubleshoot etcd quorum loss and disaster recovery snapshots.',
+          'Configure TLS termination and sticky session routing in ingress controllers.'
+        ]
+      },
+      'dist-systems': {
+        tag: 'Track Elective: High Scale Architecture',
+        title: 'Distributed Systems Reliability & Chaos Engineering',
+        desc: 'Consensus protocols, linearizability, and fault tolerance patterns for high-concurrency cloud environments.',
+        outcomes: [
+          'Implement leader election and log replication using the Raft algorithm.',
+          'Simulate asymmetric network partitions and split-brain scenarios.',
+          'Configure resilient fallback topologies using circuit breaker policies.',
+          'Profile mean-time-to-recovery (MTTR) under chaotic traffic injection.'
+        ]
+      },
+      'ebpf-kernel': {
+        tag: 'Track Elective: Low-Level Observability',
+        title: 'Linux Kernel Internals & eBPF Tracing',
+        desc: 'Harness eBPF for production observability, security telemetry, and network traffic filtering at the kernel boundary.',
+        outcomes: [
+          'Attach kprobes and uprobes to capture low-latency kernel event timings.',
+          'Develop memory-safe eBPF filter programs passing the kernel verifier.',
+          'Inspect virtual filesystem (VFS) operations and disk I/O bottlenecks.',
+          'Extract structured JSON metrics directly from kernel ring buffers.'
+        ]
+      },
+      'grpc-gateway': {
+        tag: 'Track Elective: Modern Networking',
+        title: 'API Gateway & High-Throughput gRPC Services',
+        desc: 'Scalable RPC microservice design with HTTP/2 transport, Protobuf IDL contracts, and Envoy edge routing.',
+        outcomes: [
+          'Design backward-compatible Protobuf schema evolution protocols.',
+          'Implement bi-directional client and server streaming RPC handlers.',
+          'Configure distributed token-bucket rate limiting at the Envoy ingress.',
+          'Mitigate head-of-line blocking under extreme throughput demands.'
+        ]
+      },
+      'redis-caching': {
+        tag: 'Track Elective: Cache & Persistence',
+        title: 'Redis In-Memory Caching Strategies',
+        desc: 'Production caching architectures, eviction dynamics, distributed locks, and atomic script execution.',
+        outcomes: [
+          'Prevent cache stampedes using probabilistic early expiration algorithms.',
+          'Acquire and release fault-tolerant locks via the Redlock protocol.',
+          'Leverage Redis Streams for real-time order processing pipelines.',
+          'Tune maxmemory policies and measure memory fragmentation ratios.'
+        ]
+      },
+      'cicd-security': {
+        tag: 'Track Elective: Systems Assurance',
+        title: 'CI/CD Pipeline Security & Static Analysis',
+        desc: 'Secure deployment lifecycles, static analysis scanners, software supply chain security, and signed artifacts.',
+        outcomes: [
+          'Implement Trivy container vulnerability gating within GitHub Actions.',
+          'Write custom Semgrep syntax rules to detect unsafe shell executions.',
+          'Generate and verify cryptographic SBOM attestations using Cosign.',
+          'Harden build runners against malicious environment variable injections.'
+        ]
+      }
+    };
+
+    function openCourseDrawer(courseKey) {
+      const data = courseData[courseKey];
+      if (!data) return;
+
+      const tagEl = document.getElementById('detail-tag');
+      const titleEl = document.getElementById('detail-title');
+      const descEl = document.getElementById('detail-desc');
+      const outcomesEl = document.getElementById('detail-outcomes');
+      const card = document.getElementById('inspector-card');
+
+      if (tagEl && titleEl && descEl && outcomesEl) {
+        tagEl.innerText = data.tag;
+        titleEl.innerText = data.title;
+        descEl.innerText = data.desc;
+
+        outcomesEl.innerHTML = data.outcomes.map(item => `
+          <li class="flex items-start gap-space-xs">
+            <span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">task_alt</span>
+            <span>${item}</span>
+          </li>
+        `).join('');
+
+        // Visual flash highlight
+        card.classList.add('ring-2', 'ring-primary-container');
+        setTimeout(() => {
+          card.classList.remove('ring-2', 'ring-primary-container');
+        }, 600);
+      }
+    }
+
+    // Filter Logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('course-search-input');
+      const levelFilter = document.getElementById('level-filter');
+      const durationFilter = document.getElementById('duration-filter');
+      const clearBtn = document.getElementById('clear-filters-btn');
+      const categoryPills = document.querySelectorAll('.category-pill');
+      const cards = document.querySelectorAll('#course-grid article');
+
+      let activeCategory = 'all';
+
+      function applyFilters() {
+        const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+        const selectedLevel = levelFilter ? levelFilter.value : 'all';
+        const selectedDuration = durationFilter ? durationFilter.value : 'all';
+
+        cards.forEach(card => {
+          const title = card.getAttribute('data-title') || '';
+          const level = card.getAttribute('data-level') || '';
+          const duration = parseInt(card.getAttribute('data-duration') || '0', 10);
+          const category = card.getAttribute('data-category') || '';
+
+          let matchesQuery = !query || title.includes(query);
+          let matchesLevel = selectedLevel === 'all' || level === selectedLevel;
+          let matchesCategory = activeCategory === 'all' || category === activeCategory || (activeCategory === 'recommended' && card.closest('section'));
+
+          let matchesDuration = true;
+          if (selectedDuration === 'short') matchesDuration = duration < 5;
+          else if (selectedDuration === 'medium') matchesDuration = duration >= 5 && duration <= 15;
+          else if (selectedDuration === 'long') matchesDuration = duration > 15;
+
+          if (matchesQuery && matchesLevel && matchesCategory && matchesDuration) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      }
+
+      if (searchInput) searchInput.addEventListener('input', applyFilters);
+      if (levelFilter) levelFilter.addEventListener('change', applyFilters);
+      if (durationFilter) durationFilter.addEventListener('change', applyFilters);
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          if (searchInput) searchInput.value = '';
+          if (levelFilter) levelFilter.value = 'all';
+          if (durationFilter) durationFilter.value = 'all';
+          activeCategory = 'all';
+          categoryPills.forEach(p => {
+            p.classList.remove('bg-secondary', 'text-on-secondary');
+            p.classList.add('bg-surface-container-low', 'text-secondary');
+          });
+          const allPill = document.querySelector('[data-cat="all"]');
+          if (allPill) {
+            allPill.classList.remove('bg-surface-container-low', 'text-secondary');
+            allPill.classList.add('bg-secondary', 'text-on-secondary');
+          }
+          applyFilters();
+        });
+      }
+
+      categoryPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          categoryPills.forEach(p => {
+            p.classList.remove('bg-secondary', 'text-on-secondary');
+            p.classList.add('bg-surface-container-low', 'text-secondary');
+          });
+          pill.classList.remove('bg-surface-container-low', 'text-secondary');
+          pill.classList.add('bg-secondary', 'text-on-secondary');
+
+          activeCategory = pill.getAttribute('data-cat') || 'all';
+          applyFilters();
+        });
+      });
+    });
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest mt-space-xl shadow-[0_-1px_6px_rgba(0,0,0,0.03)]"><div class="max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex flex-col sm:flex-row items-center gap-space-md text-center sm:text-left"><div><span class="font-headline-sm text-headline-sm font-bold text-on-surface">Skill Setu</span><p class="font-body-sm text-body-sm text-secondary">Career Readiness Operating System for Engineering Graduates</p></div><div class="inline-flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container-low rounded-xl"><span class="w-2 h-2 rounded-full bg-emerald-600"></span><span class="font-label-sm text-label-sm text-on-surface font-medium">All services operational</span></div></div><div class="flex flex-wrap items-center justify-center gap-space-lg"><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="learning-path" href="#">Curriculum Roadmap</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="assessments" href="#">Skill Verification</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="gap-analysis" href="#">Benchmark Matrix</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Honor Code</a></div><div class="font-label-sm text-label-sm text-secondary text-center md:text-right">© 2025 Skill Setu. Institute of Academic Readiness.</div></div></footer></body></html>

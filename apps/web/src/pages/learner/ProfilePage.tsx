@@ -80,10 +80,10 @@ export function ProfilePage() {
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       <div>
-        <span className="text-xs font-bold uppercase tracking-wider text-[#C2410C]">
+        <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
           Learner Settings
         </span>
-        <h1 className="text-3xl font-serif font-bold text-foreground mt-1">
+        <h1 className="text-3xl font-sans font-bold text-foreground mt-1">
           Profile & Preferences
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -92,9 +92,9 @@ export function ProfilePage() {
       </div>
 
       <form onSubmit={handleSave} className="space-y-6">
-        <Card>
+        <Card className="rounded-2xl">
           <CardHeader>
-            <CardTitle className="text-base font-serif">Personal Information</CardTitle>
+            <CardTitle className="text-base font-sans font-bold">Personal Information</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -134,9 +134,9 @@ export function ProfilePage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="rounded-2xl">
           <CardHeader>
-            <CardTitle className="text-base font-serif">Target Role & Preferences</CardTitle>
+            <CardTitle className="text-base font-sans font-bold">Target Role & Preferences</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
@@ -144,7 +144,7 @@ export function ProfilePage() {
               <select
                 value={targetRoleId}
                 onChange={(e) => setTargetRoleId(e.target.value)}
-                className="w-full bg-secondary rounded-lg p-2.5 text-xs border border-border focus:ring-1 focus:ring-[#C2410C]"
+                className="w-full bg-secondary rounded-xl p-2.5 text-xs border border-border focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600"
               >
                 <option value="">-- Select a Target Role --</option>
                 {roles.map((r) => (
@@ -161,7 +161,7 @@ export function ProfilePage() {
                 <select
                   value={preferredLanguage}
                   onChange={(e) => setPreferredLanguage(e.target.value as any)}
-                  className="w-full bg-secondary rounded-lg p-2.5 text-xs border border-border focus:ring-1 focus:ring-[#C2410C]"
+                  className="w-full bg-secondary rounded-xl p-2.5 text-xs border border-border focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600"
                 >
                   <option value="en">English</option>
                   <option value="hi">हिंदी (Hindi)</option>
@@ -176,19 +176,19 @@ export function ProfilePage() {
                   max="50"
                   value={weeklyStudyHours}
                   onChange={(e) => setWeeklyStudyHours(parseInt(e.target.value, 10) || 10)}
-                  className="w-full bg-secondary rounded-lg p-2 text-xs border border-border focus:ring-1 focus:ring-[#C2410C]"
+                  className="w-full bg-secondary rounded-xl p-2 text-xs border border-border focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600"
                 />
               </div>
             </div>
 
             {saveSuccess && (
-              <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20 text-green-600 text-xs flex items-center gap-2">
+              <div className="p-3 rounded-xl bg-green-500/10 border border-green-500/20 text-green-600 text-xs flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4" />
                 <span>Profile updated successfully!</span>
               </div>
             )}
 
-            <Button type="submit" isLoading={isSaving} className="flex items-center gap-1.5 font-semibold">
+            <Button type="submit" isLoading={isSaving} className="flex items-center gap-1.5 font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20">
               <Save className="w-4 h-4" />
               Save Changes
             </Button>
@@ -198,7 +198,7 @@ export function ProfilePage() {
         {/* Competencies Portfolio */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base font-serif flex items-center justify-between">
+            <CardTitle className="text-base font-bold flex items-center justify-between">
               <span>Competency Skill Portfolio</span>
               <span className="text-xs font-sans text-muted-foreground font-normal">
                 {userSkills.length} Recorded Skills

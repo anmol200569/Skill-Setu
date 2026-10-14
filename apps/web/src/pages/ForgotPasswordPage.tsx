@@ -47,12 +47,12 @@ export function ForgotPasswordPage() {
     <div className="min-h-screen bg-background flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
-          <Link to="/" className="flex items-center gap-2">
-            <img src="/logo.svg" alt="Skill Setu" className="w-10 h-10 rounded-lg shadow-sm" />
-            <span className="font-serif text-2xl font-bold tracking-tight text-foreground">Skill Setu</span>
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <img src="/logo.svg" alt="Skill Setu" className="w-10 h-10 rounded-xl shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform" />
+            <span className="font-sans text-2xl font-extrabold tracking-tight text-foreground">Skill<span className="text-blue-600">Setu</span></span>
           </Link>
         </div>
-        <h2 className="mt-6 text-center text-3xl font-serif font-bold text-foreground">
+        <h2 className="mt-6 text-center text-3xl font-extrabold tracking-tight text-foreground">
           {t('auth.forgot.title')}
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
@@ -61,13 +61,13 @@ export function ForgotPasswordPage() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4">
-        <div className="bg-card py-8 px-6 shadow-md border border-border rounded-xl sm:px-10">
+        <div className="bg-card py-8 px-6 shadow-xl border border-border rounded-2xl sm:px-10">
           {isSuccess ? (
             <div className="text-center space-y-4">
               <div className="w-12 h-12 rounded-full bg-green-500/10 text-green-600 flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
-              <h3 className="font-serif text-lg font-bold text-foreground">
+              <h3 className="font-bold text-lg text-foreground">
                 {t('auth.forgot.successTitle')}
               </h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
@@ -111,7 +111,7 @@ export function ForgotPasswordPage() {
 
               <div className="mt-6 text-center text-xs text-muted-foreground">
                 {t('auth.forgot.remember')}{' '}
-                <Link to="/login" className="font-semibold text-[#C2410C] hover:underline">
+                <Link to="/login" className="font-semibold text-blue-600 dark:text-blue-400 hover:underline">
                   {t('auth.forgot.signIn')}
                 </Link>
               </div>

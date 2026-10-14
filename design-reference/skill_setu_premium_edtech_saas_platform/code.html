@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Skill Setu — Precision Career Readiness Platform</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Script -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "navy-dark": "#101D33",
+            "navy-surface": "#162540",
+            "navy-card": "#1C2E4C",
+            "cream": "#FAF8F3",
+            "terracotta": "#C4542D",
+            "terracotta-hover": "#A83F1C",
+            "terracotta-light": "#FFECE5",
+            "slate-body": "#64748B",
+            "slate-border": "#E2E8F0",
+            primary: "#C4542D",
+            background: "#FAF8F3",
+            surface: "#FFFFFF",
+            "on-surface": "#101D33",
+            "on-surface-variant": "#64748B"
+          },
+          fontFamily: {
+            serif: ["Newsreader", "serif"],
+            sans: ["Manrope", "sans-serif"],
+            display: ["Newsreader", "serif"]
+          },
+          animation: {
+            'float-slow': 'floating 6s ease-in-out infinite',
+            'pulse-subtle': 'pulseSubtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            floating: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-6px)' },
+            },
+            pulseSubtle: {
+              '0%, 100%': { opacity: '1' },
+              '50%': { opacity: '0.6' }
+            }
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    @layer base {
+      body {
+        font-family: 'Manrope', sans-serif;
+        background-color: #FAF8F3;
+        color: #101D33;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+    }
+    
+    .serif-title {
+      font-family: 'Newsreader', serif;
+    }
+
+    /* Subtle Glassmorphism */
+    .glass-navy {
+      background: rgba(16, 29, 51, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .glass-light {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Accessibility respect */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* Progress bar smooth fill helper */
+    .progress-fill {
+      transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="selection:bg-terracotta selection:text-white">
+<!-- ==================== 2. NAVIGATION BAR ==================== -->
+<header class="fixed top-0 left-0 right-0 z-50 glass-light border-b border-slate-border/80 transition-all duration-300">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+<!-- Logo + Tagline -->
+<a class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-terracotta rounded-lg p-1" href="#">
+<div class="w-10 h-10 rounded-xl bg-navy-dark flex items-center justify-center text-white shadow-md shadow-navy-dark/10 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-terracotta text-2xl font-semibold">hub</span>
+</div>
+<div class="flex flex-col">
+<span class="font-serif text-2xl font-bold tracking-tight text-navy-dark leading-none">Skill Setu</span>
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-body mt-1">Career Readiness Platform</span>
+</div>
+</a>
+<!-- Desktop Nav Links -->
+<nav class="hidden lg:flex items-center gap-7">
+<a class="text-sm font-semibold text-slate-body hover:text-terracotta transition-colors py-1" href="#how-it-works">How It Works</a>
+<a class="text-sm font-semibold text-slate-body hover:text-terracotta transition-colors py-1" href="#career-tracks">Career Tracks</a>
+<a class="text-sm font-semibold text-slate-body hover:text-terracotta transition-colors py-1" href="#core-modules">Core Modules</a>
+<a class="text-sm font-semibold text-slate-body hover:text-terracotta transition-colors py-1" href="#skill-gap">Skill Gap Engine</a>
+<a class="text-sm font-semibold text-slate-body hover:text-terracotta transition-colors py-1 flex items-center gap-1.5" href="#ai-quiz">
+<span>AI Quiz</span>
+<span class="text-[10px] font-bold bg-terracotta-light text-terracotta px-1.5 py-0.5 rounded-full uppercase">New</span>
+</a>
+<a class="text-sm font-semibold text-slate-body hover:text-terracotta transition-colors py-1" href="#dual-experience">Insights</a>
+</nav>
+<!-- Right Actions -->
+<div class="flex items-center gap-3">
+<a class="hidden sm:inline-flex text-sm font-semibold text-navy-dark hover:text-terracotta px-3.5 py-2 transition-colors" href="#signin">
+          Sign In
+        </a>
+<a class="inline-flex items-center justify-center text-sm font-semibold bg-terracotta hover:bg-terracotta-hover text-white rounded-xl px-5 py-2.5 shadow-sm hover:shadow-md transition-all transform active:scale-95" href="#skill-gap">
+<span>Build My Roadmap</span>
+<span class="material-symbols-outlined text-base ml-1.5">arrow_forward</span>
+</a>
+</div>
+</div>
+</header>
+<main class="pt-20">
+<!-- ==================== 3. CINEMATIC HERO SECTION ==================== -->
+<section class="relative bg-navy-dark text-white overflow-hidden py-16 lg:py-24">
+<!-- Starlight / Radial Grid Ambient Glow -->
+<div class="absolute inset-0 pointer-events-none opacity-20">
+<svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="48" id="starlight-grid" patternunits="userSpaceOnUse" width="48">
+<path d="M 48 0 L 0 0 0 48" fill="none" stroke="#FFECE5" stroke-opacity="0.18" stroke-width="0.8"></path>
+<circle cx="24" cy="24" fill="#FFECE5" fill-opacity="0.3" r="0.8"></circle>
+</pattern>
+</defs>
+<rect fill="url(#starlight-grid)" height="100%" width="100%"></rect>
+</svg>
+</div>
+<!-- Ambient Radial Gradients -->
+<div class="absolute top-1/4 -right-20 w-96 h-96 rounded-full bg-terracotta/20 blur-[100px] pointer-events-none"></div>
+<div class="absolute -bottom-20 -left-20 w-96 h-96 rounded-full bg-blue-600/15 blur-[120px] pointer-events-none"></div>
+<div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+<!-- Hero Copy Left (7 cols) -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<!-- Badge -->
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 w-fit">
+<span class="w-2 h-2 rounded-full bg-terracotta animate-pulse"></span>
+<span class="text-xs font-bold tracking-wide uppercase text-terracotta-light">The Precision Career Accelerator for Higher Ed &amp; Graduates</span>
+</div>
+<!-- Headline -->
+<h1 class="serif-title text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.12] tracking-tight text-cream">
+              Know Your Skills.<br/>
+<span class="italic font-normal text-terracotta font-serif">Build Your Career.</span>
+</h1>
+<!-- Supporting copy -->
+<p class="text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed font-sans">
+              Discover your skill gaps, get a personalized learning roadmap, and build the skills your target career demands. Verified benchmarks, AI document quiz generation, and enterprise hiring standards.
+            </p>
+<!-- Dual CTAs -->
+<div class="flex flex-wrap items-center gap-4 pt-2">
+<a class="inline-flex items-center justify-center text-base font-semibold bg-terracotta hover:bg-terracotta-hover text-white rounded-xl px-7 py-3.5 shadow-lg shadow-terracotta/25 hover:shadow-xl hover:-translate-y-0.5 transition-all" href="#skill-gap">
+<span>Build My Roadmap</span>
+<span class="material-symbols-outlined ml-2 text-lg">arrow_forward</span>
+</a>
+<a class="inline-flex items-center justify-center text-base font-semibold bg-white/10 hover:bg-white/15 text-cream border border-white/20 rounded-xl px-6 py-3.5 backdrop-blur-sm transition-all hover:-translate-y-0.5" href="#career-tracks">
+<span class="material-symbols-outlined mr-2 text-lg">explore</span>
+<span>Explore Career Tracks</span>
+</a>
+</div>
+<!-- Proof Metrics Strip -->
+<div class="pt-6 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-semibold text-slate-300">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-terracotta text-lg">verified</span>
+<span>120+ Curated Competency Frameworks</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-terracotta text-lg">alt_route</span>
+<span>0-Fluff Learning Roadmaps</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-terracotta text-lg">auto_awesome</span>
+<span>AI Document Quiz Parser</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-terracotta text-lg">domain</span>
+<span>Live Corporate Benchmark Alignment</span>
+</div>
+</div>
+</div>
+<!-- Hero Right Preview Card (5 cols) -->
+<div class="lg:col-span-5 relative animate-float-slow">
+<div class="bg-white rounded-2xl shadow-2xl p-6 text-navy-dark border border-slate-border flex flex-col gap-5">
+<!-- Student Header -->
+<div class="flex items-start justify-between pb-4 border-b border-slate-100">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-navy-dark text-white font-serif text-lg font-bold flex items-center justify-center shadow-sm">
+                    AS
+                  </div>
+<div>
+<h2 class="font-serif text-lg font-bold text-navy-dark leading-tight">Aarav Sharma</h2>
+<p class="text-xs text-slate-body font-medium mt-0.5">B.Tech CS Senior • IIT Roorkee</p>
+</div>
+</div>
+<span class="text-[11px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full border border-emerald-200">
+                  Active Diagnostic
+                </span>
+</div>
+<!-- Target Benchmark & Radial Gauge -->
+<div class="bg-cream/80 p-4 rounded-xl border border-slate-border/80 flex items-center justify-between gap-4">
+<div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-slate-body">Target Role Benchmark</span>
+<h3 class="font-serif text-base font-bold text-navy-dark">Full Stack Systems Engineer</h3>
+<p class="text-xs text-slate-body">L1 Associate • Tier-1 Enterprise Bar</p>
+</div>
+<div class="relative w-16 h-16 shrink-0 flex items-center justify-center">
+<svg class="w-16 h-16 transform -rotate-90" viewbox="0 0 36 36">
+<circle cx="18" cy="18" fill="none" r="15.5" stroke="#E2E8F0" stroke-width="3"></circle>
+<circle cx="18" cy="18" fill="none" r="15.5" stroke="#C4542D" stroke-dasharray="100" stroke-dashoffset="26" stroke-linecap="round" stroke-width="3"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-sm font-extrabold text-navy-dark leading-none">74%</span>
+<span class="text-[8px] font-bold text-slate-body tracking-tight mt-0.5">MATCH</span>
+</div>
+</div>
+</div>
+<!-- Competency Bars -->
+<div class="space-y-3">
+<div>
+<div class="flex justify-between text-xs font-semibold mb-1">
+<span class="text-slate-700">Frontend Architecture</span>
+<span class="text-navy-dark font-bold">88%</span>
+</div>
+<div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+<div class="bg-navy-dark h-full rounded-full" style="width: 88%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-semibold mb-1">
+<span class="text-slate-700">Distributed Backend APIs</span>
+<span class="text-navy-dark font-bold">72%</span>
+</div>
+<div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+<div class="bg-navy-surface h-full rounded-full" style="width: 72%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-semibold mb-1">
+<span class="text-slate-700">Cloud &amp; Docker Infrastructure</span>
+<span class="text-terracotta font-bold">58%</span>
+</div>
+<div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+<div class="bg-terracotta h-full rounded-full" style="width: 58%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-semibold mb-1">
+<span class="text-slate-700">Systems Design &amp; DB Persistence</span>
+<span class="text-rose-600 font-bold">45%</span>
+</div>
+<div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+<div class="bg-rose-500 h-full rounded-full" style="width: 45%"></div>
+</div>
+</div>
+</div>
+<!-- Priority Alert Box -->
+<div class="p-3.5 bg-rose-50 border border-rose-200 rounded-xl flex flex-col gap-1.5">
+<div class="flex items-center justify-between text-xs">
+<span class="font-bold text-rose-800 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">warning</span>
+                    2 High-Impact Knowledge Deficits
+                  </span>
+<span class="text-[10px] font-bold text-rose-700 uppercase">Priority #1</span>
+</div>
+<p class="text-xs text-rose-900 leading-relaxed">
+                  Dockerized Microservices &amp; PostgreSQL Tree Indexing to unlock 85% match tier.
+                </p>
+<a class="text-xs font-bold text-terracotta hover:underline mt-1 inline-flex items-center" href="#skill-gap">
+<span>Start 14-Day Micro-Sprint</span>
+<span class="material-symbols-outlined text-sm ml-1">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== 4. CONNECTED 6-STEP LEARNER WORKFLOW ==================== -->
+<section class="py-20 bg-cream border-b border-slate-border" id="how-it-works">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<span class="text-xs font-bold uppercase tracking-wider text-terracotta bg-terracotta-light px-3 py-1 rounded-full">
+            Autonomous Career Pathway
+          </span>
+<h2 class="serif-title text-3xl sm:text-4xl lg:text-5xl font-normal text-navy-dark mt-3">
+            The 6-Step Verified Growth Journey
+          </h2>
+<p class="text-slate-body text-base mt-3 leading-relaxed">
+            Eliminate guesswork. From selecting your ambition to certifying production competencies with industry-recognized evidence.
+          </p>
+</div>
+<!-- 6 Steps Connected Grid -->
+<div class="relative">
+<!-- Horizontal connector on desktop -->
+<div class="hidden lg:block absolute top-1/2 left-8 right-8 h-0.5 bg-slate-border -translate-y-8 z-0"></div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 relative z-10">
+<!-- Step 1 -->
+<div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-border hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-navy-dark text-cream font-serif text-xl font-bold flex items-center justify-center mb-4 shadow-sm">
+                  01
+                </div>
+<h3 class="font-bold text-navy-dark text-base mb-1.5">Choose Career Track</h3>
+<p class="text-xs text-slate-body leading-relaxed">
+                  Select calibrated tracks aligned to Tier-1 tech, analytical, or systems specifications.
+                </p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-terracotta">
+<span class="material-symbols-outlined text-sm">explore</span>
+<span>Role Library</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-border hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-navy-dark text-cream font-serif text-xl font-bold flex items-center justify-center mb-4 shadow-sm">
+                  02
+                </div>
+<h3 class="font-bold text-navy-dark text-base mb-1.5">Assess Your Skills</h3>
+<p class="text-xs text-slate-body leading-relaxed">
+                  Complete adaptive diagnostics, code challenge sandboxes, and verified self-ratings.
+                </p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-terracotta">
+<span class="material-symbols-outlined text-sm">assignment</span>
+<span>Diagnostics</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-border hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-navy-dark text-cream font-serif text-xl font-bold flex items-center justify-center mb-4 shadow-sm">
+                  03
+                </div>
+<h3 class="font-bold text-navy-dark text-base mb-1.5">Discover Your Gaps</h3>
+<p class="text-xs text-slate-body leading-relaxed">
+                  Differential variance engine pinpoints exact missing concepts versus hiring bars.
+                </p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-terracotta">
+<span class="material-symbols-outlined text-sm">analytics</span>
+<span>Variance Engine</span>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-border hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-terracotta text-white font-serif text-xl font-bold flex items-center justify-center mb-4 shadow-sm">
+                  04
+                </div>
+<h3 class="font-bold text-navy-dark text-base mb-1.5">Follow Roadmap</h3>
+<p class="text-xs text-slate-body leading-relaxed">
+                  Sequential, zero-fluff syllabus structured strictly to eliminate identified deficits.
+                </p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-terracotta">
+<span class="material-symbols-outlined text-sm">alt_route</span>
+<span>Zero Fluff</span>
+</div>
+</div>
+<!-- Step 5 -->
+<div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-border hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-navy-dark text-cream font-serif text-xl font-bold flex items-center justify-center mb-4 shadow-sm">
+                  05
+                </div>
+<h3 class="font-bold text-navy-dark text-base mb-1.5">Complete Projects</h3>
+<p class="text-xs text-slate-body leading-relaxed">
+                  Build production-spec codebases verified by automated CI unit tests and peer review.
+                </p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-terracotta">
+<span class="material-symbols-outlined text-sm">code_blocks</span>
+<span>Production Spec</span>
+</div>
+</div>
+<!-- Step 6 -->
+<div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-border hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-emerald-700 text-white font-serif text-xl font-bold flex items-center justify-center mb-4 shadow-sm">
+                  06
+                </div>
+<h3 class="font-bold text-navy-dark text-base mb-1.5">Reassess &amp; Certify</h3>
+<p class="text-xs text-slate-body leading-relaxed">
+                  Instant recalibration of score radar and export of verified digital Skill Passport.
+                </p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-emerald-700">
+<span class="material-symbols-outlined text-sm">verified</span>
+<span>Skill Passport</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== 5. CORE PLATFORM MODULES (3 LOGICAL GROUPS) ==================== -->
+<section class="py-20 bg-white" id="core-modules">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<span class="text-xs font-bold uppercase tracking-wider text-terracotta bg-terracotta-light px-3 py-1 rounded-full">
+            Architecture &amp; Features
+          </span>
+<h2 class="serif-title text-3xl sm:text-4xl lg:text-5xl font-normal text-navy-dark mt-3">
+            Engineered Across 3 Unified Modules
+          </h2>
+<p class="text-slate-body text-base mt-3 leading-relaxed">
+            Every layer of Skill Setu is purpose-built to deliver rigorous, auditable skill validation for ambitious learners and institutions.
+          </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Group 1: Learner Foundation -->
+<div class="bg-cream rounded-2xl p-7 border border-slate-border flex flex-col justify-between hover:border-slate-300 transition-colors">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-500">Group 1</span>
+<span class="p-2 bg-navy-dark text-white rounded-xl">
+<span class="material-symbols-outlined text-lg">badge</span>
+</span>
+</div>
+<h3 class="serif-title text-2xl font-bold text-navy-dark mb-2">Learner Foundation</h3>
+<p class="text-sm text-slate-body leading-relaxed mb-6">
+                Identity, baseline benchmarking, and mathematical deficit calculation to kickstart candidate calibration.
+              </p>
+<div class="space-y-4">
+<div class="p-4 bg-white rounded-xl border border-slate-border">
+<div class="flex items-center gap-2.5 font-bold text-sm text-navy-dark">
+<span class="material-symbols-outlined text-terracotta text-lg">lock</span>
+                    Authentication &amp; Security
+                  </div>
+<p class="text-xs text-slate-body mt-1">Role-based access, single sign-on (OAuth 2.0), academic profile verification.</p>
+</div>
+<div class="p-4 bg-white rounded-xl border border-slate-border">
+<div class="flex items-center gap-2.5 font-bold text-sm text-navy-dark">
+<span class="material-symbols-outlined text-terracotta text-lg">quiz</span>
+                    Skill Assessment Diagnostics
+                  </div>
+<p class="text-xs text-slate-body mt-1">Multi-modal baseline diagnostics, adaptive difficulty testing, and candidate self-ratings.</p>
+</div>
+<div class="p-4 bg-white rounded-xl border border-slate-border">
+<div class="flex items-center gap-2.5 font-bold text-sm text-navy-dark">
+<span class="material-symbols-outlined text-terracotta text-lg">stacked_bar_chart</span>
+                    Skill-Gap Differential Engine
+                  </div>
+<p class="text-xs text-slate-body mt-1">Real-time differential variance calculation against live industry hiring benchmarks.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Group 2: Personalized Learning -->
+<div class="bg-cream rounded-2xl p-7 border-2 border-terracotta/40 flex flex-col justify-between shadow-md relative">
+<div class="absolute -top-3 right-6 bg-terracotta text-white text-[11px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-full shadow-sm">
+              Core Engine
+            </div>
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-bold uppercase tracking-wider text-terracotta">Group 2</span>
+<span class="p-2 bg-terracotta text-white rounded-xl">
+<span class="material-symbols-outlined text-lg">model_training</span>
+</span>
+</div>
+<h3 class="serif-title text-2xl font-bold text-navy-dark mb-2">Personalized Learning</h3>
+<p class="text-sm text-slate-body leading-relaxed mb-6">
+                Contextual curriculum planning, automated document parsing, and continuous roadmap recalibration.
+              </p>
+<div class="space-y-4">
+<div class="p-4 bg-white rounded-xl border border-slate-border">
+<div class="flex items-center gap-2.5 font-bold text-sm text-navy-dark">
+<span class="material-symbols-outlined text-terracotta text-lg">menu_book</span>
+                    Course Catalogue &amp; Dependencies
+                  </div>
+<p class="text-xs text-slate-body mt-1">Hierarchical prerequisite dependency trees mapping basic concepts to production architectures.</p>
+</div>
+<div class="p-4 bg-white rounded-xl border border-slate-border">
+<div class="flex items-center gap-2.5 font-bold text-sm text-navy-dark">
+<span class="material-symbols-outlined text-terracotta text-lg">document_scanner</span>
+                    AI Quiz Document Parser
+                  </div>
+<p class="text-xs text-slate-body mt-1">Accepts PDF, PPT, and lecture transcripts to automatically synthesize MCQs with source citations.</p>
+</div>
+<div class="p-4 bg-white rounded-xl border border-slate-border">
+<div class="flex items-center gap-2.5 font-bold text-sm text-navy-dark">
+<span class="material-symbols-outlined text-terracotta text-lg">fact_check</span>
+                    Assessment &amp; Deep Scoring
+                  </div>
+<p class="text-xs text-slate-body mt-1">Instant answer rationales, concept mastery scoring, and progressive audit trails.</p>
+</div>
+<div class="p-4 bg-white rounded-xl border border-slate-border">
+<div class="flex items-center gap-2.5 font-bold text-sm text-navy-dark">
+<span class="material-symbols-outlined text-terracotta text-lg">published_with_changes</span>
+                    Dynamic Progress Update
+                  </div>
+<p class="text-xs text-slate-body mt-1">Dynamic profile recalibration and automated restructuring of upcoming milestones.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Group 3: Insights & Management -->
+<div class="bg-cream rounded-2xl p-7 border border-slate-border flex flex-col justify-between hover:border-slate-300 transition-colors">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-500">Group 3</span>
+<span class="p-2 bg-navy-dark text-white rounded-xl">
+<span class="material-symbols-outlined text-lg">monitoring</span>
+</span>
+</div>
+<h3 class="serif-title text-2xl font-bold text-navy-dark mb-2">Insights &amp; Management</h3>
+<p class="text-sm text-slate-body leading-relaxed mb-6">
+                Cohort macro-trends, administrative analytics, and cryptographically sound persistence.
+              </p>
+<div class="space-y-4">
+<div class="p-4 bg-white rounded-xl border border-slate-border">
+<div class="flex items-center gap-2.5 font-bold text-sm text-navy-dark">
+<span class="material-symbols-outlined text-terracotta text-lg">dashboard</span>
+                    Learner Sprint Dashboard
+                  </div>
+<p class="text-xs text-slate-body mt-1">Multi-axis skill radar, learning streak tracker, and active sprint kanban boards.</p>
+</div>
+<div class="p-4 bg-white rounded-xl border border-slate-border">
+<div class="flex items-center gap-2.5 font-bold text-sm text-navy-dark">
+<span class="material-symbols-outlined text-terracotta text-lg">groups</span>
+                    Admin &amp; Trainer Console
+                  </div>
+<p class="text-xs text-slate-body mt-1">Institution-wide cohort skill gap heatmaps, batch deficit detection, and placement indicators.</p>
+</div>
+<div class="p-4 bg-white rounded-xl border border-slate-border">
+<div class="flex items-center gap-2.5 font-bold text-sm text-navy-dark">
+<span class="material-symbols-outlined text-terracotta text-lg">database</span>
+                    Data Flow &amp; Audit Persistence
+                  </div>
+<p class="text-xs text-slate-body mt-1">Encrypted assessment logs, verifiable achievement tokens, and institutional exports.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== 6. INTERACTIVE SKILL-GAP DIFFERENTIAL ANALYSIS ==================== -->
+<section class="py-20 bg-cream" id="skill-gap">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<span class="text-xs font-bold uppercase tracking-wider text-terracotta bg-terracotta-light px-3 py-1 rounded-full">
+            Precision Differential Engine
+          </span>
+<h2 class="serif-title text-3xl sm:text-4xl lg:text-5xl font-normal text-navy-dark mt-3">
+            See Your Deficits Before Employers Do
+          </h2>
+<p class="text-slate-body text-base mt-3 leading-relaxed">
+            Directly compare your verified diagnostic scores against live enterprise standards required by hiring managers.
+          </p>
+</div>
+<div class="bg-white rounded-3xl shadow-xl border border-slate-border p-6 sm:p-10 max-w-5xl mx-auto">
+<!-- Benchmark Role Header -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-slate-100 gap-4">
+<div>
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Active Benchmark Track</span>
+<h3 class="serif-title text-2xl font-bold text-navy-dark mt-0.5">Junior Cloud &amp; Systems Architect</h3>
+<p class="text-xs text-slate-body">Standard Level 1 Role Profile • Tier-1 Cloud Infrastructure</p>
+</div>
+<div class="flex items-center gap-4 text-xs font-semibold">
+<span class="flex items-center gap-1.5 text-navy-dark">
+<span class="w-3 h-3 rounded-full bg-terracotta"></span> Demonstrated Score
+              </span>
+<span class="flex items-center gap-1.5 text-slate-500">
+<span class="w-3 h-3 rounded-full bg-slate-300"></span> Hiring Bar Threshold
+              </span>
+</div>
+</div>
+<!-- Comparison Bars Container -->
+<div class="py-8 space-y-7">
+<!-- Skill 1 -->
+<div>
+<div class="flex items-center justify-between text-sm mb-2">
+<span class="font-bold text-navy-dark">Container Orchestration (Docker &amp; Compose)</span>
+<span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200">
+                  -45% Deficit • Priority #1
+                </span>
+</div>
+<div class="relative w-full h-5 bg-slate-100 rounded-lg overflow-hidden flex items-center">
+<!-- Hiring standard marker bar -->
+<div class="absolute top-0 bottom-0 bg-slate-200" style="width: 85%"></div>
+<!-- Student score bar -->
+<div class="h-full bg-terracotta rounded-lg z-10 transition-all duration-700" style="width: 40%"></div>
+<!-- Target indicator line -->
+<div class="absolute top-0 bottom-0 w-0.5 bg-navy-dark z-20" style="left: 85%"></div>
+</div>
+<div class="flex justify-between text-xs text-slate-500 mt-1.5 font-medium">
+<span>Demonstrated: <strong class="text-terracotta">40%</strong></span>
+<span>Target Enterprise Bar: <strong class="text-navy-dark">85%</strong></span>
+</div>
+</div>
+<!-- Skill 2 -->
+<div>
+<div class="flex items-center justify-between text-sm mb-2">
+<span class="font-bold text-navy-dark">Cluster Management (Kubernetes Pods &amp; Ingress)</span>
+<span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200">
+                  -50% Deficit • Priority #2
+                </span>
+</div>
+<div class="relative w-full h-5 bg-slate-100 rounded-lg overflow-hidden flex items-center">
+<div class="absolute top-0 bottom-0 bg-slate-200" style="width: 70%"></div>
+<div class="h-full bg-terracotta rounded-lg z-10 transition-all duration-700" style="width: 20%"></div>
+<div class="absolute top-0 bottom-0 w-0.5 bg-navy-dark z-20" style="left: 70%"></div>
+</div>
+<div class="flex justify-between text-xs text-slate-500 mt-1.5 font-medium">
+<span>Demonstrated: <strong class="text-terracotta">20%</strong></span>
+<span>Target Enterprise Bar: <strong class="text-navy-dark">70%</strong></span>
+</div>
+</div>
+<!-- Skill 3 -->
+<div>
+<div class="flex items-center justify-between text-sm mb-2">
+<span class="font-bold text-navy-dark">Linux OS &amp; Shell Automation</span>
+<span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                  -5% On Track
+                </span>
+</div>
+<div class="relative w-full h-5 bg-slate-100 rounded-lg overflow-hidden flex items-center">
+<div class="absolute top-0 bottom-0 bg-slate-200" style="width: 80%"></div>
+<div class="h-full bg-navy-dark rounded-lg z-10 transition-all duration-700" style="width: 75%"></div>
+<div class="absolute top-0 bottom-0 w-0.5 bg-navy-dark z-20" style="left: 80%"></div>
+</div>
+<div class="flex justify-between text-xs text-slate-500 mt-1.5 font-medium">
+<span>Demonstrated: <strong class="text-navy-dark">75%</strong></span>
+<span>Target Enterprise Bar: <strong class="text-navy-dark">80%</strong></span>
+</div>
+</div>
+<!-- Skill 4 -->
+<div>
+<div class="flex items-center justify-between text-sm mb-2">
+<span class="font-bold text-navy-dark">Distributed Systems Reliability</span>
+<span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
+                  Unassessed • Diagnostic Required
+                </span>
+</div>
+<div class="relative w-full h-5 bg-slate-100 rounded-lg overflow-hidden flex items-center border border-dashed border-slate-300">
+<div class="h-full bg-slate-200/50 w-full flex items-center justify-center text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  Pending Diagnostic Benchmark
+                </div>
+</div>
+<div class="flex justify-between text-xs text-slate-500 mt-1.5 font-medium">
+<span>Demonstrated: <strong class="text-slate-400">—</strong></span>
+<span>Target Enterprise Bar: <strong class="text-navy-dark">75%</strong></span>
+</div>
+</div>
+</div>
+<!-- Dynamic Remediation Insight Card -->
+<div class="mt-4 p-5 bg-cream rounded-2xl border border-slate-border flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-terracotta text-white flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-2xl">auto_fix_high</span>
+</div>
+<div>
+<h4 class="font-serif text-lg font-bold text-navy-dark">Targeted Remediation Recommendation</h4>
+<p class="text-xs text-slate-body mt-1 leading-relaxed max-w-xl">
+                  SQL &amp; Container Orchestration are below the hiring threshold. Complete the recommended Docker &amp; PostgreSQL Indexing sprint and retake the benchmark quiz to close the gap.
+                </p>
+</div>
+</div>
+<a class="shrink-0 inline-flex items-center text-sm font-semibold bg-terracotta hover:bg-terracotta-hover text-white rounded-xl px-5 py-3 shadow transition-colors" href="#courses-preview">
+<span>Generate Focused 21-Day Sprint</span>
+<span class="material-symbols-outlined ml-1.5 text-base">bolt</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== 7. COURSE RECOMMENDATION PREVIEW (GAPS TO CURRICULUM) ==================== -->
+<section class="py-20 bg-white border-t border-slate-border" id="courses-preview">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+<div>
+<span class="text-xs font-bold uppercase tracking-wider text-terracotta bg-terracotta-light px-3 py-1 rounded-full">
+              Automated Prerequisite Mapping
+            </span>
+<h2 class="serif-title text-3xl sm:text-4xl font-normal text-navy-dark mt-3">
+              From Identified Gaps to Structured Curriculum
+            </h2>
+<p class="text-slate-body text-base mt-2">Courses mapped directly to unresolved skill deficits with explicit dependencies.</p>
+</div>
+<span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Sprint Sequence: 3 Modules</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Course Card 1 -->
+<div class="bg-cream rounded-2xl p-6 border border-slate-border flex flex-col justify-between shadow-sm relative">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="text-[11px] font-bold uppercase tracking-wider bg-terracotta-light text-terracotta px-2.5 py-0.5 rounded-full">
+                  High Priority Gap
+                </span>
+<span class="text-xs text-slate-500 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 14 hrs
+                </span>
+</div>
+<h3 class="serif-title text-xl font-bold text-navy-dark mb-2">Advanced PostgreSQL &amp; Query Optimization</h3>
+<p class="text-xs text-slate-body leading-relaxed mb-4">
+                Remediates query latency, B-Tree index structure balancing, execution plans, and multi-tenant partitioning schemas.
+              </p>
+<div class="space-y-2 mb-4">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Addressed Deficits:</span>
+<div class="flex flex-wrap gap-1.5">
+<span class="text-[11px] font-semibold bg-white px-2 py-0.5 rounded border border-slate-200">B-Tree Indexes</span>
+<span class="text-[11px] font-semibold bg-white px-2 py-0.5 rounded border border-slate-200">Execution Plans</span>
+<span class="text-[11px] font-semibold bg-white px-2 py-0.5 rounded border border-slate-200">WAL Buffers</span>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-slate-200">
+<div class="flex justify-between text-xs font-semibold mb-1">
+<span class="text-terracotta">In Progress</span>
+<span class="text-navy-dark font-bold">65% Completed</span>
+</div>
+<div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+<div class="h-full bg-terracotta rounded-full" style="width: 65%"></div>
+</div>
+</div>
+</div>
+<!-- Course Card 2 -->
+<div class="bg-cream rounded-2xl p-6 border border-slate-border flex flex-col justify-between shadow-sm relative">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="text-[11px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full">
+                  Priority Gap
+                </span>
+<span class="text-xs text-slate-500 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 18 hrs
+                </span>
+</div>
+<h3 class="serif-title text-xl font-bold text-navy-dark mb-2">Production Containerization with Docker &amp; Podman</h3>
+<p class="text-xs text-slate-body leading-relaxed mb-4">
+                Multi-stage container builds, namespace isolation, secure rootless daemons, and microservices orchestration.
+              </p>
+<div class="space-y-2 mb-4">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Addressed Deficits:</span>
+<div class="flex flex-wrap gap-1.5">
+<span class="text-[11px] font-semibold bg-white px-2 py-0.5 rounded border border-slate-200">Multi-stage Builds</span>
+<span class="text-[11px] font-semibold bg-white px-2 py-0.5 rounded border border-slate-200">Cgroups &amp; Namespaces</span>
+<span class="text-[11px] font-semibold bg-white px-2 py-0.5 rounded border border-slate-200">Compose Stacks</span>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-slate-200 flex items-center justify-between">
+<span class="text-xs font-bold text-navy-dark flex items-center gap-1">
+<span class="material-symbols-outlined text-base text-terracotta">play_circle</span>
+                Status: Next Up
+              </span>
+<a class="text-xs font-bold text-terracotta hover:underline" href="#">Start Module →</a>
+</div>
+</div>
+<!-- Course Card 3 -->
+<div class="bg-cream rounded-2xl p-6 border border-slate-border flex flex-col justify-between shadow-sm opacity-85">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="text-[11px] font-bold uppercase tracking-wider bg-slate-200 text-slate-700 px-2.5 py-0.5 rounded-full">
+                  Capstone Prerequisite
+                </span>
+<span class="text-xs text-slate-500 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span> 24 hrs
+                </span>
+</div>
+<h3 class="serif-title text-xl font-bold text-navy-dark mb-2">High-Availability Distributed Systems Design</h3>
+<p class="text-xs text-slate-body leading-relaxed mb-4">
+                Raft consensus protocol implementations, eventual consistency patterns, distributed locking, and cache invalidation.
+              </p>
+<div class="space-y-2 mb-4">
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Required Prerequisite:</span>
+<div class="flex flex-wrap gap-1.5">
+<span class="text-[11px] font-semibold bg-white/70 px-2 py-0.5 rounded border border-slate-200 text-slate-500">Requires Docker Module</span>
+<span class="text-[11px] font-semibold bg-white/70 px-2 py-0.5 rounded border border-slate-200 text-slate-500">Requires SQL Optimization</span>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+<span class="flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-base">lock</span>
+                Status: Locked
+              </span>
+<span class="text-[11px]">Unlocks post Sprint 2</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== 8. AI QUIZ GENERATION INTERACTIVE PREVIEW ==================== -->
+<section class="py-20 bg-cream" id="ai-quiz">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<span class="text-xs font-bold uppercase tracking-wider text-terracotta bg-terracotta-light px-3 py-1 rounded-full">
+            Autonomous Document-to-Assessment
+          </span>
+<h2 class="serif-title text-3xl sm:text-4xl lg:text-5xl font-normal text-navy-dark mt-3">
+            AI Quiz Generation from Raw Courseware
+          </h2>
+<p class="text-slate-body text-base mt-3 leading-relaxed">
+            Upload any academic PDF, PPT, or lecture notes. Our model extracts key concepts, formulates high-rigor questions, and attaches page citations.
+          </p>
+</div>
+<div class="bg-white rounded-3xl shadow-xl border border-slate-border p-6 sm:p-10 max-w-5xl mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left: Workflow simulation (5 cols) -->
+<div class="lg:col-span-5 space-y-6">
+<!-- Step 1: Upload simulation -->
+<div class="p-4 rounded-xl border border-dashed-2 border-slate-300 bg-cream/70 flex flex-col items-center justify-center text-center">
+<div class="w-10 h-10 rounded-full bg-navy-dark text-white flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-xl">upload_file</span>
+</div>
+<span class="text-xs font-bold text-navy-dark">Database_Internals_Ch04_Indexing.pdf</span>
+<span class="text-[11px] text-slate-body mt-0.5">38 pages • 4.2 MB • Parsed Successfully</span>
+</div>
+<!-- Step 2: Extracted Key Concepts -->
+<div class="p-4 rounded-xl bg-white border border-slate-border shadow-sm">
+<span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Parsed Key Concepts</span>
+<div class="flex flex-wrap gap-2">
+<span class="text-xs bg-slate-100 text-navy-dark font-semibold px-2.5 py-1 rounded-md">B-Tree balance factor</span>
+<span class="text-xs bg-slate-100 text-navy-dark font-semibold px-2.5 py-1 rounded-md">Write-ahead logging</span>
+<span class="text-xs bg-slate-100 text-navy-dark font-semibold px-2.5 py-1 rounded-md">Isolation levels</span>
+<span class="text-xs bg-slate-100 text-navy-dark font-semibold px-2.5 py-1 rounded-md">Clustered indexing</span>
+</div>
+</div>
+<!-- Pipeline Status -->
+<div class="flex items-center gap-3 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs font-medium">
+<span class="material-symbols-outlined text-base text-emerald-700">check_circle</span>
+<span>Generated 15 Verified MCQs with Exact Page Citations</span>
+</div>
+</div>
+<!-- Right: Interactive Sample Generated MCQ (7 cols) -->
+<div class="lg:col-span-7 bg-cream/80 p-6 rounded-2xl border border-slate-border flex flex-col justify-between">
+<div>
+<!-- Question Header -->
+<div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
+<span class="text-[11px] font-bold uppercase tracking-wider bg-navy-dark text-white px-2 py-0.5 rounded">
+                    Question 04 of 15
+                  </span>
+<span class="text-xs text-slate-500 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-terracotta">menu_book</span>
+                    Source: Page 14, § 4.3
+                  </span>
+</div>
+<!-- Prompt -->
+<h4 class="font-serif text-lg font-bold text-navy-dark mb-4 leading-snug">
+                  Why does a B-Tree node split occur during high-concurrency insertion in relational engines, and what guarantees tree height balance?
+                </h4>
+<!-- Options -->
+<div class="space-y-2.5" id="mcq-options">
+<label class="flex items-center p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-400 cursor-pointer transition-colors">
+<input class="text-terracotta focus:ring-terracotta h-4 w-4 mr-3" name="quiz_opt" type="radio"/>
+<span class="text-xs text-slate-800">A) Nodes rebalance linearly by appending to leaf overflow segments without splitting.</span>
+</label>
+<label class="flex items-center p-3 rounded-xl border-2 border-emerald-500 bg-emerald-50 cursor-pointer">
+<input checked="" class="text-emerald-600 focus:ring-emerald-500 h-4 w-4 mr-3" name="quiz_opt" type="radio"/>
+<span class="text-xs text-emerald-950 font-semibold">B) When a node exceeds order M capacity, the median key ascends to parent, preserving log(N) invariant.</span>
+</label>
+<label class="flex items-center p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-400 cursor-pointer transition-colors">
+<input class="text-terracotta focus:ring-terracotta h-4 w-4 mr-3" name="quiz_opt" type="radio"/>
+<span class="text-xs text-slate-800">C) An asynchronous cron job defragments the table indexes every 60 seconds.</span>
+</label>
+<label class="flex items-center p-3 rounded-xl border border-slate-200 bg-white hover:border-slate-400 cursor-pointer transition-colors">
+<input class="text-terracotta focus:ring-terracotta h-4 w-4 mr-3" name="quiz_opt" type="radio"/>
+<span class="text-xs text-slate-800">D) Write-ahead logging discards duplicate keys automatically before tree insertion.</span>
+</label>
+</div>
+</div>
+<!-- Instant Explanation Box with Citation -->
+<div class="mt-5 p-4 rounded-xl bg-white border border-emerald-200 text-xs text-slate-700">
+<div class="flex items-center gap-1.5 text-emerald-800 font-bold mb-1">
+<span class="material-symbols-outlined text-sm">verified</span>
+<span>Correct Answer Rationale</span>
+</div>
+<p class="leading-relaxed text-slate-600">
+                  Option B is correct. In B-Trees of order M, exceeding node capacity triggers an atomic node split: the middle key is pushed to the parent node, maintaining equal leaf depth across all branches.
+                </p>
+<div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-medium">
+<span>Citation Verified: <strong class="text-navy-dark">PDF pg. 14, Theorem 4.2</strong></span>
+<span class="text-terracotta font-semibold">Confidence 99.4%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== 9. DUAL EXPERIENCE SHOWCASE (STUDENT VS ADMIN) ==================== -->
+<section class="py-20 bg-white border-b border-slate-border" id="dual-experience">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-12">
+<span class="text-xs font-bold uppercase tracking-wider text-terracotta bg-terracotta-light px-3 py-1 rounded-full">
+            Tailored Experiences
+          </span>
+<h2 class="serif-title text-3xl sm:text-4xl lg:text-5xl font-normal text-navy-dark mt-3">
+            Built for Students &amp; Academic Institutions
+          </h2>
+<p class="text-slate-body text-base mt-3 leading-relaxed">
+            Switch between the personalized learner perspective and the high-level university placement and diagnostic console.
+          </p>
+</div>
+<!-- Interactive View Selector -->
+<div class="flex justify-center mb-10">
+<div class="inline-flex p-1.5 bg-cream rounded-2xl border border-slate-border" role="tablist">
+<button class="px-6 py-2.5 rounded-xl text-sm font-bold bg-navy-dark text-white shadow-sm transition-all flex items-center gap-2" id="tab-student-btn" onclick="switchDualTab('student')">
+<span class="material-symbols-outlined text-base">person</span>
+<span>Individual Learner View</span>
+</button>
+<button class="px-6 py-2.5 rounded-xl text-sm font-bold text-slate-body hover:text-navy-dark transition-all flex items-center gap-2" id="tab-admin-btn" onclick="switchDualTab('admin')">
+<span class="material-symbols-outlined text-base">domain</span>
+<span>Institution &amp; Dean Console</span>
+</button>
+</div>
+</div>
+<!-- TAB CONTENT A: Student View -->
+<div class="block" id="tab-student">
+<div class="bg-cream rounded-3xl p-6 sm:p-10 border border-slate-border max-w-5xl mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<!-- Left radar simulation & metrics -->
+<div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-border shadow-sm flex flex-col items-center">
+<span class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 self-start">Personal Competency Radar</span>
+<!-- Circular Radar Visual Representation -->
+<div class="relative w-48 h-48 flex items-center justify-center my-2">
+<div class="absolute inset-0 rounded-full border border-slate-200"></div>
+<div class="absolute inset-4 rounded-full border border-slate-200"></div>
+<div class="absolute inset-8 rounded-full border border-slate-200"></div>
+<!-- Polygon polygon mock -->
+<svg class="w-40 h-40 transform rotate-12" viewbox="0 0 100 100">
+<polygon fill="rgba(196, 84, 45, 0.2)" points="50,15 85,40 70,80 30,80 15,40" stroke="#C4542D" stroke-width="2"></polygon>
+<circle cx="50" cy="15" fill="#C4542D" r="3"></circle>
+<circle cx="85" cy="40" fill="#C4542D" r="3"></circle>
+<circle cx="70" cy="80" fill="#C4542D" r="3"></circle>
+<circle cx="30" cy="80" fill="#C4542D" r="3"></circle>
+<circle cx="15" cy="40" fill="#C4542D" r="3"></circle>
+</svg>
+</div>
+<div class="w-full mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+<span class="font-bold text-slate-700">Daily Learning Streak:</span>
+<span class="text-terracotta font-extrabold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">local_fire_department</span> 18 Days
+                  </span>
+</div>
+</div>
+<!-- Right Student Features -->
+<div class="lg:col-span-7 space-y-4">
+<div class="flex items-center gap-3">
+<span class="p-2 rounded-xl bg-terracotta-light text-terracotta">
+<span class="material-symbols-outlined">workspace_premium</span>
+</span>
+<div>
+<h4 class="font-serif text-xl font-bold text-navy-dark">Digital Skill Passport</h4>
+<p class="text-xs text-slate-body">Verifiable cryptographically signed transcript accepted by recruiting partners.</p>
+</div>
+</div>
+<div class="p-4 bg-white rounded-xl border border-slate-border">
+<div class="flex items-center justify-between text-xs font-bold mb-1">
+<span class="text-navy-dark">Today's Milestone</span>
+<span class="text-terracotta">45 mins remaining</span>
+</div>
+<p class="text-xs text-slate-body">Implement Docker healthcheck probe inside NodeJS distributed cluster.</p>
+</div>
+<div class="p-4 bg-white rounded-xl border border-slate-border">
+<div class="flex items-center justify-between text-xs font-bold mb-1">
+<span class="text-navy-dark">Next Scheduled Diagnostic</span>
+<span class="text-slate-500">Friday, 10:00 AM</span>
+</div>
+<p class="text-xs text-slate-body">Re-assessment quiz on PostgreSQL Isolation levels to unlock 85% match badge.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB CONTENT B: Administrator / Institutional Console (Hidden by default) -->
+<div class="hidden" id="tab-admin">
+<div class="bg-navy-dark text-white rounded-3xl p-6 sm:p-10 border border-slate-800 max-w-5xl mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<!-- Left Admin Metrics -->
+<div class="lg:col-span-5 bg-navy-card p-6 rounded-2xl border border-slate-700">
+<span class="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-4">Department Batch Statistics</span>
+<div class="space-y-4">
+<div class="flex items-center justify-between pb-3 border-b border-slate-700">
+<span class="text-xs text-slate-300">Total Enrolled Cohort</span>
+<span class="text-base font-bold text-cream">450 Students</span>
+</div>
+<div class="flex items-center justify-between pb-3 border-b border-slate-700">
+<span class="text-xs text-slate-300">Cohort Hiring Readiness</span>
+<span class="text-base font-bold text-emerald-400">71.8% Avg Match</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-slate-300">Critical Batch Deficit</span>
+<span class="text-base font-bold text-terracotta">Cloud Orchestration</span>
+</div>
+</div>
+</div>
+<!-- Right Admin Features -->
+<div class="lg:col-span-7 space-y-4">
+<div class="flex items-center gap-3">
+<span class="p-2 rounded-xl bg-white/10 text-cream">
+<span class="material-symbols-outlined">analytics</span>
+</span>
+<div>
+<h4 class="font-serif text-xl font-bold text-cream">Batch Deficit Heatmap</h4>
+<p class="text-xs text-slate-300">Pinpoint departmental curricula shortcomings before final semester campus placements.</p>
+</div>
+</div>
+<div class="p-4 bg-navy-card rounded-xl border border-slate-700 text-xs">
+<div class="flex justify-between font-bold mb-1">
+<span class="text-slate-200">Distributed Systems Gap</span>
+<span class="text-rose-400">62% students deficient</span>
+</div>
+<div class="w-full h-2 bg-slate-700 rounded-full overflow-hidden mt-1">
+<div class="bg-rose-500 h-full rounded-full" style="width: 62%"></div>
+</div>
+</div>
+<div class="p-4 bg-navy-card rounded-xl border border-slate-700 text-xs">
+<div class="flex justify-between font-bold mb-1">
+<span class="text-slate-200">Frontend State Management</span>
+<span class="text-emerald-400">89% students certified</span>
+</div>
+<div class="w-full h-2 bg-slate-700 rounded-full overflow-hidden mt-1">
+<div class="bg-emerald-500 h-full rounded-full" style="width: 89%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== 10. HIGH-CONVERSION FINAL CTA ==================== -->
+<section class="py-24 bg-navy-dark text-white relative overflow-hidden">
+<!-- Ambient light effect -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-terracotta/15 blur-[120px] pointer-events-none"></div>
+<div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+<span class="text-xs font-bold uppercase tracking-wider text-terracotta-light bg-white/10 px-4 py-1.5 rounded-full border border-white/15 mb-6">
+          Bridging Campus to Industry
+        </span>
+<h2 class="serif-title text-3xl sm:text-4xl lg:text-5xl font-normal leading-tight text-cream mb-6">
+          Ready to turn academic potential into an undeniable job offer?
+        </h2>
+<p class="text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed mb-8">
+          Get started free with your first diagnostic benchmark today. Pinpoint exactly where you stand and chart your verified path forward.
+        </p>
+<a class="inline-flex items-center justify-center text-base font-semibold bg-terracotta hover:bg-terracotta-hover text-white rounded-xl px-8 py-4 shadow-xl shadow-terracotta/30 hover:scale-105 transition-all" href="#skill-gap">
+<span>Build My Free Roadmap</span>
+<span class="material-symbols-outlined ml-2 text-lg">arrow_forward</span>
+</a>
+<!-- Assurance notes -->
+<div class="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs text-slate-300 font-semibold mt-6">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-terracotta text-sm">check_circle</span>
+            No credit card required
+          </span>
+<span class="hidden sm:inline">•</span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-terracotta text-sm">timer</span>
+            15-minute diagnostic
+          </span>
+<span class="hidden sm:inline">•</span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-terracotta text-sm">verified_user</span>
+            Verified by Tier-1 engineering leads
+          </span>
+</div>
+</div>
+</section>
+</main>
+<!-- ==================== ENTERPRISE FOOTER ==================== -->
+<footer class="bg-navy-dark text-slate-300 border-t border-slate-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
+<!-- Col 1: Brand & mission (2 cols) -->
+<div class="lg:col-span-2 space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-terracotta flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">hub</span>
+</div>
+<span class="font-serif text-2xl font-bold text-cream">Skill Setu</span>
+</div>
+<p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+            Empowering ambitious university students and recent graduates with precision skill gap diagnostics, AI courseware parsing, and enterprise hiring bar calibrations.
+          </p>
+<div class="text-[11px] font-bold uppercase tracking-wider text-terracotta-light">
+            National Career Readiness Infrastructure
+          </div>
+</div>
+<!-- Col 2: Platform Navigation -->
+<div>
+<h4 class="text-xs font-bold uppercase tracking-wider text-cream mb-4">Platform</h4>
+<ul class="space-y-2.5 text-xs text-slate-400">
+<li><a class="hover:text-cream transition-colors" href="#how-it-works">How It Works</a></li>
+<li><a class="hover:text-cream transition-colors" href="#skill-gap">Skill Gap Engine</a></li>
+<li><a class="hover:text-cream transition-colors" href="#ai-quiz">AI Quiz Generator</a></li>
+<li><a class="hover:text-cream transition-colors" href="#core-modules">Core Modules</a></li>
+<li><a class="hover:text-cream transition-colors" href="#courses-preview">Learning Roadmaps</a></li>
+</ul>
+</div>
+<!-- Col 3: Career Tracks -->
+<div>
+<h4 class="text-xs font-bold uppercase tracking-wider text-cream mb-4">Career Tracks</h4>
+<ul class="space-y-2.5 text-xs text-slate-400">
+<li><a class="hover:text-cream transition-colors" href="#career-tracks">Full-Stack Systems</a></li>
+<li><a class="hover:text-cream transition-colors" href="#career-tracks">Cloud &amp; DevOps Architecture</a></li>
+<li><a class="hover:text-cream transition-colors" href="#career-tracks">Applied Machine Learning</a></li>
+<li><a class="hover:text-cream transition-colors" href="#career-tracks">Data Analytics &amp; BI</a></li>
+<li><a class="hover:text-cream transition-colors" href="#career-tracks">Systems Reliability &amp; SRE</a></li>
+</ul>
+</div>
+<!-- Col 4: Institutional Resources -->
+<div>
+<h4 class="text-xs font-bold uppercase tracking-wider text-cream mb-4">Resources &amp; Partners</h4>
+<ul class="space-y-2.5 text-xs text-slate-400">
+<li><a class="hover:text-cream transition-colors" href="#dual-experience">University Dean Portal</a></li>
+<li><a class="hover:text-cream transition-colors" href="#">Hiring Bar Index 2025</a></li>
+<li><a class="hover:text-cream transition-colors" href="#">Competency Frameworks</a></li>
+<li><a class="hover:text-cream transition-colors" href="#">Placement Case Studies</a></li>
+<li><a class="hover:text-cream transition-colors" href="#">Academic Integrity Policy</a></li>
+</ul>
+</div>
+</div>
+<!-- Copyright Bar -->
+<div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+<p>© 2025 Skill Setu Technologies Pvt. Ltd. All rights reserved.</p>
+<div class="flex items-center gap-6">
+<a class="hover:text-slate-300 transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-slate-300 transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-slate-300 transition-colors" href="#">Security Audit</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Vanilla JS for Micro-Interactions (Tab Switching) -->
+<script>
+    function switchDualTab(type) {
+      const studentTab = document.getElementById('tab-student');
+      const adminTab = document.getElementById('tab-admin');
+      const studentBtn = document.getElementById('tab-student-btn');
+      const adminBtn = document.getElementById('tab-admin-btn');
+
+      if (type === 'student') {
+        studentTab.classList.remove('hidden');
+        studentTab.classList.add('block');
+        adminTab.classList.add('hidden');
+        adminTab.classList.remove('block');
+
+        studentBtn.className = 'px-6 py-2.5 rounded-xl text-sm font-bold bg-navy-dark text-white shadow-sm transition-all flex items-center gap-2';
+        adminBtn.className = 'px-6 py-2.5 rounded-xl text-sm font-bold text-slate-body hover:text-navy-dark transition-all flex items-center gap-2';
+      } else {
+        adminTab.classList.remove('hidden');
+        adminTab.classList.add('block');
+        studentTab.classList.add('hidden');
+        studentTab.classList.remove('block');
+
+        adminBtn.className = 'px-6 py-2.5 rounded-xl text-sm font-bold bg-navy-dark text-white shadow-sm transition-all flex items-center gap-2';
+        studentBtn.className = 'px-6 py-2.5 rounded-xl text-sm font-bold text-slate-body hover:text-navy-dark transition-all flex items-center gap-2';
+      }
+    }
+  </script>
+</body></html>

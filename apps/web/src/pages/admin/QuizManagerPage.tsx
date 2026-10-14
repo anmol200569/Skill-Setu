@@ -49,10 +49,10 @@ export function QuizManagerPage() {
   return (
     <div className="space-y-8">
       <div>
-        <span className="text-xs font-bold uppercase tracking-wider text-[#C2410C]">
+        <span className="text-xs font-bold uppercase tracking-wider text-blue-600">
           Assessment Studio
         </span>
-        <h1 className="text-3xl font-serif font-bold text-foreground mt-1">
+        <h1 className="text-3xl font-bold text-foreground mt-1 tracking-tight">
           Quiz Governance & Publishing
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -60,7 +60,7 @@ export function QuizManagerPage() {
         </p>
       </div>
 
-      <div className="bg-card rounded-xl border border-border overflow-hidden">
+      <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-sm">
         <table className="w-full text-left text-xs">
           <thead className="bg-secondary/60 text-muted-foreground font-semibold border-b border-border">
             <tr>
