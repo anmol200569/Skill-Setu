@@ -110,12 +110,12 @@ export function LoginPage() {
     <div className="min-h-screen bg-background flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
-          <Link to="/" className="flex items-center gap-2">
-            <img src="/logo.svg" alt="Skill Setu" className="w-10 h-10 rounded-lg shadow-sm" />
-            <span className="font-serif text-2xl font-bold tracking-tight text-foreground">Skill Setu</span>
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <img src="/logo.svg" alt="Skill Setu" className="w-10 h-10 rounded-xl shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform" />
+            <span className="font-sans text-2xl font-extrabold tracking-tight text-foreground">Skill<span className="text-blue-600">Setu</span></span>
           </Link>
         </div>
-        <h2 className="mt-6 text-center text-3xl font-serif font-bold text-foreground">
+        <h2 className="mt-6 text-center text-3xl font-extrabold tracking-tight text-foreground">
           {t('auth.login.title')}
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
@@ -168,7 +168,7 @@ export function LoginPage() {
                   type="button"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-muted-foreground hover:text-foreground p-1 rounded focus:outline-none focus:ring-1 focus:ring-[#C2410C] flex items-center justify-center"
+                  className="text-muted-foreground hover:text-foreground p-1 rounded focus:outline-none focus:ring-1 focus:ring-blue-600 flex items-center justify-center"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -178,7 +178,7 @@ export function LoginPage() {
             <div className="flex items-center justify-between pt-1">
               <Link
                 to="/forgot-password"
-                className="text-xs font-semibold text-[#C2410C] hover:underline"
+                className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline"
               >
                 {t('auth.login.forgotPassword')}
               </Link>
@@ -237,7 +237,7 @@ export function LoginPage() {
 
           <div className="mt-6 text-center text-xs text-muted-foreground">
             {t('auth.login.noAccount')}{' '}
-            <Link to="/signup" className="font-semibold text-[#C2410C] hover:underline">
+            <Link to="/signup" className="font-semibold text-blue-600 dark:text-blue-400 hover:underline">
               {t('auth.login.createAccount')}
             </Link>
           </div>

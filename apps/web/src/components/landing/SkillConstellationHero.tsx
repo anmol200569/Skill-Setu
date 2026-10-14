@@ -84,8 +84,8 @@ export function SkillConstellationHero({ forceFallback = false, className = '' }
       className={`relative w-full h-[320px] sm:h-[380px] md:h-[440px] flex items-center justify-center overflow-hidden rounded-3xl ${className}`}
     >
       {/* Background Ambient Glow & Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#C2410C]/8 via-[#FB923C]/5 to-transparent rounded-3xl pointer-events-none" />
-      <div className="absolute w-72 h-72 rounded-full bg-[#C2410C]/10 blur-3xl -top-10 left-1/2 -translate-x-1/2 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-600/8 via-blue-500/5 to-transparent rounded-3xl pointer-events-none" />
+      <div className="absolute w-72 h-72 rounded-full bg-blue-600/10 blur-3xl -top-10 left-1/2 -translate-x-1/2 pointer-events-none" />
 
       {/* Conditional 3D Scene or Editorial Static Fallback */}
       {canRender3D && isVisible ? (
@@ -95,7 +95,7 @@ export function SkillConstellationHero({ forceFallback = false, className = '' }
 
             {/* Subtle caption explaining the 3D bridge representation */}
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-background/80 backdrop-blur border border-border text-[11px] text-muted-foreground select-none pointer-events-none flex items-center gap-1.5 shadow-sm">
-              <Sparkles className="w-3 h-3 text-[#C2410C] dark:text-[#FB923C]" />
+              <Sparkles className="w-3 h-3 text-blue-600 dark:text-blue-400" />
               <span>{t('landing.constellation.interactive')}</span>
             </div>
           </div>
@@ -107,7 +107,7 @@ export function SkillConstellationHero({ forceFallback = false, className = '' }
   );
 }
 
-// Warm, Editorial Static Fallback (for prefers-reduced-motion, low-end devices, mobile, or WebGL-disabled)
+// Modern Static Fallback (for prefers-reduced-motion, low-end devices, mobile, or WebGL-disabled)
 function StaticConstellationFallback() {
   const { t } = useTranslation();
 
@@ -119,7 +119,7 @@ function StaticConstellationFallback() {
       {/* Decorative SVG Constellation Bridge */}
       <svg
         viewBox="0 0 500 300"
-        className="w-full max-w-md h-auto text-[#C2410C] dark:text-[#FB923C] opacity-90 drop-shadow-md"
+        className="w-full max-w-md h-auto text-blue-600 dark:text-blue-400 opacity-90 drop-shadow-md"
         aria-hidden="true"
       >
         {/* Background connector web */}
@@ -151,16 +151,16 @@ function StaticConstellationFallback() {
         <circle cx="250" cy="150" r="26" fill="none" stroke="currentColor" strokeWidth="2" className="opacity-40" />
 
         {/* Orbiting Skill Nodes */}
-        <circle cx="100" cy="220" r="10" fill="#FB923C" />
-        <circle cx="400" cy="220" r="10" fill="#FB923C" />
-        <circle cx="120" cy="80" r="12" fill="#F97316" />
-        <circle cx="380" cy="80" r="12" fill="#F97316" />
-        <circle cx="50" cy="150" r="8" fill="#FDBA74" />
-        <circle cx="450" cy="150" r="8" fill="#FDBA74" />
+        <circle cx="100" cy="220" r="10" fill="#3B82F6" />
+        <circle cx="400" cy="220" r="10" fill="#3B82F6" />
+        <circle cx="120" cy="80" r="12" fill="#2563EB" />
+        <circle cx="380" cy="80" r="12" fill="#2563EB" />
+        <circle cx="50" cy="150" r="8" fill="#93C5FD" />
+        <circle cx="450" cy="150" r="8" fill="#93C5FD" />
       </svg>
 
       <div className="mt-2 space-y-1 z-10 max-w-sm">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-[#C2410C] dark:text-[#FB923C]">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
           {t('landing.constellation.tag')}
         </span>
         <p className="text-xs text-muted-foreground leading-relaxed">

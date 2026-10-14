@@ -121,12 +121,12 @@ export function SkillGapsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-border">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#C2410C] dark:text-[#FB923C]">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
               {t('skillGapsPage.roleLabel')}: {targetRoleTitle}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-foreground tracking-tight flex items-center gap-2.5">
-            <GitCompare className="w-6 h-6 text-[#C2410C] dark:text-[#FB923C]" />
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight flex items-center gap-2.5">
+            <GitCompare className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             <span>{t('skillGapsPage.title')}</span>
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-3xl">
@@ -141,7 +141,7 @@ export function SkillGapsPage() {
               variant="outline"
               className="text-xs font-semibold flex items-center gap-1.5"
             >
-              <Target className="w-3.5 h-3.5 text-[#C2410C] dark:text-[#FB923C]" />
+              <Target className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
               <span>{t('skillGapsPage.takeDiagnostic')}</span>
             </Button>
           </Link>
@@ -149,7 +149,7 @@ export function SkillGapsPage() {
             <Button
               size="sm"
               variant="ghost"
-              className="text-xs font-semibold text-[#C2410C] dark:text-[#FB923C] hover:bg-[#C2410C]/10 flex items-center gap-1"
+              className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 flex items-center gap-1"
             >
               <SlidersHorizontal className="w-3.5 h-3.5" />
               <span>{t('skillGapsPage.changeRole')}</span>

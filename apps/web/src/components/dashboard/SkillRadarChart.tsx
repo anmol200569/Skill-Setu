@@ -112,7 +112,7 @@ export function SkillRadarChart({ data, className }: SkillRadarChartProps) {
               <button
                 type="button"
                 onClick={() => handleSort('skill')}
-                className="flex items-center gap-1 hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C] rounded"
+                className="flex items-center gap-1 hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 rounded"
               >
                 <span>{t('dashboard.radar.tableSkill')}</span>
                 <ArrowUpDown className="w-3 h-3" />
@@ -122,7 +122,7 @@ export function SkillRadarChart({ data, className }: SkillRadarChartProps) {
               <button
                 type="button"
                 onClick={() => handleSort('current')}
-                className="flex items-center gap-1 mx-auto hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C] rounded"
+                className="flex items-center gap-1 mx-auto hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 rounded"
               >
                 <span>{t('dashboard.radar.tableAchieved')}</span>
                 <ArrowUpDown className="w-3 h-3" />
@@ -132,7 +132,7 @@ export function SkillRadarChart({ data, className }: SkillRadarChartProps) {
               <button
                 type="button"
                 onClick={() => handleSort('required')}
-                className="flex items-center gap-1 mx-auto hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C] rounded"
+                className="flex items-center gap-1 mx-auto hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 rounded"
               >
                 <span>{t('dashboard.radar.tableTarget')}</span>
                 <ArrowUpDown className="w-3 h-3" />
@@ -142,7 +142,7 @@ export function SkillRadarChart({ data, className }: SkillRadarChartProps) {
               <button
                 type="button"
                 onClick={() => handleSort('gap')}
-                className="flex items-center gap-1 mx-auto hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C] rounded"
+                className="flex items-center gap-1 mx-auto hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 rounded"
               >
                 <span>{t('dashboard.radar.tableGap')}</span>
                 <ArrowUpDown className="w-3 h-3" />
@@ -217,21 +217,21 @@ export function SkillRadarChart({ data, className }: SkillRadarChartProps) {
       <div className="w-full h-72 sm:h-80 flex items-center justify-center">
         <ResponsiveContainer width="100%" height="100%">
           <RadarChart data={chartData} margin={{ top: 10, right: 25, bottom: 10, left: 25 }}>
-            <PolarGrid stroke="#E2DED4" className="dark:stroke-[#383633]" />
+            <PolarGrid stroke="#E2E8F0" className="dark:stroke-[#334155]" />
             <PolarAngleAxis
               dataKey="skill"
-              tick={{ fill: '#636058', fontSize: 11, fontWeight: 500 }}
+              tick={{ fill: '#64748B', fontSize: 11, fontWeight: 500 }}
             />
             <PolarRadiusAxis
               angle={30}
               domain={[0, 5]}
-              tick={{ fill: '#A39F95', fontSize: 10 }}
+              tick={{ fill: '#94A3B8', fontSize: 10 }}
             />
             <Radar
               name={t('dashboard.radar.achieved')}
               dataKey="achieved"
-              stroke="#C2410C"
-              fill="#C2410C"
+              stroke="#2563EB"
+              fill="#2563EB"
               fillOpacity={0.25}
               strokeWidth={2}
             />
@@ -253,8 +253,8 @@ export function SkillRadarChart({ data, className }: SkillRadarChartProps) {
                 if (active && payload && payload.length) {
                   const dataPoint = payload[0].payload;
                   return (
-                    <div className="p-2.5 rounded-lg bg-card border border-border shadow-lg text-xs space-y-1">
-                      <div className="font-serif font-bold text-foreground">
+                    <div className="p-2.5 rounded-xl bg-card border border-border shadow-lg text-xs space-y-1">
+                      <div className="font-sans font-bold text-foreground">
                         {dataPoint.fullSkill || dataPoint.skill}
                       </div>
                       <div className="flex items-center justify-between gap-4 text-emerald-600 dark:text-emerald-400">

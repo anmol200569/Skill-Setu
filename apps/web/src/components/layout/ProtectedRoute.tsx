@@ -55,7 +55,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-[#C2410C]" />
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
           <span className="text-sm font-medium text-muted-foreground">Authenticating session...</span>
         </div>
       </div>

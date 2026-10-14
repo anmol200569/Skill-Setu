@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "tertiary-fixed": "#d3e4fe",
+          "surface-container-lowest": "#ffffff",
+          "background": "#fbf9f4",
+          "tertiary-container": "#68788f",
+          "surface-bright": "#fbf9f4",
+          "surface-container": "#f0eee9",
+          "on-secondary-fixed": "#0e1b31",
+          "on-error-container": "#93000a",
+          "surface-variant": "#e4e2dd",
+          "on-surface-variant": "#57423b",
+          "surface-container-highest": "#e4e2dd",
+          "on-surface": "#1b1c19",
+          "inverse-surface": "#30312e",
+          "on-primary": "#ffffff",
+          "tertiary-fixed-dim": "#b7c8e1",
+          "on-tertiary": "#ffffff",
+          "tertiary": "#4f5f75",
+          "inverse-on-surface": "#f2f1ec",
+          "on-secondary": "#ffffff",
+          "surface-dim": "#dbdad5",
+          "outline-variant": "#dec0b7",
+          "on-secondary-fixed-variant": "#3b475f",
+          "primary": "#a33c17",
+          "on-primary-fixed": "#390b00",
+          "secondary": "#525f78",
+          "on-background": "#1b1c19",
+          "secondary-fixed-dim": "#bac7e4",
+          "surface-container-low": "#f5f3ee",
+          "primary-fixed": "#ffdbd0",
+          "error-container": "#ffdad6",
+          "outline": "#8b726a",
+          "secondary-container": "#d3e0fe",
+          "on-primary-fixed-variant": "#832600",
+          "on-error": "#ffffff",
+          "surface-tint": "#a43d17",
+          "error": "#ba1a1a",
+          "on-tertiary-fixed": "#0b1c30",
+          "surface-container-high": "#eae8e3",
+          "on-tertiary-fixed-variant": "#38485d",
+          "primary-fixed-dim": "#ffb59d",
+          "on-primary-container": "#ffffff",
+          "on-secondary-container": "#56637c",
+          "surface": "#fbf9f4",
+          "on-tertiary-container": "#000510",
+          "secondary-fixed": "#d7e3ff",
+          "inverse-primary": "#ffb59d",
+          "primary-container": "#c4542d"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        "spacing": {
+          "margin-lg": "5rem",
+          "space-sm": "0.5rem",
+          "space-lg": "1.5rem",
+          "margin-md": "3rem",
+          "gutter": "1.5rem",
+          "space-md": "1rem",
+          "gutter-lg": "2rem",
+          "space-xs": "0.25rem",
+          "gutter-sm": "1rem",
+          "margin": "1.5rem",
+          "space-xl": "2.5rem"
+        },
+        "fontFamily": {
+          "headline-md": [
+            "Newsreader"
+          ],
+          "label-md": [
+            "Manrope"
+          ],
+          "headline-lg": [
+            "Newsreader"
+          ],
+          "body-md": [
+            "Manrope"
+          ],
+          "headline-sm": [
+            "Newsreader"
+          ],
+          "display-lg-mobile": [
+            "Newsreader"
+          ],
+          "body-lg": [
+            "Manrope"
+          ],
+          "body-sm": [
+            "Manrope"
+          ],
+          "label-sm": [
+            "Manrope"
+          ],
+          "display-lg": [
+            "Newsreader"
+          ],
+          "headline-lg-mobile": [
+            "Newsreader"
+          ],
+          "label-lg": [
+            "Manrope"
+          ]
+        },
+        "fontSize": {
+          "headline-md": [
+            "1.75rem",
+            {
+              "lineHeight": "1.3",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "500"
+            }
+          ],
+          "label-md": [
+            "0.75rem",
+            {
+              "lineHeight": "1.2",
+              "letterSpacing": "0.06em",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-lg": [
+            "2.5rem",
+            {
+              "lineHeight": "1.2",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "400"
+            }
+          ],
+          "body-md": [
+            "1rem",
+            {
+              "lineHeight": "1.5",
+              "letterSpacing": "0",
+              "fontWeight": "400"
+            }
+          ],
+          "headline-sm": [
+            "1.25rem",
+            {
+              "lineHeight": "1.4",
+              "letterSpacing": "0",
+              "fontWeight": "500"
+            }
+          ],
+          "display-lg-mobile": [
+            "2.25rem",
+            {
+              "lineHeight": "1.2",
+              "letterSpacing": "-0.015em",
+              "fontWeight": "400"
+            }
+          ],
+          "body-lg": [
+            "1.125rem",
+            {
+              "lineHeight": "1.6",
+              "letterSpacing": "-0.005em",
+              "fontWeight": "400"
+            }
+          ],
+          "body-sm": [
+            "0.875rem",
+            {
+              "lineHeight": "1.45",
+              "letterSpacing": "0",
+              "fontWeight": "400"
+            }
+          ],
+          "label-sm": [
+            "0.6875rem",
+            {
+              "lineHeight": "1.2",
+              "letterSpacing": "0.08em",
+              "fontWeight": "700"
+            }
+          ],
+          "display-lg": [
+            "3.5rem",
+            {
+              "lineHeight": "1.15",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "400"
+            }
+          ],
+          "headline-lg-mobile": [
+            "1.875rem",
+            {
+              "lineHeight": "1.25",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "400"
+            }
+          ],
+          "label-lg": [
+            "0.875rem",
+            {
+              "lineHeight": "1.2",
+              "letterSpacing": "0.02em",
+              "fontWeight": "600"
+            }
+          ]
+        }
+      }
+    }
+  };</script></head><body class="bg-background font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg h-20 flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><a class="flex flex-col group" data-path="learning-path" href="#"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tight group-hover:text-primary transition-colors">Skill Setu</span><span class="inline-block w-1.5 h-1.5 rounded-full bg-primary-container"></span></div><span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary">Career Bridge / Readiness OS</span></a><nav class="hidden xl:flex items-center gap-space-md ml-space-xs" data-active-classes="text-on-surface font-semibold border-b-2 border-primary-container pb-1"><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-space-xs" data-path="assessments" href="#">Assessments</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-space-xs" data-path="courses" href="#">Courses</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-space-xs" data-path="learning-path" href="#">Learning Path</a><a aria-current="page" class="transition-colors py-space-xs text-on-surface font-semibold border-b-2 border-primary-container pb-1" data-path="ai-quizzes" href="#">AI Quizzes</a><a class="font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface transition-colors py-space-xs" data-path="gap-analysis" href="#">Gap Analysis</a></nav></div><div class="flex items-center gap-space-md"><div class="hidden lg:flex items-center gap-space-xs px-space-md py-space-xs bg-surface-container-low rounded-xl"><span class="material-symbols-outlined text-secondary text-[18px]">verified</span><div class="flex flex-col"><span class="font-label-sm text-label-sm uppercase text-secondary">Active Cohort Track</span><span class="font-label-md text-label-md text-on-surface font-semibold">Cloud &amp; Systems Architect <span class="text-primary-container font-bold">(L1: 74%)</span></span></div></div><div class="relative flex items-center"><button aria-label="Notifications" class="p-space-xs rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors relative flex items-center justify-center" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary-container ring-2 ring-surface-container-lowest"></span></button></div><div class="flex items-center gap-space-sm pl-space-xs"><div class="relative"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-600 rounded-full ring-2 ring-surface-container-lowest"></span></div><div class="hidden md:flex flex-col text-left"><span class="font-label-md text-label-md font-semibold text-on-surface leading-tight">Aarav Sharma</span><span class="font-label-sm text-label-sm text-secondary leading-none">B.Tech CS Senior • IIT Roorkee</span></div><span class="material-symbols-outlined text-secondary text-[16px] hidden md:inline-block">expand_more</span></div></div></div></header><main class="w-full pt-20 bg-background min-h-screen"><div class="flex flex-col w-full">
+<div class="max-w-7xl mx-auto w-full px-margin md:px-margin-md lg:px-margin-lg py-space-xl">
+<!-- Top Editorial Header & Operational Overview -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg mb-space-xl">
+<div class="max-w-3xl">
+<div class="flex items-center gap-space-xs mb-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">Heuristic Parser Engine v4.2</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span class="font-label-sm text-label-sm text-secondary">IEEE &amp; ACM Syllabus Mapped</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mb-space-xs">
+          AI Quiz Studio &amp; Courseware Parser
+        </h1>
+<p class="font-body-lg text-body-lg text-secondary">
+          Upload university lecture slides, dense technical textbooks, or architectural RFCs to generate high-rigor, verified diagnostic assessments with strict source grounding.
+        </p>
+</div>
+<div class="flex items-center gap-space-md shrink-0">
+<div class="bg-surface-container-low px-space-md py-space-sm rounded-xl flex items-center gap-space-sm shadow-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+</div>
+<div>
+<span class="block font-label-sm text-label-sm uppercase text-secondary">Parsing Credit Tier</span>
+<span class="block font-label-md text-label-md font-bold text-on-surface">Unlimited Cohort Access</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Two-Column Workspace -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg mb-space-xl">
+<!-- LEFT COLUMN: Parsing & Configuration Workspace (5 Cols) -->
+<div class="lg:col-span-5 flex flex-col gap-space-lg">
+<!-- Drag & Drop Courseware Portal -->
+<div class="bg-surface-container-lowest p-space-lg rounded-full shadow-sm flex flex-col gap-space-md relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px]">upload_file</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Courseware Intake</h2>
+</div>
+<span class="font-label-sm text-label-sm text-secondary bg-surface-container-low px-space-xs py-0.5 rounded">PDF, PPTX, TXT</span>
+</div>
+<!-- Interactive Upload Dropzone -->
+<div class="bg-surface-container-low/70 rounded-xl p-space-lg flex flex-col items-center justify-center text-center cursor-pointer hover:bg-surface-container-low transition-colors group" id="dropzone">
+<div class="w-12 h-12 rounded-full bg-surface-container-lowest shadow-sm flex items-center justify-center mb-space-sm group-hover:scale-105 transition-transform text-primary">
+<span class="material-symbols-outlined text-[24px]">cloud_upload</span>
+</div>
+<p class="font-label-lg text-label-lg font-semibold text-on-surface mb-0.5">
+              Drag &amp; drop courseware here, or <span class="text-primary hover:underline">browse files</span>
+</p>
+<span class="font-label-sm text-label-sm text-secondary">Max file size: 50MB • Textbooks, slides, transcripts</span>
+<input class="hidden" id="file-input" type="file"/>
+</div>
+<!-- Uploaded Document Active Item -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">picture_as_pdf</span>
+</div>
+<div class="min-w-0">
+<span class="block font-label-md text-label-md font-semibold text-on-surface truncate">Distributed_Systems_Lecture_08.pdf</span>
+<span class="block font-label-sm text-label-sm text-secondary">3.4 MB • Uploaded 4 mins ago</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary hover:text-error text-[18px] cursor-pointer">close</span>
+</div>
+<!-- In-Flight Parsing Pipeline Status -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-secondary font-medium">Ingestion Pipeline</span>
+<span class="text-primary font-bold">100% Extracted</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full w-full transition-all duration-700"></div>
+</div>
+</div>
+<!-- Detailed Steps Pills -->
+<div class="grid grid-cols-1 gap-space-xs mt-space-xs">
+<div class="flex items-center justify-between bg-surface-container-lowest px-space-sm py-space-xs rounded text-on-surface">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
+<span class="font-label-sm text-label-sm font-semibold">1. Document Uploaded</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">Verified CRC32</span>
+</div>
+<div class="flex items-center justify-between bg-surface-container-lowest px-space-sm py-space-xs rounded text-on-surface">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
+<span class="font-label-sm text-label-sm font-semibold">2. Structural Semantic Extraction</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">18 Pages Parsed</span>
+</div>
+<div class="flex items-center justify-between bg-surface-container-lowest px-space-sm py-space-xs rounded text-on-surface">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
+<span class="font-label-sm text-label-sm font-semibold">3. LLM Diagnostic Synthesis</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-semibold">15 MCQs Ready</span>
+</div>
+</div>
+</div>
+<!-- Configuration Controls -->
+<div class="flex flex-col gap-space-md pt-space-xs">
+<!-- Question Volume Slider -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md font-semibold text-on-surface" for="q-range">Assessment Size</label>
+<span class="font-label-md text-label-md font-bold text-primary" id="range-value">15 Questions</span>
+</div>
+<input class="w-full accent-primary cursor-pointer h-1.5 bg-surface-container rounded-lg appearance-none" id="q-range" max="25" min="10" step="5" type="range" value="15"/>
+<div class="flex justify-between font-label-sm text-label-sm text-secondary">
+<span>10 Quick</span>
+<span>15 Standard</span>
+<span>20 Comprehensive</span>
+<span>25 Exhaustive</span>
+</div>
+</div>
+<!-- Rigor & Stance Selection -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Diagnostic Focus</span>
+<div class="grid grid-cols-2 gap-space-xs p-1 bg-surface-container-low rounded-xl">
+<button class="py-space-xs font-label-md text-label-md rounded text-secondary hover:text-on-surface font-semibold text-center transition-colors" type="button">
+                  Conceptual Deep-Dive
+                </button>
+<button class="py-space-xs font-label-md text-label-md rounded bg-surface-container-lowest text-primary font-bold shadow-sm text-center" type="button">
+                  Implementation &amp; Code
+                </button>
+</div>
+</div>
+<!-- Bloom's Taxonomy Level Selection -->
+<div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-xl">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Negative Marking Scheme</span>
+<span class="font-label-sm text-label-sm text-secondary">GATE/UPSC academic rigor (-0.33)</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-surface-variant after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg font-bold py-space-sm px-space-md rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-space-xs" type="button">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+<span>Re-Generate Diagnostic Quiz</span>
+</button>
+</div>
+</div>
+<!-- Document Knowledge Extent Metric (Small Inline Chart Card) -->
+<div class="bg-surface-container-lowest p-space-lg rounded-full shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Coverage Spectrum</span>
+<span class="font-label-sm text-label-sm text-secondary">18 / 18 pages mapped</span>
+</div>
+<!-- Minimal SVG Linear Distribution Chart -->
+<div class="w-full py-space-xs">
+<svg class="w-full h-8" fill="none" viewbox="0 0 360 32" xmlns="http://www.w3.org/2000/svg">
+<rect class="fill-primary" height="16" rx="4" width="60" x="0" y="8"></rect>
+<rect class="fill-primary-container" height="16" rx="4" width="80" x="66" y="8"></rect>
+<rect class="fill-primary" height="16" rx="4" width="110" x="152" y="8"></rect>
+<rect class="fill-secondary" height="16" rx="4" width="92" x="268" y="8"></rect>
+</svg>
+<div class="flex items-center justify-between font-label-sm text-label-sm text-secondary pt-1">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary"></span> Consensus</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary-container"></span> Log Replication</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span> Failover</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Active Quiz Preview & Interactive Evaluation Studio (7 Cols) -->
+<div class="lg:col-span-7 flex flex-col gap-space-lg">
+<!-- Main Quiz Workspace Card -->
+<div class="bg-surface-container-lowest p-space-lg rounded-full shadow-sm flex flex-col gap-space-md">
+<!-- Assessment Header & Timer -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-space-sm gap-space-sm">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="px-space-xs py-0.5 rounded font-label-sm text-label-sm font-bold bg-primary-fixed text-primary">LIVE BENCHMARK</span>
+<span class="font-label-sm text-label-sm text-secondary">Term Paper #4 Sync</span>
+</div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight mt-1">
+                Distributed Consensus &amp; Raft Protocol
+              </h2>
+<span class="font-label-sm text-label-sm text-secondary">15 Questions • 20 Mins Alloc. • Grounded on pp. 4–18 of Lecture_08.pdf</span>
+</div>
+<!-- Academic Clock Counter -->
+<div class="flex items-center gap-space-xs bg-surface-container px-space-md py-space-xs rounded-xl shrink-0 self-start sm:self-auto">
+<span class="material-symbols-outlined text-primary text-[20px]">timer</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase text-secondary">Remaining</span>
+<span class="font-label-md text-label-md font-bold text-on-surface tracking-wider">14:28</span>
+</div>
+</div>
+</div>
+<!-- Progress Ribbon -->
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm font-semibold text-secondary shrink-0">Progress</span>
+<div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden flex gap-0.5 p-0.5">
+<div class="bg-emerald-600 h-full rounded-l-full w-[20%]"></div>
+<div class="bg-emerald-600 h-full w-[20%]"></div>
+<div class="bg-primary h-full w-[6.6%]"></div>
+<div class="bg-surface-container h-full rounded-r-full flex-1"></div>
+</div>
+<span class="font-label-sm text-label-sm font-bold text-on-surface shrink-0">03 / 15</span>
+</div>
+<!-- Question Body -->
+<div class="bg-surface-container-low/50 p-space-md rounded-xl flex flex-col gap-space-sm mt-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase font-bold text-primary tracking-wider">Question 03 of 15 • Single Choice</span>
+<span class="font-label-sm text-label-sm text-secondary bg-surface-container-highest px-space-xs py-0.5 rounded">Raft Core §5.3</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface font-medium leading-relaxed">
+              In the Raft consensus algorithm, what condition must be strictly fulfilled before a cluster Leader can commit an entry from its log to its localized state machine?
+            </p>
+</div>
+<!-- Multiple Choice Selectors -->
+<div class="flex flex-col gap-space-sm">
+<!-- Option A (Unselected) -->
+<button class="w-full text-left p-space-md rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-all flex items-start gap-space-md group" type="button">
+<span class="w-7 h-7 rounded-lg bg-surface-container flex items-center justify-center font-label-md text-label-md font-bold text-secondary group-hover:text-on-surface shrink-0 mt-0.5">
+                A
+              </span>
+<div class="flex-1">
+<span class="font-body-md text-body-md text-on-surface">The log entry is persistently acknowledged by at least one Candidate node during an active reelection freeze.</span>
+</div>
+</button>
+<!-- Option B (Correct Answer Highlighted) -->
+<div class="w-full p-space-md rounded-xl bg-emerald-50 text-emerald-950 flex items-start gap-space-md relative overflow-hidden shadow-sm">
+<span class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-label-md text-label-md font-bold shrink-0 mt-0.5">
+                B
+              </span>
+<div class="flex-1">
+<span class="font-body-md text-body-md text-emerald-950 font-medium">
+                  The entry has been replicated on a majority of cluster nodes in the current term by the valid leader.
+                </span>
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-emerald-700 font-bold mt-1.5 block">
+<span class="material-symbols-outlined text-[16px]">verified</span> Correct Answer Selected
+                </span>
+</div>
+<div class="w-1.5 bg-emerald-600 absolute right-0 top-0 bottom-0"></div>
+</div>
+<!-- Option C (Unselected) -->
+<button class="w-full text-left p-space-md rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-all flex items-start gap-space-md group" type="button">
+<span class="w-7 h-7 rounded-lg bg-surface-container flex items-center justify-center font-label-md text-label-md font-bold text-secondary group-hover:text-on-surface shrink-0 mt-0.5">
+                C
+              </span>
+<div class="flex-1">
+<span class="font-body-md text-body-md text-on-surface">The baseline heartbeat timeout has elapsed twice consecutively without any incoming split-vote petitions.</span>
+</div>
+</button>
+<!-- Option D (Unselected) -->
+<button class="w-full text-left p-space-md rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-all flex items-start gap-space-md group" type="button">
+<span class="w-7 h-7 rounded-lg bg-surface-container flex items-center justify-center font-label-md text-label-md font-bold text-secondary group-hover:text-on-surface shrink-0 mt-0.5">
+                D
+              </span>
+<div class="flex-1">
+<span class="font-body-md text-body-md text-on-surface">All surviving follower nodes explicitly return a synchronized RPC zero-byte commit hash acknowledgement.</span>
+</div>
+</button>
+</div>
+<!-- Deep Rationale & Source Verification Box -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">Verified Academic Rationale</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">AI Citation Engine</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface leading-relaxed">
+              According to Raft paper §5.3, a leader commits a log entry once it is replicated across a majority (quorum) of servers. Furthermore, Raft mandates that the leader only commits an entry from its <em>current term</em> by counting replicas, preventing uncommitted overwrite anomalies during leader replacement.
+            </p>
+<div class="flex flex-wrap items-center gap-space-xs mt-space-xs pt-space-xs">
+<span class="font-label-sm text-label-sm text-secondary font-semibold">Evidence Grounding:</span>
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm px-space-xs py-0.5 rounded bg-surface-container-lowest text-on-surface shadow-xs">
+<span class="material-symbols-outlined text-[14px] text-primary">bookmark</span>
+                Lecture_08.pdf, Page 12, Slide 4 (Log Invariants)
+              </span>
+<a class="font-label-sm text-label-sm text-primary hover:underline font-semibold ml-auto flex items-center gap-0.5" href="#">
+                View Source Slice <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- Navigation & Quick Response Toolbar -->
+<div class="flex items-center justify-between pt-space-xs">
+<button class="px-space-md py-space-xs rounded-lg bg-surface-container text-on-surface font-label-md text-label-md font-semibold hover:bg-surface-variant transition-colors flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span> Previous
+            </button>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-sm py-space-xs rounded-lg text-secondary hover:text-on-surface font-label-md text-label-md transition-colors" type="button">
+                Flag for Revision
+              </button>
+<button class="px-space-lg py-space-xs rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md font-bold transition-all shadow-sm flex items-center gap-1" type="button">
+                Next Question <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- BOTTOM SECTION: Recent AI-Generated Quizzes & Scores -->
+<div class="flex flex-col gap-space-md">
+<!-- Section Title & Filter Tabs -->
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-space-sm">
+<div>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold">Diagnostic Ledger</span>
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">
+            Recent AI-Generated Quizzes &amp; Performance Records
+          </h3>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm text-secondary">Export Record:</span>
+<button class="px-space-xs py-1 rounded text-primary hover:bg-surface-container font-label-sm text-label-sm font-semibold transition-colors flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">download</span> PDF Transcript
+          </button>
+</div>
+</div>
+<!-- Historical Record Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Record 1 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-full shadow-sm flex flex-col justify-between gap-space-md hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">CS 6033 • DBMS</span>
+<span class="font-label-sm text-label-sm text-secondary">2 days ago</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm font-bold text-on-surface leading-snug">
+              Database Internals: Chapter 4 (B+ Tree Concurrency)
+            </h4>
+<p class="font-body-sm text-body-sm text-secondary line-clamp-2">
+              Parsed from Silberschatz 7th Ed. Extracting latch crabbing invariants and write-ahead logging protocols.
+            </p>
+</div>
+<div class="flex flex-col gap-space-sm pt-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="font-display-lg text-headline-md font-bold text-on-surface">86%</span>
+<span class="font-label-sm text-label-sm text-emerald-700 font-bold bg-emerald-50 px-space-xs py-0.5 rounded">Mastery</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">13 / 15 Correct</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-emerald-600 h-full rounded-full w-[86%]"></div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<button class="font-label-sm text-label-sm font-semibold text-primary hover:underline flex items-center gap-0.5" type="button">
+<span class="material-symbols-outlined text-[16px]">visibility</span> View Mistakes (2)
+              </button>
+<button class="font-label-sm text-label-sm font-bold text-on-surface bg-surface-container-low hover:bg-surface-container px-space-sm py-1 rounded transition-colors flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">replay</span> Retake
+              </button>
+</div>
+</div>
+</div>
+<!-- Record 2 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-full shadow-sm flex flex-col justify-between gap-space-md hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">CS 5010 • Kernel Arch</span>
+<span class="font-label-sm text-label-sm text-secondary">5 days ago</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm font-bold text-on-surface leading-snug">
+              Linux Memory Subsystems &amp; Page Table Walking
+            </h4>
+<p class="font-body-sm text-body-sm text-secondary line-clamp-2">
+              Generated from University Lab 04 Handout. Multi-level translation, TLB invalidation, and buddy allocators.
+            </p>
+</div>
+<div class="flex flex-col gap-space-sm pt-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="font-display-lg text-headline-md font-bold text-on-surface">73%</span>
+<span class="font-label-sm text-label-sm text-primary font-bold bg-primary-fixed px-space-xs py-0.5 rounded">Gap Detected</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">14 / 20 Correct</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full w-[73%]"></div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<button class="font-label-sm text-label-sm font-semibold text-primary hover:underline flex items-center gap-0.5" type="button">
+<span class="material-symbols-outlined text-[16px]">visibility</span> View Mistakes (6)
+              </button>
+<button class="font-label-sm text-label-sm font-bold text-on-surface bg-surface-container-low hover:bg-surface-container px-space-sm py-1 rounded transition-colors flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">replay</span> Retake
+              </button>
+</div>
+</div>
+</div>
+<!-- Record 3 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-full shadow-sm flex flex-col justify-between gap-space-md hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">CS 4242 • Protocols</span>
+<span class="font-label-sm text-label-sm text-secondary">1 week ago</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm font-bold text-on-surface leading-snug">
+              Computer Networks: TCP Congestion Control &amp; BBR
+            </h4>
+<p class="font-body-sm text-body-sm text-secondary line-clamp-2">
+              Extracted from RFC 5681 and research slides on bottleneck bandwidth and round-trip propagation time.
+            </p>
+</div>
+<div class="flex flex-col gap-space-sm pt-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="font-display-lg text-headline-md font-bold text-on-surface">92%</span>
+<span class="font-label-sm text-label-sm text-emerald-700 font-bold bg-emerald-50 px-space-xs py-0.5 rounded">Exemplary</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">09 / 10 Correct</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-emerald-600 h-full rounded-full w-[92%]"></div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<button class="font-label-sm text-label-sm font-semibold text-primary hover:underline flex items-center gap-0.5" type="button">
+<span class="material-symbols-outlined text-[16px]">visibility</span> View Mistakes (1)
+              </button>
+<button class="font-label-sm text-label-sm font-bold text-on-surface bg-surface-container-low hover:bg-surface-container px-space-sm py-1 rounded transition-colors flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">replay</span> Retake
+              </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive script for client-side dropzone and slider sync -->
+<script>
+    (function() {
+      const slider = document.getElementById('q-range');
+      const display = document.getElementById('range-value');
+      if (slider && display) {
+        slider.addEventListener('input', function(e) {
+          display.textContent = e.target.value + ' Questions';
+        });
+      }
+
+      const dropzone = document.getElementById('dropzone');
+      const fileInput = document.getElementById('file-input');
+      if (dropzone && fileInput) {
+        dropzone.addEventListener('click', () => fileInput.click());
+        dropzone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          dropzone.classList.add('bg-surface-container');
+        });
+        dropzone.addEventListener('dragleave', () => {
+          dropzone.classList.remove('bg-surface-container');
+        });
+        dropzone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          dropzone.classList.remove('bg-surface-container');
+        });
+      }
+    })();
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest mt-space-xl shadow-[0_-1px_6px_rgba(0,0,0,0.03)]"><div class="max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex flex-col sm:flex-row items-center gap-space-md text-center sm:text-left"><div><span class="font-headline-sm text-headline-sm font-bold text-on-surface">Skill Setu</span><p class="font-body-sm text-body-sm text-secondary">Career Readiness Operating System for Engineering Graduates</p></div><div class="inline-flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container-low rounded-xl"><span class="w-2 h-2 rounded-full bg-emerald-600"></span><span class="font-label-sm text-label-sm text-on-surface font-medium">All services operational</span></div></div><div class="flex flex-wrap items-center justify-center gap-space-lg"><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="learning-path" href="#">Curriculum Roadmap</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="assessments" href="#">Skill Verification</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="gap-analysis" href="#">Benchmark Matrix</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Honor Code</a></div><div class="font-label-sm text-label-sm text-secondary text-center md:text-right">© 2025 Skill Setu. Institute of Academic Readiness.</div></div></footer></body></html>

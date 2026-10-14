@@ -21,7 +21,7 @@ export function Toast({ message, type = 'success', onClose, duration = 4000 }: T
       ? 'bg-card border-green-500/40 text-foreground'
       : type === 'error'
       ? 'bg-card border-red-500/40 text-foreground'
-      : 'bg-card border-[#C2410C]/40 text-foreground';
+      : 'bg-card border-blue-500/40 text-foreground';
 
   return (
     <div

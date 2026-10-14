@@ -43,7 +43,7 @@ export function ReadinessGauge({
           {/* Left Column: Readiness Ring or Incomplete State */}
           <div className="md:col-span-6 flex flex-col items-center justify-center text-center p-2">
             <div className="flex items-center gap-1.5 mb-3">
-              <h3 className="text-base sm:text-lg font-serif font-bold text-foreground">
+              <h3 className="text-base sm:text-lg font-sans font-bold text-foreground">
                 {t('dashboard.readiness.title')}
               </h3>
               <div className="relative inline-block">
@@ -54,7 +54,7 @@ export function ReadinessGauge({
                   onMouseLeave={() => setShowTooltip(false)}
                   onFocus={() => setShowTooltip(true)}
                   onBlur={() => setShowTooltip(false)}
-                  className="text-muted-foreground/70 hover:text-foreground focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C] rounded p-0.5"
+                  className="text-muted-foreground/70 hover:text-foreground focus:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 rounded p-0.5"
                 >
                   <Info className="w-3.5 h-3.5" aria-hidden="true" />
                 </button>
@@ -73,10 +73,10 @@ export function ReadinessGauge({
             {isIncomplete || score === null ? (
               /* Incomplete Assessment State */
               <div className="flex flex-col items-center justify-center py-4 px-3 max-w-sm">
-                <div className="w-16 h-16 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-3">
+                <div className="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-3">
                   <AlertCircle className="w-8 h-8" aria-hidden="true" />
                 </div>
-                <h4 className="text-base font-semibold text-foreground mb-1">
+                <h4 className="text-base font-bold text-foreground mb-1">
                   {t('dashboard.readiness.incompleteTitle')}
                 </h4>
                 <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
@@ -85,7 +85,7 @@ export function ReadinessGauge({
                 <Link to="/assessments">
                   <Button
                     size="sm"
-                    className="bg-[#C2410C] hover:bg-[#9A3412] text-white flex items-center gap-1.5 shadow-sm"
+                    className="bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 flex items-center gap-1.5"
                   >
                     <Target className="w-4 h-4" />
                     <span>{t('dashboard.readiness.continueAssessing')}</span>
@@ -110,7 +110,7 @@ export function ReadinessGauge({
                       fill="transparent"
                       stroke="currentColor"
                       strokeWidth={strokeWidth}
-                      className="text-secondary"
+                      className="text-slate-100 dark:text-slate-800"
                     />
                     {/* Animated foreground score circle */}
                     <circle
@@ -118,18 +118,18 @@ export function ReadinessGauge({
                       cy={center}
                       r={radius}
                       fill="transparent"
-                      stroke="#C2410C"
+                      stroke="#2563EB"
                       strokeWidth={strokeWidth}
                       strokeDasharray={circumference}
                       strokeDashoffset={strokeDashoffset}
                       strokeLinecap="round"
-                      className="transition-all duration-300 ease-out dark:stroke-[#FB923C]"
+                      className="transition-all duration-300 ease-out dark:stroke-[#3B82F6]"
                     />
                   </svg>
 
                   {/* Centered Score */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center select-none">
-                    <span className="text-4xl sm:text-5xl font-bold font-serif text-foreground tracking-tight tabular-nums">
+                    <span className="text-4xl sm:text-5xl font-bold font-sans text-foreground tracking-tight tabular-nums">
                       {Math.round(safeScore)}
                     </span>
                     <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mt-0.5">
@@ -162,7 +162,7 @@ export function ReadinessGauge({
                       onMouseLeave={() => setShowCoverageTooltip(false)}
                       onFocus={() => setShowCoverageTooltip(true)}
                       onBlur={() => setShowCoverageTooltip(false)}
-                      className="text-muted-foreground/70 hover:text-foreground focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C] rounded p-0.5"
+                      className="text-muted-foreground/70 hover:text-foreground focus:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 rounded p-0.5"
                     >
                       <Info className="w-3.5 h-3.5" aria-hidden="true" />
                     </button>
@@ -177,7 +177,7 @@ export function ReadinessGauge({
                   </div>
                 </div>
 
-                <span className="text-sm font-bold font-serif text-foreground tabular-nums">
+                <span className="text-sm font-bold font-sans text-foreground tabular-nums">
                   {Math.round(coveragePercentage)}%
                 </span>
               </div>
@@ -209,22 +209,22 @@ export function ReadinessGauge({
             </div>
 
             {/* Target Role Context Banner */}
-            <div className="rounded-xl border border-border bg-secondary/50 p-4 space-y-2">
+            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/50 p-4 space-y-2">
               <div className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                 {t('dashboard.targetRoleLabel')}
               </div>
-              <div className="text-sm sm:text-base font-serif font-bold text-foreground">
+              <div className="text-sm sm:text-base font-sans font-bold text-foreground">
                 {targetRoleTitle || t('dashboard.readiness.targetRoleFallback')}
               </div>
               <div className="pt-2 flex flex-wrap gap-2">
                 <Link to="/assessments">
-                  <Button variant="outline" size="sm" className="text-xs font-semibold h-8">
-                    <Target className="w-3.5 h-3.5 mr-1 text-[#C2410C]" />
+                  <Button variant="outline" size="sm" className="text-xs font-semibold h-8 rounded-lg hover:border-blue-400 hover:text-blue-600">
+                    <Target className="w-3.5 h-3.5 mr-1 text-blue-600" />
                     <span>{t('dashboard.readiness.takeDiagnostic')}</span>
                   </Button>
                 </Link>
                 <Link to="/skill-gaps">
-                  <Button variant="ghost" size="sm" className="text-xs font-semibold h-8 text-[#C2410C] hover:bg-[#C2410C]/10">
+                  <Button variant="ghost" size="sm" className="text-xs font-semibold h-8 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/40 rounded-lg">
                     <span>{t('dashboard.readiness.viewDetails')}</span>
                     <ArrowRight className="w-3.5 h-3.5 ml-1" />
                   </Button>

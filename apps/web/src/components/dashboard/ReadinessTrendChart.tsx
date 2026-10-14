@@ -49,7 +49,7 @@ export function ReadinessTrendChart({ history = [], currentScore, className }: R
             <TrendingUp className="w-6 h-6" />
           </div>
           <div className="max-w-md space-y-1">
-            <div className="text-sm font-semibold font-serif text-foreground">
+            <div className="text-sm font-bold font-sans text-foreground">
               {dataPoints.length === 1
                 ? t('dashboard.trend.singlePointEmptyTitle')
                 : t('dashboard.trend.title')}
@@ -81,14 +81,14 @@ export function ReadinessTrendChart({ history = [], currentScore, className }: R
       <div className="w-full h-64 sm:h-72">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={dataPoints} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#E2DED4" className="dark:stroke-[#383633]" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" className="dark:stroke-[#334155]" />
             <XAxis
               dataKey="date"
-              tick={{ fill: '#636058', fontSize: 11 }}
+              tick={{ fill: '#64748B', fontSize: 11 }}
             />
             <YAxis
               domain={[0, 100]}
-              tick={{ fill: '#636058', fontSize: 11 }}
+              tick={{ fill: '#64748B', fontSize: 11 }}
               unit="%"
             />
             <Tooltip
@@ -96,12 +96,12 @@ export function ReadinessTrendChart({ history = [], currentScore, className }: R
                 if (active && payload && payload.length) {
                   const item = payload[0].payload;
                   return (
-                    <div className="p-2.5 rounded-lg bg-card border border-border shadow-md text-xs space-y-0.5">
+                    <div className="p-2.5 rounded-xl bg-card border border-border shadow-md text-xs space-y-0.5">
                       <div className="text-muted-foreground">{item.date}</div>
-                      <div className="font-bold font-serif text-foreground text-sm">
+                      <div className="font-bold font-sans text-foreground text-sm">
                         {item.score} / 100
                       </div>
-                      {item.label && <div className="text-[11px] text-[#C2410C]">{item.label}</div>}
+                      {item.label && <div className="text-[11px] font-semibold text-blue-600">{item.label}</div>}
                     </div>
                   );
                 }
@@ -111,10 +111,10 @@ export function ReadinessTrendChart({ history = [], currentScore, className }: R
             <Line
               type="monotone"
               dataKey="score"
-              stroke="#C2410C"
+              stroke="#2563EB"
               strokeWidth={2.5}
-              dot={{ r: 4, fill: '#C2410C' }}
-              activeDot={{ r: 6, fill: '#C2410C', stroke: '#FFFFFF', strokeWidth: 2 }}
+              dot={{ r: 4, fill: '#2563EB' }}
+              activeDot={{ r: 6, fill: '#2563EB', stroke: '#FFFFFF', strokeWidth: 2 }}
             />
           </LineChart>
         </ResponsiveContainer>

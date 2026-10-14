@@ -307,10 +307,10 @@ export function QuizzesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-[#C2410C]">
+          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
             AI Assessment Generator
           </span>
-          <h1 className="text-3xl font-serif font-bold text-foreground mt-1">
+          <h1 className="text-3xl font-sans font-bold text-foreground mt-1">
             Study Quizzes & Exam Simulator
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
@@ -318,7 +318,7 @@ export function QuizzesPage() {
           </p>
         </div>
 
-        <Button onClick={() => setIsCreateModalOpen(true)} className="flex items-center gap-1.5 font-semibold">
+        <Button onClick={() => setIsCreateModalOpen(true)} className="flex items-center gap-1.5 font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20">
           <Sparkles className="w-4 h-4" />
           Create New AI Quiz
         </Button>
@@ -328,11 +328,11 @@ export function QuizzesPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#C2410C]">
+            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Recommended for You</span>
             </div>
-            <h2 className="text-xl font-serif font-bold text-foreground mt-0.5">
+            <h2 className="text-xl font-sans font-bold text-foreground mt-0.5">
               Target Role Practice Quizzes
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">
@@ -344,7 +344,7 @@ export function QuizzesPage() {
         {isLoadingRecs ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="h-48 bg-card rounded-xl border border-border" />
+              <div key={i} className="h-48 bg-card rounded-2xl border border-border" />
             ))}
           </div>
         ) : recommendedQuizzes.length > 0 ? (
@@ -352,12 +352,12 @@ export function QuizzesPage() {
             {recommendedQuizzes.map((quiz) => (
               <Card
                 key={quiz.id}
-                className="flex flex-col justify-between hover:border-[#C2410C]/60 hover:shadow-sm transition-all border-l-4 border-l-[#C2410C]"
+                className="flex flex-col justify-between hover:border-blue-500/60 hover:shadow-md transition-all border-l-4 border-l-blue-600 rounded-2xl"
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <Badge variant="default" className="text-[10px] capitalize bg-[#C2410C]">
+                      <Badge variant="default" className="text-[10px] capitalize bg-blue-600 text-white">
                         {quiz.difficulty}
                       </Badge>
                       {quiz.skillName && (
@@ -375,7 +375,7 @@ export function QuizzesPage() {
                       {quiz.questionCount} Qs
                     </span>
                   </div>
-                  <CardTitle className="text-base font-serif line-clamp-2">{quiz.title}</CardTitle>
+                  <CardTitle className="text-base font-sans line-clamp-2">{quiz.title}</CardTitle>
                   <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2">
                     {quiz.recommendationReason || quiz.description}
                   </p>
@@ -393,7 +393,7 @@ export function QuizzesPage() {
                   <Button
                     size="sm"
                     onClick={() => startQuiz(quiz)}
-                    className="flex items-center gap-1 text-xs font-semibold shadow-sm bg-[#C2410C] hover:bg-[#9A3412] text-white"
+                    className="flex items-center gap-1 text-xs font-semibold shadow-md shadow-blue-500/20 bg-blue-600 hover:bg-blue-700 text-white"
                   >
                     <Play className="w-3 h-3 fill-current" />
                     Start Practice Quiz
@@ -408,7 +408,7 @@ export function QuizzesPage() {
       {/* Your Created & Uploaded Quizzes Section */}
       <div className="space-y-4 pt-4 border-t border-border">
         <div>
-          <h2 className="text-xl font-serif font-bold text-foreground">
+          <h2 className="text-xl font-sans font-bold text-foreground">
             Your Uploaded & Custom Quizzes
           </h2>
           <p className="text-xs text-muted-foreground mt-0.5">
@@ -420,24 +420,24 @@ export function QuizzesPage() {
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="h-48 bg-card rounded-xl border border-border" />
+              <div key={i} className="h-48 bg-card rounded-2xl border border-border" />
             ))}
           </div>
         ) : quizzes.length === 0 ? (
           <div className="text-center py-12 bg-card rounded-2xl border border-border text-muted-foreground space-y-3">
-            <FileCheck className="w-10 h-10 text-[#C2410C] mx-auto" />
-            <h3 className="font-serif text-base font-bold text-foreground">No custom quizzes uploaded yet</h3>
+            <FileCheck className="w-10 h-10 text-blue-600 mx-auto" />
+            <h3 className="font-sans text-base font-bold text-foreground">No custom quizzes uploaded yet</h3>
             <p className="text-xs max-w-sm mx-auto">
               Upload your lecture notes, PDFs, or paste text to generate interactive practice quizzes tailored to your studies.
             </p>
-            <Button onClick={() => setIsCreateModalOpen(true)} size="sm">
+            <Button onClick={() => setIsCreateModalOpen(true)} size="sm" className="bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20">
               Generate Custom Quiz
             </Button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {quizzes.map((quiz) => (
-              <Card key={quiz.id} className="flex flex-col justify-between hover:border-[#C2410C]/50 transition-colors">
+              <Card key={quiz.id} className="flex flex-col justify-between hover:border-blue-500/50 hover:shadow-md transition-all rounded-2xl">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between gap-2 mb-2">
                     <Badge variant="outline" className="text-[10px] capitalize">
@@ -447,7 +447,7 @@ export function QuizzesPage() {
                       {quiz.questionCount} Questions
                     </span>
                   </div>
-                  <CardTitle className="text-base font-serif line-clamp-2">{quiz.title}</CardTitle>
+                  <CardTitle className="text-base font-sans line-clamp-2">{quiz.title}</CardTitle>
                   <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2">{quiz.description}</p>
                 </CardHeader>
 
@@ -461,7 +461,7 @@ export function QuizzesPage() {
                   <span>PDF Export</span>
                 </button>
 
-                <Button size="sm" onClick={() => startQuiz(quiz)} className="flex items-center gap-1 text-xs">
+                <Button size="sm" onClick={() => startQuiz(quiz)} className="flex items-center gap-1 text-xs bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/20">
                   <Play className="w-3.5 h-3.5" />
                   <span>Attempt Quiz</span>
                 </Button>
@@ -499,14 +499,14 @@ export function QuizzesPage() {
             <button
               type="button"
               onClick={() => setCreationMode('upload')}
-              className={`pb-1 ${creationMode === 'upload' ? 'text-[#C2410C] border-b-2 border-[#C2410C]' : 'text-muted-foreground'}`}
+              className={`pb-1 ${creationMode === 'upload' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-muted-foreground'}`}
             >
               Upload File (PDF / PPTX / DOCX / TXT)
             </button>
             <button
               type="button"
               onClick={() => setCreationMode('paste')}
-              className={`pb-1 ${creationMode === 'paste' ? 'text-[#C2410C] border-b-2 border-[#C2410C]' : 'text-muted-foreground'}`}
+              className={`pb-1 ${creationMode === 'paste' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-muted-foreground'}`}
             >
               Paste Notes / Text
             </button>
@@ -535,7 +535,7 @@ export function QuizzesPage() {
                 />
                 {isExtracting ? (
                   <div className="flex flex-col items-center gap-2 text-xs text-muted-foreground">
-                    <Loader2 className="w-6 h-6 animate-spin text-[#C2410C]" />
+                    <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
                     <span>Extracting text content from file...</span>
                   </div>
                 ) : uploadedFile ? (
@@ -548,7 +548,7 @@ export function QuizzesPage() {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center gap-1.5 text-xs text-muted-foreground">
-                    <Upload className="w-8 h-8 text-[#C2410C]/80" />
+                    <Upload className="w-8 h-8 text-blue-600" />
                     <span className="font-semibold text-foreground">Click to upload study material</span>
                     <span>Supports PDF, DOCX, PPTX, TXT (up to 4 MB)</span>
                   </div>
@@ -572,7 +572,7 @@ export function QuizzesPage() {
                 value={pastedText}
                 onChange={(e) => setPastedText(e.target.value)}
                 placeholder="Paste lecture excerpts, technical summaries, documentation, or study notes..."
-                className="w-full bg-secondary rounded-lg p-3 text-xs border border-border focus:outline-none focus:ring-1 focus:ring-[#C2410C]"
+                className="w-full bg-secondary rounded-xl p-3 text-xs border border-border focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600"
               />
             </div>
           )}
@@ -584,7 +584,7 @@ export function QuizzesPage() {
               <select
                 value={questionCount}
                 onChange={(e) => setQuestionCount(parseInt(e.target.value, 10))}
-                className="w-full bg-secondary rounded-md p-2 text-xs border border-border focus:ring-1 focus:ring-[#C2410C]"
+                className="w-full bg-secondary rounded-lg p-2 text-xs border border-border focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600"
               >
                 <option value="3">3 Questions</option>
                 <option value="5">5 Questions</option>
@@ -598,7 +598,7 @@ export function QuizzesPage() {
               <select
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value as any)}
-                className="w-full bg-secondary rounded-md p-2 text-xs border border-border focus:ring-1 focus:ring-[#C2410C]"
+                className="w-full bg-secondary rounded-lg p-2 text-xs border border-border focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600"
               >
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
@@ -611,7 +611,7 @@ export function QuizzesPage() {
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value as any)}
-                className="w-full bg-secondary rounded-md p-2 text-xs border border-border focus:ring-1 focus:ring-[#C2410C]"
+                className="w-full bg-secondary rounded-lg p-2 text-xs border border-border focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600"
               >
                 <option value="en">English</option>
                 <option value="hi">हिंदी (Hindi)</option>
@@ -625,7 +625,7 @@ export function QuizzesPage() {
               <select
                 value={selectedSkillId}
                 onChange={(e) => setSelectedSkillId(e.target.value)}
-                className="w-full bg-secondary rounded-md p-2 text-xs border border-border focus:ring-1 focus:ring-[#C2410C]"
+                className="w-full bg-secondary rounded-lg p-2 text-xs border border-border focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600"
               >
                 <option value="">None / General Practice</option>
                 {availableSkills.map((s) => (
@@ -645,7 +645,7 @@ export function QuizzesPage() {
               size="sm"
               onClick={handleGenerate}
               isLoading={isGenerating}
-              className="font-semibold shadow-md"
+              className="font-semibold shadow-md shadow-blue-500/20 bg-blue-600 hover:bg-blue-700 text-white"
             >
               <Sparkles className="w-4 h-4 mr-1.5" />
               Generate Quiz with Gemini
@@ -663,17 +663,17 @@ export function QuizzesPage() {
       >
         {quizQuestions.length === 0 ? (
           <div className="py-12 text-center text-sm text-muted-foreground space-y-2">
-            <Loader2 className="w-6 h-6 animate-spin text-[#C2410C] mx-auto" />
+            <Loader2 className="w-6 h-6 animate-spin text-blue-600 mx-auto" />
             <p>Loading quiz questions...</p>
           </div>
         ) : attemptResult ? (
           /* Result View with Weak Topics */
           <div className="space-y-6 py-2">
             <div className="p-6 rounded-2xl bg-secondary/50 border border-border text-center space-y-2">
-              <h3 className="text-2xl font-serif font-bold text-foreground">
+              <h3 className="text-2xl font-sans font-bold text-foreground">
                 Quiz Evaluation Result
               </h3>
-              <div className="text-4xl font-serif font-bold text-[#C2410C] py-1">
+              <div className="text-4xl font-sans font-bold text-blue-600 py-1">
                 {attemptResult.scorePercentage}%
               </div>
               <p className="text-xs text-muted-foreground">
@@ -743,7 +743,7 @@ export function QuizzesPage() {
                 <Download className="w-4 h-4" />
                 Export Quiz PDF
               </Button>
-              <Button onClick={() => setIsAttemptModalOpen(false)} className="flex-1">
+              <Button onClick={() => setIsAttemptModalOpen(false)} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20">
                 Done
               </Button>
             </div>
@@ -779,13 +779,13 @@ export function QuizzesPage() {
                     }
                     className={`w-full text-left p-3.5 rounded-xl border text-xs transition-all flex items-start gap-3 ${
                       isSelected
-                        ? 'border-[#C2410C] bg-[#C2410C]/10 text-foreground ring-1 ring-[#C2410C]'
+                        ? 'border-blue-600 bg-blue-50 dark:bg-blue-950/40 text-foreground ring-1 ring-blue-600'
                         : 'border-border bg-card text-foreground/80 hover:bg-secondary/60'
                     }`}
                   >
                     <div
                       className={`w-4 h-4 rounded mt-0.5 border flex items-center justify-center flex-shrink-0 ${
-                        isSelected ? 'bg-[#C2410C] border-[#C2410C] text-white' : 'border-muted-foreground'
+                        isSelected ? 'bg-blue-600 border-blue-600 text-white' : 'border-muted-foreground'
                       }`}
                     >
                       {isSelected && <CheckCircle2 className="w-3 h-3" />}

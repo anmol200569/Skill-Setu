@@ -87,10 +87,10 @@ export function CourseManagerPage() {
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-[#C2410C]">
+          <span className="text-xs font-bold uppercase tracking-wider text-blue-600">
             Content Management
           </span>
-          <h1 className="text-3xl font-serif font-bold text-foreground mt-1">
+          <h1 className="text-3xl font-bold text-foreground mt-1 tracking-tight">
             Course Catalogue Studio
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
@@ -104,7 +104,7 @@ export function CourseManagerPage() {
         </Button>
       </div>
 
-      <div className="bg-card p-4 rounded-xl border border-border flex items-center justify-between">
+      <div className="bg-card p-4 rounded-2xl border border-border flex items-center justify-between shadow-sm">
         <div className="relative w-full max-w-sm">
           <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-3" />
           <input
@@ -112,7 +112,7 @@ export function CourseManagerPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter courses..."
-            className="w-full bg-secondary rounded-lg pl-9 pr-3 py-2 text-xs border border-border focus:ring-1 focus:ring-[#C2410C]"
+            className="w-full bg-secondary rounded-xl pl-9 pr-3 py-2 text-xs border border-border focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all"
           />
         </div>
         <span className="text-xs text-muted-foreground font-medium">
@@ -121,7 +121,7 @@ export function CourseManagerPage() {
       </div>
 
       {/* Courses Table */}
-      <div className="bg-card rounded-xl border border-border overflow-hidden">
+      <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-sm">
         <table className="w-full text-left text-xs">
           <thead className="bg-secondary/60 text-muted-foreground font-semibold border-b border-border">
             <tr>

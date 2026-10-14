@@ -7,12 +7,14 @@
 export const tokens = {
   colors: {
     brand: {
-      terracotta: '#C2410C', // Light mode primary burnt orange
-      terracottaHover: '#9A3412',
-      terracottaDark: '#FB923C', // Dark mode accessible terracotta (WCAG AA compliant)
-      terracottaDarkHover: '#F97316',
-      terracottaSubtle: 'rgba(194, 65, 12, 0.08)',
-      terracottaSubtleDark: 'rgba(251, 146, 60, 0.12)',
+      terracotta: '#2563EB', // Royal blue primary
+      terracottaHover: '#1D4ED8',
+      terracottaDark: '#3B82F6', // Dark mode accessible royal blue
+      terracottaDarkHover: '#60A5FA',
+      terracottaSubtle: 'rgba(37, 99, 235, 0.08)',
+      terracottaSubtleDark: 'rgba(59, 130, 246, 0.15)',
+      blue: '#2563EB',
+      blueHover: '#1D4ED8',
     },
     status: {
       strong: {
@@ -41,28 +43,28 @@ export const tokens = {
       }
     },
     light: {
-      background: '#FAF8F4',
-      foreground: '#1A1A18',
+      background: '#FFFFFF',
+      foreground: '#0F172A',
       card: '#FFFFFF',
-      cardForeground: '#1A1A18',
-      secondary: '#F2EFE9',
-      secondaryForeground: '#1A1A18',
-      muted: '#EFECE5',
-      mutedForeground: '#636058',
-      border: '#E2DED4',
-      input: '#E2DED4',
+      cardForeground: '#0F172A',
+      secondary: '#F8FAFC',
+      secondaryForeground: '#0F172A',
+      muted: '#F1F5F9',
+      mutedForeground: '#64748B',
+      border: '#E2E8F0',
+      input: '#E2E8F0',
     },
     dark: {
-      background: '#121110',
-      foreground: '#F5F3EF',
-      card: '#1C1B19',
-      cardForeground: '#F5F3EF',
-      secondary: '#252422',
-      secondaryForeground: '#F5F3EF',
-      muted: '#201F1D',
-      mutedForeground: '#A39F95',
-      border: '#383633',
-      input: '#383633',
+      background: '#0B0F19',
+      foreground: '#F8FAFC',
+      card: '#111827',
+      cardForeground: '#F8FAFC',
+      secondary: '#1E293B',
+      secondaryForeground: '#F8FAFC',
+      muted: '#1E293B',
+      mutedForeground: '#94A3B8',
+      border: '#334155',
+      input: '#334155',
     }
   },
   spacing: {
@@ -88,14 +90,15 @@ export const tokens = {
     full: '9999px',
   },
   typography: {
-    fontSerif: 'Fraunces, Georgia, serif',
-    fontSans: '"DM Sans", system-ui, -apple-system, sans-serif',
+    fontSerif: '"Plus Jakarta Sans", system-ui, -apple-system, sans-serif',
+    fontSans: '"Plus Jakarta Sans", system-ui, -apple-system, sans-serif',
+    fontScript: 'Caveat, cursive',
   },
   shadows: {
     sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
     card: '0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04)',
     cardHover: '0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06)',
-    glowTerracotta: '0 0 20px -3px rgba(194, 65, 12, 0.25)',
+    glowTerracotta: '0 0 20px -3px rgba(37, 99, 235, 0.25)',
   }
 } as const;
 

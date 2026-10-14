@@ -85,13 +85,13 @@ export function AuthCallbackPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <div className="max-w-md w-full bg-card p-8 border border-border rounded-xl shadow-lg text-center space-y-4">
+      <div className="max-w-md w-full bg-card p-8 border border-border rounded-2xl shadow-xl text-center space-y-4">
         {errorMessage ? (
           <>
             <div className="w-12 h-12 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 flex items-center justify-center mx-auto">
               <AlertCircle className="w-6 h-6" />
             </div>
-            <h2 className="text-xl font-serif font-bold text-foreground">Authentication Failed</h2>
+            <h2 className="text-xl font-bold text-foreground">Authentication Failed</h2>
             <p className="text-xs text-muted-foreground leading-relaxed">{errorMessage}</p>
             <div className="pt-4 flex flex-col gap-2">
               <Link to="/login">
@@ -106,8 +106,8 @@ export function AuthCallbackPage() {
           </>
         ) : (
           <>
-            <div className="w-10 h-10 border-4 border-[#C2410C] border-t-transparent rounded-full animate-spin mx-auto" />
-            <h3 className="font-serif text-lg font-bold text-foreground">Authenticating</h3>
+            <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto" />
+            <h3 className="font-bold text-lg text-foreground">Authenticating</h3>
             <p className="text-xs text-muted-foreground">{statusText}</p>
           </>
         )}

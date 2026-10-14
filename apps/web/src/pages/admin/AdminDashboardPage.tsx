@@ -91,10 +91,10 @@ export function AdminDashboardPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-border">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-[#C2410C]">
+          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
             {t('admin.title', 'Administrator Studio')}
           </span>
-          <h1 className="text-3xl font-serif font-bold text-foreground mt-1">
+          <h1 className="text-3xl font-sans font-bold text-foreground mt-1">
             {t('admin.heading', 'Organization Skill Intelligence')}
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
@@ -104,13 +104,13 @@ export function AdminDashboardPage() {
 
         <div className="flex items-center gap-2">
           <Link to="/admin/competency">
-            <Button variant="outline" size="sm" className="flex items-center gap-1.5">
-              <Layers className="w-4 h-4 text-[#C2410C]" />
+            <Button variant="outline" size="sm" className="flex items-center gap-1.5 rounded-xl hover:border-blue-400 hover:text-blue-600">
+              <Layers className="w-4 h-4 text-blue-600" />
               {t('admin.manageCompetencies', 'Manage Competencies')}
             </Button>
           </Link>
           <Link to="/admin/courses">
-            <Button size="sm" className="flex items-center gap-1.5">
+            <Button size="sm" className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 rounded-xl">
               <GraduationCap className="w-4 h-4" />
               {t('admin.manageCourses', 'Manage Courses')}
             </Button>
@@ -120,59 +120,59 @@ export function AdminDashboardPage() {
 
       {/* Metric Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
+        <Card className="rounded-2xl">
           <CardContent className="p-5 flex items-center justify-between">
             <div>
               <div className="text-xs text-muted-foreground">{t('admin.totalLearners', 'Total Learners')}</div>
-              <div className="text-2xl font-serif font-bold text-foreground mt-1">
+              <div className="text-2xl font-sans font-bold text-foreground mt-1">
                 {analytics?.totalLearners || 0}
               </div>
             </div>
-            <div className="w-10 h-10 rounded-full bg-blue-500/10 text-blue-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
               <Users className="w-5 h-5" />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="rounded-2xl">
           <CardContent className="p-5 flex items-center justify-between">
             <div>
               <div className="text-xs text-muted-foreground">{t('admin.activeQuizzes', 'AI Quizzes Active')}</div>
-              <div className="text-2xl font-serif font-bold text-foreground mt-1">
+              <div className="text-2xl font-sans font-bold text-foreground mt-1">
                 {analytics?.totalQuizzesGenerated || 0}
               </div>
             </div>
-            <div className="w-10 h-10 rounded-full bg-purple-500/10 text-purple-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
               <Sparkles className="w-5 h-5" />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="rounded-2xl">
           <CardContent className="p-5 flex items-center justify-between">
             <div>
               <div className="text-xs text-muted-foreground">{t('admin.diagnosticsCompleted', 'Diagnostics Completed')}</div>
-              <div className="text-2xl font-serif font-bold text-foreground mt-1">
+              <div className="text-2xl font-sans font-bold text-foreground mt-1">
                 {analytics?.totalAssessmentsCompleted || 0}
               </div>
             </div>
-            <div className="w-10 h-10 rounded-full bg-green-500/10 text-green-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-green-500/10 text-green-600 flex items-center justify-center">
               <Award className="w-5 h-5" />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="rounded-2xl">
           <CardContent className="p-5 flex items-center justify-between">
             <div>
               <div className="text-xs text-muted-foreground">{t('admin.avgPlatformReadiness', 'Avg Platform Readiness')}</div>
-              <div className="text-2xl font-serif font-bold text-[#C2410C] mt-1">
+              <div className="text-2xl font-sans font-bold text-blue-600 mt-1">
                 {analytics?.avgPlatformReadiness !== null && analytics?.avgPlatformReadiness !== undefined
                   ? `${analytics.avgPlatformReadiness}%`
                   : t('admin.notEnoughData', 'Not enough data')}
               </div>
             </div>
-            <div className="w-10 h-10 rounded-full bg-[#C2410C]/10 text-[#C2410C] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
               <TrendingUp className="w-5 h-5" />
             </div>
           </CardContent>
@@ -180,11 +180,11 @@ export function AdminDashboardPage() {
       </div>
 
       {/* Cohort Skill Gaps Horizontal Bar Chart & Detailed Table */}
-      <Card>
+      <Card className="rounded-2xl">
         <CardHeader className="pb-3 border-b border-border">
-          <CardTitle className="text-base font-serif flex items-center justify-between">
+          <CardTitle className="text-base font-sans font-bold flex items-center justify-between">
             <span className="flex items-center gap-2">
-              <BarChart3 className="w-4 h-4 text-[#C2410C]" />
+              <BarChart3 className="w-4 h-4 text-blue-600" />
               <span>{t('admin.skillsAnalysis.title', 'Organization-Wide Skill Gap Frequency')}</span>
             </span>
             <span className="text-xs font-sans text-muted-foreground font-normal">
@@ -227,7 +227,7 @@ export function AdminDashboardPage() {
                         'Gap Prevalence'
                       ]}
                     />
-                    <Bar dataKey="gapPercentage" fill="#C2410C" radius={[0, 4, 4, 0]} />
+                    <Bar dataKey="gapPercentage" fill="#2563EB" radius={[0, 4, 4, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -275,7 +275,7 @@ export function AdminDashboardPage() {
                             </span>
                           )}
                         </td>
-                        <td className="py-2.5 text-right font-medium text-[#C2410C]">
+                        <td className="py-2.5 text-right font-medium text-blue-600">
                           {skill.avgGap > 0 ? `-${skill.avgGap}` : '0.0'}
                         </td>
                       </tr>
@@ -291,9 +291,9 @@ export function AdminDashboardPage() {
       {/* Target Roles Distribution & Recent Organization Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Popular Roles Distribution */}
-        <Card className="lg:col-span-6">
+        <Card className="lg:col-span-6 rounded-2xl">
           <CardHeader>
-            <CardTitle className="text-base font-serif">
+            <CardTitle className="text-base font-sans font-bold">
               {t('admin.popularRolesTitle', 'Target Career Role Distribution')}
             </CardTitle>
           </CardHeader>
@@ -306,7 +306,7 @@ export function AdminDashboardPage() {
               popularRoles.map((role: any, idx: number) => (
                 <div
                   key={idx}
-                  className="p-3.5 rounded-lg border border-border bg-secondary/30 flex items-center justify-between text-xs"
+                  className="p-3.5 rounded-xl border border-border bg-secondary/30 flex items-center justify-between text-xs"
                 >
                   <div className="font-semibold text-foreground">{role.roleTitle}</div>
                   <Badge variant="outline">{role.learnerCount} {t('admin.aspirants', 'Aspirants')}</Badge>
@@ -317,10 +317,10 @@ export function AdminDashboardPage() {
         </Card>
 
         {/* Recent Activity Feed (Strictly Anonymized: NO names or emails) */}
-        <Card className="lg:col-span-6">
+        <Card className="lg:col-span-6 rounded-2xl">
           <CardHeader>
-            <CardTitle className="text-base font-serif flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[#C2410C]" />
+            <CardTitle className="text-base font-sans font-bold flex items-center gap-2">
+              <Clock className="w-4 h-4 text-blue-600" />
               <span>{t('admin.recentActivityTitle', 'Recent Organization Activity')}</span>
             </CardTitle>
           </CardHeader>

@@ -183,20 +183,24 @@ export interface CourseRecommendation {
   order: number;
 }
 
+export interface LearningPathCourseItem {
+  step: number;
+  courseId: string;
+  course: Course;
+  status: 'not_started' | 'in_progress' | 'completed';
+  progressPercent: number;
+  reason: string;
+  source?: 'system' | 'manual' | string;
+  isOutsideRoleGaps?: boolean;
+}
+
 export interface LearningPath {
   id?: string | null;
   userId: string;
   targetRoleTitle?: string | null;
   status?: 'active' | 'not_started';
   totalEstimatedHours?: number | null;
-  courses: {
-    step: number;
-    courseId: string;
-    course: Course;
-    status: 'not_started' | 'in_progress' | 'completed';
-    progressPercent: number;
-    reason: string;
-  }[];
+  courses: LearningPathCourseItem[];
   createdAt?: string | null;
   updatedAt?: string | null;
 }

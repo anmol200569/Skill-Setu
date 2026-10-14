@@ -27,9 +27,9 @@ export function MobileTabBar() {
             to={tab.to}
             className={({ isActive }) =>
               cn(
-                'flex flex-col items-center justify-center py-1.5 px-0.5 rounded-lg text-[10px] font-medium transition-colors select-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C]',
+                'flex flex-col items-center justify-center py-1.5 px-0.5 rounded-lg text-[10px] font-medium transition-colors select-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600',
                 isActive
-                  ? 'text-[#C2410C] dark:text-[#FB923C] font-semibold'
+                  ? 'text-blue-600 dark:text-blue-400 font-semibold'
                   : 'text-muted-foreground hover:text-foreground'
               )
             }
@@ -39,7 +39,7 @@ export function MobileTabBar() {
                 <div
                   className={cn(
                     'p-1 rounded-full transition-transform',
-                    isActive ? 'scale-110 bg-[#C2410C]/10 dark:bg-[#FB923C]/15' : ''
+                    isActive ? 'scale-110 bg-blue-50 dark:bg-blue-950/60 text-blue-600' : ''
                   )}
                 >
                   <tab.icon className="w-4 h-4" aria-hidden="true" />

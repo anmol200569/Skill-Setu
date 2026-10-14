@@ -140,7 +140,7 @@ export function AIChatDrawer() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-full bg-[#C2410C] p-3 sm:px-4 sm:py-3 text-white shadow-lg hover:bg-[#9A3412] active:scale-95 transition-all"
+          className="fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-full bg-blue-600 p-3 sm:px-5 sm:py-3.5 text-white shadow-xl shadow-blue-500/25 hover:bg-blue-700 active:scale-95 transition-all"
           aria-label="Ask AI Mentor"
         >
           <Sparkles className="w-5 h-5 animate-pulse" />
@@ -154,11 +154,11 @@ export function AIChatDrawer() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/50">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-full bg-[#C2410C]/10 text-[#C2410C]">
+              <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400">
                 <Bot className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="text-sm font-serif font-bold text-foreground">Skill Setu AI Mentor</h4>
+                <h4 className="text-sm font-sans font-bold text-foreground">Skill Setu AI Mentor</h4>
                 <p className="text-[11px] text-muted-foreground">
                   Context: {profile?.targetRoleName || 'Role Not Selected'}
                 </p>
@@ -180,14 +180,14 @@ export function AIChatDrawer() {
                 className={`flex gap-2.5 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {m.role === 'assistant' && (
-                  <div className="w-6 h-6 rounded-full bg-[#C2410C]/15 text-[#C2410C] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="w-6 h-6 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <Bot className="w-3.5 h-3.5" />
                   </div>
                 )}
                 <div
-                  className={`rounded-xl px-3.5 py-2.5 max-w-[85%] leading-relaxed ${
+                  className={`rounded-2xl px-3.5 py-2.5 max-w-[85%] leading-relaxed ${
                     m.role === 'user'
-                      ? 'bg-[#C2410C] text-white whitespace-pre-wrap'
+                      ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/20 whitespace-pre-wrap'
                       : m.isError
                       ? 'bg-destructive/10 text-destructive border border-destructive/30 whitespace-pre-wrap'
                       : 'bg-secondary text-secondary-foreground border border-border'
@@ -219,7 +219,7 @@ export function AIChatDrawer() {
                         setIsOpen(false);
                         navigate('/dashboard');
                       }}
-                      className="mt-2 text-xs font-semibold px-2.5 py-1 rounded-md bg-[#C2410C] text-white hover:bg-[#9A3412] flex items-center gap-1.5 transition-colors"
+                      className="mt-2 text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-1.5 transition-colors"
                     >
                       <Compass className="w-3 h-3" />
                       <span>Pick Target Role</span>
@@ -236,11 +236,11 @@ export function AIChatDrawer() {
 
             {isLoading && (
               <div className="flex gap-2.5 justify-start">
-                <div className="w-6 h-6 rounded-full bg-[#C2410C]/15 text-[#C2410C] flex items-center justify-center flex-shrink-0">
+                <div className="w-6 h-6 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
                   <Bot className="w-3.5 h-3.5" />
                 </div>
                 <div className="rounded-xl px-3.5 py-2 bg-secondary border border-border flex items-center gap-2 text-muted-foreground">
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-600" />
                   <span>Consulting skill intelligence models...</span>
                 </div>
               </div>
@@ -256,7 +256,7 @@ export function AIChatDrawer() {
                 <button
                   key={i}
                   onClick={() => handleSend(q)}
-                  className="text-left text-foreground/80 hover:text-[#C2410C] flex items-center justify-between py-0.5 truncate"
+                  className="text-left text-foreground/80 hover:text-blue-600 flex items-center justify-between py-0.5 truncate"
                 >
                   <span className="truncate">{q}</span>
                   <ArrowRight className="w-3 h-3 flex-shrink-0 ml-1 text-muted-foreground" />
@@ -279,12 +279,12 @@ export function AIChatDrawer() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about your skill gaps or concepts..."
               disabled={isLoading}
-              className="flex-1 bg-secondary rounded-lg px-3 py-2 text-xs border border-border focus:outline-none focus:ring-1 focus:ring-[#C2410C]"
+              className="flex-1 bg-secondary rounded-xl px-3.5 py-2 text-xs border border-border focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600"
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="p-2 rounded-lg bg-[#C2410C] text-white hover:bg-[#9A3412] disabled:opacity-50"
+              className="p-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-500/20 disabled:opacity-50"
             >
               <Send className="w-3.5 h-3.5" />
             </button>

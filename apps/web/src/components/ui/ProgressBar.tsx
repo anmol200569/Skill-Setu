@@ -32,7 +32,7 @@ export function ProgressBar({
   };
 
   const variantClasses = {
-    primary: 'bg-[#C2410C] dark:bg-[#FB923C]',
+    primary: 'bg-blue-600 dark:bg-blue-500',
     strong: 'bg-emerald-600 dark:bg-emerald-500',
     needsImprovement: 'bg-amber-600 dark:bg-amber-500',
     neutral: 'bg-slate-400 dark:bg-slate-500',

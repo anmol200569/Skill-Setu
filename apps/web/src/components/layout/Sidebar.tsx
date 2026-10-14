@@ -54,7 +54,7 @@ export function Sidebar({ mode = 'learner' }: SidebarProps) {
       <div className="space-y-6">
         <div>
           <div className="flex items-center gap-2 px-3 py-1 text-[11px] font-bold tracking-wider uppercase text-muted-foreground">
-            <Compass className="w-3.5 h-3.5 text-[#C2410C] dark:text-[#FB923C]" />
+            <Compass className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>{mode === 'admin' ? 'Admin Studio' : 'Skill Journey'}</span>
           </div>
           <nav className="mt-2 space-y-1">
@@ -65,10 +65,10 @@ export function Sidebar({ mode = 'learner' }: SidebarProps) {
                 end={item.to === '/dashboard' || item.to === '/admin'}
                 className={({ isActive }) =>
                   cn(
-                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C]',
+                    'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600',
                     isActive
-                      ? 'bg-[#C2410C]/10 text-[#C2410C] dark:text-[#FB923C] font-semibold border-l-4 border-[#C2410C] dark:border-[#FB923C] pl-2 shadow-sm'
-                      : 'text-foreground/75 hover:bg-muted hover:text-foreground'
+                      ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-semibold border-l-4 border-blue-600 dark:border-blue-500 pl-2.5 shadow-sm'
+                      : 'text-foreground/75 hover:bg-slate-100/80 dark:hover:bg-slate-800/60 hover:text-foreground'
                   )
                 }
               >
@@ -81,7 +81,7 @@ export function Sidebar({ mode = 'learner' }: SidebarProps) {
 
         {/* Switch mode pill if trainer/admin */}
         {(role === 'admin' || role === 'trainer') && (
-          <div className="p-3 rounded-lg border border-border bg-secondary/40 text-xs">
+          <div className="p-3.5 rounded-xl border border-blue-100 dark:border-blue-950 bg-blue-50/50 dark:bg-blue-950/30 text-xs">
             <div className="font-semibold text-foreground mb-1">
               {mode === 'admin' ? 'Switch to Learner View' : 'Administrator Tools'}
             </div>
@@ -92,7 +92,7 @@ export function Sidebar({ mode = 'learner' }: SidebarProps) {
             </p>
             <NavLink
               to={mode === 'admin' ? '/dashboard' : '/admin'}
-              className="inline-flex items-center gap-1 font-semibold text-[#C2410C] dark:text-[#FB923C] hover:underline text-xs"
+              className="inline-flex items-center gap-1 font-semibold text-blue-600 dark:text-blue-400 hover:underline text-xs"
             >
               <Shield className="w-3.5 h-3.5" />
               <span>{mode === 'admin' ? 'Go to Learner Dashboard' : 'Open Admin Studio'}</span>

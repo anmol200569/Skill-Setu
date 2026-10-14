@@ -46,12 +46,12 @@ export function ChartWrapper({
             >
               {showTable ? (
                 <>
-                  <BarChart2 className="w-3.5 h-3.5 text-[#C2410C] dark:text-[#FB923C]" />
+                  <BarChart2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   <span>Chart View</span>
                 </>
               ) : (
                 <>
-                  <Table className="w-3.5 h-3.5 text-[#C2410C] dark:text-[#FB923C]" />
+                  <Table className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   <span>Table View</span>
                 </>
               )}

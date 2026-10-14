@@ -88,10 +88,10 @@ export function CompetencyManagerPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-[#C2410C]">
+          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
             Framework Governance
           </span>
-          <h1 className="text-3xl font-serif font-bold text-foreground mt-1">
+          <h1 className="text-3xl font-sans font-bold text-foreground mt-1">
             Competency Framework Studio
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
@@ -99,7 +99,7 @@ export function CompetencyManagerPage() {
           </p>
         </div>
 
-        <Button onClick={() => setIsRoleModalOpen(true)} className="flex items-center gap-1.5 font-semibold">
+        <Button onClick={() => setIsRoleModalOpen(true)} className="flex items-center gap-1.5 font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20">
           <Plus className="w-4 h-4" />
           Add Career Role
         </Button>
@@ -111,7 +111,7 @@ export function CompetencyManagerPage() {
           onClick={() => setActiveTab('roles')}
           className={`pb-3 ${
             activeTab === 'roles'
-              ? 'text-[#C2410C] border-b-2 border-[#C2410C]'
+              ? 'text-blue-600 border-b-2 border-blue-600'
               : 'text-muted-foreground hover:text-foreground'
           }`}
         >
@@ -121,7 +121,7 @@ export function CompetencyManagerPage() {
           onClick={() => setActiveTab('skills')}
           className={`pb-3 ${
             activeTab === 'skills'
-              ? 'text-[#C2410C] border-b-2 border-[#C2410C]'
+              ? 'text-blue-600 border-b-2 border-blue-600'
               : 'text-muted-foreground hover:text-foreground'
           }`}
         >
@@ -131,7 +131,7 @@ export function CompetencyManagerPage() {
           onClick={() => setActiveTab('domains')}
           className={`pb-3 ${
             activeTab === 'domains'
-              ? 'text-[#C2410C] border-b-2 border-[#C2410C]'
+              ? 'text-blue-600 border-b-2 border-blue-600'
               : 'text-muted-foreground hover:text-foreground'
           }`}
         >
@@ -158,7 +158,7 @@ export function CompetencyManagerPage() {
                 <Card key={role.id}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-base font-serif">{role.title}</CardTitle>
+                      <CardTitle className="text-base font-bold">{role.title}</CardTitle>
                       <Badge variant="outline">{role.industryDemand} Demand</Badge>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{role.description}</p>
@@ -219,7 +219,7 @@ export function CompetencyManagerPage() {
             {domains.map((dom) => (
               <Card key={dom.id}>
                 <CardHeader>
-                  <CardTitle className="text-base font-serif">{dom.name}</CardTitle>
+                  <CardTitle className="text-base font-bold">{dom.name}</CardTitle>
                   <p className="text-xs text-muted-foreground mt-1">{dom.description}</p>
                 </CardHeader>
                 <CardContent>
@@ -258,7 +258,7 @@ export function CompetencyManagerPage() {
               value={roleDescription}
               onChange={(e) => setRoleDescription(e.target.value)}
               placeholder="Detailed description of primary duties..."
-              className="w-full bg-secondary rounded-lg p-2.5 text-xs border border-border focus:ring-1 focus:ring-[#C2410C]"
+              className="w-full bg-secondary rounded-xl p-2.5 text-xs border border-border focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all"
             />
           </div>
           <div>
@@ -266,7 +266,7 @@ export function CompetencyManagerPage() {
             <select
               value={roleDemand}
               onChange={(e) => setRoleDemand(e.target.value)}
-              className="w-full bg-secondary rounded-lg p-2 text-xs border border-border focus:ring-1 focus:ring-[#C2410C]"
+              className="w-full bg-secondary rounded-xl p-2 text-xs border border-border focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600 transition-all"
             >
               <option value="Moderate">Moderate Demand</option>
               <option value="High">High Demand</option>

@@ -35,8 +35,8 @@ export function StatTile({
   return (
     <Card
       className={cn(
-        'relative p-4 sm:p-5 flex flex-col justify-between overflow-hidden',
-        onClick && 'cursor-pointer hover:border-[#C2410C]/40',
+        'relative p-4 sm:p-5 flex flex-col justify-between overflow-hidden rounded-2xl',
+        onClick && 'cursor-pointer hover:border-blue-500/40 hover:shadow-md transition-all',
         className
       )}
       onClick={onClick}
@@ -49,7 +49,7 @@ export function StatTile({
           <div className="relative inline-block flex-shrink-0">
             <button
               type="button"
-              className="text-muted-foreground/70 hover:text-foreground focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C] rounded p-0.5"
+              className="text-muted-foreground/70 hover:text-foreground focus:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 rounded p-0.5"
               aria-label={`About ${label}: ${tooltip}`}
               onMouseEnter={() => setShowTooltip(true)}
               onMouseLeave={() => setShowTooltip(false)}
@@ -71,14 +71,14 @@ export function StatTile({
         </div>
 
         {Icon && (
-          <div className="w-8 h-8 rounded-lg bg-[#C2410C]/10 dark:bg-[#FB923C]/10 text-[#C2410C] dark:text-[#FB923C] flex items-center justify-center flex-shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
             <Icon className="w-4 h-4" />
           </div>
         )}
       </div>
 
       <div className="flex items-baseline gap-1.5 mt-1">
-        <span className="text-2xl sm:text-3xl font-bold font-serif text-foreground tracking-tight">
+        <span className="text-2xl sm:text-3xl font-bold font-sans text-foreground tracking-tight">
           {value}
         </span>
         {unit && (

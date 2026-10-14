@@ -15,16 +15,16 @@ function ConstellationMesh() {
 
     // Surrounding nodes = Verified Skills
     const skillPositions: Array<{ pos: [number, number, number]; size: number; color: string; speed: number }> = [
-      { pos: [-2.2, 1.2, -0.5], size: 0.16, color: '#C2410C', speed: 1.1 },
-      { pos: [2.1, 1.0, -0.3], size: 0.18, color: '#FB923C', speed: 0.9 },
-      { pos: [-1.8, -1.3, 0.4], size: 0.15, color: '#F97316', speed: 1.2 },
-      { pos: [1.9, -1.1, 0.5], size: 0.17, color: '#EA580C', speed: 0.8 },
-      { pos: [0.0, 2.0, -0.2], size: 0.20, color: '#FDBA74', speed: 1.0 },
-      { pos: [0.2, -2.1, -0.4], size: 0.16, color: '#FED7AA', speed: 1.3 },
-      { pos: [-2.8, -0.2, -0.8], size: 0.14, color: '#FB923C', speed: 0.95 },
-      { pos: [2.7, -0.1, -0.7], size: 0.15, color: '#C2410C', speed: 1.05 },
-      { pos: [-1.0, 1.8, 0.8], size: 0.13, color: '#FED7AA', speed: 1.15 },
-      { pos: [1.1, 1.7, 0.7], size: 0.14, color: '#F97316', speed: 0.85 },
+      { pos: [-2.2, 1.2, -0.5], size: 0.16, color: '#2563EB', speed: 1.1 },
+      { pos: [2.1, 1.0, -0.3], size: 0.18, color: '#3B82F6', speed: 0.9 },
+      { pos: [-1.8, -1.3, 0.4], size: 0.15, color: '#1D4ED8', speed: 1.2 },
+      { pos: [1.9, -1.1, 0.5], size: 0.17, color: '#60A5FA', speed: 0.8 },
+      { pos: [0.0, 2.0, -0.2], size: 0.20, color: '#93C5FD', speed: 1.0 },
+      { pos: [0.2, -2.1, -0.4], size: 0.16, color: '#38BDF8', speed: 1.3 },
+      { pos: [-2.8, -0.2, -0.8], size: 0.14, color: '#3B82F6', speed: 0.95 },
+      { pos: [2.7, -0.1, -0.7], size: 0.15, color: '#2563EB', speed: 1.05 },
+      { pos: [-1.0, 1.8, 0.8], size: 0.13, color: '#93C5FD', speed: 1.15 },
+      { pos: [1.1, 1.7, 0.7], size: 0.14, color: '#1D4ED8', speed: 0.85 },
     ];
 
     // Bridge lines from each skill node to the center goal, plus cross-connections
@@ -57,12 +57,12 @@ function ConstellationMesh() {
 
   return (
     <group ref={groupRef}>
-      {/* Central Career Goal Node (Golden Terracotta Halo) */}
+      {/* Central Career Goal Node (Royal Blue Halo) */}
       <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
         <Sphere args={[0.32, 32, 32]} position={[0, 0, 0]}>
           <meshStandardMaterial
-            color="#C2410C"
-            emissive="#FB923C"
+            color="#2563EB"
+            emissive="#3B82F6"
             emissiveIntensity={0.8}
             roughness={0.2}
             metalness={0.6}
@@ -90,7 +90,7 @@ function ConstellationMesh() {
         <Line
           key={idx}
           points={pair}
-          color="#C2410C"
+          color="#2563EB"
           opacity={0.35}
           transparent
           lineWidth={1.2}
@@ -110,8 +110,8 @@ export function SkillConstellationScene() {
       style={{ background: 'transparent' }}
     >
       <ambientLight intensity={0.7} />
-      <pointLight position={[10, 10, 10]} intensity={1.2} color="#FED7AA" />
-      <pointLight position={[-10, -10, -5]} intensity={0.6} color="#FB923C" />
+      <pointLight position={[10, 10, 10]} intensity={1.2} color="#93C5FD" />
+      <pointLight position={[-10, -10, -5]} intensity={0.6} color="#3B82F6" />
       <ConstellationMesh />
     </Canvas>
   );

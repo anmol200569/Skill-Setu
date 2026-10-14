@@ -123,7 +123,7 @@ export function SkillGapPanel({
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
-              <Layers className="w-5 h-5 text-[#C2410C] dark:text-[#FB923C]" />
+              <Layers className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               <CardTitle>{panelTitle}</CardTitle>
             </div>
             <CardDescription className="mt-1">{panelDescription}</CardDescription>
@@ -151,7 +151,7 @@ export function SkillGapPanel({
               aria-selected={filter === 'all'}
               onClick={() => setFilter('all')}
               className={cn(
-                'px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C]',
+                'px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600',
                 filter === 'all'
                   ? 'bg-card text-foreground font-semibold shadow-sm'
                   : 'text-muted-foreground hover:text-foreground'
@@ -165,7 +165,7 @@ export function SkillGapPanel({
               aria-selected={filter === 'needsImprovement'}
               onClick={() => setFilter('needsImprovement')}
               className={cn(
-                'px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C]',
+                'px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600',
                 filter === 'needsImprovement'
                   ? 'bg-card text-foreground font-semibold shadow-sm'
                   : 'text-muted-foreground hover:text-foreground'
@@ -180,7 +180,7 @@ export function SkillGapPanel({
               aria-selected={filter === 'strong'}
               onClick={() => setFilter('strong')}
               className={cn(
-                'px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C]',
+                'px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600',
                 filter === 'strong'
                   ? 'bg-card text-foreground font-semibold shadow-sm'
                   : 'text-muted-foreground hover:text-foreground'
@@ -195,7 +195,7 @@ export function SkillGapPanel({
               aria-selected={filter === 'notAssessed'}
               onClick={() => setFilter('notAssessed')}
               className={cn(
-                'px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C]',
+                'px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600',
                 filter === 'notAssessed'
                   ? 'bg-card text-foreground font-semibold shadow-sm'
                   : 'text-muted-foreground hover:text-foreground'
@@ -215,7 +215,7 @@ export function SkillGapPanel({
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t('dashboard.skillGapPanel.searchPlaceholder')}
               aria-label={t('dashboard.skillGapPanel.searchPlaceholder')}
-              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C]"
+              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus-visible:ring-1 focus-visible:ring-blue-600"
             />
           </div>
         </div>
@@ -255,12 +255,12 @@ export function SkillGapPanel({
                         toggleExpand(item.skillId);
                       }
                     }}
-                    className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C]"
+                    className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
                   >
                     {/* Left: Skill Name & Importance */}
                     <div className="sm:w-1/3 space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-serif font-bold text-sm sm:text-base text-foreground">
+                        <span className="font-sans font-bold text-sm sm:text-base text-foreground">
                           {item.skillName}
                         </span>
                       </div>
@@ -357,7 +357,7 @@ export function SkillGapPanel({
                         {/* 1. Topics inside this skill */}
                         <div className="p-3.5 rounded-xl bg-secondary/50 border border-border space-y-1.5">
                           <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                            <Layers className="w-3.5 h-3.5 text-[#C2410C]" />
+                            <Layers className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                             <span>{t('common.topicsCovered')}</span>
                           </div>
                           <p className="text-xs text-foreground leading-relaxed">
@@ -368,7 +368,7 @@ export function SkillGapPanel({
                         {/* 2. Evidence (which assessments it came from) */}
                         <div className="p-3.5 rounded-xl bg-secondary/50 border border-border space-y-1.5">
                           <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                            <FileText className="w-3.5 h-3.5 text-[#C2410C]" />
+                            <FileText className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                             <span>{t('common.evidence')}</span>
                           </div>
                           <p className="text-xs text-foreground leading-relaxed">
@@ -381,7 +381,7 @@ export function SkillGapPanel({
                         {/* 3. Why this is shown & Action */}
                         <div className="p-3.5 rounded-xl bg-secondary/50 border border-border space-y-1.5">
                           <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                            <Info className="w-3.5 h-3.5 text-[#C2410C]" />
+                            <Info className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                             <span>{t('common.whyShown')}</span>
                           </div>
                           <p className="text-xs text-foreground leading-relaxed">
@@ -411,14 +411,14 @@ export function SkillGapPanel({
                         <div className="flex items-center gap-2">
                           {item.status === 'notAssessed' ? (
                             <Link to={`/assessments?skill=${encodeURIComponent(item.skillId)}`}>
-                              <Button size="sm" className="bg-[#C2410C] hover:bg-[#9A3412] text-white text-xs">
+                              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/20 text-xs">
                                 <Target className="w-3.5 h-3.5 mr-1" />
                                 <span>{t('dashboard.skillGapPanel.takeDiagnostic')}</span>
                               </Button>
                             </Link>
                           ) : item.gapSize > 0 ? (
                             <Link to={`/courses?skill=${encodeURIComponent(item.skillId)}`}>
-                              <Button size="sm" className="bg-[#C2410C] hover:bg-[#9A3412] text-white text-xs flex items-center gap-1">
+                              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/20 text-xs flex items-center gap-1">
                                 <BookOpen className="w-3.5 h-3.5" />
                                 <span>{t('common.closeGap')}</span>
                                 <ArrowRight className="w-3 h-3 ml-0.5" />
@@ -426,8 +426,8 @@ export function SkillGapPanel({
                             </Link>
                           ) : (
                             <Link to={`/quizzes?skill=${encodeURIComponent(item.skillId)}`}>
-                              <Button variant="outline" size="sm" className="text-xs">
-                                <Sparkles className="w-3.5 h-3.5 mr-1 text-[#C2410C]" />
+                              <Button variant="outline" size="sm" className="text-xs hover:text-blue-600 hover:border-blue-400">
+                                <Sparkles className="w-3.5 h-3.5 mr-1 text-blue-600" />
                                 <span>{t('dashboard.skillGapPanel.practiceQuiz')}</span>
                               </Button>
                             </Link>

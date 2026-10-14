@@ -219,7 +219,7 @@ describe('BUG 4: Manual Course Addition, Retention, and Gap Flagging', () => {
     });
 
     // Check that the returned courses contain the manual course
-    const manualFound = result.courses.find((c: any) => c.courseId === 'course-manual-git');
+    const manualFound = result.courses.find((c) => c.courseId === 'course-manual-git');
     expect(manualFound).toBeDefined();
     expect(manualFound?.source).toBe('manual');
   });

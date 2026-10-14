@@ -23,7 +23,7 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
         <li>
           <Link
             to="/dashboard"
-            className="flex items-center hover:text-[#C2410C] dark:hover:text-[#FB923C] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C] rounded p-0.5"
+            className="flex items-center hover:text-blue-600 dark:hover:text-blue-400 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 rounded p-0.5"
             aria-label={t('nav.home')}
           >
             <Home className="w-3.5 h-3.5" />
@@ -42,7 +42,7 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
               ) : (
                 <Link
                   to={item.href}
-                  className="hover:text-[#C2410C] dark:hover:text-[#FB923C] transition-colors truncate max-w-[150px] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C] rounded p-0.5"
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate max-w-[150px] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 rounded p-0.5"
                 >
                   {item.label}
                 </Link>

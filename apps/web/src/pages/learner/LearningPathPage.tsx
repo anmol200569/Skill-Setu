@@ -183,7 +183,7 @@ export function LearningPathPage() {
       <div className="p-6 sm:p-8 rounded-2xl border border-border bg-card shadow-card flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#C2410C] dark:text-[#FB923C]">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
               {t('roadmapPage.rolePrefix')} {learningPath?.targetRoleTitle || 'Target Career'}
             </span>
             <span className="text-muted-foreground text-xs">•</span>
@@ -192,8 +192,8 @@ export function LearningPathPage() {
             </span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-foreground tracking-tight flex items-center gap-2.5">
-            <Route className="w-6 h-6 text-[#C2410C] dark:text-[#FB923C]" />
+          <h1 className="text-2xl sm:text-3xl font-sans font-bold text-foreground tracking-tight flex items-center gap-2.5">
+            <Route className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             <span>{t('roadmapPage.title')}</span>
           </h1>
 
@@ -207,7 +207,7 @@ export function LearningPathPage() {
           <div className="space-y-1 w-full sm:w-44">
             <div className="flex items-center justify-between text-xs text-muted-foreground font-medium">
               <span>{t('roadmapPage.completion')}</span>
-              <span className="font-serif font-bold text-base text-[#C2410C] dark:text-[#FB923C]">
+              <span className="font-sans font-bold text-base text-blue-600 dark:text-blue-400">
                 {overallPercent}%
               </span>
             </div>
@@ -222,9 +222,9 @@ export function LearningPathPage() {
             size="sm"
             onClick={handleRegenerate}
             isLoading={isRegenerating}
-            className="flex items-center gap-1.5 text-xs font-semibold self-stretch sm:self-auto h-9"
+            className="flex items-center gap-1.5 text-xs font-semibold self-stretch sm:self-auto h-9 rounded-xl hover:border-blue-400 hover:text-blue-600"
           >
-            <RefreshCw className="w-3.5 h-3.5 text-[#C2410C] dark:text-[#FB923C]" />
+            <RefreshCw className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>{t('roadmapPage.recalibrate')}</span>
           </Button>
         </div>
@@ -245,8 +245,8 @@ export function LearningPathPage() {
           {/* Phase 1: Sequential Mapped Courses */}
           <div className="space-y-4">
             <div>
-              <h2 className="text-lg sm:text-xl font-bold font-serif text-foreground flex items-center gap-2">
-                <Layers className="w-5 h-5 text-[#C2410C] dark:text-[#FB923C]" />
+              <h2 className="text-lg sm:text-xl font-bold font-sans text-foreground flex items-center gap-2">
+                <Layers className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 <span>{t('roadmapPage.coursesHeading')}</span>
               </h2>
               <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
@@ -267,7 +267,7 @@ export function LearningPathPage() {
                         isDone
                           ? 'bg-emerald-600 border-emerald-600 text-white'
                           : isInProgress
-                          ? 'bg-[#C2410C] border-[#C2410C] text-white animate-pulse'
+                          ? 'bg-blue-600 border-blue-600 text-white animate-pulse'
                           : 'bg-card border-border text-muted-foreground'
                       }`}
                     >
@@ -277,11 +277,11 @@ export function LearningPathPage() {
                     {/* Course Item Card */}
                     <Card
                       hoverEffect
-                      className="border border-border bg-card shadow-card p-5 space-y-3"
+                      className="border border-border bg-card shadow-card p-5 space-y-3 rounded-2xl"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-xs font-bold uppercase tracking-wider text-[#C2410C] dark:text-[#FB923C]">
+                          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
                             {t('roadmapPage.stepNumber', { step: item.step })}
                           </span>
                           <Badge variant="outline">{item.course.provider}</Badge>
@@ -293,7 +293,7 @@ export function LearningPathPage() {
                               : t('roadmapPage.notStarted')}
                           </Badge>
                           {item.source === 'manual' && (
-                            <Badge variant="terracotta">
+                            <Badge variant="default" className="bg-blue-600 text-white">
                               {t('roadmapPage.addedByUser')}
                             </Badge>
                           )}
@@ -305,7 +305,7 @@ export function LearningPathPage() {
                         </div>
 
                         <div className="text-xs text-muted-foreground flex items-center gap-1.5 font-medium">
-                          <Clock className="w-3.5 h-3.5 text-[#C2410C]" />
+                          <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                           <span>{t('roadmapPage.hoursUnit', { hours: item.course.estimatedHours })}</span>
                           <span>•</span>
                           <span>{item.course.difficulty}</span>
@@ -313,7 +313,7 @@ export function LearningPathPage() {
                       </div>
 
                       <div>
-                        <h3 className="text-base font-serif font-bold text-foreground">
+                        <h3 className="text-base font-sans font-bold text-foreground">
                           {item.course.title}
                         </h3>
                         <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
@@ -367,7 +367,7 @@ export function LearningPathPage() {
                           href={item.course.destinationUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1 text-xs font-semibold text-[#C2410C] dark:text-[#FB923C] hover:underline self-start sm:self-auto"
+                          className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline self-start sm:self-auto"
                         >
                           <span>{t('roadmapPage.launchCourse', { provider: item.course.provider })}</span>
                           <ExternalLink className="w-3.5 h-3.5" />
@@ -383,8 +383,8 @@ export function LearningPathPage() {
           {/* Phase 2: Applied Milestone Projects (Demonstrate Improvement) */}
           <div className="space-y-4 pt-4 border-t border-border">
             <div>
-              <h2 className="text-lg sm:text-xl font-bold font-serif text-foreground flex items-center gap-2">
-                <FolderGit2 className="w-5 h-5 text-[#C2410C] dark:text-[#FB923C]" />
+              <h2 className="text-lg sm:text-xl font-bold font-sans text-foreground flex items-center gap-2">
+                <FolderGit2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 <span>{t('roadmapPage.projectsHeading')}</span>
               </h2>
               <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
@@ -401,11 +401,11 @@ export function LearningPathPage() {
                   <Card
                     key={proj.id}
                     hoverEffect
-                    className="p-5 border border-border bg-card shadow-card flex flex-col justify-between space-y-4"
+                    className="p-5 border border-border bg-card shadow-card flex flex-col justify-between space-y-4 rounded-2xl"
                   >
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-bold uppercase tracking-wider text-[#C2410C] dark:text-[#FB923C]">
+                        <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
                           {t('roadmapPage.capstoneProject', { num: idx + 1 })}
                         </span>
                         <Badge variant={isDone ? 'strong' : isInProgress ? 'needsImprovement' : 'notAssessed'}>
@@ -413,7 +413,7 @@ export function LearningPathPage() {
                         </Badge>
                       </div>
 
-                      <h3 className="font-serif font-bold text-base text-foreground">
+                      <h3 className="font-sans font-bold text-base text-foreground">
                         {t(proj.titleKey)}
                       </h3>
 
@@ -425,7 +425,7 @@ export function LearningPathPage() {
                         {proj.skills.map((sk) => (
                           <span
                             key={sk}
-                            className="text-[10px] font-mono bg-secondary px-2 py-0.5 rounded text-foreground/80 border border-border"
+                            className="text-[10px] font-mono bg-secondary px-2 py-0.5 rounded-lg text-foreground/80 border border-border"
                           >
                             {sk}
                           </span>
@@ -435,7 +435,7 @@ export function LearningPathPage() {
 
                     <div className="pt-3 border-t border-border flex items-center justify-between text-xs">
                       <span className="text-muted-foreground font-medium flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5 text-[#C2410C]" />
+                        <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                         {t('roadmapPage.practicalWork', { hours: proj.estimatedHours })}
                       </span>
 
@@ -443,7 +443,7 @@ export function LearningPathPage() {
                         <button
                           type="button"
                           onClick={() => updateProjectStatus(proj.id, 'not_started')}
-                          className={`px-2 py-0.5 rounded text-[11px] border ${
+                          className={`px-2.5 py-1 rounded-lg text-[11px] border ${
                             proj.status === 'not_started' ? 'bg-secondary font-bold' : 'hover:bg-muted'
                           }`}
                         >

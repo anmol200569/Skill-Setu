@@ -234,11 +234,11 @@ export function DashboardPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-border">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#C2410C] dark:text-[#FB923C]">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
               {t('dashboard.badge')}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-foreground tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
             {t('dashboard.welcome')}, {profile?.fullName || 'Learner'}
           </h1>
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground pt-0.5">
@@ -247,18 +247,18 @@ export function DashboardPage() {
               <button
                 type="button"
                 onClick={() => setIsPickRoleOpen(true)}
-                className="font-semibold text-[#C2410C] dark:text-[#FB923C] underline hover:opacity-80"
+                className="font-semibold text-blue-600 dark:text-blue-400 underline hover:opacity-80"
               >
                 {t('dashboard.notSelectedRole')}
               </button>
             ) : (
               <div className="flex items-center gap-2">
-                <strong className="text-foreground font-serif">{targetRoleTitle}</strong>
+                <strong className="text-foreground font-semibold">{targetRoleTitle}</strong>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setIsWhatIfOpen(true)}
-                  className="h-6 text-[11px] px-2 py-0 border-[#C2410C]/30 text-[#C2410C] dark:text-[#FB923C] hover:bg-[#C2410C]/10"
+                  className="h-6 text-[11px] px-2 py-0 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40"
                 >
                   <SlidersHorizontal className="w-3 h-3 mr-1" />
                   <span>{t('dashboard.whatIf.switchButton')}</span>
@@ -276,7 +276,7 @@ export function DashboardPage() {
               size="sm"
               className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold"
             >
-              <Target className="w-3.5 h-3.5 text-[#C2410C] dark:text-[#FB923C]" />
+              <Target className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
               <span>{t('nav.assessments')}</span>
             </Button>
           </Link>
@@ -284,7 +284,7 @@ export function DashboardPage() {
             <Button
               variant="primary"
               size="sm"
-              className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold bg-[#C2410C] hover:bg-[#9A3412] text-white shadow-sm"
+              className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/20 rounded-xl"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>{t('nav.quizzes')}</span>
@@ -297,10 +297,10 @@ export function DashboardPage() {
       {isNotStarted ? (
         <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 space-y-6 shadow-sm">
           <div className="space-y-2 max-w-2xl">
-            <span className="text-[11px] uppercase tracking-wider font-semibold text-[#C2410C] dark:text-[#FB923C]">
+            <span className="text-[11px] uppercase tracking-wider font-semibold text-blue-600 dark:text-blue-400">
               {t('dashboard.emptyState.tag')}
             </span>
-            <h2 className="text-xl sm:text-2xl font-serif font-bold text-foreground">
+            <h2 className="text-xl sm:text-2xl font-sans font-bold text-foreground">
               {t('dashboard.emptyState.title')}
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
@@ -348,7 +348,7 @@ export function DashboardPage() {
                   <Button
                     size="sm"
                     onClick={() => setIsPickRoleOpen(true)}
-                    className="text-xs w-full sm:w-auto bg-[#C2410C] hover:bg-[#9A3412] text-white"
+                    className="text-xs w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20"
                   >
                     {t('dashboard.emptyState.selectRoleBtn')}
                   </Button>
@@ -509,12 +509,12 @@ export function DashboardPage() {
           {(!stats?.quizScoreHistory || stats.quizScoreHistory.length === 0) ? (
             <Card className="border-border">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base font-serif flex items-center justify-between">
+                <CardTitle className="text-base font-sans flex items-center justify-between">
                   <span className="flex items-center gap-2">
-                    <Award className="w-4 h-4 text-[#C2410C]" />
+                    <Award className="w-4 h-4 text-blue-600" />
                     <span>{t('dashboard.quizHistory.title')}</span>
                   </span>
-                  <Link to="/quizzes" className="text-xs text-[#C2410C] hover:underline flex items-center gap-1 font-semibold">
+                  <Link to="/quizzes" className="text-xs text-blue-600 hover:underline flex items-center gap-1 font-semibold">
                     <span>{t('dashboard.quizHistory.practiceCta')}</span>
                     <ArrowRight className="w-3 h-3" />
                   </Link>
@@ -533,8 +533,8 @@ export function DashboardPage() {
             <Card className="border-border">
               <CardHeader className="pb-3 flex flex-row items-center justify-between">
                 <div>
-                  <CardTitle className="text-base font-serif flex items-center gap-2">
-                    <Award className="w-4 h-4 text-[#C2410C]" />
+                  <CardTitle className="text-base font-sans flex items-center gap-2">
+                    <Award className="w-4 h-4 text-blue-600" />
                     <span>{t('dashboard.quizHistory.title')}</span>
                   </CardTitle>
                   <p className="text-[11px] text-muted-foreground mt-0.5">
@@ -543,7 +543,7 @@ export function DashboardPage() {
                 </div>
                 <Link
                   to="/quizzes"
-                  className="text-xs text-[#C2410C] hover:underline font-semibold flex items-center gap-1"
+                  className="text-xs text-blue-600 hover:underline font-semibold flex items-center gap-1"
                 >
                   <span>{t('common.viewAll')}</span>
                   <ArrowRight className="w-3 h-3" />
@@ -574,7 +574,7 @@ export function DashboardPage() {
                             {item.score}%
                           </Badge>
                           <Link to={`/quizzes?attemptId=${item.id}`}>
-                            <Button size="sm" variant="ghost" className="h-7 text-xs text-[#C2410C] hover:text-[#C2410C] px-2.5">
+                            <Button size="sm" variant="ghost" className="h-7 text-xs text-blue-600 hover:text-blue-700 px-2.5">
                               {t('dashboard.quizHistory.review')}
                             </Button>
                           </Link>
@@ -606,7 +606,7 @@ export function DashboardPage() {
             <select
               value={compareRoleId}
               onChange={(e) => setCompareRoleId(e.target.value)}
-              className="w-full p-2.5 rounded-lg border border-border bg-background text-foreground text-xs focus:ring-1 focus:ring-[#C2410C]"
+              className="w-full p-2.5 rounded-xl border border-border bg-background text-foreground text-xs focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600"
             >
               {roles.map((r) => (
                 <option key={r.id} value={r.id}>
@@ -625,16 +625,16 @@ export function DashboardPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-3.5 rounded-xl border border-border bg-card space-y-1">
                   <Badge variant="outline" className="text-[9px]">{t('dashboard.whatIfModal.activeGoal')}</Badge>
-                  <div className="font-serif font-bold text-sm text-foreground truncate">{targetRoleTitle}</div>
-                  <div className="text-lg font-bold text-[#C2410C]">{readiness ?? '--'}/100</div>
+                  <div className="font-sans font-bold text-sm text-foreground truncate">{targetRoleTitle}</div>
+                  <div className="text-lg font-bold text-blue-600">{readiness ?? '--'}/100</div>
                 </div>
 
-                <div className="p-3.5 rounded-xl border border-[#C2410C]/40 bg-[#C2410C]/5 space-y-1">
-                  <Badge variant="terracotta" className="text-[9px]">{t('dashboard.whatIfModal.simulatedGoal')}</Badge>
-                  <div className="font-serif font-bold text-sm text-foreground truncate">
+                <div className="p-3.5 rounded-xl border border-blue-200 dark:border-blue-900 bg-blue-50/50 dark:bg-blue-950/30 space-y-1">
+                  <Badge variant="default" className="text-[9px] bg-blue-600">{t('dashboard.whatIfModal.simulatedGoal')}</Badge>
+                  <div className="font-sans font-bold text-sm text-foreground truncate">
                     {roles.find((r) => r.id === compareRoleId)?.title || 'Compared Role'}
                   </div>
-                  <div className="text-lg font-bold text-[#C2410C]">{whatIfData.overallReadinessScore}/100</div>
+                  <div className="text-lg font-bold text-blue-600">{whatIfData.overallReadinessScore}/100</div>
                 </div>
               </div>
 
@@ -664,7 +664,7 @@ export function DashboardPage() {
                         className="p-2 rounded-lg border border-border bg-background flex items-center justify-between text-[11px]"
                       >
                         <span className="text-foreground font-medium">{g.skillName}</span>
-                        <span className="text-[#C2410C] font-semibold">
+                        <span className="text-blue-600 font-semibold">
                           {t('dashboard.whatIfModal.gapLabel', { gap: Math.abs(g.gap).toFixed(1) })}
                         </span>
                       </div>
@@ -689,7 +689,7 @@ export function DashboardPage() {
               size="sm"
               isLoading={isSwitchingRole}
               onClick={() => handleApplyRoleSwitch(compareRoleId)}
-              className="bg-[#C2410C] hover:bg-[#9A3412] text-white"
+              className="bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20"
             >
               {t('dashboard.whatIfModal.switchGoal', {
                 role: roles.find((r) => r.id === compareRoleId)?.title || t('dashboard.readiness.targetRoleFallback')
@@ -715,10 +715,10 @@ export function DashboardPage() {
               <div
                 key={r.id}
                 onClick={() => handleApplyRoleSwitch(r.id)}
-                className="p-3.5 rounded-xl border border-border bg-card hover:border-[#C2410C] hover:bg-[#C2410C]/5 cursor-pointer transition-all flex items-center justify-between"
+                className="p-3.5 rounded-xl border border-border bg-card hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-950/30 cursor-pointer transition-all flex items-center justify-between"
               >
                 <div>
-                  <div className="font-serif font-bold text-sm text-foreground">{r.title}</div>
+                  <div className="font-sans font-bold text-sm text-foreground">{r.title}</div>
                   <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">{r.description}</p>
                 </div>
                 <Badge variant="outline" className="text-[10px] whitespace-nowrap ml-2">

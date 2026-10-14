@@ -29,7 +29,7 @@ export function PriorityGapsHighlight({ gaps, onCloseGap }: PriorityGapsHighligh
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
         <div>
-          <h2 className="text-lg sm:text-xl font-bold font-serif text-foreground">
+          <h2 className="text-lg sm:text-xl font-bold font-sans text-foreground">
             {t('dashboard.topGaps.title')}
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground">
@@ -38,7 +38,7 @@ export function PriorityGapsHighlight({ gaps, onCloseGap }: PriorityGapsHighligh
         </div>
         <Link
           to="/skill-gaps"
-          className="text-xs font-semibold text-[#C2410C] dark:text-[#FB923C] hover:underline flex items-center gap-1 self-start sm:self-auto"
+          className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 self-start sm:self-auto"
         >
           <span>{t('common.viewAll')}</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -56,7 +56,7 @@ export function PriorityGapsHighlight({ gaps, onCloseGap }: PriorityGapsHighligh
             <Card
               key={gap.skillId || index}
               hoverEffect
-              className="flex flex-col justify-between p-5 border-[#C2410C]/20 dark:border-[#FB923C]/20 bg-card"
+              className="flex flex-col justify-between p-5 border-slate-200 dark:border-slate-800 bg-card rounded-2xl"
             >
               <div className="space-y-3">
                 <div className="flex items-start justify-between gap-2">
@@ -69,7 +69,7 @@ export function PriorityGapsHighlight({ gaps, onCloseGap }: PriorityGapsHighligh
                 </div>
 
                 <div>
-                  <h3 className="font-serif font-bold text-base text-foreground line-clamp-1">
+                  <h3 className="font-sans font-bold text-base text-foreground line-clamp-1">
                     {gap.skillName}
                   </h3>
                   <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
@@ -105,7 +105,7 @@ export function PriorityGapsHighlight({ gaps, onCloseGap }: PriorityGapsHighligh
                   <Button
                     variant="primary"
                     size="sm"
-                    className="w-full text-xs font-semibold bg-[#C2410C] hover:bg-[#9A3412] text-white flex items-center justify-center gap-1.5"
+                    className="w-full text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 flex items-center justify-center gap-1.5"
                   >
                     <BookOpen className="w-3.5 h-3.5" />
                     <span>{t('dashboard.topGaps.action')}</span>

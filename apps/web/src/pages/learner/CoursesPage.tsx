@@ -147,17 +147,17 @@ export function CoursesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-border">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#C2410C] dark:text-[#FB923C]">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
               {t('coursesPage.verifiedTracks')}
             </span>
             <span className="text-muted-foreground text-xs">•</span>
-            <Badge variant="terracotta" className="text-xs font-semibold">
+            <Badge variant="blue" className="text-xs font-semibold">
               {t('coursesPage.coursesCount', { count: totalCount })}
             </Badge>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-foreground tracking-tight flex items-center gap-2.5">
-            <BookOpen className="w-6 h-6 text-[#C2410C] dark:text-[#FB923C]" />
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight flex items-center gap-2.5">
+            <BookOpen className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             <span>{t('coursesPage.title')}</span>
           </h1>
 
@@ -177,7 +177,7 @@ export function CoursesPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t('coursesPage.searchPlaceholder')}
-              className="w-full bg-secondary rounded-xl pl-9 pr-8 py-2 text-xs sm:text-sm border border-border focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C]"
+              className="w-full bg-secondary rounded-xl pl-9 pr-8 py-2 text-xs sm:text-sm border border-border focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
             />
             {search && (
               <button
@@ -193,7 +193,7 @@ export function CoursesPage() {
           <Button
             type="submit"
             size="sm"
-            className="font-semibold px-4 text-xs bg-[#C2410C] hover:bg-[#9A3412] text-white"
+            className="font-semibold px-4 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm shadow-blue-500/20"
           >
             {t('coursesPage.searchBtn')}
           </Button>
@@ -201,7 +201,7 @@ export function CoursesPage() {
 
         <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-border text-xs">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
-            <Filter className="w-3.5 h-3.5 text-[#C2410C]" />
+            <Filter className="w-3.5 h-3.5 text-blue-600" />
             <span>{t('coursesPage.filters')}</span>
           </div>
 
@@ -210,7 +210,7 @@ export function CoursesPage() {
             value={difficultyFilter}
             onChange={(e) => setDifficultyFilter(e.target.value)}
             aria-label="Filter courses by difficulty level"
-            className="bg-secondary text-foreground rounded-lg px-2.5 py-1.5 border border-border text-xs focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C]"
+            className="bg-secondary text-foreground rounded-lg px-2.5 py-1.5 border border-border text-xs focus:outline-none focus-visible:ring-1 focus-visible:ring-blue-600"
           >
             <option value="all">{t('coursesPage.allDifficulties')}</option>
             <option value="Beginner">{t('coursesPage.diffBeginner')}</option>
@@ -223,7 +223,7 @@ export function CoursesPage() {
             value={languageFilter}
             onChange={(e) => setLanguageFilter(e.target.value)}
             aria-label="Filter courses by instructional language"
-            className="bg-secondary text-foreground rounded-lg px-2.5 py-1.5 border border-border text-xs focus:outline-none focus-visible:ring-1 focus-visible:ring-[#C2410C]"
+            className="bg-secondary text-foreground rounded-lg px-2.5 py-1.5 border border-border text-xs focus:outline-none focus-visible:ring-1 focus-visible:ring-blue-600"
           >
             <option value="all">{t('coursesPage.allLanguages')}</option>
             <option value="English">{t('coursesPage.langEnglish')}</option>
@@ -237,7 +237,7 @@ export function CoursesPage() {
               type="checkbox"
               checked={freeOnly}
               onChange={(e) => setFreeOnly(e.target.checked)}
-              className="rounded accent-[#C2410C]"
+              className="rounded accent-blue-600"
             />
             <span>{t('coursesPage.freeOnly')}</span>
           </label>
@@ -288,7 +288,7 @@ export function CoursesPage() {
                 <div>
                   <CardTitle
                     onClick={() => setSelectedCourse(course)}
-                    className="text-base font-serif font-bold text-foreground line-clamp-2 cursor-pointer group-hover:text-[#C2410C] dark:group-hover:text-[#FB923C] transition-colors"
+                    className="text-base font-extrabold text-foreground line-clamp-2 cursor-pointer group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
                   >
                     {course.title}
                   </CardTitle>
@@ -323,7 +323,7 @@ export function CoursesPage() {
               <CardContent className="p-5 pt-0 border-t border-border mt-3 pt-3 flex flex-col gap-3">
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                   <span className="flex items-center gap-1 font-medium">
-                    <Clock className="w-3.5 h-3.5 text-[#C2410C]" />
+                    <Clock className="w-3.5 h-3.5 text-blue-600" />
                     {t('coursesPage.hoursUnit', { hours: course.estimatedHours })}
                   </span>
                   <span className="capitalize">{course.difficulty}</span>
@@ -336,7 +336,7 @@ export function CoursesPage() {
                     onClick={() => enrollCourse(course.id)}
                     className="text-xs flex-1 flex items-center justify-center gap-1.5"
                   >
-                    <PlusCircle className="w-3.5 h-3.5 text-[#C2410C]" />
+                    <PlusCircle className="w-3.5 h-3.5 text-blue-600" />
                     <span>{t('coursesPage.enrollBtn')}</span>
                   </Button>
 
@@ -344,7 +344,7 @@ export function CoursesPage() {
                     href={course.destinationUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg border border-border text-xs font-semibold text-[#C2410C] dark:text-[#FB923C] hover:bg-muted transition-colors"
+                    className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg border border-border text-xs font-semibold text-blue-600 dark:text-blue-400 hover:bg-muted transition-colors"
                   >
                     <span>{t('coursesPage.launch')}</span>
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -400,7 +400,7 @@ export function CoursesPage() {
                 onClick={() => enrollCourse(selectedCourse.id)}
                 className="flex items-center gap-1.5"
               >
-                <PlusCircle className="w-3.5 h-3.5 text-[#C2410C]" />
+                <PlusCircle className="w-3.5 h-3.5 text-blue-600" />
                 <span>{t('coursesPage.enrollBtn')}</span>
               </Button>
               <a
@@ -408,7 +408,7 @@ export function CoursesPage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <Button size="sm" className="bg-[#C2410C] hover:bg-[#9A3412] text-white flex items-center gap-1.5">
+                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 shadow-sm shadow-blue-500/20">
                   <span>{t('coursesPage.launch')}</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </Button>
