@@ -5,25 +5,44 @@ import { updateCourseProgress } from '../src/controllers/learningPathController'
 vi.mock('../src/lib/prisma', () => ({
   prisma: {
     enrollment: {
-      upsert: vi.fn()
+      upsert: vi.fn(),
+      findMany: vi.fn().mockResolvedValue([])
+    },
+    learningPath: {
+      findFirst: vi.fn().mockResolvedValue(null),
+      create: vi.fn().mockResolvedValue({ id: 'lp-1', items: [] }),
+      update: vi.fn().mockResolvedValue({ id: 'lp-1' })
     },
     learningPathItem: {
-      updateMany: vi.fn()
+      updateMany: vi.fn().mockResolvedValue({ count: 1 }),
+      update: vi.fn().mockResolvedValue({ id: 'lpi-1' }),
+      create: vi.fn().mockResolvedValue({ id: 'lpi-1' }),
+      delete: vi.fn().mockResolvedValue({ id: 'lpi-1' })
     },
     course: {
-      findUnique: vi.fn()
+      findUnique: vi.fn(),
+      findMany: vi.fn().mockResolvedValue([])
     },
     skill: {
-      findMany: vi.fn()
+      findMany: vi.fn().mockResolvedValue([])
     },
     profile: {
-      findFirst: vi.fn()
+      findFirst: vi.fn(),
+      findUnique: vi.fn()
+    },
+    role: {
+      findUnique: vi.fn().mockResolvedValue({
+        id: 'role-frontend',
+        title: 'Frontend Engineer',
+        skillsRequired: []
+      })
     },
     roleSkillRequirement: {
       findMany: vi.fn()
     },
     userSkill: {
       findUnique: vi.fn(),
+      findMany: vi.fn().mockResolvedValue([]),
       upsert: vi.fn()
     }
   }
@@ -62,6 +81,10 @@ describe('Course Completion Skill Progress (Task C2)', () => {
 
     // Learner target role requires s1 at level 4, and s2 at level 2
     (prisma.profile.findFirst as any).mockResolvedValue({
+      userId,
+      targetRoleId: 'role-frontend'
+    });
+    (prisma.profile.findUnique as any).mockResolvedValue({
       userId,
       targetRoleId: 'role-frontend'
     });

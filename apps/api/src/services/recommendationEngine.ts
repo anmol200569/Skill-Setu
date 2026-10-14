@@ -160,10 +160,10 @@ export async function getPersonalizedRecommendations(
     }
     if (c.courseSkills) {
       c.courseSkills.forEach((cs) => {
-        coveredSet.add(cs.skillId);
+        if (cs.skillId) coveredSet.add(cs.skillId);
         if (cs.skill) {
-          coveredSet.add(cs.skill.code);
-          coveredSet.add(cs.skill.name);
+          if (cs.skill.code) coveredSet.add(cs.skill.code);
+          if (cs.skill.name) coveredSet.add(cs.skill.name);
         }
       });
     }
@@ -188,10 +188,12 @@ export async function getPersonalizedRecommendations(
   // Check if any role required skill has no mapped course in the catalog, and log safely
   for (const gap of effectiveGaps) {
     const hasCourse = formattedCourses.some((c) => {
-      const cSkills = (c.skillsCovered || []).map((s) => s.toLowerCase());
-      const name = gap.skillName.toLowerCase();
-      const id = gap.skillId.toLowerCase();
-      return cSkills.some((s) => s === id || s === name || name.includes(s) || s.includes(name));
+      const cSkills = (c.skillsCovered || [])
+        .filter((s): s is string => typeof s === 'string')
+        .map((s) => s.toLowerCase());
+      const name = (gap.skillName || '').toLowerCase();
+      const id = (gap.skillId || '').toLowerCase();
+      return cSkills.some((s) => s === id || s === name || (s && name.includes(s)) || (name && s.includes(name)));
     });
     if (!hasCourse) {
       console.warn(`[Recommendations] Required skill "${gap.skillName}" (${gap.skillId}) has no mapped courses in catalog. Skipping.`);
@@ -245,7 +247,12 @@ export async function generateLearningPath(
   gaps: SkillGapItem[]
 ): Promise<LearningPath> {
   const role = await prisma.role.findUnique({
-    where: { id: targetRoleId }
+    where: { id: targetRoleId },
+    include: {
+      skillsRequired: {
+        include: { skill: true }
+      }
+    }
   });
 
   const allRecs = await getPersonalizedRecommendations(userId, gaps, 10);
@@ -298,7 +305,19 @@ export async function generateLearningPath(
   // 1. Fetch or create Learning Path in DB
   let existingPath = await prisma.learningPath.findFirst({
     where: { userId, targetRoleId },
-    include: { items: { include: { course: true } } }
+    include: {
+      items: {
+        include: {
+          course: {
+            include: {
+              courseSkills: {
+                include: { skill: true }
+              }
+            }
+          }
+        }
+      }
+    }
   });
 
   if (!existingPath) {
@@ -308,7 +327,19 @@ export async function generateLearningPath(
         targetRoleId,
         totalEstimatedHours: 0
       },
-      include: { items: { include: { course: true } } }
+      include: {
+        items: {
+          include: {
+            course: {
+              include: {
+                courseSkills: {
+                  include: { skill: true }
+                }
+              }
+            }
+          }
+        }
+      }
     });
   }
 
@@ -318,7 +349,7 @@ export async function generateLearningPath(
   });
   const enrollmentMap = new Map(userEnrollments.map((e) => [e.courseId, e]));
 
-  // 3. C4: KEEP completed and in-progress items (never delete their status or progress)
+  // 3. C4: KEEP completed, in-progress, AND manual items (manual items are never deleted by recalculation)
   const existingItems = existingPath.items || [];
   const keptItems: typeof existingItems = [];
   const notStartedItems: typeof existingItems = [];
@@ -326,14 +357,14 @@ export async function generateLearningPath(
   for (const item of existingItems) {
     const enr = enrollmentMap.get(item.courseId);
     const effectiveStatus = enr?.status || item.status;
-    if (effectiveStatus === 'completed' || effectiveStatus === 'in_progress') {
+    if (effectiveStatus === 'completed' || effectiveStatus === 'in_progress' || item.source === 'manual') {
       keptItems.push(item);
     } else {
       notStartedItems.push(item);
     }
   }
 
-  // 4. C4: Drop ONLY not-started items that are no longer needed
+  // 4. C4: Drop ONLY system not-started items that are no longer needed
   const itemsToDelete = notStartedItems.filter((it) => !neededCourseIds.has(it.courseId));
   for (const item of itemsToDelete) {
     await prisma.learningPathItem.delete({
@@ -356,11 +387,20 @@ export async function generateLearningPath(
         courseId: rec.course.id,
         stepOrder: 999, // temporary, renumbered below
         reason: rec.recommendationReason,
-        status: 'not_started'
+        status: 'not_started',
+        source: 'system'
       },
-      include: { course: true }
+      include: {
+        course: {
+          include: {
+            courseSkills: {
+              include: { skill: true }
+            }
+          }
+        }
+      }
     });
-    survivingNotStarted.push(createdItem);
+    survivingNotStarted.push(createdItem as any);
   }
 
   // 6. C4 & D2: Renumber stepOrder idempotently
@@ -414,6 +454,33 @@ export async function generateLearningPath(
     totalEstimatedHours,
     courses: allItems.map((item) => {
       const enr = enrollmentMap.get(item.courseId);
+
+      const requiredSkills = role?.skillsRequired || [];
+      const roleSkillIds = new Set(requiredSkills.map((r) => r.skillId.toLowerCase()));
+      const roleSkillNames = new Set(requiredSkills.map((r) => (r.skill?.name || '').toLowerCase()));
+
+      let matchesRole = false;
+      const course = item.course;
+      const csList = (course as any)?.courseSkills;
+      if (csList && Array.isArray(csList) && csList.length > 0) {
+        for (const cs of csList) {
+          if (roleSkillIds.has(cs.skillId.toLowerCase()) || (cs.skill?.name && roleSkillNames.has(cs.skill.name.toLowerCase()))) {
+            matchesRole = true;
+            break;
+          }
+        }
+      }
+      if (!matchesRole && course?.skillsCovered && Array.isArray(course.skillsCovered)) {
+        for (const sc of course.skillsCovered) {
+          const str = String(sc).toLowerCase();
+          if (roleSkillIds.has(str) || roleSkillNames.has(str)) {
+            matchesRole = true;
+            break;
+          }
+        }
+      }
+      const isOutsideRoleGaps = requiredSkills.length > 0 ? !matchesRole : false;
+
       return {
         step: item.stepOrder,
         courseId: item.courseId,
@@ -433,7 +500,9 @@ export async function generateLearningPath(
         },
         status: (enr?.status || item.status) as any,
         progressPercent: enr?.progressPercent || (item.status === 'completed' ? 100 : item.status === 'in_progress' ? 50 : 0),
-        reason: item.reason
+        reason: item.reason,
+        source: item.source || 'system',
+        isOutsideRoleGaps
       };
     }),
     createdAt: existingPath.createdAt ? new Date(existingPath.createdAt).toISOString() : new Date().toISOString(),

@@ -312,6 +312,7 @@ model LearningPathItem {
   stepOrder      Int
   reason         String
   status         EnrollmentStatus @default(not_started)
+  source         String?          @default("system") // "system" | "manual"
 
   @@index([learningPathId])
 }

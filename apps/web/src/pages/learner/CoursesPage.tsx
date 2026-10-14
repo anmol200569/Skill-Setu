@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
 import { Modal } from '../../components/ui/Modal';
+import { Toast } from '../../components/ui/Toast';
 import {
   BookOpen,
   Search,
@@ -71,6 +72,8 @@ export function CoursesPage() {
     fetchCourses();
   };
 
+  const [toast, setToast] = useState<{ message: string; type?: 'success' | 'error' } | null>(null);
+
   const enrollCourse = async (courseId: string) => {
     try {
       await apiClient('/learning-paths/progress', {
@@ -78,12 +81,25 @@ export function CoursesPage() {
         body: JSON.stringify({
           courseId,
           status: 'in_progress',
-          progressPercent: 10
+          progressPercent: 10,
+          source: 'manual',
+          reason: 'Added manually from course catalogue'
         })
       });
-      alert('Enrolled! This course has been added to your Learning Path.');
+
+      // Refetch the path after adding to keep client cache updated
+      apiClient('/learning-paths').catch(() => {});
+
+      setToast({
+        message: 'Enrolled! Added to your Learning Path.',
+        type: 'success'
+      });
     } catch (err: any) {
       console.warn('Enrollment error:', err);
+      setToast({
+        message: err.message || 'Could not enroll in course. Please try again.',
+        type: 'error'
+      });
     }
   };
 
@@ -313,6 +329,14 @@ export function CoursesPage() {
           </div>
         )}
       </Modal>
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }
