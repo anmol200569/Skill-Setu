@@ -423,7 +423,8 @@
     "attemptButton": "क्विज़ शुरू करें",
     "submitQuiz": "उत्तर सबमिट करें",
     "scoreLabel": "आपका स्कोर",
-    "weakTopicsTitle": "कमजोर विषयों की समीक्षा"
+    "weakTopicsTitle": "कमजोर विषयों की समीक्षा",
+    "securityNotice": "पासवर्ड, API कुंजियाँ या निजी डेटा अपलोड न करें।"
   },
   "assessment": {
     "title": "नैदानिक कौशल मूल्यांकन",

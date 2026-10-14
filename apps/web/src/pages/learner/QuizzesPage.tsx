@@ -17,9 +17,11 @@ import {
   HelpCircle,
   Clock,
   BookOpen,
-  Loader2
+  Loader2,
+  ShieldAlert
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { useTranslation } from 'react-i18next';
 import { stripInactivePrefix } from '@skill-setu/shared';
 
 interface QuizItem {
@@ -47,6 +49,7 @@ interface Question {
 }
 
 export function QuizzesPage() {
+  const { t } = useTranslation();
   const [quizzes, setQuizzes] = useState<QuizItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -429,6 +432,10 @@ export function QuizzesPage() {
                     <span>Supports PDF, DOCX, PPTX, TXT (up to 4 MB)</span>
                   </div>
                 )}
+              </div>
+              <div className="flex items-center gap-2 p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 text-xs">
+                <ShieldAlert className="w-4 h-4 flex-shrink-0" />
+                <span>{t('quiz.securityNotice', 'Do not upload passwords, API keys or private data.')}</span>
               </div>
               {extractedPreview && (
                 <p className="text-[11px] text-muted-foreground italic truncate">

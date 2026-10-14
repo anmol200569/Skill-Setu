@@ -423,7 +423,8 @@
     "attemptButton": "Take Quiz",
     "submitQuiz": "Submit Answers",
     "scoreLabel": "Your Score",
-    "weakTopicsTitle": "Recommended Topic Reviews"
+    "weakTopicsTitle": "Recommended Topic Reviews",
+    "securityNotice": "Do not upload passwords, API keys or private data."
   },
   "assessment": {
     "title": "Diagnostic Competency Assessment",

@@ -48,7 +48,7 @@ export async function uploadStudyMaterial(req: Request, res: Response): Promise<
         storedFilename: `${Date.now()}-${file.originalname}`,
         mimeType: file.mimetype,
         sizeBytes: file.size,
-        extractedText
+        extractedText: '' // Metadata-only: extracted text is never persisted to database
       }
     });
 

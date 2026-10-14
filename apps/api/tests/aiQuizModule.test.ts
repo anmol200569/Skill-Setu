@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import request from 'supertest';
 import { createApp } from '../src/app';
 import * as aiService from '../src/services/aiService';
@@ -612,6 +612,33 @@ describe('AI Quiz Module & Gemini Model Configuration', () => {
           title: 'Mastering Database Sharding and Partitioning'
         })
       );
+    });
+
+    it('persists only metadata and never persists extracted text in the Upload table (TASK A1)', async () => {
+      let createdUploadData: any = null;
+      vi.spyOn(prisma.upload, 'create').mockImplementationOnce(async ({ data }: any) => {
+        createdUploadData = data;
+        return {
+          id: 'test-upload-uuid',
+          ...data,
+          createdAt: new Date()
+        } as any;
+      });
+
+      const fileContent = 'Comprehensive distributed systems architecture lecture notes on consensus and replication.';
+      const res = await request(app)
+        .post('/api/v1/quizzes/upload')
+        .set('Authorization', 'Bearer test-learner-token')
+        .attach('file', Buffer.from(fileContent), 'notes.txt');
+
+      expect(res.status).toBe(200);
+      expect(createdUploadData).not.toBeNull();
+      expect(createdUploadData.originalFilename).toBe('notes.txt');
+      expect(createdUploadData.sizeBytes).toBe(Buffer.from(fileContent).length);
+      expect(createdUploadData.userId).toBe('test-learner-uuid');
+      // Extracted text MUST be empty string in DB record (metadata-only)
+      expect(createdUploadData.extractedText).toBe('');
+      expect(createdUploadData.extractedText).not.toContain('Comprehensive distributed');
     });
   });
 });
