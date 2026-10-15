@@ -95,4 +95,37 @@ describe('Item 5: Roadmap Correctness & Milestone Verification', () => {
 
     target.removeEventListener('skill_setu_diagnostic_completed', handler);
   });
+
+  it('validates authentic roadmap.sh paths for all 6 target career roles', async () => {
+    const { careerRoadmaps, getCareerRoadmap } = await import('../data/careerRoadmaps');
+    const roleKeys = ['fullstack-dev', 'data-analyst', 'ml-engineer', 'product-manager', 'business-analyst', 'cloud-architect'];
+
+    for (const key of roleKeys) {
+      const roadmap = careerRoadmaps[key];
+      expect(roadmap, `Missing roadmap for role: ${key}`).toBeDefined();
+      expect(roadmap.roadmapShUrl.startsWith('https://roadmap.sh/'), `Invalid roadmap.sh URL: ${roadmap.roadmapShUrl}`).toBe(true);
+      expect(roadmap.phases.length).toBeGreaterThanOrEqual(3);
+      expect(roadmap.totalEstimatedHours).toBeGreaterThan(50);
+
+      const allMilestones = roadmap.phases.flatMap((p) => p.milestones);
+      expect(allMilestones.length).toBeGreaterThanOrEqual(4);
+
+      for (const milestone of allMilestones) {
+        expect(milestone.id).toBeTruthy();
+        expect(milestone.title).toBeTruthy();
+        expect(milestone.estimatedHours).toBeGreaterThan(0);
+        expect(milestone.topics.length).toBeGreaterThanOrEqual(2);
+        if (milestone.recommendedCourse) {
+          expect(milestone.recommendedCourse.isFree).toBe(true);
+          expect(milestone.recommendedCourse.url.startsWith('https://')).toBe(true);
+        }
+      }
+    }
+
+    // Resolves role accurately with case-insensitive / slug matching
+    expect(getCareerRoadmap('fullstack-dev').roleTitle).toBe('Full-Stack Developer');
+    expect(getCareerRoadmap('DATA-ANALYST').roleTitle).toBe('Data Analyst');
+    expect(getCareerRoadmap('Machine Learning Engineer').roleTitle).toBe('Machine Learning Engineer');
+    expect(getCareerRoadmap(null).roleTitle).toBe('Full-Stack Developer');
+  });
 });

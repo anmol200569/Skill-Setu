@@ -23,7 +23,6 @@ import {
   HelpCircle,
   Laptop
 } from 'lucide-react';
-import { SkillConstellationHero } from '../components/landing/SkillConstellationHero';
 
 const wizardRoles = [
   { id: 'fullstack-dev', labelKey: 'landing.wizard.roles.fullstack-dev', defaultLabel: 'Full-Stack Developer' },
@@ -160,11 +159,11 @@ export function LandingPage() {
             {/* Pill Tag */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-bold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-              <span>{t('landing.hero.pill', { defaultValue: 'VERIFIED OPEN TECHNICAL EDUCATION' })}</span>
+              <span>{t('landing.hero.pill', { defaultValue: 'OPEN TECHNICAL EDUCATION' })}</span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-[3.8rem] font-extrabold tracking-tight text-foreground leading-[1.1] break-words">
+            <h1 className="text-3xl sm:text-5xl lg:text-[3.8rem] font-extrabold tracking-tight text-foreground leading-[1.15] lg:leading-[1.12] break-words">
               {t('landing.hero.titleLine1', { defaultValue: 'Skills Today' })} <br />
               <span className="text-foreground">{t('landing.hero.titleLine2', { defaultValue: 'A Brighter ' })}</span>
               <span className="text-blue-600 dark:text-blue-400">{t('landing.hero.titleLine3', { defaultValue: 'Tomorrow' })}</span>
@@ -244,10 +243,118 @@ export function LandingPage() {
             </div>
           </div>
 
-          {/* Right Column: 3D Skill Constellation Hero (Lazy-loaded with Mobile Static Fallback) */}
-          <div className="lg:col-span-5 relative flex justify-center lg:justify-end mt-2 lg:mt-0">
-            <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg rounded-3xl overflow-hidden border border-border shadow-xl bg-card">
-              <SkillConstellationHero />
+          {/* Right Column: Hero Learner Photo & Real Platform Data Cards */}
+          <div className="lg:col-span-5 relative flex flex-col items-center lg:items-end mt-4 lg:mt-0">
+            <div className="relative w-full max-w-[480px]">
+              {/* Blue-tinted ambient gradient backdrop */}
+              <div
+                aria-hidden="true"
+                className="absolute -inset-2 sm:-inset-3 bg-gradient-to-tr from-blue-600/15 via-indigo-500/10 to-sky-400/15 dark:from-blue-600/25 dark:via-indigo-950/40 dark:to-cyan-900/20 rounded-[2rem] blur-xl -z-10 pointer-events-none"
+              />
+
+              {/* Photo Frame Container (Rounded shape with soft border in dark mode) */}
+              <div className="relative rounded-3xl p-2 sm:p-2.5 bg-gradient-to-b from-blue-50/50 via-slate-100/60 to-white/70 dark:from-slate-900/80 dark:via-slate-900/90 dark:to-slate-950/90 border border-slate-200/80 dark:border-white/10 dark:ring-1 dark:ring-white/10 shadow-2xl dark:shadow-blue-950/40 backdrop-blur-sm">
+                
+                {/* Photo Element (Picture element with WebP source and JPG fallback, width=548, height=444, fetchpriority="high", no lazy-load, max-w ~480px, alt="") */}
+                <div className="rounded-2xl overflow-hidden border border-slate-200/60 dark:border-white/10 bg-slate-100 dark:bg-slate-900 shadow-inner">
+                  <picture>
+                    <source srcSet="/images/hero-learner.webp" type="image/webp" />
+                    <img
+                      src="/images/hero-learner.jpg"
+                      width={548}
+                      height={444}
+                      fetchPriority="high"
+                      alt=""
+                      className="w-full h-auto object-cover block select-none"
+                    />
+                  </picture>
+                </div>
+
+                {/* Floating Chip: Real fact (6 Target Career Roles) - Top-left away from face */}
+                <div className="absolute -top-3 left-2 sm:-left-3 z-10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md py-1.5 px-3 rounded-full border border-blue-200/80 dark:border-blue-900/60 shadow-md flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+                  <Target className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                  <span className="text-xs font-bold text-foreground tracking-tight whitespace-nowrap">
+                    {t('landing.hero.facts.roles', { defaultValue: '6 Target Career Roles' })}
+                  </span>
+                </div>
+
+                {/* Floating Card: Real database values (61 courses, 5 providers, 7 domains with icons) - Bottom-left away from face */}
+                <div className="absolute -bottom-5 left-2 sm:-left-4 z-10 max-w-[290px] sm:max-w-[320px] w-[calc(100%-1rem)] sm:w-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-3 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xl shadow-slate-900/10 dark:shadow-black/50">
+                  <div className="flex items-center justify-between gap-2 border-b border-border/60 pb-1.5">
+                    <div className="flex items-center gap-1.5">
+                      <BookOpen className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                      <span className="font-bold text-xs text-foreground tracking-tight">
+                        {t('landing.hero.resourceCard.title', { defaultValue: '61 Free Courses • 5 Providers' })}
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/60 dark:border-blue-900/40">
+                      {t('landing.hero.resourceCard.badge', { defaultValue: 'Open Curricula' })}
+                    </span>
+                  </div>
+
+                  <div className="text-[10px] text-muted-foreground pt-1.5 pb-1 font-medium truncate">
+                    {t('landing.hero.resourceCard.providers', { defaultValue: 'CS50 • freeCodeCamp • Microsoft • Google • NPTEL' })}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-x-2.5 gap-y-1 pt-1 border-t border-border/40 text-[11px] text-muted-foreground">
+                    <div className="flex items-center gap-1.5 truncate">
+                      <Code2 className="w-3 h-3 text-emerald-500 flex-shrink-0" />
+                      <span className="truncate">{t('landing.domains.programming', { defaultValue: 'Programming' })}: <strong className="text-foreground">22</strong></span>
+                    </div>
+                    <div className="flex items-center gap-1.5 truncate">
+                      <Cloud className="w-3 h-3 text-cyan-500 flex-shrink-0" />
+                      <span className="truncate">{t('landing.domains.cloud', { defaultValue: 'Cloud & DevOps' })}: <strong className="text-foreground">15</strong></span>
+                    </div>
+                    <div className="flex items-center gap-1.5 truncate">
+                      <BarChart3 className="w-3 h-3 text-amber-500 flex-shrink-0" />
+                      <span className="truncate">{t('landing.domains.data', { defaultValue: 'Data & Analytics' })}: <strong className="text-foreground">12</strong></span>
+                    </div>
+                    <div className="flex items-center gap-1.5 truncate">
+                      <ShieldCheck className="w-3 h-3 text-teal-500 flex-shrink-0" />
+                      <span className="truncate">{t('landing.domains.security', { defaultValue: 'Cybersecurity' })}: <strong className="text-foreground">11</strong></span>
+                    </div>
+                    <div className="flex items-center gap-1.5 truncate">
+                      <Sparkles className="w-3 h-3 text-purple-500 flex-shrink-0" />
+                      <span className="truncate">{t('landing.domains.ai', { defaultValue: 'AI & ML' })}: <strong className="text-foreground">9</strong></span>
+                    </div>
+                    <div className="flex items-center gap-1.5 truncate">
+                      <Kanban className="w-3 h-3 text-rose-500 flex-shrink-0" />
+                      <span className="truncate">{t('landing.domains.product', { defaultValue: 'Product' })}: <strong className="text-foreground">8</strong></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Checklist Card: 5 Built-in Platform Features */}
+              <div className="w-full max-w-[480px] mt-8 bg-card/90 dark:bg-slate-900/80 border border-border/80 rounded-2xl p-4 sm:p-4.5 shadow-sm backdrop-blur-sm">
+                <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 mb-2.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                  <span>{t('landing.hero.checklist.title', { defaultValue: 'Built-in Platform Features' })}</span>
+                </div>
+                <ul className="space-y-2 text-xs sm:text-sm text-foreground/90 font-medium">
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    <span>{t('landing.hero.checklist.item1', { defaultValue: 'Diagnostic skill assessments with calibrated proficiency scoring' })}</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    <span>{t('landing.hero.checklist.item2', { defaultValue: 'Personalized role-based milestone roadmap targeting your gaps' })}</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    <span>{t('landing.hero.checklist.item3', { defaultValue: 'AI practice quizzes dynamically generated from study notes' })}</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    <span>{t('landing.hero.checklist.item4', { defaultValue: '61 curated free courses from 5 external open providers' })}</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    <span>{t('landing.hero.checklist.item5', { defaultValue: 'Bilingual user interface and workflows in English & हिन्दी' })}</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 
@@ -265,7 +372,7 @@ export function LandingPage() {
               {t('landing.categories.title', { defaultValue: 'Popular Categories' })}
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-xl">
-              {t('landing.categories.subtitle', { defaultValue: 'Explore technical skills and find verified open courses for your career goals.' })}
+              {t('landing.categories.subtitle', { defaultValue: 'Explore technical skills and find open curated courses for your career goals.' })}
             </p>
           </div>
           <Link
@@ -309,7 +416,7 @@ export function LandingPage() {
               {t('landing.why.title', { defaultValue: 'Why Learn with Skill-Setu?' })}
             </h2>
             <p className="text-xs sm:text-base text-muted-foreground max-w-xl">
-              {t('landing.why.subtitle', { defaultValue: 'An objective platform to measure verified technical competencies and follow focused learning paths.' })}
+              {t('landing.why.subtitle', { defaultValue: 'An objective platform to measure assessed technical competencies and follow focused learning paths.' })}
             </p>
           </div>
         </div>

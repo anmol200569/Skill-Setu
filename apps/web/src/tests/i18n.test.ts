@@ -52,6 +52,77 @@ describe('Internationalization Translation Dictionaries', () => {
     expect(hi.landing.constellation.interactive).toBeDefined();
   });
 
+  it('contains the correct dashboard tagline in English and Hindi', () => {
+    expect(en.dashboard.tagline).toBe('Find Your Gap. Build Your Future.');
+    expect(hi.dashboard.tagline).toBe('अपना कौशल अंतराल खोजें। अपना भविष्य बनाएं।');
+  });
+
+  it('contains all required layout and navigation keys with correct translations', () => {
+    expect(en.nav.courses).toBe('Courses');
+    expect(hi.nav.courses).toBe('पाठ्यक्रम');
+
+    expect(en.nav.categories).toBe('Categories');
+    expect(hi.nav.categories).toBe('श्रेणियाँ');
+
+    expect(en.nav.whySkillSetu).toBe('Why Skill-Setu');
+    expect(hi.nav.whySkillSetu).toBe('स्किल-सेतु क्यों');
+
+    expect(en.nav.aiCareerDiagnostic).toBe('AI Career Diagnostic');
+    expect(hi.nav.aiCareerDiagnostic).toBe('एआई करियर डायग्नोस्टिक');
+
+    expect(en.nav.switchToHindi).toBe('हिन्दी में बदलें');
+    expect(hi.nav.switchToEnglish).toBe('Switch to English');
+
+    expect(en.nav.searchPlaceholder).toBe('Search courses & skills...');
+    expect(hi.nav.searchPlaceholder).toBe('पाठ्यक्रम और कौशल खोजें...');
+
+    expect(en.breadcrumbs.label).toBe('Breadcrumbs');
+    expect(hi.breadcrumbs.label).toBe('ब्रेडक्रंब');
+
+    expect(en.mentor.askMentor).toBe('Ask AI Mentor');
+    expect(hi.mentor.askMentor).toBe('एआई मेंटर से पूछें');
+    // Hero real facts, resources card, and checklist card parity
+    expect(en.landing.hero.facts.roles).toBe('6 Target Career Roles');
+    expect(hi.landing.hero.facts.roles).toBe('6 लक्षित करियर भूमिकाएं');
+    expect(en.landing.hero.resourceCard.title).toBe('61 Free Courses • 5 Providers');
+    expect(hi.landing.hero.resourceCard.title).toBe('61 मुफ़्त पाठ्यक्रम • 5 प्रदाता');
+    expect(en.landing.hero.checklist.title).toBe('Built-in Platform Features');
+    expect(hi.landing.hero.checklist.title).toBe('प्लेटफ़ॉर्म की वास्तविक सुविधाएं');
+  });
+
+  it('ensures en.json and hi.json contain no banned marketing terms, fake personas, or fabricated stats', () => {
+    const bannedPatterns = [
+      'Alex Rivera',
+      'Jamie Chen',
+      'Taylor Kim',
+      'Morgan Lee',
+      'Priya S',
+      'James T',
+      'Maria L',
+      '500+',
+      '20,000',
+      'thousands',
+      '$49',
+      '$59',
+      'Free on Setu',
+      'expert',
+      'lifetime',
+      'certificate',
+      'career support',
+      'world-class',
+      'verified'
+    ];
+
+    const enStr = JSON.stringify(en).toLowerCase();
+    const hiStr = JSON.stringify(hi).toLowerCase();
+
+    for (const pattern of bannedPatterns) {
+      const lower = pattern.toLowerCase();
+      expect(enStr.includes(lower), `en.json contains banned term: "${pattern}"`).toBe(false);
+      expect(hiStr.includes(lower), `hi.json contains banned term: "${pattern}"`).toBe(false);
+    }
+  });
+
   it('guarantees complete recursive key parity between en.json and hi.json', () => {
     function getKeys(obj: Record<string, any>, prefix = ''): string[] {
       let keys: string[] = [];

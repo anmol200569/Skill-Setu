@@ -148,7 +148,7 @@ export function CoursesPage() {
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-              {t('coursesPage.verifiedTracks')}
+              {t('coursesPage.curatedTracks', { defaultValue: 'Curated Learning Tracks' })}
             </span>
             <span className="text-muted-foreground text-xs">•</span>
             <Badge variant="blue" className="text-xs font-semibold">

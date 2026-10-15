@@ -1,17 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Route, Clock, Calendar, ArrowRight, CheckCircle2, BookOpen, Target } from 'lucide-react';
+import { Route, Clock, Calendar, ArrowRight, CheckCircle2, BookOpen, Target, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { ProgressBar } from '../ui/ProgressBar';
 import { RecommendedCourseItem } from '../../pages/learner/DashboardPage';
+import { getCareerRoadmap } from '../../data/careerRoadmaps';
 
 export interface RoadmapSummaryCardProps {
-  recommendations: RecommendedCourseItem[];
+  recommendations?: RecommendedCourseItem[];
   weeklyHours?: number;
   completedCount?: number;
   totalCount?: number;
+  targetRoleTitle?: string | null;
+  targetRoleId?: string | null;
 }
 
 export function RoadmapSummaryCard({
@@ -19,17 +22,27 @@ export function RoadmapSummaryCard({
   weeklyHours = 10,
   completedCount = 0,
   totalCount,
+  targetRoleTitle,
+  targetRoleId
 }: RoadmapSummaryCardProps) {
   const { t } = useTranslation();
 
-  const effectiveTotal = totalCount !== undefined ? totalCount : recommendations.length;
+  const careerRoadmap = getCareerRoadmap(targetRoleId || targetRoleTitle);
+  const allRoadmapMilestones = careerRoadmap.phases.flatMap((p) => p.milestones);
+
+  const effectiveTotal = totalCount !== undefined && totalCount > 0
+    ? totalCount
+    : recommendations.length > 0
+    ? recommendations.length
+    : allRoadmapMilestones.length;
+
   const progressPercent = effectiveTotal > 0 ? Math.min(100, Math.round((completedCount / effectiveTotal) * 100)) : 0;
 
   // Compute target date based on remaining estimated hours
-  const totalRemainingHours = recommendations.reduce(
-    (acc, r) => acc + (r.course?.estimatedHours || 15),
-    0
-  );
+  const totalRemainingHours = recommendations.length > 0
+    ? recommendations.reduce((acc, r) => acc + (r.course?.estimatedHours || 15), 0)
+    : careerRoadmap.totalEstimatedHours;
+
   const weeksNeeded = Math.ceil(totalRemainingHours / Math.max(weeklyHours, 1));
   const targetDate = new Date();
   targetDate.setDate(targetDate.getDate() + weeksNeeded * 7);
@@ -40,6 +53,7 @@ export function RoadmapSummaryCard({
   });
 
   const nextStep = recommendations.length > 0 ? recommendations[0] : null;
+  const fallbackMilestone = allRoadmapMilestones[0];
 
   return (
     <Card className="border border-white/60 dark:border-white/10 bg-white/75 dark:bg-slate-900/65 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_12px_36px_rgb(0,0,0,0.45)] rounded-3xl">
@@ -48,6 +62,21 @@ export function RoadmapSummaryCard({
           <div className="flex items-center gap-2">
             <Route className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             <CardTitle>{t('dashboard.roadmapSummary.title')}</CardTitle>
+          </div>
+          <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+            <span className="text-xs font-bold text-blue-600 dark:text-blue-400">
+              {careerRoadmap.roleTitle}
+            </span>
+            <span className="text-muted-foreground text-xs">•</span>
+            <a
+              href={careerRoadmap.roadmapShUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              <span>roadmap.sh/{careerRoadmap.roadmapShSlug}</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
           </div>
           <CardDescription className="mt-1">
             {t('dashboard.roadmapSummary.description')}
@@ -123,6 +152,37 @@ export function RoadmapSummaryCard({
             <div className="pt-2 flex items-center justify-between">
               <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
                 {t('dashboard.roadmapSummary.addresses')}: {nextStep.gapAddressed || nextStep.matchingSkill || 'Core Gap'}
+              </span>
+              <Link to="/roadmap">
+                <Button size="sm" className="h-7 text-xs bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/20">
+                  {t('dashboard.roadmapSummary.continueModule')}
+                </Button>
+              </Link>
+            </div>
+          </div>
+        ) : fallbackMilestone ? (
+          <div className="p-4 rounded-xl border border-blue-100 dark:border-blue-950 bg-blue-50/40 dark:bg-blue-950/20 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider text-[11px]">
+                {t('dashboard.roadmapSummary.nextStep')} (Phase 1)
+              </span>
+              <span className="text-muted-foreground">
+                ~{fallbackMilestone.estimatedHours} hrs • {fallbackMilestone.recommendedCourse?.provider || 'roadmap.sh'}
+              </span>
+            </div>
+
+            <h4 className="text-sm sm:text-base font-sans font-bold text-foreground">
+              {fallbackMilestone.title}
+            </h4>
+
+            <p className="text-xs text-muted-foreground">
+              <strong className="text-foreground">{t('common.whyShown')}:</strong>{' '}
+              {fallbackMilestone.description}
+            </p>
+
+            <div className="pt-2 flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                {t('dashboard.roadmapSummary.addresses')}: {fallbackMilestone.topics.slice(0, 2).join(', ')}
               </span>
               <Link to="/roadmap">
                 <Button size="sm" className="h-7 text-xs bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/20">

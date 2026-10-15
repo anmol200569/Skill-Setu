@@ -28,7 +28,27 @@
     "searchPlaceholder": "Search courses & skills...",
     "themeMode": "Theme",
     "lightTheme": "Light",
-    "darkTheme": "Dark"
+    "darkTheme": "Dark",
+    "categories": "Categories",
+    "whySkillSetu": "Why Skill-Setu",
+    "aiCareerDiagnostic": "AI Career Diagnostic",
+    "switchToHindi": "हिन्दी में बदलें",
+    "switchToEnglish": "Switch to English",
+    "toggleMenu": "Toggle navigation menu",
+    "defaultLearnerName": "Skill Setu Learner",
+    "desktopNav": "Desktop Navigation",
+    "primaryNav": "Primary Navigation",
+    "mobileNav": "Mobile Bottom Navigation",
+    "skillJourney": "Skill Journey",
+    "exploreAndPractice": "Explore & Practice",
+    "practiceBadge": "Practice",
+    "preferences": "Preferences",
+    "language": "Language",
+    "toggleThemeButton": "Toggle Theme",
+    "closeMenu": "Close menu",
+    "adminStudio": "Admin Studio",
+    "platform": "Skill Setu Platform",
+    "targetRoleGoal": "Target Career Goal"
   },
   "common": {
     "sample": "Sample",
@@ -62,20 +82,47 @@
     "free": "Free",
     "beginner": "Beginner",
     "intermediate": "Intermediate",
-    "advanced": "Advanced"
+    "advanced": "Advanced",
+    "close": "Close"
+  },
+  "breadcrumbs": {
+    "label": "Breadcrumbs"
+  },
+  "mentor": {
+    "askMentor": "Ask AI Mentor",
+    "title": "Skill Setu AI Mentor",
+    "contextPrefix": "Context",
+    "noRoleContext": "Role Not Selected",
+    "closeAria": "Close mentor chat",
+    "retry": "Retry",
+    "pickTargetRole": "Pick Target Role",
+    "consulting": "Consulting skill intelligence models...",
+    "quickQueries": "Quick queries",
+    "inputPlaceholder": "Ask about your skill gaps or concepts...",
+    "sendAria": "Send message",
+    "welcomeWithRole": "Hi there! I'm your Skill Setu AI Mentor. I have your target role ({{role}}) and current skill assessments in my context. What would you like to explore today?",
+    "welcomeNoRole": "Hi there! I'm your Skill Setu AI Mentor. Pick a target role first so I can tailor mentoring and study recommendations to your career goals.",
+    "errBusy": "The AI Mentor is currently busy due to high demand. Please try again in a moment.",
+    "errTimeout": "Request timed out after 15 seconds. Please try asking again.",
+    "errUnavailable": "The AI Mentor service is temporarily unavailable. Please retry in a moment.",
+    "errNetwork": "Could not connect to the AI Mentor service. Please check your network and retry.",
+    "query1": "How do I bridge my highest priority skill gap?",
+    "query2": "Explain the difference between TypeScript unknown and any",
+    "query3": "Suggest a practical portfolio project for my target role"
   },
   "dashboard": {
     "badge": "Skill Intelligence",
     "welcome": "Welcome back",
+    "tagline": "Find Your Gap. Build Your Future.",
     "targetRoleLabel": "Current Career Goal",
     "notSelectedRole": "Select target career role",
     "readiness": {
       "title": "Overall Readiness Score",
       "disclaimer": "Estimate, not a guarantee of employment",
-      "tooltip": "Calculated using role requirement weights and verified skill proficiencies from diagnostic assessments.",
+      "tooltip": "Calculated using role requirement weights and assessed skill proficiencies from diagnostic assessments.",
       "coverageTitle": "Assessment Coverage",
       "coverageTooltip": "Percentage of target role skill requirements that you have assessed.",
-      "coverageSub": "{{assessed}} of {{total}} role skills verified",
+      "coverageSub": "{{assessed}} of {{total}} role skills assessed",
       "incompleteTitle": "Incomplete Assessment",
       "incompleteDesc": "Assess at least 3 skills to calculate your objective career readiness score.",
       "continueAssessing": "Continue Assessing",
@@ -90,7 +137,7 @@
     "statAssessedUnit": "/ {{total}} skills",
     "statHours": "Learning Hours",
     "statHoursUnit": "hours",
-    "statHoursTooltip": "Total verified study time logged through completed courses and practice modules.",
+    "statHoursTooltip": "Total study time logged through completed courses and practice modules.",
     "statCompleted": "Completed Modules",
     "statCompletedUnit": "courses",
     "statCompletedTooltip": "Curated courses in your learning roadmap marked as completed.",
@@ -144,12 +191,12 @@
       "meetsTarget": "Meets Target",
       "topicsInsideSkill": "Practical application, design tradeoffs, optimization techniques, and error handling for {{skill}}.",
       "evidenceAssessed": "Derived from Diagnostic Evaluation score ({{current}}/5) calibrated against standard rubrics.",
-      "evidenceNotAssessed": "No assessment taken yet. Baseline level currently pending diagnostic verification.",
+      "evidenceNotAssessed": "No assessment taken yet. Baseline level currently pending diagnostic evaluation.",
       "whyShownGap": "Role requires Level {{required}} with high priority ({{impact}} score impact).",
       "whyShownMet": "Requirement satisfied for target role ({{required}} required, achieved {{current}}).",
       "actionNotAssessedSub": "Take the 10-minute diagnostic assessment to measure your baseline.",
       "actionGapSub": "Recommended courses and hands-on modules available to close this -{{gap}} gap.",
-      "actionMetSub": "Skill verified. Practice quiz available to maintain proficiency.",
+      "actionMetSub": "Skill evaluated. Practice quiz available to maintain proficiency.",
       "takeDiagnostic": "Take Diagnostic",
       "practiceQuiz": "Practice Quiz"
     },
@@ -188,7 +235,7 @@
     },
     "whatIfModal": {
       "title": "Compare Target Career Role",
-      "desc": "Simulate how your verified skill proficiencies map against other industry career requirements:",
+      "desc": "Simulate how your assessed skill proficiencies map against other industry career requirements:",
       "selectLabel": "Select Comparison Role",
       "simulating": "Simulating readiness calculation for comparison role...",
       "activeGoal": "Active Goal",
@@ -231,9 +278,9 @@
     "statTotal": "Target Competencies",
     "statTotalTooltip": "Total skill requirements defined for your target career role.",
     "statNeedsImprovement": "Active Gaps",
-    "statNeedsImprovementTooltip": "Skills where your verified level is currently below the required target.",
+    "statNeedsImprovementTooltip": "Skills where your assessed level is currently below the required target.",
     "statStrong": "Target Met",
-    "statStrongTooltip": "Skills where your verified level meets or exceeds the target benchmark.",
+    "statStrongTooltip": "Skills where your assessed level meets or exceeds the target benchmark.",
     "statNotAssessed": "Pending Assessment",
     "statNotAssessedTooltip": "Core role requirements that have not yet been evaluated via diagnostic assessment.",
     "filterAll": "All Competencies",
@@ -246,8 +293,8 @@
     "takeDiagnostic": "Take Diagnostic Assessment",
     "changeRole": "Change Role",
     "badgeHighLeverage": "High Leverage",
-    "badgeVerified": "Verified",
-    "badgeNeedsTest": "Needs Test"
+    "badgeNeedsTest": "Needs Test",
+    "badgeProficient": "Proficient"
   },
   "roadmapPage": {
     "title": "Personalized Career Roadmap",
@@ -278,14 +325,21 @@
     "unmappedNotice": "The following skills required for your target role currently have no mapped courses in our catalog:",
     "unmappedSuggestion": "We recommend targeted self-study or practice quizzes to bridge these competencies.",
     "zeroGapsTitle": "All assessed skills meet target requirements!",
-    "zeroGapsDesc": "You currently meet or exceed the target proficiency level for all evaluated skills in this role. No gap-bridging courses are needed."
+    "zeroGapsDesc": "You currently meet or exceed the target proficiency level for all evaluated skills in this role. No gap-bridging courses are needed.",
+    "roadmapShBadge": "Official roadmap.sh Interactive Guide",
+    "tabStructured": "Structured Career Roadmap (roadmap.sh)",
+    "tabRemedial": "Diagnostic Gap Courses",
+    "phaseNumber": "Phase {{num}}",
+    "takeAssessment": "Take Diagnostic",
+    "topicsLabel": "Key Topics & Competencies",
+    "exploreRoles": "Explore Career Roadmaps:",
+    "milestonesProgress": "{{completed}} of {{total}} milestones completed"
   },
   "coursesPage": {
     "title": "Curated Course Catalogue",
-    "subtitle": "Zero-cost, industry-aligned learning tracks from verified providers mapped to job competencies.",
+    "subtitle": "Zero-cost, industry-aligned learning tracks from open providers mapped to job competencies.",
     "countBadge": "61 Courses Available",
     "coursesCount": "{{count}} courses",
-    "verifiedTracks": "Verified Learning Tracks",
     "searchPlaceholder": "Search by title, skill (e.g. React, SQL, Cloud), or provider...",
     "searchBtn": "Search",
     "filters": "Filters:",
@@ -312,7 +366,8 @@
     "viewDetails": "View Details",
     "launch": "Launch Course",
     "emptyTitle": "No courses found matching your criteria",
-    "emptyDesc": "Try clearing search filters or search for another topic."
+    "emptyDesc": "Try clearing search filters or search for another topic.",
+    "curatedTracks": "Curated Learning Tracks"
   },
   "landing": {
     "badge": "Open Technical Skill Intelligence",
@@ -323,7 +378,7 @@
     "heroCta": "Configure Your Pathway",
     "goToDashboard": "Go to Dashboard",
     "hero": {
-      "pill": "VERIFIED OPEN TECHNICAL EDUCATION",
+      "pill": "OPEN TECHNICAL EDUCATION",
       "titleLine1": "Skills Today",
       "titleLine2": "A Brighter",
       "titleLine3": "Tomorrow",
@@ -332,12 +387,28 @@
       "aiSkillAssessment": "AI Skill Assessment",
       "statCoursesLabel": "Curated Courses",
       "statRolesLabel": "Career Roles",
-      "statSkillsLabel": "Assessed Skills"
+      "statSkillsLabel": "Assessed Skills",
+      "facts": {
+        "roles": "6 Target Career Roles"
+      },
+      "resourceCard": {
+        "title": "61 Free Courses • 5 Providers",
+        "badge": "Open Curricula",
+        "providers": "CS50 • freeCodeCamp • Microsoft • Google • NPTEL"
+      },
+      "checklist": {
+        "title": "Built-in Platform Features",
+        "item1": "Diagnostic skill assessments with calibrated proficiency scoring",
+        "item2": "Personalized role-based milestone roadmap targeting your gaps",
+        "item3": "AI practice quizzes dynamically generated from study notes",
+        "item4": "61 curated free courses from 5 external open providers",
+        "item5": "Bilingual user interface and workflows in English & हिन्दी"
+      }
     },
     "categories": {
       "tag": "Competency Domains",
       "title": "Popular Categories",
-      "subtitle": "Explore technical skills and find verified open courses for your career goals.",
+      "subtitle": "Explore technical skills and find open curated courses for your career goals.",
       "viewAll": "View All Categories",
       "progSoftDev": "Programming & Software Development",
       "dataAnalytics": "Data & Analytics",
@@ -347,7 +418,7 @@
     },
     "why": {
       "title": "Why Learn with Skill-Setu?",
-      "subtitle": "An objective platform to measure verified technical competencies and follow focused learning paths.",
+      "subtitle": "An objective platform to measure assessed technical competencies and follow focused learning paths.",
       "f1Title": "Objective Diagnostics",
       "f1Desc": "Calibrated 1.0 to 5.0 proficiency scores derived from technical evaluations.",
       "f2Title": "Free Curated Curricula",
@@ -410,7 +481,7 @@
     "constellation": {
       "tag": "Skill Bridge (Setu)",
       "interactive": "Interactive Skill Bridge • Move mouse to explore",
-      "description": "Diagnostic skills connecting directly to your verified career goal."
+      "description": "Diagnostic skills connecting directly to your target career goal."
     },
     "footer": {
       "tagline": "Open Technical Skill Diagnostics & Learning Platform",
@@ -427,6 +498,15 @@
       "popularCategories": "Popular Categories",
       "whySkillSetu": "Why Skill-Setu",
       "copyright": "© {{year}} Skill-Setu. Open technical diagnostics platform. All course trademarks belong to their respective owners."
+    },
+    "domains": {
+      "programming": "Programming",
+      "cloud": "Cloud & DevOps",
+      "data": "Data & Analytics",
+      "security": "Cybersecurity",
+      "ai": "AI & ML",
+      "product": "Product",
+      "comm": "Communication"
     }
   },
   "auth": {
@@ -549,6 +629,19 @@
   },
   "admin": {
     "title": "Administrator Studio",
+    "nav": {
+      "analytics": "Analytics Hub",
+      "framework": "Competency Framework",
+      "courses": "Course Library",
+      "quizzes": "Quiz Management",
+      "learners": "Learner Cohorts",
+      "switchToLearner": "Switch to Learner View",
+      "adminTools": "Administrator Tools",
+      "learnerDesc": "Preview the learner experience and take diagnostic assessments.",
+      "adminDesc": "Manage competency skills, publish quizzes, and view cohort analytics.",
+      "goToLearner": "Go to Learner Dashboard",
+      "openStudio": "Open Admin Studio"
+    },
     "heading": "Organization Skill Intelligence",
     "subheading": "Real-time analytics across learner cohorts, competency demand, and assessment metrics.",
     "manageCompetencies": "Manage Competencies",
@@ -601,12 +694,12 @@
     "questionOf": "Question {{current}} of {{total}}",
     "submit": "Submit Assessment",
     "reviewScore": "Assessment Result",
-    "verifiedLevel": "Assessed Proficiency Level",
     "timeSpent": "Time Spent",
     "noAssessmentsTitle": "No diagnostic assessments available yet",
     "noAssessmentsSub": "Diagnostic evaluations will appear once competencies and question banks are configured.",
     "noDomainAssessments": "No assessments found for this domain.",
-    "viewAllDomains": "View All Domains"
+    "viewAllDomains": "View All Domains",
+    "assessedLevel": "Assessed Proficiency Level"
   },
   "learningPath": {
     "emptyTitle": "Take your first diagnostic to unlock your roadmap",
@@ -614,4 +707,3 @@
     "startDiagnostic": "Start Diagnostic"
   }
 }
-

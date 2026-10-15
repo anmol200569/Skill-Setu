@@ -63,6 +63,9 @@ export function MobileTabBar() {
   const toggleLanguage = (lang: 'en' | 'hi') => {
     i18n.changeLanguage(lang);
     localStorage.setItem('skill_setu_lang', lang);
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = lang;
+    }
   };
 
   const toggleTheme = () => {
@@ -99,7 +102,7 @@ export function MobileTabBar() {
   return (
     <>
       <nav
-        aria-label="Mobile Bottom Navigation"
+        aria-label={t('nav.mobileNav', { defaultValue: 'Mobile Bottom Navigation' })}
         className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-[#0B0F19]/90 backdrop-blur-2xl border-t border-white/30 dark:border-white/10 shadow-[0_-8px_32px_rgba(0,0,0,0.15)] safe-bottom"
       >
         <div className="grid grid-cols-5 h-16 max-w-lg mx-auto px-1.5 items-center">
@@ -193,13 +196,13 @@ export function MobileTabBar() {
                       {t('nav.moreMenuTitle', { defaultValue: 'Menu & Tools' })}
                     </h3>
                     <p className="text-[11px] text-muted-foreground">
-                      {user?.email || 'Skill Setu Learner'}
+                      {user?.email || t('nav.defaultLearnerName', { defaultValue: 'Skill Setu Learner' })}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={() => setIsMoreOpen(false)}
-                  aria-label="Close menu"
+                  aria-label={t('nav.closeMenu', { defaultValue: 'Close menu' })}
                   className="p-1.5 rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
                 >
                   <X className="w-5 h-5" />
@@ -225,7 +228,7 @@ export function MobileTabBar() {
                 {/* 2. Core Navigation Links */}
                 <div className="space-y-1">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground px-1">
-                    Explore & Practice
+                    {t('nav.exploreAndPractice', { defaultValue: 'Explore & Practice' })}
                   </span>
 
                   {/* AI Quizzes (Featured) */}
@@ -246,7 +249,7 @@ export function MobileTabBar() {
                       <span>{t('nav.quizzes', { defaultValue: 'AI Quizzes' })}</span>
                     </div>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">
-                      Practice
+                      {t('nav.practiceBadge', { defaultValue: 'Practice' })}
                     </span>
                   </Link>
 
@@ -304,7 +307,7 @@ export function MobileTabBar() {
                         <div className="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 flex items-center justify-center">
                           <Shield className="w-4 h-4" />
                         </div>
-                        <span>Admin Studio</span>
+                        <span>{t('nav.adminStudio', { defaultValue: 'Admin Studio' })}</span>
                       </div>
                     </Link>
                   )}
@@ -313,14 +316,14 @@ export function MobileTabBar() {
                 {/* 3. Language & Theme Preferences */}
                 <div className="pt-2 border-t border-border space-y-2">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground px-1">
-                    Preferences
+                    {t('nav.preferences', { defaultValue: 'Preferences' })}
                   </span>
 
                   {/* Language Selector */}
                   <div className="flex items-center justify-between p-2 rounded-xl bg-secondary/50 border border-border">
                     <div className="flex items-center gap-2">
                       <Globe className="w-4 h-4 text-blue-600" />
-                      <span className="font-semibold text-foreground">Language</span>
+                      <span className="font-semibold text-foreground">{t('nav.language', { defaultValue: 'Language' })}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <button
@@ -333,7 +336,7 @@ export function MobileTabBar() {
                             : 'text-muted-foreground hover:text-foreground'
                         )}
                       >
-                        EN
+                        English
                       </button>
                       <button
                         type="button"
@@ -366,7 +369,7 @@ export function MobileTabBar() {
                     >
                       <Sun className="w-3.5 h-3.5 text-amber-500 hidden dark:block" />
                       <Moon className="w-3.5 h-3.5 text-slate-700 block dark:hidden" />
-                      <span>Toggle Theme</span>
+                      <span>{t('nav.toggleThemeButton', { defaultValue: 'Toggle Theme' })}</span>
                     </button>
                   </div>
                 </div>

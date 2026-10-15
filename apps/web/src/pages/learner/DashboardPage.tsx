@@ -250,6 +250,9 @@ export function DashboardPage() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
             {t('dashboard.welcome')}, {profile?.fullName || 'Learner'}
           </h1>
+          <p className="text-xs sm:text-sm font-medium text-muted-foreground mt-0.5">
+            {t('dashboard.tagline')}
+          </p>
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground pt-0.5">
             <span>{t('dashboard.targetRoleLabel')}:</span>
             {!hasSavedTargetRole ? (
@@ -512,6 +515,8 @@ export function DashboardPage() {
             weeklyHours={weeklyHours}
             completedCount={stats?.completedCoursesCount || 0}
             totalCount={Math.max(4, recommendations.length)}
+            targetRoleTitle={targetRoleTitle}
+            targetRoleId={targetRoleId}
           />
 
           {/* Section 7: Recent Quiz History (Preserved from Module B1) */}

@@ -3,7 +3,10 @@ import { initReactI18next } from 'react-i18next';
 import en from './en.json';
 import hi from './hi.json';
 
-const savedLang = localStorage.getItem('skill_setu_lang') || 'en';
+const savedLang = (typeof window !== 'undefined' ? localStorage.getItem('skill_setu_lang') : null) || 'en';
+if (typeof document !== 'undefined') {
+  document.documentElement.lang = savedLang;
+}
 
 i18n
   .use(initReactI18next)
@@ -19,4 +22,14 @@ i18n
     }
   });
 
+i18n.on('languageChanged', (lng) => {
+  if (typeof document !== 'undefined') {
+    document.documentElement.lang = lng;
+  }
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('skill_setu_lang', lng);
+  }
+});
+
 export default i18n;
+

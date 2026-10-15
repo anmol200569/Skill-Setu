@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { CheckCircle2, AlertCircle, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export interface ToastProps {
   message: string;
@@ -9,6 +10,7 @@ export interface ToastProps {
 }
 
 export function Toast({ message, type = 'success', onClose, duration = 4000 }: ToastProps) {
+  const { t } = useTranslation();
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
@@ -39,7 +41,7 @@ export function Toast({ message, type = 'success', onClose, duration = 4000 }: T
         type="button"
         onClick={onClose}
         className="text-muted-foreground hover:text-foreground transition-colors p-1"
-        aria-label="Close"
+        aria-label={t('common.close', { defaultValue: 'Close' })}
       >
         <X className="w-4 h-4" />
       </button>

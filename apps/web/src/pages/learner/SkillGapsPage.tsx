@@ -204,7 +204,7 @@ export function SkillGapsPage() {
           badge={
             strongCount > 0 ? (
               <Badge variant="strong" icon={CheckCircle2}>
-                {t('skillGapsPage.badgeVerified')}
+                {t('skillGapsPage.badgeProficient', { defaultValue: 'Proficient' })}
               </Badge>
             ) : undefined
           }

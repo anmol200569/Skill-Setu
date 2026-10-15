@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Sparkles, X, Send, Bot, User, Loader2, ArrowRight, RotateCcw, Compass } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useTranslation } from 'react-i18next';
 import { apiClient } from '../../lib/api';
 import { useAuth } from '../../context/AuthContext';
 
@@ -18,6 +19,7 @@ interface ChatMessage {
 
 export function AIChatDrawer() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -37,13 +39,13 @@ export function AIChatDrawer() {
           id: 'welcome',
           role: 'assistant',
           content: roleName
-            ? `Hi there! I'm your Skill Setu AI Mentor. I have your target role (${roleName}) and current skill assessments in my context. What would you like to explore today?`
-            : `Hi there! I'm your Skill Setu AI Mentor. Pick a target role first so I can tailor mentoring and study recommendations to your career goals.`,
+            ? t('mentor.welcomeWithRole', { role: roleName })
+            : t('mentor.welcomeNoRole'),
           noRole: !roleName
         }
       ]);
     }
-  }, [isOpen, profile]);
+  }, [isOpen, profile, t]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -106,12 +108,12 @@ export function AIChatDrawer() {
       const is503 = err?.status === 503 || err?.statusCode === 503 || err?.message?.includes('503') || err?.degraded;
 
       const friendlyMessage = is429
-        ? 'The AI Mentor is currently busy due to high demand. Please try again in a moment.'
+        ? t('mentor.errBusy')
         : isTimeout
-        ? 'Request timed out after 15 seconds. Please try asking again.'
+        ? t('mentor.errTimeout')
         : is503
-        ? 'The AI Mentor service is temporarily unavailable. Please retry in a moment.'
-        : 'Could not connect to the AI Mentor service. Please check your network and retry.';
+        ? t('mentor.errUnavailable')
+        : t('mentor.errNetwork');
 
       setMessages((prev) => [
         ...prev,
@@ -129,9 +131,9 @@ export function AIChatDrawer() {
   };
 
   const quickQuestions = [
-    'How do I bridge my highest priority skill gap?',
-    'Explain the difference between TypeScript unknown and any',
-    'Suggest a practical portfolio project for my target role'
+    t('mentor.query1'),
+    t('mentor.query2'),
+    t('mentor.query3')
   ];
 
   return (
@@ -141,10 +143,12 @@ export function AIChatDrawer() {
         <button
           onClick={() => setIsOpen(true)}
           className="fixed bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] right-3 sm:right-4 md:bottom-8 md:right-8 z-40 flex items-center gap-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 p-2.5 sm:px-5 sm:py-3 text-white shadow-[0_8px_25px_rgba(37,99,235,0.4)] border border-white/30 hover:shadow-[0_12px_32px_rgba(37,99,235,0.55)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all"
-          aria-label="Ask AI Mentor"
+          aria-label={t('mentor.askMentor', { defaultValue: 'Ask AI Mentor' })}
         >
           <Sparkles className="w-5 h-5 animate-pulse" />
-          <span className="hidden sm:inline text-sm font-semibold tracking-wide">Ask AI Mentor</span>
+          <span className="hidden sm:inline text-sm font-semibold tracking-wide">
+            {t('mentor.askMentor', { defaultValue: 'Ask AI Mentor' })}
+          </span>
         </button>
       )}
 
@@ -158,14 +162,17 @@ export function AIChatDrawer() {
                 <Bot className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="text-sm font-sans font-bold text-foreground">Skill Setu AI Mentor</h4>
+                <h4 className="text-sm font-sans font-bold text-foreground">
+                  {t('mentor.title', { defaultValue: 'Skill Setu AI Mentor' })}
+                </h4>
                 <p className="text-[11px] text-muted-foreground">
-                  Context: {profile?.targetRoleName || 'Role Not Selected'}
+                  {t('mentor.contextPrefix', { defaultValue: 'Context' })}: {profile?.targetRoleName || t('mentor.noRoleContext', { defaultValue: 'Role Not Selected' })}
                 </p>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
+              aria-label={t('mentor.closeAria', { defaultValue: 'Close mentor chat' })}
               className="p-1 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               <X className="w-4 h-4" />
@@ -209,7 +216,7 @@ export function AIChatDrawer() {
                       className="mt-2 text-xs font-semibold px-2.5 py-1 rounded-md bg-destructive text-destructive-foreground hover:bg-destructive/90 flex items-center gap-1.5 transition-colors"
                     >
                       <RotateCcw className="w-3 h-3" />
-                      <span>Retry</span>
+                      <span>{t('mentor.retry', { defaultValue: 'Retry' })}</span>
                     </button>
                   )}
                   {m.noRole && (
@@ -222,7 +229,7 @@ export function AIChatDrawer() {
                       className="mt-2 text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-1.5 transition-colors"
                     >
                       <Compass className="w-3 h-3" />
-                      <span>Pick Target Role</span>
+                      <span>{t('mentor.pickTargetRole', { defaultValue: 'Pick Target Role' })}</span>
                     </button>
                   )}
                 </div>
@@ -241,7 +248,7 @@ export function AIChatDrawer() {
                 </div>
                 <div className="rounded-xl px-3.5 py-2 bg-secondary border border-border flex items-center gap-2 text-muted-foreground">
                   <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-600" />
-                  <span>Consulting skill intelligence models...</span>
+                  <span>{t('mentor.consulting', { defaultValue: 'Consulting skill intelligence models...' })}</span>
                 </div>
               </div>
             )}
@@ -251,7 +258,9 @@ export function AIChatDrawer() {
           {/* Prompt suggestions if few messages */}
           {messages.length <= 2 && (
             <div className="px-3 py-2 border-t border-border/50 bg-secondary/20 flex flex-col gap-1 text-[11px]">
-              <span className="text-[10px] uppercase font-semibold text-muted-foreground">Quick queries</span>
+              <span className="text-[10px] uppercase font-semibold text-muted-foreground">
+                {t('mentor.quickQueries', { defaultValue: 'Quick queries' })}
+              </span>
               {quickQuestions.map((q, i) => (
                 <button
                   key={i}
@@ -277,13 +286,14 @@ export function AIChatDrawer() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about your skill gaps or concepts..."
+              placeholder={t('mentor.inputPlaceholder', { defaultValue: 'Ask about your skill gaps or concepts...' })}
               disabled={isLoading}
               className="flex-1 bg-secondary rounded-xl px-3.5 py-2 text-xs border border-border focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600"
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
+              aria-label={t('mentor.sendAria', { defaultValue: 'Send message' })}
               className="p-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 shadow-md shadow-blue-500/20 disabled:opacity-50"
             >
               <Send className="w-3.5 h-3.5" />
