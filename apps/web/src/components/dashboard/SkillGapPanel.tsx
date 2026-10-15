@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   ChevronDown,
   ChevronUp,
@@ -39,6 +39,7 @@ export function SkillGapPanel({
   className,
 }: SkillGapPanelProps) {
   const { t } = useTranslation();
+  const location = useLocation();
   const [filter, setFilter] = useState<'all' | 'needsImprovement' | 'strong' | 'notAssessed'>(initialFilter);
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedSkillId, setExpandedSkillId] = useState<string | null>(null);
@@ -410,7 +411,7 @@ export function SkillGapPanel({
 
                         <div className="flex items-center gap-2">
                           {item.status === 'notAssessed' ? (
-                            <Link to={`/assessments?skill=${encodeURIComponent(item.skillId)}`}>
+                            <Link to={`/assessments?skill=${encodeURIComponent(item.skillId)}&returnTo=${encodeURIComponent(location.pathname)}`}>
                               <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/20 text-xs">
                                 <Target className="w-3.5 h-3.5 mr-1" />
                                 <span>{t('dashboard.skillGapPanel.takeDiagnostic')}</span>

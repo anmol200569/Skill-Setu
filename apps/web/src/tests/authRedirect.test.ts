@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getLandingPageRedirect, getPrefilledWizardRole } from '../lib/authRedirect';
+import { getLandingPageRedirect, getPrefilledWizardRole, getAuthCallbackRedirect } from '../lib/authRedirect';
 import { getProtectedRouteRedirect } from '../components/layout/ProtectedRoute';
 
 describe('BUG 1: Visitor Wizard Redirect & Role Prefill Logic', () => {
@@ -119,6 +119,51 @@ describe('BUG 1: Visitor Wizard Redirect & Role Prefill Logic', () => {
         pathname: '/onboarding'
       });
       expect(redirect).toBeNull();
+    });
+  });
+
+  describe('OAuth AuthCallback Redirect Logic', () => {
+    it('redirects to /onboarding when profile is null (new OAuth user without profile)', () => {
+      const dest = getAuthCallbackRedirect({
+        profile: null,
+        savedReturnPath: '/dashboard'
+      });
+      expect(dest).toBe('/onboarding');
+    });
+
+    it('redirects to /onboarding when profile.isOnboarded is false', () => {
+      const dest = getAuthCallbackRedirect({
+        profile: { isOnboarded: false },
+        savedReturnPath: '/assessments?skill=sql-123'
+      });
+      expect(dest).toBe('/onboarding');
+    });
+
+    it('redirects to /dashboard when onboarded and no savedReturnPath', () => {
+      const dest = getAuthCallbackRedirect({
+        profile: { isOnboarded: true },
+        savedReturnPath: null
+      });
+      expect(dest).toBe('/dashboard');
+    });
+
+    it('redirects to savedReturnPath when onboarded and valid path provided', () => {
+      const dest = getAuthCallbackRedirect({
+        profile: { isOnboarded: true },
+        savedReturnPath: '/assessments?skill=sql-123'
+      });
+      expect(dest).toBe('/assessments?skill=sql-123');
+    });
+
+    it('ignores auth routes in savedReturnPath and falls back to /dashboard', () => {
+      expect(getAuthCallbackRedirect({ profile: { isOnboarded: true }, savedReturnPath: '/login' })).toBe('/dashboard');
+      expect(getAuthCallbackRedirect({ profile: { isOnboarded: true }, savedReturnPath: '/signup' })).toBe('/dashboard');
+      expect(getAuthCallbackRedirect({ profile: { isOnboarded: true }, savedReturnPath: '/auth/callback' })).toBe('/dashboard');
+    });
+
+    it('ignores external or malformed URLs and falls back to /dashboard', () => {
+      expect(getAuthCallbackRedirect({ profile: { isOnboarded: true }, savedReturnPath: 'https://malicious.com' })).toBe('/dashboard');
+      expect(getAuthCallbackRedirect({ profile: { isOnboarded: true }, savedReturnPath: 'javascript:alert(1)' })).toBe('/dashboard');
     });
   });
 });

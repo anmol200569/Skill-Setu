@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Info, Target, ArrowRight, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '../ui/Card';
@@ -24,6 +24,7 @@ export function ReadinessGauge({
   targetRoleTitle,
 }: ReadinessGaugeProps) {
   const { t } = useTranslation();
+  const location = useLocation();
   const [showTooltip, setShowTooltip] = useState(false);
   const [showCoverageTooltip, setShowCoverageTooltip] = useState(false);
 
@@ -82,7 +83,7 @@ export function ReadinessGauge({
                 <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
                   {t('dashboard.readiness.incompleteDesc')}
                 </p>
-                <Link to="/assessments">
+                <Link to={`/assessments?returnTo=${encodeURIComponent(location.pathname)}`}>
                   <Button
                     size="sm"
                     className="bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 flex items-center gap-1.5"
@@ -217,7 +218,7 @@ export function ReadinessGauge({
                 {targetRoleTitle || t('dashboard.readiness.targetRoleFallback')}
               </div>
               <div className="pt-2 flex flex-wrap gap-2">
-                <Link to="/assessments">
+                <Link to={`/assessments?returnTo=${encodeURIComponent(location.pathname)}`}>
                   <Button variant="outline" size="sm" className="text-xs font-semibold h-8 rounded-lg hover:border-blue-400 hover:text-blue-600">
                     <Target className="w-3.5 h-3.5 mr-1 text-blue-600" />
                     <span>{t('dashboard.readiness.takeDiagnostic')}</span>

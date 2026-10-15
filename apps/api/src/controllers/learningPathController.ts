@@ -15,13 +15,17 @@ export async function getLearnerLearningPath(req: Request, res: Response): Promi
       status: 'not_started',
       userId,
       targetRoleTitle: null,
-      totalEstimatedHours: null,
+      totalEstimatedHours: 0,
       courses: [],
       createdAt: null,
       updatedAt: null
     });
     return;
   }
+
+  const role = await prisma.role.findUnique({
+    where: { id: profile.targetRoleId }
+  });
 
   let path = await prisma.learningPath.findFirst({
     where: { userId, targetRoleId: profile.targetRoleId },
@@ -55,8 +59,8 @@ export async function getLearnerLearningPath(req: Request, res: Response): Promi
       res.json({
         status: 'not_started',
         userId,
-        targetRoleTitle: null,
-        totalEstimatedHours: null,
+        targetRoleTitle: role?.title || null,
+        totalEstimatedHours: 0,
         courses: [],
         createdAt: null,
         updatedAt: null
@@ -127,7 +131,32 @@ export async function getLearnerLearningPath(req: Request, res: Response): Promi
 
 export async function regenerateLearningPath(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
-  const targetRoleId = (req.body.targetRoleId as string) || undefined;
+  let targetRoleId = (req.body.targetRoleId as string) || undefined;
+
+  if (!targetRoleId) {
+    const profile = await prisma.profile.findUnique({
+      where: { userId },
+      select: { targetRoleId: true }
+    });
+    targetRoleId = profile?.targetRoleId || undefined;
+  }
+
+  if (!targetRoleId) {
+    res.json({
+      status: 'not_started',
+      userId,
+      targetRoleTitle: null,
+      totalEstimatedHours: 0,
+      courses: [],
+      createdAt: null,
+      updatedAt: null
+    });
+    return;
+  }
+
+  const role = await prisma.role.findUnique({
+    where: { id: targetRoleId }
+  });
 
   try {
     const gapResult = await analyzeLearnerSkillGaps(userId, targetRoleId);
@@ -135,8 +164,8 @@ export async function regenerateLearningPath(req: Request, res: Response): Promi
       res.json({
         status: 'not_started',
         userId,
-        targetRoleTitle: null,
-        totalEstimatedHours: null,
+        targetRoleTitle: role?.title || null,
+        totalEstimatedHours: 0,
         courses: [],
         createdAt: null,
         updatedAt: null

@@ -198,9 +198,15 @@ export interface LearningPath {
   id?: string | null;
   userId: string;
   targetRoleTitle?: string | null;
-  status?: 'active' | 'not_started';
+  status?: 'active' | 'not_started' | 'completed';
   totalEstimatedHours?: number | null;
   courses: LearningPathCourseItem[];
+  unmappedSkills?: {
+    skillId: string;
+    skillName: string;
+    gap: number;
+    requiredLevel?: number;
+  }[];
   createdAt?: string | null;
   updatedAt?: string | null;
 }

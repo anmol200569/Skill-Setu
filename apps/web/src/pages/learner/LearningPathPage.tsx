@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../context/AuthContext';
 import { apiClient } from '../../lib/api';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
-import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
+import { Card } from '../../components/ui/Card';
 import { ProgressBar } from '../../components/ui/ProgressBar';
-import { StatTile } from '../../components/ui/StatTile';
 import { Breadcrumbs } from '../../components/layout/Breadcrumbs';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { Skeleton } from '../../components/ui/Skeleton';
+import { Toast } from '../../components/ui/Toast';
 import {
   Route,
   Clock,
   CheckCircle2,
-  PlayCircle,
   ExternalLink,
   Sparkles,
   RefreshCw,
-  Award,
   Layers,
-  Code2,
-  FolderGit2
+  AlertCircle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -45,66 +43,25 @@ interface PathItem {
   isOutsideRoleGaps?: boolean;
 }
 
-interface MilestoneProject {
-  id: string;
-  titleKey: string;
-  descKey: string;
-  skills: string[];
-  estimatedHours: number;
-  status: 'not_started' | 'in_progress' | 'completed';
-}
-
 export function LearningPathPage() {
   const { t } = useTranslation();
+  const { profile } = useAuth();
+  const navigate = useNavigate();
   const [learningPath, setLearningPath] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRegenerating, setIsRegenerating] = useState(false);
-
-  // Projects state (persisted locally so learner can track project progress)
-  const [projectStatus, setProjectStatus] = useState<Record<string, 'not_started' | 'in_progress' | 'completed'>>(() => {
-    try {
-      const saved = localStorage.getItem('skill_setu_project_status');
-      return saved ? JSON.parse(saved) : { 'proj-1': 'not_started', 'proj-2': 'not_started' };
-    } catch (_) {
-      return { 'proj-1': 'not_started', 'proj-2': 'not_started' };
-    }
-  });
-
-  const milestoneProjects: MilestoneProject[] = [
-    {
-      id: 'proj-1',
-      titleKey: 'roadmapPage.project1Title',
-      descKey: 'roadmapPage.project1Desc',
-      skills: ['Microservices', 'Docker', 'API Security', 'System Design'],
-      estimatedHours: 24,
-      status: projectStatus['proj-1'] || 'not_started',
-    },
-    {
-      id: 'proj-2',
-      titleKey: 'roadmapPage.project2Title',
-      descKey: 'roadmapPage.project2Desc',
-      skills: ['React Architecture', 'State Management', 'WebSockets', 'A11y'],
-      estimatedHours: 32,
-      status: projectStatus['proj-2'] || 'not_started',
-    },
-  ];
-
-  const updateProjectStatus = (projId: string, nextStatus: 'not_started' | 'in_progress' | 'completed') => {
-    setProjectStatus((prev) => {
-      const updated = { ...prev, [projId]: nextStatus };
-      try {
-        localStorage.setItem('skill_setu_project_status', JSON.stringify(updated));
-      } catch (_) {}
-      return updated;
-    });
-
-    if (nextStatus === 'completed') {
-      confetti({ particleCount: 60, spread: 55 });
-    }
-  };
+  const [toast, setToast] = useState<{ message: string; type?: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     loadLearningPath();
+
+    const handleDiagnosticDone = () => {
+      loadLearningPath();
+    };
+    window.addEventListener('skill_setu_diagnostic_completed', handleDiagnosticDone);
+    return () => {
+      window.removeEventListener('skill_setu_diagnostic_completed', handleDiagnosticDone);
+    };
   }, []);
 
   const loadLearningPath = async () => {
@@ -122,10 +79,22 @@ export function LearningPathPage() {
   const handleRegenerate = async () => {
     setIsRegenerating(true);
     try {
-      const refreshed = await apiClient('/learning-paths/regenerate', { method: 'POST' });
+      const targetRoleId = learningPath?.targetRoleId || profile?.targetRoleId;
+      const refreshed = await apiClient<any>('/learning-paths/regenerate', {
+        method: 'POST',
+        body: JSON.stringify({ targetRoleId })
+      });
       setLearningPath(refreshed);
+      setToast({
+        message: t('roadmapPage.recalibrateSuccess'),
+        type: 'success'
+      });
     } catch (err: any) {
       console.warn('Could not regenerate learning path:', err);
+      setToast({
+        message: t('roadmapPage.recalibrateError'),
+        type: 'error'
+      });
     } finally {
       setIsRegenerating(false);
     }
@@ -168,14 +137,28 @@ export function LearningPathPage() {
 
   const courses: PathItem[] = learningPath?.courses || [];
   const completedCoursesCount = courses.filter((c) => c.status === 'completed').length;
-  const completedProjectsCount = milestoneProjects.filter((p) => p.status === 'completed').length;
-  const totalItems = courses.length + milestoneProjects.length;
-  const completedTotal = completedCoursesCount + completedProjectsCount;
+  const totalItems = courses.length;
+  const completedTotal = completedCoursesCount;
   const overallPercent = totalItems > 0 ? Math.round((completedTotal / totalItems) * 100) : 0;
-  const totalHours = (learningPath?.totalEstimatedHours || 0) + 56;
+  const totalHours = learningPath?.totalEstimatedHours || 0;
+  const roleTitle =
+    learningPath?.targetRoleTitle ||
+    profile?.targetRoleName ||
+    profile?.targetRole?.title ||
+    'Target Career';
+  const unmappedSkills = learningPath?.unmappedSkills || [];
 
   return (
     <div className="space-y-6 sm:space-y-8 w-full max-w-[1720px] mx-auto pb-20">
+      {/* Toast Feedback */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       {/* Breadcrumb Hierarchy */}
       <Breadcrumbs items={[{ label: t('nav.roadmap') }]} />
 
@@ -184,7 +167,7 @@ export function LearningPathPage() {
         <div className="space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-              {t('roadmapPage.rolePrefix')} {learningPath?.targetRoleTitle || 'Target Career'}
+              {t('roadmapPage.rolePrefix')} {roleTitle}
             </span>
             <span className="text-muted-foreground text-xs">•</span>
             <span className="text-xs text-muted-foreground font-medium">
@@ -222,6 +205,7 @@ export function LearningPathPage() {
             size="sm"
             onClick={handleRegenerate}
             isLoading={isRegenerating}
+            disabled={isRegenerating}
             className="flex items-center gap-1.5 text-xs font-semibold self-stretch sm:self-auto h-9 rounded-xl hover:border-blue-400 hover:text-blue-600"
           >
             <RefreshCw className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
@@ -230,6 +214,24 @@ export function LearningPathPage() {
         </div>
       </div>
 
+      {/* Unmapped Skills Notice if any gap skill lacks a catalog course */}
+      {unmappedSkills.length > 0 && (
+        <div className="p-5 rounded-2xl border border-amber-500/20 bg-amber-500/5 text-amber-900 dark:text-amber-200 space-y-2">
+          <div className="flex items-center gap-2 font-semibold text-xs sm:text-sm">
+            <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+            <span>{t('roadmapPage.unmappedNotice')}</span>
+          </div>
+          <div className="flex flex-wrap gap-2 pt-1">
+            {unmappedSkills.map((sk: any) => (
+              <Badge key={sk.skillId} variant="outline" className="border-amber-500/30 text-amber-800 dark:text-amber-300">
+                {sk.skillName} (Gap: {sk.gap})
+              </Badge>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground">{t('roadmapPage.unmappedSuggestion')}</p>
+        </div>
+      )}
+
       {courses.length === 0 ? (
         <EmptyState
           icon={Route}
@@ -237,12 +239,12 @@ export function LearningPathPage() {
           description={t('roadmapPage.emptySubtitle')}
           primaryAction={{
             label: t('roadmapPage.startDiagnostic'),
-            onClick: () => window.location.assign('/assessments'),
+            onClick: () => navigate('/assessments?returnTo=/learning-path'),
           }}
         />
       ) : (
         <div className="space-y-8">
-          {/* Phase 1: Sequential Mapped Courses */}
+          {/* Sequential Mapped Courses */}
           <div className="space-y-4">
             <div>
               <h2 className="text-lg sm:text-xl font-bold font-sans text-foreground flex items-center gap-2">
@@ -375,101 +377,6 @@ export function LearningPathPage() {
                       </div>
                     </Card>
                   </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Phase 2: Applied Milestone Projects (Demonstrate Improvement) */}
-          <div className="space-y-4 pt-4 border-t border-border">
-            <div>
-              <h2 className="text-lg sm:text-xl font-bold font-sans text-foreground flex items-center gap-2">
-                <FolderGit2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                <span>{t('roadmapPage.projectsHeading')}</span>
-              </h2>
-              <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                {t('roadmapPage.projectsDesc')}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {milestoneProjects.map((proj, idx) => {
-                const isDone = proj.status === 'completed';
-                const isInProgress = proj.status === 'in_progress';
-
-                return (
-                  <Card
-                    key={proj.id}
-                    hoverEffect
-                    className="p-5 border border-border bg-card shadow-card flex flex-col justify-between space-y-4 rounded-2xl"
-                  >
-                    <div className="space-y-2.5">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-                          {t('roadmapPage.capstoneProject', { num: idx + 1 })}
-                        </span>
-                        <Badge variant={isDone ? 'strong' : isInProgress ? 'needsImprovement' : 'notAssessed'}>
-                          {isDone ? t('roadmapPage.completed') : isInProgress ? t('roadmapPage.inProgress') : t('roadmapPage.notStarted')}
-                        </Badge>
-                      </div>
-
-                      <h3 className="font-sans font-bold text-base text-foreground">
-                        {t(proj.titleKey)}
-                      </h3>
-
-                      <p className="text-xs text-muted-foreground leading-relaxed">
-                        {t(proj.descKey)}
-                      </p>
-
-                      <div className="flex flex-wrap gap-1.5 pt-1">
-                        {proj.skills.map((sk) => (
-                          <span
-                            key={sk}
-                            className="text-[10px] font-mono bg-secondary px-2 py-0.5 rounded-lg text-foreground/80 border border-border"
-                          >
-                            {sk}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="pt-3 border-t border-border flex items-center justify-between text-xs">
-                      <span className="text-muted-foreground font-medium flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                        {t('roadmapPage.practicalWork', { hours: proj.estimatedHours })}
-                      </span>
-
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          type="button"
-                          onClick={() => updateProjectStatus(proj.id, 'not_started')}
-                          className={`px-2.5 py-1 rounded-lg text-[11px] border ${
-                            proj.status === 'not_started' ? 'bg-secondary font-bold' : 'hover:bg-muted'
-                          }`}
-                        >
-                          {t('roadmapPage.notStarted')}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => updateProjectStatus(proj.id, 'in_progress')}
-                          className={`px-2 py-0.5 rounded text-[11px] border ${
-                            proj.status === 'in_progress' ? 'bg-amber-500/10 text-amber-600 font-bold border-amber-500/20' : 'hover:bg-muted'
-                          }`}
-                        >
-                          {t('roadmapPage.inProgress')}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => updateProjectStatus(proj.id, 'completed')}
-                          className={`px-2 py-0.5 rounded text-[11px] border ${
-                            proj.status === 'completed' ? 'bg-emerald-500/10 text-emerald-600 font-bold border-emerald-500/20' : 'hover:bg-muted'
-                          }`}
-                        >
-                          {t('roadmapPage.completed')}
-                        </button>
-                      </div>
-                    </div>
-                  </Card>
                 );
               })}
             </div>

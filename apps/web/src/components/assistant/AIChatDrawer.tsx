@@ -140,7 +140,7 @@ export function AIChatDrawer() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-40 flex items-center gap-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 p-3 sm:px-5 sm:py-3 text-white shadow-[0_8px_25px_rgba(37,99,235,0.4)] border border-white/30 hover:shadow-[0_12px_32px_rgba(37,99,235,0.55)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all"
+          className="fixed bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] right-3 sm:right-4 md:bottom-8 md:right-8 z-40 flex items-center gap-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 p-2.5 sm:px-5 sm:py-3 text-white shadow-[0_8px_25px_rgba(37,99,235,0.4)] border border-white/30 hover:shadow-[0_12px_32px_rgba(37,99,235,0.55)] hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all"
           aria-label="Ask AI Mentor"
         >
           <Sparkles className="w-5 h-5 animate-pulse" />
@@ -150,7 +150,7 @@ export function AIChatDrawer() {
 
       {/* Slide-out Drawer */}
       {isOpen && (
-        <div className="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-50 w-[92vw] max-w-md h-[560px] rounded-3xl border border-white/20 dark:border-white/10 bg-card/95 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5">
+        <div className="fixed bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] right-2 sm:right-4 md:bottom-8 md:right-8 z-50 w-[calc(100vw-1rem)] sm:w-[92vw] max-w-md h-[520px] max-h-[calc(100dvh-5.5rem-env(safe-area-inset-bottom,0px))] rounded-3xl border border-white/20 dark:border-white/10 bg-card/95 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-secondary/50">
             <div className="flex items-center gap-2.5">

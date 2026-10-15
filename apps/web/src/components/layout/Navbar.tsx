@@ -110,19 +110,19 @@ export function Navbar() {
       </a>
 
       <header className="sticky top-0 z-50 w-full bg-white/80 dark:bg-[#0B0F19]/85 backdrop-blur-2xl border-b border-white/30 dark:border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.03)] dark:shadow-[0_14px_40px_rgba(0,0,0,0.5)] transition-colors">
-        <div className="w-full max-w-[1720px] mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-10 gap-3 xl:gap-6">
+        <div className="w-full max-w-[1720px] mx-auto flex h-16 sm:h-20 items-center justify-between px-3 sm:px-6 lg:px-10 gap-2 sm:gap-3 xl:gap-6">
           
           {/* Left: Brand Logo & Career Role Badge */}
-          <div className="flex items-center gap-3 lg:gap-4 flex-shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 flex-shrink-0">
             <Link
               to={user ? (role === 'admin' || role === 'trainer' ? '/admin' : '/dashboard') : '/'}
-              className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded-2xl"
+              className="flex items-center gap-2 sm:gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded-2xl"
             >
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-500 text-white flex items-center justify-center shadow-[0_4px_18px_rgba(37,99,235,0.35)] border border-white/30 group-hover:scale-105 transition-all">
-                <GraduationCap className="w-6 h-6 drop-shadow-sm" />
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-500 text-white flex items-center justify-center shadow-[0_4px_18px_rgba(37,99,235,0.35)] border border-white/30 group-hover:scale-105 transition-all">
+                <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 drop-shadow-sm" />
               </div>
               <div className="flex flex-col">
-                <span className="font-sans text-xl font-extrabold tracking-tight text-foreground flex items-center gap-0.5">
+                <span className="font-sans text-lg sm:text-xl font-extrabold tracking-tight text-foreground flex items-center gap-0.5">
                   Skill<span className="text-blue-600 dark:text-blue-400">Setu</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-600 ml-0.5 animate-pulse" />
                 </span>
@@ -218,12 +218,12 @@ export function Navbar() {
           </div>
 
           {/* Right Actions: Language, Theme, User Profile */}
-          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
             {/* Language Switcher (Liquid Glass Pill) */}
             <button
               onClick={toggleLanguage}
               aria-label={`${t('nav.toggleLang', { defaultValue: 'Toggle language' })}: ${i18n.language === 'en' ? 'हिन्दी' : 'English'}`}
-              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md hover:bg-slate-100 dark:hover:bg-slate-800 text-foreground shadow-sm transition-all"
+              className="hidden sm:flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md hover:bg-slate-100 dark:hover:bg-slate-800 text-foreground shadow-sm transition-all"
             >
               <Globe className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
               <span className="text-xs font-bold">
@@ -235,7 +235,7 @@ export function Navbar() {
             <button
               onClick={toggleTheme}
               aria-label={t('nav.toggleTheme', { defaultValue: 'Toggle theme' })}
-              className="w-9 h-9 rounded-full flex items-center justify-center border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md hover:bg-slate-100 dark:hover:bg-slate-800 text-foreground shadow-sm transition-all"
+              className="hidden sm:flex w-9 h-9 rounded-full items-center justify-center border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md hover:bg-slate-100 dark:hover:bg-slate-800 text-foreground shadow-sm transition-all"
             >
               <Sun className="w-4 h-4 hidden dark:block text-amber-400" aria-hidden="true" />
               <Moon className="w-4 h-4 block dark:hidden text-foreground/80" aria-hidden="true" />
@@ -247,9 +247,9 @@ export function Navbar() {
                 <button
                   type="button"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2 p-1 sm:px-2.5 sm:py-1 rounded-full border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md shadow-sm hover:bg-slate-100/70 dark:hover:bg-slate-800/70 transition-all"
+                  className="flex items-center gap-1.5 p-1 sm:px-2.5 sm:py-1 rounded-full border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md shadow-sm hover:bg-slate-100/70 dark:hover:bg-slate-800/70 transition-all"
                 >
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow-md shadow-blue-500/25 border border-white/30">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow-md shadow-blue-500/25 border border-white/30 flex-shrink-0">
                     {(user.user_metadata?.fullName || user.email || 'U').charAt(0).toUpperCase()}
                   </div>
                   <span className="hidden sm:inline font-semibold text-xs text-foreground max-w-[100px] truncate">

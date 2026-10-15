@@ -48,12 +48,21 @@ export function getPrefilledWizardRole(
     ''
   ).toLowerCase();
 
+  if (roleCodeOrTitle.includes('product') || roleCodeOrTitle.includes('product-manager')) {
+    return 'product-manager';
+  }
+  if (roleCodeOrTitle.includes('business') || roleCodeOrTitle.includes('business-analyst')) {
+    return 'business-analyst';
+  }
   if (
     roleCodeOrTitle.includes('data-analyst') ||
     roleCodeOrTitle.includes('analyst') ||
     roleCodeOrTitle.includes('data')
   ) {
     return 'data-analyst';
+  }
+  if (roleCodeOrTitle.includes('architect')) {
+    return 'cloud-architect';
   }
   if (
     roleCodeOrTitle.includes('cloud') ||
@@ -82,4 +91,33 @@ export function getPrefilledWizardRole(
   }
 
   return fallback;
+}
+
+export interface RedirectOptions {
+  profile: { isOnboarded?: boolean | null } | null;
+  savedReturnPath?: string | null;
+  role?: string | null;
+}
+
+export function getAuthCallbackRedirect(options: RedirectOptions): string {
+  const { profile, savedReturnPath } = options;
+
+  // 1. If profile doesn't exist yet or onboarding is incomplete, must go to /onboarding
+  if (!profile || profile.isOnboarded !== true) {
+    return '/onboarding';
+  }
+
+  // 2. If saved return path is valid (starts with / and not auth routes), use it
+  if (
+    savedReturnPath &&
+    savedReturnPath.startsWith('/') &&
+    !savedReturnPath.startsWith('/login') &&
+    !savedReturnPath.startsWith('/signup') &&
+    !savedReturnPath.startsWith('/auth')
+  ) {
+    return savedReturnPath;
+  }
+
+  // 3. Default to /dashboard
+  return '/dashboard';
 }

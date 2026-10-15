@@ -1,6 +1,6 @@
 import { prisma } from '../lib/prisma';
 import { Course, CourseRecommendation, LearningPath, SkillGapItem } from '@skill-setu/shared';
-import { analyzeLearnerSkillGaps } from './gapAnalysisEngine';
+import { analyzeLearnerSkillGaps, clearSummaryCache } from './gapAnalysisEngine';
 
 export interface RecommendationPreferences {
   preferredLanguage?: 'en' | 'hi';
@@ -212,13 +212,13 @@ export async function getPersonalizedRecommendations(
       }
     );
 
-    // Accept courses that cover a user gap with sufficient coverage
-    if (score >= 15 || (matchedGap !== null && score > 0)) {
+    // Accept only courses that cover a user gap with positive coverage
+    if (matchedGap !== null && score > 0) {
       recommendations.push({
         course,
         matchScore: score,
         matchedSkills: course.skillsCovered,
-        gapAddressed: matchedGap ? matchedGap.skillName : 'General Competency',
+        gapAddressed: matchedGap.skillName,
         recommendationReason: reason,
         order: 0
       });
@@ -255,51 +255,115 @@ export async function generateLearningPath(
     }
   });
 
-  const allRecs = await getPersonalizedRecommendations(userId, gaps, 10);
+  const roleReqs = role?.skillsRequired || [];
+  const roleSkillIds = new Set(roleReqs.map((r) => r.skillId.toLowerCase()));
+  const roleSkillNames = new Set(roleReqs.map((r) => (r.skill?.name || '').toLowerCase()));
 
-  // D2: Choose each skill's course difficulty by the learner's current level:
-  // level <= 1 Beginner, 2-3 Intermediate, 4+ Advanced; skip courses clearly below learner level.
-  const gapLevelMap = new Map<string, number>();
-  for (const g of gaps) {
-    if (g.currentLevel !== null && g.currentLevel !== undefined) {
-      gapLevelMap.set(g.skillId.toLowerCase(), g.currentLevel);
-      gapLevelMap.set(g.skillName.toLowerCase(), g.currentLevel);
+  // Only consider real gaps: must belong to the role (when role has requirements), must be assessed, and gap > 0
+  const realGaps = (gaps || []).filter((g) => {
+    if ((g.gap ?? 0) <= 0) return false;
+    if (g.isAssessed === false) return false;
+    if (roleReqs.length > 0) {
+      return (
+        roleSkillIds.has((g.skillId || '').toLowerCase()) ||
+        roleSkillNames.has((g.skillName || '').toLowerCase())
+      );
+    }
+    return true;
+  });
+
+  // Calculate priorityScore = weight * gap and sort real gaps descending
+  for (const rg of realGaps) {
+    const req = roleReqs.find(
+      (r) =>
+        r.skillId.toLowerCase() === rg.skillId.toLowerCase() ||
+        (r.skill?.name && r.skill.name.toLowerCase() === rg.skillName.toLowerCase())
+    );
+    const weight = req?.weight ?? rg.weight ?? 1.0;
+    rg.weight = weight;
+    rg.priorityScore = Number(((rg.gap || 0) * weight).toFixed(2));
+  }
+  realGaps.sort((a, b) => (b.priorityScore || 0) - (a.priorityScore || 0));
+
+  let topRecommendations: CourseRecommendation[] = [];
+  const unmappedSkills: { skillId: string; skillName: string; gap: number; requiredLevel?: number }[] = [];
+
+  if (realGaps.length > 0) {
+    const allRecs = await getPersonalizedRecommendations(userId, realGaps, 10);
+
+    // D2: Choose each skill's course difficulty by the learner's current level:
+    // level <= 1 Beginner, 2-3 Intermediate, 4+ Advanced; skip courses clearly below learner level.
+    const gapLevelMap = new Map<string, number>();
+    for (const g of realGaps) {
+      if (g.currentLevel !== null && g.currentLevel !== undefined) {
+        gapLevelMap.set(g.skillId.toLowerCase(), g.currentLevel);
+        gapLevelMap.set(g.skillName.toLowerCase(), g.currentLevel);
+      }
+    }
+
+    // Filter out courses that are clearly below the learner's level for the gap they address
+    const filteredRecs = allRecs.filter((r) => {
+      if (!r.gapAddressed) return false;
+      const currentLevel = gapLevelMap.get(r.gapAddressed.toLowerCase()) ?? 0;
+      return !isCourseClearlyBelowLearnerLevel(currentLevel, r.course.difficulty);
+    });
+
+    // Pick recommendations covering diverse skill gaps where possible in priority order
+    const gapPriorityRankMap = new Map<string, number>();
+    realGaps.forEach((g, idx) => {
+      gapPriorityRankMap.set(g.skillName.toLowerCase(), idx);
+      gapPriorityRankMap.set(g.skillId.toLowerCase(), idx);
+    });
+
+    const seenGaps = new Set<string>();
+    const diverseRecs: CourseRecommendation[] = [];
+    const remainingRecs: CourseRecommendation[] = [];
+
+    for (const r of filteredRecs) {
+      if (r.gapAddressed && !seenGaps.has(r.gapAddressed.toLowerCase())) {
+        seenGaps.add(r.gapAddressed.toLowerCase());
+        diverseRecs.push(r);
+      } else {
+        remainingRecs.push(r);
+      }
+    }
+
+    // Order: gap priority (weight * gap), then difficulty tier, then matchScore
+    const sortedCandidates = [...diverseRecs, ...remainingRecs];
+    sortedCandidates.sort((a, b) => {
+      const gapRankA = gapPriorityRankMap.get((a.gapAddressed || '').toLowerCase()) ?? 999;
+      const gapRankB = gapPriorityRankMap.get((b.gapAddressed || '').toLowerCase()) ?? 999;
+      if (gapRankA !== gapRankB) {
+        return gapRankA - gapRankB;
+      }
+      const tierA = getDifficultyTierRank(a.course.difficulty);
+      const tierB = getDifficultyTierRank(b.course.difficulty);
+      if (tierA !== tierB) {
+        return tierA - tierB;
+      }
+      return b.matchScore - a.matchScore;
+    });
+
+    topRecommendations = sortedCandidates.slice(0, 5);
+
+    // Identify real gaps that have no mapped course in the catalog
+    for (const rg of realGaps) {
+      const hasCourse = filteredRecs.some(
+        (r) =>
+          r.gapAddressed.toLowerCase() === rg.skillName.toLowerCase() ||
+          (r.matchedSkills && r.matchedSkills.some((s) => s.toLowerCase() === rg.skillId.toLowerCase() || s.toLowerCase() === rg.skillName.toLowerCase()))
+      );
+      if (!hasCourse) {
+        unmappedSkills.push({
+          skillId: rg.skillId,
+          skillName: rg.skillName,
+          gap: rg.gap,
+          requiredLevel: rg.requiredLevel
+        });
+      }
     }
   }
 
-  // Filter out courses that are clearly below the learner's level for the gap they address
-  const filteredRecs = allRecs.filter((r) => {
-    if (!r.gapAddressed) return true;
-    const currentLevel = gapLevelMap.get(r.gapAddressed.toLowerCase()) ?? 0;
-    return !isCourseClearlyBelowLearnerLevel(currentLevel, r.course.difficulty);
-  });
-
-  // Pick recommendations covering diverse skill gaps where possible
-  const seenGaps = new Set<string>();
-  const diverseRecs: CourseRecommendation[] = [];
-  const remainingRecs: CourseRecommendation[] = [];
-
-  for (const r of filteredRecs) {
-    if (r.gapAddressed && !seenGaps.has(r.gapAddressed)) {
-      seenGaps.add(r.gapAddressed);
-      diverseRecs.push(r);
-    } else {
-      remainingRecs.push(r);
-    }
-  }
-
-  // D2: Order steps by difficulty tier (Beginner, Intermediate, Advanced) and by matchScore inside tier
-  const sortedCandidates = [...diverseRecs, ...remainingRecs];
-  sortedCandidates.sort((a, b) => {
-    const tierA = getDifficultyTierRank(a.course.difficulty);
-    const tierB = getDifficultyTierRank(b.course.difficulty);
-    if (tierA !== tierB) {
-      return tierA - tierB;
-    }
-    return b.matchScore - a.matchScore;
-  });
-
-  const topRecommendations = sortedCandidates.slice(0, 5);
   const neededCourseIds = new Set(topRecommendations.map((r) => r.course.id));
 
   // 1. Fetch or create Learning Path in DB
@@ -505,6 +569,8 @@ export async function generateLearningPath(
         isOutsideRoleGaps
       };
     }),
+    unmappedSkills,
+    status: allItems.length > 0 ? 'active' : 'not_started',
     createdAt: existingPath.createdAt ? new Date(existingPath.createdAt).toISOString() : new Date().toISOString(),
     updatedAt: new Date().toISOString()
   };
@@ -522,6 +588,9 @@ export async function autoRecalculateLearningPath(userId: string): Promise<void>
     });
     const targetRoleId = profile?.targetRoleId;
     if (!targetRoleId) return;
+
+    // Clear AI summary cache so gaps and summaries recalculate fresh
+    clearSummaryCache();
 
     const gapResult = await analyzeLearnerSkillGaps(userId, targetRoleId);
     if (gapResult.targetRoleId && gapResult.status !== 'not_started') {

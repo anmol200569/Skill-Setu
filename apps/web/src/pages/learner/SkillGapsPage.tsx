@@ -35,7 +35,7 @@ export function SkillGapsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const loadGapsData = () => {
     setIsLoading(true);
     setError(null);
 
@@ -52,6 +52,18 @@ export function SkillGapsPage() {
         setError(err.message || 'Could not load skill gaps');
       })
       .finally(() => setIsLoading(false));
+  };
+
+  useEffect(() => {
+    loadGapsData();
+
+    const handleDiagnosticCompleted = () => {
+      loadGapsData();
+    };
+    window.addEventListener('skill_setu_diagnostic_completed', handleDiagnosticCompleted);
+    return () => {
+      window.removeEventListener('skill_setu_diagnostic_completed', handleDiagnosticCompleted);
+    };
   }, []);
 
   const targetRoleId = stats?.targetRoleId ?? profile?.targetRoleId;
@@ -135,7 +147,7 @@ export function SkillGapsPage() {
         </div>
 
         <div className="flex items-center gap-2 self-start sm:self-auto">
-          <Link to="/assessments">
+          <Link to="/assessments?returnTo=/skill-gaps">
             <Button
               size="sm"
               variant="outline"

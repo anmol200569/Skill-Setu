@@ -232,7 +232,14 @@ describe('API Authentication, Authorization & Route Protection', () => {
       data: {
         id: 'test-unconfirmed-admin-id',
         email: config.initialAdminEmail,
-        role: 'learner'
+        role: 'learner',
+        profile: {
+          create: {
+            fullName: 'admin',
+            education: 'Not specified',
+            isOnboarded: false
+          }
+        }
       }
     });
     expect(req.user?.role).toBe('learner');
@@ -278,7 +285,14 @@ describe('API Authentication, Authorization & Route Protection', () => {
       data: {
         id: 'test-confirmed-admin-id',
         email: config.initialAdminEmail,
-        role: 'admin'
+        role: 'admin',
+        profile: {
+          create: {
+            fullName: 'admin',
+            education: 'Not specified',
+            isOnboarded: false
+          }
+        }
       }
     });
     expect(req.user?.role).toBe('admin');

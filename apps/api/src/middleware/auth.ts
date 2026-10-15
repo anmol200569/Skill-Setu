@@ -136,11 +136,24 @@ export async function authenticate(
         ? 'admin'
         : (supabaseUser.user_metadata?.role === 'trainer' ? 'trainer' : 'learner');
 
+      const fullName =
+        supabaseUser.user_metadata?.full_name ||
+        supabaseUser.user_metadata?.fullName ||
+        supabaseUser.user_metadata?.name ||
+        (email ? email.split('@')[0] : 'Learner');
+
       dbUser = await prisma.user.create({
         data: {
           id: supabaseUser.id,
           email: email,
-          role: assignedRole as any
+          role: assignedRole as any,
+          profile: {
+            create: {
+              fullName: fullName || 'Learner',
+              education: 'Not specified',
+              isOnboarded: false
+            }
+          }
         }
       });
     } else if (isInitialAdmin && dbUser.role !== 'admin') {

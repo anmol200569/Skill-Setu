@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { domainsData, rolesData, curatedCoursesData, diagnosticQuestionsData, generateCourseId } from './seedData';
+import { ensureSystemQuizzesSeeded } from '../src/services/systemQuizService';
 
 const connectionUrl = process.env.DIRECT_URL || process.env.DATABASE_URL;
 const prisma = new PrismaClient({
@@ -269,6 +270,10 @@ export async function seedDatabase() {
       console.log(`👑 Assigned admin role to bootstrapped administrator: ${adminEmail}`);
     }
   }
+
+  // 6. Bootstrap system practice quizzes
+  const seededQuizzes = await ensureSystemQuizzesSeeded();
+  console.log(`✅ Seeded / verified ${seededQuizzes} system practice quizzes.`);
 
   console.log('🎉 Seeding successfully completed!');
 }

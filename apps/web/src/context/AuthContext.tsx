@@ -16,7 +16,7 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   updatePassword: (password: string) => Promise<void>;
-  refreshProfile: () => Promise<void>;
+  refreshProfile: () => Promise<UserProfile | null>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -28,7 +28,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchBackendUserAndProfile = async () => {
+  const fetchBackendUserAndProfile = async (): Promise<UserProfile | null> => {
     try {
       const data = await apiClient<{ user: { role: UserRole }; profile: UserProfile | null }>('/auth/me');
       if (data?.user) {
@@ -36,9 +36,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       if (data?.profile) {
         setProfile(data.profile);
+        return data.profile;
       }
+      return null;
     } catch (err: any) {
       console.warn('Could not fetch backend profile sync:', err.message);
+      return null;
     }
   };
 
@@ -227,8 +230,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (error) throw error;
   };
 
-  const refreshProfile = async () => {
-    await fetchBackendUserAndProfile();
+  const refreshProfile = async (): Promise<UserProfile | null> => {
+    return await fetchBackendUserAndProfile();
   };
 
   return (

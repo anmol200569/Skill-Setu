@@ -16,24 +16,22 @@ import {
   ShieldCheck,
   Users,
   Kanban,
-  ChevronDown,
   GraduationCap,
-  Clock,
-  Star,
-  Award,
-  Send,
+  Target,
   Globe,
-  Laptop,
-  Target
+  Layers,
+  HelpCircle,
+  Laptop
 } from 'lucide-react';
 import { SkillConstellationHero } from '../components/landing/SkillConstellationHero';
 
 const wizardRoles = [
-  { id: 'fullstack-dev', labelKey: 'landing.wizard.roles.fullstack-dev' },
-  { id: 'data-analyst', labelKey: 'landing.wizard.roles.data-analyst' },
-  { id: 'cloud-engineer', labelKey: 'landing.wizard.roles.cloud-engineer' },
-  { id: 'ml-engineer', labelKey: 'landing.wizard.roles.ml-engineer' },
-  { id: 'appsec-engineer', labelKey: 'landing.wizard.roles.appsec-engineer' }
+  { id: 'fullstack-dev', labelKey: 'landing.wizard.roles.fullstack-dev', defaultLabel: 'Full-Stack Developer' },
+  { id: 'data-analyst', labelKey: 'landing.wizard.roles.data-analyst', defaultLabel: 'Data Analyst' },
+  { id: 'ml-engineer', labelKey: 'landing.wizard.roles.ml-engineer', defaultLabel: 'Machine Learning Engineer' },
+  { id: 'product-manager', labelKey: 'landing.wizard.roles.product-manager', defaultLabel: 'Product Manager' },
+  { id: 'business-analyst', labelKey: 'landing.wizard.roles.business-analyst', defaultLabel: 'Business Analyst' },
+  { id: 'cloud-architect', labelKey: 'landing.wizard.roles.cloud-architect', defaultLabel: 'Cloud Solutions Architect' }
 ];
 
 const wizardLevels = [
@@ -108,129 +106,6 @@ const genuineCategories = [
   }
 ];
 
-const genuineFeaturedCourses = [
-  {
-    id: 'cs50x',
-    titleKey: 'landing.featuredCourses.courses.cs50x.title',
-    defaultTitle: 'CS50x: Introduction to Computer Science',
-    descriptionKey: 'landing.featuredCourses.courses.cs50x.description',
-    defaultDescription: 'An introduction to the intellectual enterprises of computer science and the art of programming with C, Python, SQL, and algorithms.',
-    providerKey: 'landing.featuredCourses.courses.cs50x.provider',
-    defaultProvider: 'Harvard CS50',
-    instructorKey: 'landing.featuredCourses.courses.cs50x.instructor',
-    defaultInstructor: 'Prof. David J. Malan',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80',
-    rating: 4.9,
-    hours: 40,
-    levelKey: 'common.beginner',
-    defaultLevel: 'Beginner',
-    badge: 'Harvard CS50',
-    gradient: 'from-blue-600 to-indigo-700',
-    destinationUrl: 'https://cs50.harvard.edu/x/'
-  },
-  {
-    id: 'fullstack',
-    titleKey: 'landing.featuredCourses.courses.fullstack.title',
-    defaultTitle: 'Full Stack Open: Modern Web Development',
-    descriptionKey: 'landing.featuredCourses.courses.fullstack.description',
-    defaultDescription: 'Hands-on deep dive into React, Redux, Node.js, Express, REST APIs, GraphQL, TypeScript, and CI/CD pipelines.',
-    providerKey: 'landing.featuredCourses.courses.fullstack.provider',
-    defaultProvider: 'University of Helsinki',
-    instructorKey: 'landing.featuredCourses.courses.fullstack.instructor',
-    defaultInstructor: 'Matti Luukkainen',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&h=120&q=80',
-    rating: 4.9,
-    hours: 60,
-    levelKey: 'common.intermediate',
-    defaultLevel: 'Intermediate',
-    badge: 'Univ. of Helsinki',
-    gradient: 'from-emerald-600 to-teal-800',
-    destinationUrl: 'https://fullstackopen.com/en/'
-  },
-  {
-    id: 'cs50sql',
-    titleKey: 'landing.featuredCourses.courses.cs50sql.title',
-    defaultTitle: 'CS50: Introduction to Databases with SQL',
-    descriptionKey: 'landing.featuredCourses.courses.cs50sql.description',
-    defaultDescription: 'Relational database modeling, 3NF normalization, indexing, transactions, and query execution plans with PostgreSQL.',
-    providerKey: 'landing.featuredCourses.courses.cs50sql.provider',
-    defaultProvider: 'Harvard CS50',
-    instructorKey: 'landing.featuredCourses.courses.cs50sql.instructor',
-    defaultInstructor: 'Carter Zenke',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80',
-    rating: 4.9,
-    hours: 30,
-    levelKey: 'common.intermediate',
-    defaultLevel: 'Intermediate',
-    badge: 'Harvard CS50',
-    gradient: 'from-rose-500 to-pink-700',
-    destinationUrl: 'https://cs50.harvard.edu/sql/'
-  },
-  {
-    id: 'fccMl',
-    titleKey: 'landing.featuredCourses.courses.fccMl.title',
-    defaultTitle: 'Machine Learning with Python Certification',
-    descriptionKey: 'landing.featuredCourses.courses.fccMl.description',
-    defaultDescription: 'Supervised and unsupervised ML algorithms, TensorFlow neural networks, and end-to-end model training pipelines.',
-    providerKey: 'landing.featuredCourses.courses.fccMl.provider',
-    defaultProvider: 'freeCodeCamp',
-    instructorKey: 'landing.featuredCourses.courses.fccMl.instructor',
-    defaultInstructor: 'Beau Carnes & FCC',
-    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=120&h=120&q=80',
-    rating: 4.9,
-    hours: 45,
-    levelKey: 'common.intermediate',
-    defaultLevel: 'Intermediate',
-    badge: 'freeCodeCamp',
-    gradient: 'from-amber-500 to-orange-700',
-    destinationUrl: 'https://www.freecodecamp.org/learn/machine-learning-with-python/'
-  }
-];
-
-const verifiedFrameworkCards = [
-  {
-    icon: BookOpen,
-    badgeKey: 'landing.methodology.card1Badge',
-    defaultBadge: '60+ Open Tracks',
-    titleKey: 'landing.methodology.card1Title',
-    defaultTitle: 'Verified Open Curricula',
-    descKey: 'landing.methodology.card1Desc',
-    defaultDesc: 'Curated from Harvard CS50, University of Helsinki, freeCodeCamp, Microsoft Learn, Google Cloud Skills Boost, and NPTEL. No paywalls, ever.',
-    colorClass: 'border-blue-500/20 bg-blue-50/50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400'
-  },
-  {
-    icon: BarChart3,
-    badgeKey: 'landing.methodology.card2Badge',
-    defaultBadge: '27 Industry Skills',
-    titleKey: 'landing.methodology.card2Title',
-    defaultTitle: '1.0 to 5.0 Competency Scale',
-    descKey: 'landing.methodology.card2Desc',
-    defaultDesc: 'Clear Bloom-calibrated rubric mapping foundational concepts to workplace architecture and hands-on implementation.',
-    colorClass: 'border-emerald-500/20 bg-emerald-50/50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400'
-  },
-  {
-    icon: Target,
-    badgeKey: 'landing.methodology.card3Badge',
-    defaultBadge: '5 Core Career Roles',
-    titleKey: 'landing.methodology.card3Title',
-    defaultTitle: 'Role-Calibrated Readiness',
-    descKey: 'landing.methodology.card3Desc',
-    defaultDesc: 'Diagnostic tests measure your verified competency against employer benchmarks, identifying exact gaps to prioritize.',
-    colorClass: 'border-purple-500/20 bg-purple-50/50 dark:bg-purple-950/20 text-purple-600 dark:text-purple-400'
-  }
-];
-
-const openPartners = [
-  'Harvard CS50',
-  'University of Helsinki',
-  'freeCodeCamp',
-  'Microsoft Learn',
-  'Google Cloud',
-  'NPTEL (IITs)'
-];
-
-const faqKeys = ['q1', 'q2', 'q3', 'q4'];
-
 export function LandingPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -248,10 +123,6 @@ export function LandingPage() {
   const [selectedRole, setSelectedRole] = useState(() => getPrefilledWizardRole(profile, 'fullstack-dev'));
   const [selectedLevel, setSelectedLevel] = useState('intermediate');
   const [selectedHours, setSelectedHours] = useState('6-10');
-  const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
-  const [newsletterEmail, setNewsletterEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-  const [showConstellation, setShowConstellation] = useState(false);
 
   useEffect(() => {
     if (profile) {
@@ -269,15 +140,10 @@ export function LandingPage() {
       localStorage.setItem('skill_setu_pathway', JSON.stringify(pathwayData));
     } catch (_) {}
 
-    navigate(`/signup?role=${encodeURIComponent(selectedRole)}&level=${encodeURIComponent(selectedLevel)}&hours=${encodeURIComponent(selectedHours)}`);
-  };
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newsletterEmail) {
-      setSubscribed(true);
-      setTimeout(() => setSubscribed(false), 4000);
-      setNewsletterEmail('');
+    if (user) {
+      navigate(`/assessments?role=${encodeURIComponent(selectedRole)}&startBaseline=true`);
+    } else {
+      navigate(`/signup?role=${encodeURIComponent(selectedRole)}&level=${encodeURIComponent(selectedLevel)}&hours=${encodeURIComponent(selectedHours)}`);
     }
   };
 
@@ -304,9 +170,12 @@ export function LandingPage() {
               <span className="text-blue-600 dark:text-blue-400">{t('landing.hero.titleLine3', { defaultValue: 'Tomorrow' })}</span>
             </h1>
 
-            {/* Subtitle */}
+            {/* Subtitle - Accurate to what exists in the app */}
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground font-normal leading-relaxed max-w-xl">
-              {t('landing.hero.subtitle', { defaultValue: 'World-class online courses, AI skill gap diagnostics, and personalized role roadmaps to help you grow, switch careers, or master in-demand skills with Skill-Setu.' })}
+              {t('landing.hero.subtitle', {
+                defaultValue:
+                  'Identify your technical skill gaps through diagnostic assessments, follow a personalized role-based roadmap, learn with free courses from external providers, and prepare with AI practice quizzes in English and हिन्दी.'
+              })}
             </p>
 
             {/* CTAs */}
@@ -329,7 +198,7 @@ export function LandingPage() {
               </a>
             </div>
 
-            {/* Hero Stats Row (Real Platform Metrics) */}
+            {/* Hero Stats Row (Real Platform Metrics Only) */}
             <div className="pt-6 border-t border-border/80 grid grid-cols-3 gap-3 sm:gap-6 text-foreground">
               <div className="flex items-center gap-2.5 sm:gap-3">
                 <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 flex items-center justify-center flex-shrink-0">
@@ -337,116 +206,55 @@ export function LandingPage() {
                 </div>
                 <div>
                   <div className="font-extrabold text-base sm:text-lg text-foreground leading-tight">
-                    {t('landing.hero.statCourses', { defaultValue: '60+' })}
+                    61
                   </div>
                   <div className="text-[11px] sm:text-xs text-muted-foreground truncate">
-                    {t('landing.hero.statCoursesLabel', { defaultValue: 'Curated Tracks' })}
+                    {t('landing.hero.statCoursesLabel', { defaultValue: 'Curated Courses' })}
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-2.5 sm:gap-3">
                 <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 flex items-center justify-center flex-shrink-0">
-                  <Users className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <Target className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
                   <div className="font-extrabold text-base sm:text-lg text-foreground leading-tight">
-                    {t('landing.hero.statMentors', { defaultValue: 'Expert' })}
+                    6
                   </div>
                   <div className="text-[11px] sm:text-xs text-muted-foreground truncate">
-                    {t('landing.hero.statMentorsLabel', { defaultValue: 'AI Study Mentors' })}
+                    {t('landing.hero.statRolesLabel', { defaultValue: 'Career Roles' })}
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-2.5 sm:gap-3">
                 <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
                   <div className="font-extrabold text-base sm:text-lg text-foreground leading-tight">
-                    {t('landing.hero.statAccess', { defaultValue: '100% Free' })}
+                    27
                   </div>
                   <div className="text-[11px] sm:text-xs text-muted-foreground truncate">
-                    {t('landing.hero.statAccessLabel', { defaultValue: 'Open Access' })}
+                    {t('landing.hero.statSkillsLabel', { defaultValue: 'Assessed Skills' })}
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Hero Image with Floating Cards & Script Badges (Mobile-Safe) */}
+          {/* Right Column: 3D Skill Constellation Hero (Lazy-loaded with Mobile Static Fallback) */}
           <div className="lg:col-span-5 relative flex justify-center lg:justify-end mt-2 lg:mt-0">
-            <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg">
-              
-              {/* Handwritten Script Accent (Top-Right) */}
-              <div className="hidden xs:block sm:block absolute -top-6 right-2 sm:-top-8 sm:right-6 z-20 pointer-events-none select-none text-right">
-                <div className="font-handwriting text-xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 rotate-[4deg]">
-                  {t('landing.hero.note', { defaultValue: 'A Brighter You Starts Here ↗' })}
-                </div>
-              </div>
-
-              {/* Main Student Photo Container */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white dark:border-slate-800 bg-slate-100">
-                <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
-                  alt="Skill-Setu technical learner studying online"
-                  className="w-full h-[340px] sm:h-[460px] object-cover object-center"
-                  loading="eager"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
-              </div>
-
-              {/* Floating Card: Diagnostic Skills Bridge */}
-              <div className="absolute top-4 left-2 sm:-left-6 sm:top-8 z-20 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-3.5 sm:p-5 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 space-y-2.5 sm:space-y-3 max-w-[190px] sm:max-w-[230px]">
-                <div className="flex items-center gap-2 text-foreground font-bold text-xs sm:text-sm">
-                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-950 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
-                    <BarChart3 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  </div>
-                  <div>
-                    <div className="leading-tight text-xs sm:text-sm">{t('landing.hero.badgeTitle', { defaultValue: 'Skill Setu' })}</div>
-                    <div className="text-[10px] sm:text-[11px] text-muted-foreground font-normal">{t('landing.hero.badgeSubtitle', { defaultValue: 'Diagnostic Bridge' })}</div>
-                  </div>
-                </div>
-
-                <div className="space-y-1 sm:space-y-1.5 text-[10px] sm:text-[11px] text-foreground/80 font-medium">
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-600 flex-shrink-0" />
-                    <span className="truncate">{t('landing.hero.badgeItem1', { defaultValue: '1.0 to 5.0 Diagnostic Scoring' })}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-600 flex-shrink-0" />
-                    <span className="truncate">{t('landing.hero.badgeItem2', { defaultValue: 'Role-Calibrated Gap Analysis' })}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-600 flex-shrink-0" />
-                    <span className="truncate">{t('landing.hero.badgeItem3', { defaultValue: 'Prioritized Open Curricula' })}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-600 flex-shrink-0" />
-                    <span className="truncate">{t('landing.hero.badgeItem4', { defaultValue: 'AI Practice Studio' })}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating Badge (Bottom-Right Accent) */}
-              <div className="absolute -bottom-3 right-2 sm:-bottom-5 sm:right-6 z-20 bg-white dark:bg-slate-900 p-2.5 sm:p-4 rounded-2xl shadow-lg border border-slate-100 dark:border-slate-800 flex items-center gap-2.5 sm:gap-3">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 flex items-center justify-center font-bold text-xs sm:text-sm">
-                  ☕
-                </div>
-                <div>
-                  <div className="text-[11px] sm:text-xs font-bold text-foreground">{t('landing.hero.mugBadgeTitle', { defaultValue: 'Better Skills' })}</div>
-                  <div className="text-[9px] sm:text-[10px] text-blue-600 dark:text-blue-400 font-semibold">{t('landing.hero.mugBadgeSubtitle', { defaultValue: 'Brighter You' })}</div>
-                </div>
-              </div>
-
+            <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg rounded-3xl overflow-hidden border border-border shadow-xl bg-card">
+              <SkillConstellationHero />
             </div>
           </div>
 
         </div>
       </section>
 
-      {/* Popular Categories (Real Skill Domains) */}
+      {/* Popular Categories (Real Skill Domains with Real Courses) */}
       <section id="popular-categories" className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-3">
           <div className="space-y-1.5">
@@ -457,7 +265,7 @@ export function LandingPage() {
               {t('landing.categories.title', { defaultValue: 'Popular Categories' })}
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-xl">
-              {t('landing.categories.subtitle', { defaultValue: 'Explore in-demand skills and find the right course for your career goals.' })}
+              {t('landing.categories.subtitle', { defaultValue: 'Explore technical skills and find verified open courses for your career goals.' })}
             </p>
           </div>
           <Link
@@ -469,7 +277,7 @@ export function LandingPage() {
           </Link>
         </div>
 
-        {/* 7 Pastel Category Cards in a Responsive Grid */}
+        {/* 7 Domain Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4">
           {genuineCategories.map((cat) => {
             const Icon = cat.icon;
@@ -493,129 +301,20 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* Featured Courses (Real Verified Open Curricula) */}
-      <section className="py-12 sm:py-20 bg-slate-50/70 dark:bg-slate-900/30 border-y border-border/80 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-10 gap-3">
-            <div className="space-y-1.5">
-              <div className="text-xs uppercase tracking-wider font-bold text-blue-600 dark:text-blue-400">
-                {t('landing.featuredCourses.tag', { defaultValue: 'Verified Open Curricula' })}
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-                {t('landing.featuredCourses.title', { defaultValue: 'Featured Courses' })}
-              </h2>
-              <p className="text-xs sm:text-sm text-muted-foreground max-w-xl">
-                {t('landing.featuredCourses.subtitle', { defaultValue: 'Handpicked verified courses and roadmaps from world-class institutions to build real skills.' })}
-              </p>
-            </div>
-            <Link
-              to="/courses"
-              className="text-xs sm:text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 flex items-center gap-1 group whitespace-nowrap self-start sm:self-auto"
-            >
-              <span>{t('landing.featuredCourses.viewAll', { defaultValue: 'View All Courses' })}</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-
-          {/* 4 Real Course Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-            {genuineFeaturedCourses.map((c) => {
-              const courseTitle = t(c.titleKey, { defaultValue: c.defaultTitle });
-              const courseDesc = t(c.descriptionKey, { defaultValue: c.defaultDescription });
-              const instructor = t(c.instructorKey, { defaultValue: c.defaultInstructor });
-              const provider = t(c.providerKey, { defaultValue: c.defaultProvider });
-              const level = t(c.levelKey, { defaultValue: c.defaultLevel });
-              return (
-                <div
-                  key={c.id}
-                  className="rounded-2xl border border-border bg-white dark:bg-slate-900/90 shadow-card hover:shadow-card-hover transition-all duration-200 overflow-hidden flex flex-col justify-between group transform hover:-translate-y-1"
-                >
-                  {/* Visual Header */}
-                  <div className={`h-32 sm:h-36 bg-gradient-to-tr ${c.gradient} p-4 flex flex-col justify-between text-white relative`}>
-                    <div className="flex justify-between items-start">
-                      <span className="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider">
-                        {c.badge}
-                      </span>
-                      <span className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                        <BookOpen className="w-3.5 h-3.5 text-white" />
-                      </span>
-                    </div>
-                    <div className="text-xs text-white/95 font-medium truncate">
-                      {provider}
-                    </div>
-                  </div>
-
-                  {/* Body Content */}
-                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
-                    <div className="space-y-2">
-                      <h3 className="font-extrabold text-sm sm:text-base text-foreground leading-snug group-hover:text-blue-600 transition-colors line-clamp-2">
-                        {courseTitle}
-                      </h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
-                        {courseDesc}
-                      </p>
-                    </div>
-
-                    {/* Instructor & Rating */}
-                    <div className="space-y-3 pt-2">
-                      <div className="flex items-center justify-between text-xs">
-                        <div className="flex items-center gap-2 min-w-0 pr-2">
-                          <img
-                            src={c.avatar}
-                            alt={instructor}
-                            className="w-6 h-6 rounded-full object-cover flex-shrink-0"
-                          />
-                          <span className="font-semibold text-foreground text-xs truncate">{instructor}</span>
-                        </div>
-                        <div className="flex items-center gap-1 font-bold text-amber-500 flex-shrink-0">
-                          <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                          <span>{c.rating}</span>
-                        </div>
-                      </div>
-
-                      {/* Metadata Footer */}
-                      <div className="pt-3 border-t border-border flex items-center justify-between text-[11px] text-muted-foreground font-medium">
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5 text-slate-400" />
-                          <span>{t('landing.featuredCourses.hours', { hours: c.hours, defaultValue: `${c.hours} hours` })}</span>
-                        </div>
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-foreground font-semibold text-[10px]">
-                          {level}
-                        </span>
-                        <div className="font-extrabold text-emerald-600 dark:text-emerald-400 text-[11px]">
-                          {t('landing.featuredCourses.freeOpenAccess', { defaultValue: '100% Free' })}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Why Learn with Skill-Setu? */}
-      <section id="why-skill-setu" className="py-14 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div className="relative mb-10 sm:mb-16">
+      {/* Why Learn with Skill-Setu (Real App Capabilities Only) */}
+      <section id="why-skill-setu" className="py-14 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full border-t border-border/80">
+        <div className="mb-10 sm:mb-16">
           <div className="space-y-2">
             <h2 className="text-2xl sm:text-4xl font-extrabold text-foreground tracking-tight">
               {t('landing.why.title', { defaultValue: 'Why Learn with Skill-Setu?' })}
             </h2>
             <p className="text-xs sm:text-base text-muted-foreground max-w-xl">
-              {t('landing.why.subtitle', { defaultValue: "We're more than courses — we're your partner in lifelong career growth and skill verification." })}
+              {t('landing.why.subtitle', { defaultValue: 'An objective platform to measure verified technical competencies and follow focused learning paths.' })}
             </p>
-          </div>
-
-          {/* Cursive Handwriting Note on Right */}
-          <div className="hidden sm:block absolute right-0 top-0 text-right select-none pointer-events-none">
-            <span className="font-handwriting text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 rotate-[-3deg] block">
-              {t('landing.why.note', { defaultValue: 'Real Skills, Real Opportunities ✍️' })}
-            </span>
           </div>
         </div>
 
-        {/* 4 Feature Columns with Circular Outline Icons */}
+        {/* 4 Feature Columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           
           {/* Feature 1 */}
@@ -627,7 +326,7 @@ export function LandingPage() {
               {t('landing.why.f1Title', { defaultValue: 'Objective Diagnostics' })}
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              {t('landing.why.f1Desc', { defaultValue: 'Calibrated 1.0 to 5.0 proficiency scores derived from genuine technical scenario evaluations.' })}
+              {t('landing.why.f1Desc', { defaultValue: 'Calibrated 1.0 to 5.0 proficiency scores derived from technical evaluations.' })}
             </p>
           </div>
 
@@ -637,23 +336,23 @@ export function LandingPage() {
               <Laptop className="w-6 h-6 sm:w-7 sm:h-7" />
             </div>
             <h3 className="font-extrabold text-base sm:text-lg text-foreground">
-              {t('landing.why.f2Title', { defaultValue: '100% Free Curricula' })}
+              {t('landing.why.f2Title', { defaultValue: 'Free Curated Curricula' })}
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              {t('landing.why.f2Desc', { defaultValue: 'Curated exclusively from world-class open institutions including Harvard, Helsinki, freeCodeCamp, Microsoft, Google, and NPTEL.' })}
+              {t('landing.why.f2Desc', { defaultValue: 'Curated from open institutions including Harvard CS50, University of Helsinki, freeCodeCamp, Microsoft Learn, Google Cloud, and NPTEL.' })}
             </p>
           </div>
 
           {/* Feature 3 */}
           <div className="flex flex-col items-start space-y-2.5 sm:space-y-3">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-purple-500/30 bg-purple-50/60 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-1">
-              <Award className="w-6 h-6 sm:w-7 sm:h-7" />
+              <Target className="w-6 h-6 sm:w-7 sm:h-7" />
             </div>
             <h3 className="font-extrabold text-base sm:text-lg text-foreground">
               {t('landing.why.f3Title', { defaultValue: 'Personalized Roadmaps' })}
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              {t('landing.why.f3Desc', { defaultValue: 'Identifies exact competency gaps and builds a prioritized step-by-step path to reach your industry target.' })}
+              {t('landing.why.f3Desc', { defaultValue: 'Identifies exact competency gaps and builds a prioritized step-by-step path to reach your target career role.' })}
             </p>
           </div>
 
@@ -663,10 +362,10 @@ export function LandingPage() {
               <Sparkles className="w-6 h-6 sm:w-7 sm:h-7" />
             </div>
             <h3 className="font-extrabold text-base sm:text-lg text-foreground">
-              {t('landing.why.f4Title', { defaultValue: 'AI Study Mentor & Quizzes' })}
+              {t('landing.why.f4Title', { defaultValue: 'AI Practice Quizzes' })}
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              {t('landing.why.f4Desc', { defaultValue: 'Generate interactive revision quizzes and receive 24/7 AI-guided concept explanations anytime.' })}
+              {t('landing.why.f4Desc', { defaultValue: 'Generate interactive practice quizzes from your study materials and practice role-based questions anytime.' })}
             </p>
           </div>
 
@@ -685,14 +384,14 @@ export function LandingPage() {
               {t('landing.wizard.title', { defaultValue: 'Plan Your Pathway in 30 Seconds' })}
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              {t('landing.wizard.subtitle', { defaultValue: 'Select your goal and weekly commitment. We map your current competencies against employer benchmarks.' })}
+              {t('landing.wizard.subtitle', { defaultValue: 'Select your target goal and weekly commitment. We compare your assessed level with the target level required for the role.' })}
             </p>
           </div>
 
           <div className="rounded-3xl border border-border bg-white dark:bg-slate-900 p-5 sm:p-10 shadow-xl space-y-6 sm:space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               
-              {/* Step 1: Role */}
+              {/* Step 1: Role (Real Roles from Database) */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                   <span className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
@@ -712,7 +411,7 @@ export function LandingPage() {
                           : 'border-border bg-card hover:bg-slate-50 dark:hover:bg-slate-800 text-foreground/80'
                       }`}
                     >
-                      {t(role.labelKey, { defaultValue: role.id })}
+                      {t(role.labelKey, { defaultValue: role.defaultLabel })}
                     </button>
                   ))}
                 </div>
@@ -778,7 +477,7 @@ export function LandingPage() {
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border">
               <div className="text-xs text-muted-foreground flex items-center gap-2 text-center sm:text-left">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                <span>{t('landing.wizard.badge', { defaultValue: 'Zero credit card required • Selections auto-configure your custom diagnostic' })}</span>
+                <span>{t('landing.wizard.badge', { defaultValue: 'Selections auto-configure your custom diagnostic assessment' })}</span>
               </div>
               <Button
                 onClick={handleFinishWizard}
@@ -790,218 +489,17 @@ export function LandingPage() {
             </div>
           </div>
 
-          {/* Optional 3D Constellation Toggle */}
-          <div className="text-center pt-2">
-            <button
-              onClick={() => setShowConstellation(!showConstellation)}
-              className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1.5"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>
-                {showConstellation
-                  ? t('landing.wizard.constellationHide', { defaultValue: 'Hide 3D Skill Constellation' })
-                  : t('landing.wizard.constellationShow', { defaultValue: 'Explore Interactive 3D Skill Constellation →' })}
-              </span>
-            </button>
-
-            {showConstellation && (
-              <div className="mt-6 rounded-3xl overflow-hidden border border-border shadow-xl bg-card p-4 animate-in fade-in duration-300">
-                <SkillConstellationHero />
-              </div>
-            )}
-          </div>
-
-        </div>
-      </section>
-
-      {/* Verified Educational Framework & Open Partners (Replacing fake reviews) */}
-      <section className="py-14 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-3">
-          <div className="space-y-1.5">
-            <div className="text-xs uppercase tracking-wider font-bold text-blue-600 dark:text-blue-400">
-              {t('landing.methodology.tag', { defaultValue: 'Transparency First' })}
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-              {t('landing.methodology.title', { defaultValue: 'Verified Educational Framework & Partners' })}
-            </h2>
-            <p className="text-xs sm:text-sm text-muted-foreground max-w-xl">
-              {t('landing.methodology.subtitle', { defaultValue: 'Grounded in empirical evaluation, open access curricula, and transparent 1–5 Bloom skill diagnostics.' })}
-            </p>
-          </div>
-          <Link
-            to="/courses"
-            className="text-xs sm:text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 flex items-center gap-1 group whitespace-nowrap self-start sm:self-auto"
-          >
-            <span>{t('landing.methodology.viewAll', { defaultValue: 'Explore Open Curricula' })}</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
-
-        {/* 3 Framework Verification Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {verifiedFrameworkCards.map((card, idx) => {
-            const Icon = card.icon;
-            const title = t(card.titleKey, { defaultValue: card.defaultTitle });
-            const desc = t(card.descKey, { defaultValue: card.defaultDesc });
-            const badge = t(card.badgeKey, { defaultValue: card.defaultBadge });
-            return (
-              <div
-                key={idx}
-                className="p-6 rounded-2xl border border-border bg-white dark:bg-slate-900/90 shadow-card flex flex-col justify-between space-y-4 hover:shadow-card-hover transition-all duration-200"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className={`w-10 h-10 rounded-xl border flex items-center justify-center ${card.colorClass}`}>
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-100 dark:bg-slate-800 text-foreground">
-                      {badge}
-                    </span>
-                  </div>
-                  <h3 className="font-extrabold text-base sm:text-lg text-foreground">
-                    {title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                    {desc}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Partner Badges Ribbon */}
-        <div className="mt-8 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-xs font-semibold text-muted-foreground text-center sm:text-left">
-            {t('landing.methodology.partnersLabel', { defaultValue: 'Open Education Curators & Reference Institutions' })}:
-          </span>
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-            {openPartners.map((partner) => (
-              <span
-                key={partner}
-                className="px-3 py-1.5 rounded-full text-xs font-semibold border border-border bg-slate-50 dark:bg-slate-900 text-foreground shadow-xs"
-              >
-                {partner}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Stay In The Loop Banner */}
-      <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div className="rounded-3xl bg-gradient-to-r from-blue-600 via-blue-500 to-sky-400 p-6 sm:p-10 md:p-12 text-white shadow-xl shadow-blue-500/20 relative overflow-hidden">
-          
-          {/* Subtle Background Pattern */}
-          <div className="absolute -right-12 -bottom-12 w-64 h-64 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center relative z-10">
-            
-            {/* Left Content */}
-            <div className="lg:col-span-7 space-y-3">
-              <span className="px-3 py-1 rounded-full bg-white/20 text-white text-[10px] font-extrabold uppercase tracking-widest">
-                {t('landing.newsletter.pill', { defaultValue: 'STAY IN THE LOOP' })}
-              </span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-tight">
-                {t('landing.newsletter.title', { defaultValue: 'Get the latest courses, tips and platform updates.' })}
-              </h2>
-              <p className="text-xs sm:text-sm text-white/90 font-medium">
-                {t('landing.newsletter.subtitle', { defaultValue: 'Join our community of learners building verified, in-demand technical skills every day.' })}
-              </p>
-            </div>
-
-            {/* Right: Email Input & Handwritten Graphic */}
-            <div className="lg:col-span-5 flex flex-col items-start lg:items-end space-y-3">
-              
-              <form onSubmit={handleSubscribe} className="w-full flex flex-col sm:flex-row gap-2">
-                <input
-                  type="email"
-                  value={newsletterEmail}
-                  onChange={(e) => setNewsletterEmail(e.target.value)}
-                  placeholder={t('landing.newsletter.placeholder', { defaultValue: 'Enter your email address' })}
-                  required
-                  className="flex-1 h-12 px-4 rounded-xl bg-white text-slate-900 placeholder:text-slate-400 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-white/80 shadow-md"
-                />
-                <Button
-                  type="submit"
-                  className="h-12 px-6 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md whitespace-nowrap transition-transform active:scale-95 justify-center"
-                >
-                  {subscribed
-                    ? t('landing.newsletter.subscribed', { defaultValue: 'Subscribed! ✓' })
-                    : t('landing.newsletter.button', { defaultValue: 'Subscribe' })}
-                </Button>
-              </form>
-
-              {/* Handwritten Script Accent */}
-              <div className="pt-1 text-right self-end select-none">
-                <span className="font-handwriting text-xl sm:text-2xl font-bold text-white drop-shadow-sm flex items-center gap-2 rotate-[-2deg]">
-                  <Send className="w-4 h-4 text-white/80" />
-                  <span>{t('landing.newsletter.note', { defaultValue: 'Learn, Grow, Belong' })}</span>
-                </span>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* Honest FAQ Accordion */}
-      <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-4xl mx-auto w-full space-y-8">
-        <div className="text-center space-y-2">
-          <span className="text-xs uppercase tracking-wider font-bold text-blue-600 dark:text-blue-400">
-            {t('landing.faq.tag', { defaultValue: 'TRANSPARENCY FIRST' })}
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            {t('landing.faq.title', { defaultValue: 'Frequently Asked Questions' })}
-          </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            {t('landing.faq.subtitle', { defaultValue: 'Clear, honest answers about our learning tracks, diagnostics, and free model.' })}
-          </p>
-        </div>
-
-        <div className="space-y-3">
-          {faqKeys.map((k, idx) => {
-            const isOpen = openFaqIdx === idx;
-            const question = t(`landing.faq.items.${k}.question`);
-            const answer = t(`landing.faq.items.${k}.answer`);
-            return (
-              <div
-                key={k}
-                className="rounded-2xl border border-border bg-white dark:bg-slate-900 overflow-hidden transition-colors shadow-xs"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaqIdx(isOpen ? null : idx)}
-                  className="w-full text-left px-5 py-4 flex items-center justify-between gap-4 font-bold text-xs sm:text-sm md:text-base text-foreground"
-                >
-                  <span>{question}</span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-muted-foreground flex-shrink-0 transition-transform ${
-                      isOpen ? 'transform rotate-180' : ''
-                    }`}
-                  />
-                </button>
-                {isOpen && (
-                  <div className="px-5 pb-5 text-xs sm:text-sm text-muted-foreground leading-relaxed border-t border-border/50 pt-3">
-                    {answer}
-                  </div>
-                )}
-              </div>
-            );
-          })}
         </div>
       </section>
 
       {/* Footer */}
       <footer className="mt-auto border-t border-border bg-white dark:bg-[#0B0F19] py-12 sm:py-14 px-4 sm:px-6 lg:px-8 text-xs text-muted-foreground">
-        <div className="max-w-7xl mx-auto space-y-8 sm:space-y-10">
+        <div className="max-w-7xl mx-auto space-y-8">
           
-          {/* Main Footer Columns */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             
             {/* Column 1: Brand & Tagline */}
-            <div className="lg:col-span-2 space-y-3.5">
+            <div className="space-y-3.5">
               <Link to="/" className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold">
                   <GraduationCap className="w-5 h-5" />
@@ -1011,7 +509,7 @@ export function LandingPage() {
                 </span>
               </Link>
               <p className="text-xs text-muted-foreground max-w-sm leading-relaxed">
-                {t('landing.footer.about', { defaultValue: 'Skills for a brighter tomorrow. Objective skill gap diagnostics, personalized learning paths, and curated courses for your career goals.' })}
+                {t('landing.footer.about', { defaultValue: 'Objective skill gap diagnostics, personalized learning paths, and curated courses for your career goals.' })}
               </p>
             </div>
 
@@ -1028,54 +526,39 @@ export function LandingPage() {
               </ul>
             </div>
 
-            {/* Column 3: Resources */}
+            {/* Column 3: Navigation */}
             <div className="space-y-3">
               <div className="font-bold text-sm text-foreground">
-                {t('landing.footer.colResources', { defaultValue: 'Resources' })}
+                {t('landing.footer.colResources', { defaultValue: 'Sections' })}
               </div>
               <ul className="space-y-2 text-xs">
                 <li><a href="#popular-categories" className="hover:text-blue-600 transition-colors">{t('landing.footer.popularCategories', { defaultValue: 'Popular Categories' })}</a></li>
                 <li><a href="#why-skill-setu" className="hover:text-blue-600 transition-colors">{t('landing.footer.whySkillSetu', { defaultValue: 'Why Skill-Setu' })}</a></li>
-                <li><a href="#pathway-wizard" className="hover:text-blue-600 transition-colors">{t('landing.footer.diagnosticWizard', { defaultValue: 'Diagnostic Wizard' })}</a></li>
-                <li><Link to="/courses" className="hover:text-blue-600 transition-colors">{t('landing.footer.learningGuides', { defaultValue: 'Learning Guides' })}</Link></li>
+                <li><a href="#pathway-wizard" className="hover:text-blue-600 transition-colors">{t('landing.footer.diagnosticWizard', { defaultValue: 'Pathway Wizard' })}</a></li>
               </ul>
             </div>
 
-            {/* Column 4: Follow */}
+            {/* Column 4: Languages */}
             <div className="space-y-3">
               <div className="font-bold text-sm text-foreground">
-                {t('landing.footer.colFollow', { defaultValue: 'Follow Us' })}
+                Languages
               </div>
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:text-blue-600 transition-colors">
-                  <span className="font-bold text-xs">in</span>
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter / X" className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:text-blue-600 transition-colors">
-                  <span className="font-bold text-xs">𝕏</span>
-                </a>
-                <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:text-blue-600 transition-colors">
-                  <span className="font-bold text-xs">ig</span>
-                </a>
-                <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube" className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:text-blue-600 transition-colors">
-                  <span className="font-bold text-xs">yt</span>
-                </a>
+              <p className="text-xs text-muted-foreground">
+                Fully localized in English and हिन्दी for bilingual skill diagnostics.
+              </p>
+              <div className="pt-1">
+                <span className="text-foreground font-semibold flex items-center gap-1.5">
+                  <Globe className="w-3.5 h-3.5 text-blue-600" />
+                  <span>English / हिन्दी</span>
+                </span>
               </div>
             </div>
 
           </div>
 
-          {/* Bottom Bar: Copyright & Terms */}
+          {/* Bottom Bar: Copyright */}
           <div className="pt-6 sm:pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-center sm:text-left">
             <p>{t('landing.footer.allRights', { year: new Date().getFullYear(), defaultValue: `© ${new Date().getFullYear()} Skill-Setu. All rights reserved.` })}</p>
-            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-              <a href="#" className="hover:text-foreground transition-colors">{t('landing.footer.terms', { defaultValue: 'Terms' })}</a>
-              <a href="#" className="hover:text-foreground transition-colors">{t('landing.footer.privacy', { defaultValue: 'Privacy' })}</a>
-              <a href="#" className="hover:text-foreground transition-colors">{t('landing.footer.cookies', { defaultValue: 'Cookies' })}</a>
-              <span className="text-foreground font-semibold flex items-center gap-1">
-                <Globe className="w-3.5 h-3.5 text-blue-600" />
-                <span>English / हिन्दी</span>
-              </span>
-            </div>
           </div>
 
         </div>

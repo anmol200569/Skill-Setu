@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Route, Clock, Calendar, ArrowRight, CheckCircle2, BookOpen } from 'lucide-react';
+import { Route, Clock, Calendar, ArrowRight, CheckCircle2, BookOpen, Target } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui/Card';
 import { Button } from '../ui/Button';
@@ -18,12 +18,12 @@ export function RoadmapSummaryCard({
   recommendations = [],
   weeklyHours = 10,
   completedCount = 0,
-  totalCount = 4,
+  totalCount,
 }: RoadmapSummaryCardProps) {
   const { t } = useTranslation();
 
-  const effectiveTotal = Math.max(totalCount, recommendations.length, 1);
-  const progressPercent = Math.min(100, Math.round((completedCount / effectiveTotal) * 100));
+  const effectiveTotal = totalCount !== undefined ? totalCount : recommendations.length;
+  const progressPercent = effectiveTotal > 0 ? Math.min(100, Math.round((completedCount / effectiveTotal) * 100)) : 0;
 
   // Compute target date based on remaining estimated hours
   const totalRemainingHours = recommendations.reduce(
@@ -132,8 +132,14 @@ export function RoadmapSummaryCard({
             </div>
           </div>
         ) : (
-          <div className="text-xs text-muted-foreground text-center py-4">
-            {t('dashboard.roadmapSummary.emptyRoadmap')}
+          <div className="text-xs text-muted-foreground text-center py-5 space-y-3">
+            <p>{t('dashboard.roadmapSummary.emptyRoadmap')}</p>
+            <Link to="/assessments?returnTo=/dashboard">
+              <Button size="sm" variant="outline" className="text-xs font-semibold">
+                <Target className="w-3.5 h-3.5 mr-1 text-blue-600" />
+                <span>{t('dashboard.readiness.takeDiagnostic')}</span>
+              </Button>
+            </Link>
           </div>
         )}
       </CardContent>

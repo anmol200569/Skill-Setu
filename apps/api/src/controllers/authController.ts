@@ -51,7 +51,7 @@ export async function getCurrentUser(req: Request, res: Response): Promise<void>
     }
   }
 
-  const user = await prisma.user.findUnique({
+  let user = await prisma.user.findUnique({
     where: { id: req.user.id },
     include: {
       profile: {
@@ -63,6 +63,19 @@ export async function getCurrentUser(req: Request, res: Response): Promise<void>
   if (!user) {
     res.status(404).json({ error: 'NotFound', message: 'User record not found' });
     return;
+  }
+
+  if (!user.profile) {
+    const newProfile = await prisma.profile.create({
+      data: {
+        userId: user.id,
+        fullName: req.user.email ? req.user.email.split('@')[0] : 'Learner',
+        education: 'Not specified',
+        isOnboarded: false
+      },
+      include: { targetRole: true }
+    });
+    user = { ...user, profile: newProfile };
   }
 
   res.json({

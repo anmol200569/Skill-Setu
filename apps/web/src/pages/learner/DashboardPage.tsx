@@ -139,6 +139,15 @@ export function DashboardPage() {
         }
       })
       .catch((err) => console.warn('Could not load roles:', err));
+
+    const handleDiagnosticCompleted = () => {
+      fetchDashboardData();
+      refreshProfile();
+    };
+    window.addEventListener('skill_setu_diagnostic_completed', handleDiagnosticCompleted);
+    return () => {
+      window.removeEventListener('skill_setu_diagnostic_completed', handleDiagnosticCompleted);
+    };
   }, []);
 
   // When Compare Role is changed, fetch what-if analysis
@@ -270,7 +279,7 @@ export function DashboardPage() {
 
         {/* Primary Screen Actions */}
         <div className="flex items-center gap-2.5 w-full sm:w-auto">
-          <Link to="/assessments" className="flex-1 sm:flex-none">
+          <Link to="/assessments?returnTo=/dashboard" className="flex-1 sm:flex-none">
             <Button
               variant="outline"
               size="sm"
@@ -371,7 +380,7 @@ export function DashboardPage() {
                       </p>
                     </div>
                   </div>
-                  <Link to="/assessments" className="w-full sm:w-auto">
+                  <Link to="/assessments?returnTo=/dashboard" className="w-full sm:w-auto">
                     <Button variant="outline" size="sm" className="text-xs w-full sm:w-auto">
                       {t('dashboard.readiness.takeDiagnostic')}
                     </Button>

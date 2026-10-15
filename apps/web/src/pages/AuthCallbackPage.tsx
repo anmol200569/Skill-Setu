@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { supabase, formatAuthError } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
-import { Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from '../components/ui/Button';
+import { getAuthCallbackRedirect } from '../lib/authRedirect';
 
 export function AuthCallbackPage() {
   const navigate = useNavigate();
@@ -11,77 +12,107 @@ export function AuthCallbackPage() {
   const { refreshProfile } = useAuth();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [statusText, setStatusText] = useState('Verifying your session...');
+  const [retryCount, setRetryCount] = useState(0);
 
-  useEffect(() => {
-    let isCancelled = false;
+  const isCompletedRef = useRef(false);
 
-    async function handleAuthCallback() {
-      try {
-        // 1. Check for error parameters in URL query or hash
-        const searchParams = new URLSearchParams(location.search);
-        const hash = location.hash.startsWith('#') ? location.hash.substring(1) : location.hash;
-        const hashParams = new URLSearchParams(hash);
+  const handleAuthCallback = useCallback(async () => {
+    isCompletedRef.current = false;
+    setErrorMessage(null);
+    setStatusText('Verifying your session...');
 
-        const error = searchParams.get('error') || hashParams.get('error');
-        const errorDescription =
-          searchParams.get('error_description') || hashParams.get('error_description');
+    // 10-second timeout guard to prevent infinite spinner
+    const timeoutId = setTimeout(() => {
+      if (!isCompletedRef.current) {
+        setErrorMessage(
+          'Authentication timed out (10s). The authentication service or backend profile sync took too long. Please retry or sign in again.'
+        );
+      }
+    }, 10000);
 
-        if (error || errorDescription) {
-          const detail = errorDescription || error || 'Authentication was declined or failed.';
-          setErrorMessage(decodeURIComponent(detail.replace(/\+/g, ' ')));
-          return;
-        }
+    try {
+      // 1. Check for error parameters in URL query or hash
+      const searchParams = new URLSearchParams(location.search);
+      const hash = location.hash.startsWith('#') ? location.hash.substring(1) : location.hash;
+      const hashParams = new URLSearchParams(hash);
 
-        // 2. Check for PKCE authorization code in query string
-        const code = searchParams.get('code');
-        if (code) {
-          setStatusText('Exchanging authorization code with provider...');
-          const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
-          if (exchangeError) {
-            throw exchangeError;
-          }
-        }
+      const error = searchParams.get('error') || hashParams.get('error');
+      const errorDescription =
+        searchParams.get('error_description') || hashParams.get('error_description');
 
-        // 3. Confirm active session from Supabase
-        setStatusText('Finalizing authentication...');
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (error || errorDescription) {
+        clearTimeout(timeoutId);
+        const detail = errorDescription || error || 'Authentication was declined or failed.';
+        setErrorMessage(decodeURIComponent(detail.replace(/\+/g, ' ')));
+        return;
+      }
 
-        if (sessionError) {
-          throw sessionError;
-        }
-
-        if (!session) {
-          // If session is not immediately available, wait briefly for onAuthStateChange
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          const { data: { session: retrySession } } = await supabase.auth.getSession();
-          if (!retrySession) {
-            throw new Error('No active session could be retrieved. Please try signing in again.');
-          }
-        }
-
-        if (isCancelled) return;
-
-        // 4. Sync profile with backend and navigate
-        setStatusText('Loading profile...');
-        await refreshProfile();
-
-        if (!isCancelled) {
-          navigate('/dashboard', { replace: true });
-        }
-      } catch (err: any) {
-        if (!isCancelled) {
-          console.error('OAuth Callback processing error:', err);
-          setErrorMessage(formatAuthError(err));
+      // 2. Check for PKCE authorization code in query string
+      const code = searchParams.get('code');
+      if (code) {
+        setStatusText('Exchanging authorization code with provider...');
+        const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+        if (exchangeError) {
+          throw exchangeError;
         }
       }
+
+      // 3. Confirm active session from Supabase
+      setStatusText('Finalizing authentication...');
+      const {
+        data: { session },
+        error: sessionError
+      } = await supabase.auth.getSession();
+
+      if (sessionError) {
+        throw sessionError;
+      }
+
+      if (!session) {
+        // Wait briefly if session not yet persisted
+        await new Promise((resolve) => setTimeout(resolve, 800));
+        const {
+          data: { session: retrySession }
+        } = await supabase.auth.getSession();
+        if (!retrySession) {
+          throw new Error('No active authentication session could be retrieved. Please try signing in again.');
+        }
+      }
+
+      // 4. Sync profile with backend
+      setStatusText('Loading profile...');
+      const profile = await refreshProfile();
+
+      // Retrieve saved return path if any
+      const savedReturnPath =
+        (typeof window !== 'undefined'
+          ? sessionStorage.getItem('skill_setu_return_path')
+          : null) || searchParams.get('returnTo');
+
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem('skill_setu_return_path');
+      }
+
+      const destination = getAuthCallbackRedirect({
+        profile,
+        savedReturnPath
+      });
+
+      isCompletedRef.current = true;
+      clearTimeout(timeoutId);
+      navigate(destination, { replace: true });
+    } catch (err: any) {
+      clearTimeout(timeoutId);
+      if (!isCompletedRef.current) {
+        console.error('OAuth Callback processing error:', err);
+        setErrorMessage(formatAuthError(err));
+      }
     }
-
-    handleAuthCallback();
-
-    return () => {
-      isCancelled = true;
-    };
   }, [location, navigate, refreshProfile]);
+
+  useEffect(() => {
+    handleAuthCallback();
+  }, [handleAuthCallback, retryCount]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
@@ -91,11 +122,20 @@ export function AuthCallbackPage() {
             <div className="w-12 h-12 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 flex items-center justify-center mx-auto">
               <AlertCircle className="w-6 h-6" />
             </div>
-            <h2 className="text-xl font-bold text-foreground">Authentication Failed</h2>
+            <h2 className="text-xl font-bold text-foreground">Authentication Issue</h2>
             <p className="text-xs text-muted-foreground leading-relaxed">{errorMessage}</p>
             <div className="pt-4 flex flex-col gap-2">
+              <Button
+                onClick={() => setRetryCount((c) => c + 1)}
+                className="w-full flex items-center justify-center gap-2"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Retry Authentication
+              </Button>
               <Link to="/login">
-                <Button className="w-full">Return to Sign In</Button>
+                <Button variant="outline" className="w-full">
+                  Back to Sign In
+                </Button>
               </Link>
               <Link to="/">
                 <Button variant="ghost" className="w-full text-xs">

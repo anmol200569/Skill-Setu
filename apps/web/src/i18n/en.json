@@ -19,7 +19,16 @@
     "toggleTheme": "Toggle color theme",
     "toggleLang": "Switch language",
     "skipToContent": "Skip to main content",
-    "home": "Home"
+    "home": "Home",
+    "assessmentsShort": "Assess",
+    "skillGapsShort": "Gaps",
+    "roadmapShort": "Roadmap",
+    "more": "More",
+    "moreMenuTitle": "Menu & Tools",
+    "searchPlaceholder": "Search courses & skills...",
+    "themeMode": "Theme",
+    "lightTheme": "Light",
+    "darkTheme": "Dark"
   },
   "common": {
     "sample": "Sample",
@@ -242,15 +251,15 @@
   },
   "roadmapPage": {
     "title": "Personalized Career Roadmap",
-    "subtitle": "Structured sequential pathway of mapped courses and capstone projects prioritized by your diagnostic gaps.",
+    "subtitle": "Structured sequential pathway of mapped courses prioritized by your diagnostic gaps.",
     "rolePrefix": "Roadmap to",
     "totalHours": "Total {{hours}} Hours",
     "completion": "Roadmap Completion",
     "recalibrate": "Recalibrate Roadmap",
-    "coursesHeading": "Phase 1: Foundation & Gap-Bridging Courses",
+    "recalibrateSuccess": "Roadmap recalibrated successfully based on your latest diagnostic results.",
+    "recalibrateError": "Failed to recalibrate roadmap. Please try again.",
+    "coursesHeading": "Sequential Gap-Bridging Courses",
     "coursesDesc": "Structured learning modules targeting your identified competency deficits in order of impact.",
-    "projectsHeading": "Phase 2: Applied Milestone Projects",
-    "projectsDesc": "Hands-on projects where you demonstrate practical competency and portfolio evidence.",
     "status": "Status",
     "notStarted": "Not Started",
     "inProgress": "In Progress",
@@ -266,12 +275,10 @@
     "milestonesDone": "{{completed}} of {{total}} milestones completed",
     "stepNumber": "Step {{step}}",
     "hoursUnit": "{{hours}} hours",
-    "capstoneProject": "Capstone Project #{{num}}",
-    "practicalWork": "~{{hours}} hrs practical work",
-    "project1Title": "Capstone: Enterprise Microservices & API Gateway",
-    "project1Desc": "Build and containerize a distributed REST and GraphQL backend with JWT authentication and CI/CD pipelines.",
-    "project2Title": "Capstone: High-Performance Full-Stack Application",
-    "project2Desc": "Design an interactive, accessible React dashboard with automated testing, state management, and real-time sockets."
+    "unmappedNotice": "The following skills required for your target role currently have no mapped courses in our catalog:",
+    "unmappedSuggestion": "We recommend targeted self-study or practice quizzes to bridge these competencies.",
+    "zeroGapsTitle": "All assessed skills meet target requirements!",
+    "zeroGapsDesc": "You currently meet or exceed the target proficiency level for all evaluated skills in this role. No gap-bridging courses are needed."
   },
   "coursesPage": {
     "title": "Curated Course Catalogue",
@@ -320,130 +327,51 @@
       "titleLine1": "Skills Today",
       "titleLine2": "A Brighter",
       "titleLine3": "Tomorrow",
-      "subtitle": "World-class online courses, AI skill gap diagnostics, and personalized role roadmaps to help you grow, switch careers, or master in-demand skills with Skill-Setu.",
+      "subtitle": "Identify your technical skill gaps through diagnostic assessments, follow a personalized role-based roadmap, learn with free courses from external providers, and prepare with AI practice quizzes in English and हिन्दी.",
       "exploreCourses": "Explore Courses",
       "aiSkillAssessment": "AI Skill Assessment",
-      "statCourses": "60+",
-      "statCoursesLabel": "Curated Tracks",
-      "statMentors": "Expert",
-      "statMentorsLabel": "AI Study Mentors",
-      "statAccess": "100% Free",
-      "statAccessLabel": "Open Access",
-      "note": "A Brighter You Starts Here ↗",
-      "badgeTitle": "Skill Setu",
-      "badgeSubtitle": "Diagnostic Bridge",
-      "badgeItem1": "1.0 to 5.0 Diagnostic Scoring",
-      "badgeItem2": "Role-Calibrated Gap Analysis",
-      "badgeItem3": "Prioritized Open Curricula",
-      "badgeItem4": "AI Practice Studio & Mentor",
-      "mugBadgeTitle": "Better Skills",
-      "mugBadgeSubtitle": "Brighter You"
+      "statCoursesLabel": "Curated Courses",
+      "statRolesLabel": "Career Roles",
+      "statSkillsLabel": "Assessed Skills"
     },
     "categories": {
       "tag": "Competency Domains",
       "title": "Popular Categories",
-      "subtitle": "Explore in-demand skills and find the right course for your career goals.",
+      "subtitle": "Explore technical skills and find verified open courses for your career goals.",
       "viewAll": "View All Categories",
       "progSoftDev": "Programming & Software Development",
       "dataAnalytics": "Data & Analytics",
-      "cloudDevops": "Cloud Architecture & DevOps",
+      "cloudDevops": "Cloud & DevOps",
       "aiMl": "AI & Machine Learning",
-      "cybersecurity": "Cybersecurity & AppSec",
-      "commLeadership": "Communication & Leadership",
-      "productManagement": "Product & Project Management"
-    },
-    "featuredCourses": {
-      "tag": "Verified Open Curricula",
-      "title": "Featured Courses",
-      "subtitle": "Handpicked verified courses and roadmaps from world-class institutions to help you build real skills.",
-      "viewAll": "View All Courses",
-      "curatedTrack": "Skill-Setu Curated Track",
-      "freeOpenAccess": "100% Free Open Access",
-      "hours": "{{hours}} hours",
-      "courses": {
-        "cs50x": {
-          "title": "CS50x: Introduction to Computer Science",
-          "provider": "Harvard CS50",
-          "instructor": "Prof. David J. Malan",
-          "description": "An introduction to the intellectual enterprises of computer science and the art of programming with C, Python, SQL, and algorithms."
-        },
-        "fullstack": {
-          "title": "Full Stack Open: Modern Web Development",
-          "provider": "University of Helsinki",
-          "instructor": "Matti Luukkainen",
-          "description": "Hands-on deep dive into React, Redux, Node.js, Express, REST APIs, GraphQL, TypeScript, and CI/CD pipelines."
-        },
-        "cs50sql": {
-          "title": "CS50: Introduction to Databases with SQL",
-          "provider": "Harvard CS50",
-          "instructor": "Carter Zenke",
-          "description": "Relational database modeling, 3NF normalization, indexing, transactions, and query execution plans with PostgreSQL."
-        },
-        "fccMl": {
-          "title": "Machine Learning with Python Certification",
-          "provider": "freeCodeCamp",
-          "instructor": "Beau Carnes & FCC",
-          "description": "Supervised and unsupervised ML algorithms, TensorFlow neural networks, and end-to-end model training pipelines."
-        }
-      }
+      "cybersecurity": "Cybersecurity & AppSec"
     },
     "why": {
       "title": "Why Learn with Skill-Setu?",
-      "subtitle": "We're more than courses — we're your partner in lifelong career growth and skill verification.",
-      "note": "Real Skills, Real Opportunities ✍️",
+      "subtitle": "An objective platform to measure verified technical competencies and follow focused learning paths.",
       "f1Title": "Objective Diagnostics",
-      "f1Desc": "Calibrated 1.0 to 5.0 proficiency scores derived from genuine technical scenario evaluations.",
-      "f2Title": "100% Free Curricula",
-      "f2Desc": "Curated exclusively from world-class open institutions including Harvard, Helsinki, freeCodeCamp, Microsoft, Google, and NPTEL.",
+      "f1Desc": "Calibrated 1.0 to 5.0 proficiency scores derived from technical evaluations.",
+      "f2Title": "Free Curated Curricula",
+      "f2Desc": "Curated from open institutions including Harvard CS50, University of Helsinki, freeCodeCamp, Microsoft Learn, Google Cloud, and NPTEL.",
       "f3Title": "Personalized Roadmaps",
-      "f3Desc": "Identifies exact competency gaps and builds a prioritized step-by-step path to reach your industry target.",
-      "f4Title": "AI Study Mentor & Quizzes",
-      "f4Desc": "Generate interactive revision quizzes and receive 24/7 AI-guided concept explanations anytime."
-    },
-    "methodology": {
-      "tag": "Transparency First",
-      "title": "Verified Educational Framework & Partners",
-      "subtitle": "Grounded in empirical evaluation, open access curricula, and transparent 1–5 Bloom skill diagnostics.",
-      "viewAll": "Explore Open Curricula",
-      "card1Title": "Verified Open Curricula",
-      "card1Desc": "Curated from Harvard CS50, University of Helsinki, freeCodeCamp, Microsoft Learn, Google Cloud Skills Boost, and NPTEL. No paywalls, ever.",
-      "card1Badge": "60+ Open Tracks",
-      "card2Title": "1.0 to 5.0 Competency Scale",
-      "card2Desc": "Clear Bloom-calibrated rubric mapping foundational concepts to workplace architecture and hands-on implementation.",
-      "card2Badge": "27 Industry Skills",
-      "card3Title": "Role-Calibrated Readiness",
-      "card3Desc": "Diagnostic tests measure your verified competency against employer benchmarks, identifying exact gaps to prioritize.",
-      "card3Badge": "5 Core Career Roles",
-      "partnersLabel": "Open Education Curators & Reference Institutions"
-    },
-    "newsletter": {
-      "pill": "STAY IN THE LOOP",
-      "title": "Get the latest courses, tips and platform updates.",
-      "subtitle": "Join our community of learners building verified, in-demand technical skills every day.",
-      "placeholder": "Enter your email address",
-      "button": "Subscribe",
-      "subscribed": "Subscribed! ✓",
-      "note": "Learn, Grow, Belong"
-    },
-    "constellation": {
-      "tag": "Skill Bridge (Setu)",
-      "interactive": "Interactive Skill Bridge • Move mouse to explore",
-      "description": "Diagnostic skills connecting directly to your verified career goal."
+      "f3Desc": "Identifies exact competency gaps and builds a prioritized step-by-step path to reach your target career role.",
+      "f4Title": "AI Practice Quizzes",
+      "f4Desc": "Generate interactive practice quizzes from your study materials and practice role-based questions anytime."
     },
     "wizard": {
       "tag": "AI DIAGNOSTIC BENCHMARK",
       "title": "Plan Your Pathway in 30 Seconds",
-      "subtitle": "Select your goal and weekly commitment. We map your current competencies against employer benchmarks.",
-      "badge": "Zero credit card required • Selections auto-configure your custom diagnostic",
+      "subtitle": "Select your target goal and weekly commitment. We compare your assessed level with the target level required for the role.",
+      "badge": "Selections auto-configure your custom diagnostic assessment",
       "step1Title": "Target Career Role",
       "step2Title": "Current Experience",
       "step3Title": "Weekly Commitment",
       "roles": {
         "fullstack-dev": "Full-Stack Developer",
         "data-analyst": "Data Analyst",
-        "cloud-engineer": "Cloud & DevOps Engineer",
         "ml-engineer": "Machine Learning Engineer",
-        "appsec-engineer": "Application Security"
+        "product-manager": "Product Manager",
+        "business-analyst": "Business Analyst",
+        "cloud-architect": "Cloud Solutions Architect"
       },
       "levels": {
         "beginner": {
@@ -477,137 +405,28 @@
           "sub": "Immersive focus"
         }
       },
-      "summary": "Ready to initialize your benchmark audit with these selections.",
-      "cta": "Continue with This Pathway",
-      "constellationShow": "Explore Interactive 3D Skill Constellation →",
-      "constellationHide": "Hide 3D Skill Constellation"
+      "cta": "Continue with This Pathway"
     },
-    "sampleResult": {
-      "tag": "What You Will Receive",
-      "title": "A Concrete Diagnostic Gap Analysis",
-      "subtitle": "Every learner gets an objective evaluation with clear scores, identified gaps, and exact courses to take.",
-      "badge": "Sample Result — Illustrative Only",
-      "role": "Target Role: Full-Stack Developer",
-      "readinessLabel": "Estimated readiness",
-      "readinessValue": "Readiness 68/100 (Sample)",
-      "competencySummary": "Competency Evaluation Summary",
-      "gapMinor": "Minor Gap (-0.5)",
-      "gapCritical": "Critical Gap (-2.0)",
-      "gapHigh": "High Gap (-1.0)",
-      "currentRequired": "Current: {{current}} / 5 • Required: {{required}} / 5",
-      "targetedIntervention": "Targeted Learning Intervention",
-      "topCoursesTitle": "Top High-Impact Course Recommendations:",
-      "az305Title": "Designing Azure Infrastructure Solutions (AZ-305)",
-      "az305Provider": "(Microsoft Learn)",
-      "az305Covers": "Covers: System Design & Scalability (sys-design)",
-      "az305Bridges": "Bridges 2.0 score units • 32 hrs",
-      "fccTitle": "Information Security Certification Track",
-      "fccProvider": "(freeCodeCamp)",
-      "fccCovers": "Covers: Application Security (OWASP Top 10) (appsec-owasp)",
-      "fccBridges": "Bridges 1.0 score units • 40 hrs",
-      "sampleEstimate": "Sample estimate: Completing these two targeted courses raises estimated readiness to 86/100."
-    },
-    "loop": {
-      "tag": "Continuous Improvement",
-      "title": "The Skill Setu Growth Loop",
-      "subtitle": "A cyclical framework designed to move you from uncertain self-assessments to clear, demonstrable competency.",
-      "steps": {
-        "step1": {
-          "title": "Assess",
-          "desc": "Complete focused diagnostic assessments covering genuine workplace code scenarios and architecture dilemmas."
-        },
-        "step2": {
-          "title": "Score",
-          "desc": "Receive calibrated 1.0 to 5.0 proficiency scores derived from objective testing and self-assessment rubrics."
-        },
-        "step3": {
-          "title": "Skill Graph",
-          "desc": "View an instant radar visualization highlighting must-have role requirements versus your current proficiencies."
-        },
-        "step4": {
-          "title": "Learn",
-          "desc": "Follow curated, step-by-step pathways assembled exclusively from free resources from Microsoft, Google, and CS50."
-        },
-        "step5": {
-          "title": "Practice",
-          "desc": "Generate interactive revision quizzes from course materials or notes using our integrated AI study assistant."
-        },
-        "step6": {
-          "title": "Re-Score",
-          "desc": "Retake diagnostic modules as you complete courses to watch your quantified qualification score increase."
-        }
-      }
-    },
-    "domains": {
-      "tag": "Comprehensive Curriculum Bank",
-      "titleLoading": "Curated Technical Competencies & Question Banks",
-      "titleWithStats": "{{domains}} Domains, {{skills}} Competencies, {{questions}} Curated Questions",
-      "subtitle": "Real competency models and curated assessment banks loaded dynamically from our database.",
-      "coreSkills": "{{count}} Core Skills",
-      "questions": "{{count}} Questions",
-      "descriptions": {
-        "prog-soft-dev": "ECMAScript runtime, TypeScript typing, React architecture, Node.js APIs, and relational modeling.",
-        "data-analytics": "Advanced SQL window functions, exploratory data analysis with Pandas, and executive storytelling.",
-        "cloud-devops": "Containers, Kubernetes orchestration, AWS cloud architecture, and CI/CD automation pipelines.",
-        "ai-ml": "Machine learning fundamentals, LLM prompt engineering, RAG vector search, and PyTorch training.",
-        "cybersecurity": "OWASP Top 10 web vulnerabilities, OAuth 2.0 / JWT identity, and zero-trust network defenses.",
-        "communication-leadership": "Technical writing, architectural RFCs, stakeholder alignment, and agile code review culture.",
-        "product-management": "Product discovery, PRD authoring, North Star metrics, cohort retention, and UX design thinking."
-      },
-      "names": {
-        "prog-soft-dev": "Programming & Software Development",
-        "data-analytics": "Data & Analytics",
-        "cloud-devops": "Cloud & DevOps",
-        "ai-ml": "AI & Machine Learning",
-        "cybersecurity": "Cybersecurity & Digital Safety",
-        "communication-leadership": "Communication & Leadership",
-        "product-management": "Product & Project Management"
-      }
-    },
-    "faq": {
-      "tag": "TRANSPARENCY FIRST",
-      "title": "Frequently Asked Questions",
-      "subtitle": "Clear, honest answers about our learning tracks, diagnostics, and free model.",
-      "items": {
-        "q1": {
-          "question": "Does Skill Setu guarantee a job, placement, or interview?",
-          "answer": "No. Skill Setu is an educational benchmarking and skill gap diagnostics tool, not a recruitment agency, staffing firm, or placement bootcamp. We help you systematically uncover where your technical skills fall short of industry role benchmarks and connect you with free curricula to bridge those gaps. Hiring decisions depend on employers, market dynamics, and your independent project portfolio."
-        },
-        "q2": {
-          "question": "How are diagnostic questions scored and evaluated?",
-          "answer": "Every diagnostic assessment calculates a score using clear competency frameworks on a 1.0 to 5.0 scale. Option orders are shuffled on every attempt to eliminate positional bias, and questions feature explanations for both correct choices and common misconceptions."
-        },
-        "q3": {
-          "question": "Are the recommended learning paths genuinely free?",
-          "answer": "Yes. Our catalog indexes over 60 free courses from open educational providers including Microsoft Learn, Google Cloud Skills Boost, freeCodeCamp, CS50, and NPTEL. You will never encounter a paywall inside our recommended course pathways."
-        },
-        "q4": {
-          "question": "Can I change my target career role after signing up?",
-          "answer": "Yes. You can change or compare target roles at any time in your profile dashboard. Switching roles automatically re-computes your readiness score and reprioritizes your course suggestions."
-        }
-      }
+    "constellation": {
+      "tag": "Skill Bridge (Setu)",
+      "interactive": "Interactive Skill Bridge • Move mouse to explore",
+      "description": "Diagnostic skills connecting directly to your verified career goal."
     },
     "footer": {
-      "tagline": "Open Skill Intelligence & Learning Platform",
-      "about": "Skills for a brighter tomorrow. Objective skill gap diagnostics, personalized learning paths, and curated courses for your career goals.",
-      "courses": "Courses Catalog",
+      "tagline": "Open Technical Skill Diagnostics & Learning Platform",
+      "about": "Objective skill gap diagnostics, personalized learning paths, and curated free courses for your career goals.",
+      "courses": "Courses",
       "login": "Learner Login",
-      "signup": "Sign Up",
-      "colProducts": "Products",
-      "colResources": "Resources",
-      "colFollow": "Follow Us",
-      "terms": "Terms",
-      "privacy": "Privacy",
-      "cookies": "Cookies",
+      "signup": "Get Started",
+      "colProducts": "Platform",
+      "colResources": "Quick Links",
       "allCourses": "All Courses",
       "careerRoadmaps": "Career Roadmaps",
       "skillDiagnostics": "Skill Diagnostics",
       "aiPracticeQuizzes": "AI Practice Quizzes",
       "popularCategories": "Popular Categories",
       "whySkillSetu": "Why Skill-Setu",
-      "diagnosticWizard": "Diagnostic Wizard",
-      "learningGuides": "Learning Guides",
-      "copyright": "© {{year}} Skill Setu. Open-source educational diagnostics platform. All course trademarks belong to their respective owners."
+      "copyright": "© {{year}} Skill-Setu. Open technical diagnostics platform. All course trademarks belong to their respective owners."
     }
   },
   "auth": {

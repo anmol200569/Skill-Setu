@@ -396,13 +396,23 @@ export function QuizzesPage() {
                     className="flex items-center gap-1 text-xs font-semibold shadow-md shadow-blue-500/20 bg-blue-600 hover:bg-blue-700 text-white"
                   >
                     <Play className="w-3 h-3 fill-current" />
-                    Start Practice Quiz
+                    Attempt Quiz
                   </Button>
                 </CardContent>
               </Card>
             ))}
           </div>
-        ) : null}
+        ) : (
+          <div className="text-center py-10 px-4 bg-card rounded-2xl border border-border text-muted-foreground space-y-2">
+            <BookOpen className="w-8 h-8 text-blue-600 mx-auto" />
+            <h3 className="font-sans text-sm font-bold text-foreground">
+              No target role practice quizzes available
+            </h3>
+            <p className="text-xs max-w-sm mx-auto">
+              Select a target career role in your profile or complete your diagnostic assessments to generate personalized skill quizzes.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Your Created & Uploaded Quizzes Section */}

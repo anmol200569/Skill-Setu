@@ -16,6 +16,7 @@ import {
   stripInactivePrefix
 } from '@skill-setu/shared';
 import { analyzeLearnerSkillGaps } from '../services/gapAnalysisEngine';
+import { ensureSystemQuizzesSeeded } from '../services/systemQuizService';
 
 export async function uploadStudyMaterial(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
@@ -377,29 +378,28 @@ export async function exportQuizPdfEndpoint(req: Request, res: Response): Promis
 }
 
 /**
- * Returns "Recommended for you" quizzes ranked by the learner's biggest skill gaps
- * and filtered/mapped to the learner's competency level.
+ * Returns "Recommended for you" practice quizzes for each skill in the learner's target role,
+ * ranked by the learner's biggest skill gaps and calibrated to their competency level.
  */
 export async function getRecommendedQuizzes(req: Request, res: Response): Promise<void> {
   const userId = req.user!.id;
 
   try {
+    // Ensure pre-generated system quizzes are seeded so they work offline/without AI calls
+    if (process.env.NODE_ENV !== 'test') {
+      await ensureSystemQuizzesSeeded().catch(() => {});
+    }
+
     const profile = await prisma.profile.findUnique({
       where: { userId },
       select: { targetRoleId: true }
     });
 
-    // Fetch learner's skill gap analysis
-    const gapAnalysis = await analyzeLearnerSkillGaps(userId, profile?.targetRoleId || undefined);
-    const gaps = gapAnalysis?.gaps || [];
+    const targetRoleId = profile?.targetRoleId;
 
-    // Rank gaps: largest gap deficit first, then high priority
-    const priorityRank = (p: string) => (p === 'high' ? 3 : p === 'medium' ? 2 : 1);
-    const sortedGaps = [...gaps].sort((a, b) => {
-      const defDiff = (b.gap || 0) - (a.gap || 0);
-      if (Math.abs(defDiff) > 0.05) return defDiff;
-      return priorityRank(b.priority) - priorityRank(a.priority);
-    });
+    // Fetch learner's skill gap analysis
+    const gapAnalysis = await analyzeLearnerSkillGaps(userId, targetRoleId || undefined);
+    const gaps = gapAnalysis?.gaps || [];
 
     const getTargetDifficulty = (currentLevel: number | null | undefined): 'beginner' | 'intermediate' | 'advanced' => {
       if (currentLevel === null || currentLevel === undefined || currentLevel <= 1.5) {
@@ -411,18 +411,85 @@ export async function getRecommendedQuizzes(req: Request, res: Response): Promis
       return 'advanced';
     };
 
+    interface TargetSkillCandidate {
+      skillId: string;
+      skillName: string;
+      gapDeficit: number | null;
+      currentLevel: number | null;
+      requiredLevel: number;
+      priority: string;
+      priorityScore: number;
+      isAssessed: boolean;
+    }
+
+    const candidateSkills: TargetSkillCandidate[] = [];
+
+    if (gaps.length > 0) {
+      // Learner has assessed gaps: rank by largest gap deficit first, then priority
+      const priorityRank = (p: string) => (p === 'high' ? 3 : p === 'medium' ? 2 : 1);
+      const sortedGaps = [...gaps].sort((a, b) => {
+        const defDiff = (b.gap || 0) - (a.gap || 0);
+        if (Math.abs(defDiff) > 0.05) return defDiff;
+        return priorityRank(b.priority) - priorityRank(a.priority);
+      });
+
+      for (const gap of sortedGaps) {
+        candidateSkills.push({
+          skillId: gap.skillId,
+          skillName: gap.skillName,
+          gapDeficit: gap.gap,
+          currentLevel: gap.currentLevel,
+          requiredLevel: gap.requiredLevel,
+          priority: gap.priority,
+          priorityScore: (gap.gap || 0) * (gap.weight || 1),
+          isAssessed: gap.isAssessed !== false
+        });
+      }
+    } else if (targetRoleId) {
+      // Learner has not assessed skills yet: provide practice quizzes for target role requirements
+      let role: any = null;
+      try {
+        role = await prisma.role.findUnique({
+          where: { id: targetRoleId },
+          include: {
+            skillsRequired: {
+              include: { skill: true }
+            }
+          }
+        });
+      } catch (_) {
+        role = null;
+      }
+
+      if (role?.skillsRequired) {
+        const sortedReqs = [...role.skillsRequired].sort((a: any, b: any) => (b.weight || 1) - (a.weight || 1));
+        for (const req of sortedReqs) {
+          candidateSkills.push({
+            skillId: req.skillId,
+            skillName: req.skill?.name || 'Required Skill',
+            gapDeficit: null,
+            currentLevel: null,
+            requiredLevel: req.requiredProficiency || 3,
+            priority: req.priority as string || 'medium',
+            priorityScore: req.weight || 1,
+            isAssessed: false
+          });
+        }
+      }
+    }
+
     const recommendedResults: any[] = [];
     const usedSkillIds = new Set<string>();
 
-    for (const gap of sortedGaps) {
-      if (usedSkillIds.has(gap.skillId)) continue;
+    for (const candidate of candidateSkills) {
+      if (usedSkillIds.has(candidate.skillId.toLowerCase())) continue;
 
-      const targetDifficulty = getTargetDifficulty(gap.currentLevel);
+      const targetDifficulty = getTargetDifficulty(candidate.currentLevel);
 
       let systemQuiz = await prisma.quiz.findFirst({
         where: {
           creatorId: null,
-          skillId: gap.skillId,
+          skillId: candidate.skillId,
           difficulty: targetDifficulty as any
         },
         include: {
@@ -435,7 +502,7 @@ export async function getRecommendedQuizzes(req: Request, res: Response): Promis
         systemQuiz = await prisma.quiz.findFirst({
           where: {
             creatorId: null,
-            skillId: gap.skillId
+            skillId: candidate.skillId
           },
           include: {
             skill: { select: { id: true, name: true, code: true } },
@@ -445,7 +512,11 @@ export async function getRecommendedQuizzes(req: Request, res: Response): Promis
       }
 
       if (systemQuiz) {
-        usedSkillIds.add(gap.skillId);
+        usedSkillIds.add(candidate.skillId.toLowerCase());
+        const reason = candidate.isAssessed && candidate.gapDeficit !== null
+          ? `Bridges your top ${candidate.priority} gap in ${candidate.skillName} (Current: ${candidate.currentLevel}/5, Target: ${candidate.requiredLevel}/5)`
+          : `Recommended practice quiz to prepare for ${candidate.skillName} in your target career pathway`;
+
         recommendedResults.push({
           id: systemQuiz.id,
           title: systemQuiz.title,
@@ -454,19 +525,20 @@ export async function getRecommendedQuizzes(req: Request, res: Response): Promis
           questionCount: systemQuiz._count.questions || systemQuiz.questionCount,
           attemptCount: systemQuiz._count.attempts,
           skillId: systemQuiz.skillId,
-          skillName: systemQuiz.skill?.name || gap.skillName,
-          gapDeficit: gap.gap,
-          currentLevel: gap.currentLevel,
-          requiredLevel: gap.requiredLevel,
-          priority: gap.priority,
-          recommendationReason: `Bridges your top ${gap.priority} gap in ${gap.skillName} (Current: ${gap.currentLevel ?? 1}/5, Target: ${gap.requiredLevel}/5)`
+          skillName: systemQuiz.skill?.name || candidate.skillName,
+          gapDeficit: candidate.gapDeficit,
+          currentLevel: candidate.currentLevel,
+          requiredLevel: candidate.requiredLevel,
+          priority: candidate.priority,
+          recommendationReason: reason
         });
       }
 
+      // Provide one set per skill, up to maximum 6
       if (recommendedResults.length >= 6) break;
     }
 
-    // Fallback: If learner has no assessed gaps or no matched system quizzes, return any foundational system quizzes
+    // Fallback if learner has no role or no candidate skills matched
     if (recommendedResults.length === 0) {
       const fallbackQuizzes = await prisma.quiz.findMany({
         where: { creatorId: null },

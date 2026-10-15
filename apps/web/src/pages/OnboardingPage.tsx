@@ -220,9 +220,9 @@ export function OnboardingPage() {
         '';
 
       if (firstSkillId) {
-        navigate(`/assessments?skillId=${encodeURIComponent(firstSkillId)}&startBaseline=true`);
+        navigate(`/assessments?skill=${encodeURIComponent(firstSkillId)}&skillId=${encodeURIComponent(firstSkillId)}&startBaseline=true&returnTo=/dashboard`);
       } else {
-        navigate('/assessments?startBaseline=true');
+        navigate('/assessments?startBaseline=true&returnTo=/dashboard');
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'Failed to complete onboarding. Please try again.');

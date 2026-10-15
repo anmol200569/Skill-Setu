@@ -1,7 +1,21 @@
 import { supabase, isSupabaseConfigured } from './supabase';
 import { mockRoles, mockLearnerStats, mockLearningPath, generate61Courses } from './mockApiData';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api/v1';
+function getApiBaseUrl(): string {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) return '/api/v1';
+  if (
+    typeof window !== 'undefined' &&
+    window.location.hostname !== 'localhost' &&
+    window.location.hostname !== '127.0.0.1' &&
+    (envUrl.includes('localhost') || envUrl.includes('127.0.0.1'))
+  ) {
+    return '/api/v1';
+  }
+  return envUrl;
+}
+
+const API_BASE_URL = getApiBaseUrl();
 
 // Cache the auth token to avoid calling getSession() on every API request
 let cachedToken: string | null = null;
