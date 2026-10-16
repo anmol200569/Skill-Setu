@@ -239,69 +239,193 @@ export function DashboardPage() {
       {/* Breadcrumbs Navigation */}
       <Breadcrumbs items={[{ label: t('nav.dashboard') }]} />
 
-      {/* Top Header: Welcome, Career Goal, and Primary Actions */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-border">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-              {t('dashboard.badge')}
-            </span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            {t('dashboard.welcome')}, {profile?.fullName || 'Learner'}
-          </h1>
-          <p className="text-xs sm:text-sm font-medium text-muted-foreground mt-0.5">
-            {t('dashboard.tagline')}
-          </p>
-          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground pt-0.5">
-            <span>{t('dashboard.targetRoleLabel')}:</span>
-            {!hasSavedTargetRole ? (
-              <button
-                type="button"
-                onClick={() => setIsPickRoleOpen(true)}
-                className="font-semibold text-blue-600 dark:text-blue-400 underline hover:opacity-80"
-              >
-                {t('dashboard.notSelectedRole')}
-              </button>
-            ) : (
-              <div className="flex items-center gap-2">
-                <strong className="text-foreground font-semibold">{targetRoleTitle}</strong>
+      {/* Executive AI Hero Showcase Banner */}
+      <div className="relative overflow-hidden rounded-3xl border border-blue-200/70 dark:border-blue-900/50 bg-gradient-to-br from-white via-blue-50/40 to-indigo-50/30 dark:from-slate-900/90 dark:via-slate-900/75 dark:to-blue-950/40 backdrop-blur-xl shadow-xl shadow-blue-950/5 dark:shadow-black/50 p-6 sm:p-8 lg:p-10 mb-2 transition-all">
+        {/* Ambient background glows */}
+        <div aria-hidden="true" className="absolute -top-24 -right-24 w-96 h-96 bg-blue-500/15 dark:bg-blue-600/20 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div aria-hidden="true" className="absolute -bottom-24 -left-24 w-96 h-96 bg-cyan-500/15 dark:bg-cyan-600/15 rounded-full blur-3xl pointer-events-none -z-10" />
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          
+          {/* Left Column: Greeting, Role Status, Action Buttons & Metrics */}
+          <div className="lg:col-span-7 space-y-5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/80 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-[11px] font-bold uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+                <span>{t('dashboard.badge')} • Live AI Ecosystem</span>
+              </span>
+              {readiness !== null && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-[11px] font-semibold">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>{readiness}% Role Calibrated</span>
+                </span>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <h1 className="text-2xl sm:text-4xl lg:text-[2.6rem] font-extrabold tracking-tight text-foreground leading-[1.18]">
+                {t('dashboard.welcome')}, <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 bg-clip-text text-transparent">{profile?.fullName || 'Learner'}</span> 👋
+              </h1>
+              <p className="text-xs sm:text-sm md:text-base text-muted-foreground font-medium leading-relaxed max-w-xl">
+                {readiness !== null
+                  ? `Your technical readiness is currently calibrated at ${readiness}%. Follow your milestone roadmap and take diagnostic evaluations to close priority skill gaps.`
+                  : t('dashboard.tagline', { defaultValue: 'Identify technical gaps, master role-based milestones, and accelerate your engineering career with AI precision.' })}
+              </p>
+            </div>
+
+            {/* Target Role Status Strip */}
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-white/70 dark:bg-slate-900/60 border border-border shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="space-y-0.5">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                  {t('dashboard.targetRoleLabel')}
+                </div>
+                {!hasSavedTargetRole ? (
+                  <button
+                    type="button"
+                    onClick={() => setIsPickRoleOpen(true)}
+                    className="font-bold text-sm text-blue-600 dark:text-blue-400 underline hover:opacity-80 text-left flex items-center gap-1.5"
+                  >
+                    <span>{t('dashboard.notSelectedRole')}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <span className="font-extrabold text-sm sm:text-base text-foreground">
+                      {targetRoleTitle}
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 border border-blue-200/60 dark:border-blue-800/60">
+                      High Industry Demand
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {hasSavedTargetRole && (
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setIsWhatIfOpen(true)}
-                  className="h-6 text-[11px] px-2 py-0 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40"
+                  className="h-8 text-xs px-3 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 rounded-xl font-semibold flex items-center gap-1.5 self-start sm:self-auto"
                 >
-                  <SlidersHorizontal className="w-3 h-3 mr-1" />
-                  <span>{t('dashboard.whatIf.switchButton')}</span>
+                  <SlidersHorizontal className="w-3.5 h-3.5" />
+                  <span>{t('dashboard.whatIf.switchButton', { defaultValue: 'Simulate Career Path' })}</span>
                 </Button>
-              </div>
-            )}
-          </div>
-        </div>
+              )}
+            </div>
 
-        {/* Primary Screen Actions */}
-        <div className="flex items-center gap-2.5 w-full sm:w-auto">
-          <Link to="/assessments?returnTo=/dashboard" className="flex-1 sm:flex-none">
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold"
-            >
-              <Target className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-              <span>{t('nav.assessments')}</span>
-            </Button>
-          </Link>
-          <Link to="/quizzes" className="flex-1 sm:flex-none">
-            <Button
-              variant="primary"
-              size="sm"
-              className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/20 rounded-xl"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{t('nav.quizzes')}</span>
-            </Button>
-          </Link>
+            {/* Primary Action Buttons */}
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <Link to="/assessments?returnTo=/dashboard" className="flex-1 sm:flex-none">
+                <Button
+                  size="md"
+                  className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md shadow-blue-500/25 flex items-center justify-center gap-2"
+                >
+                  <Target className="w-4 h-4 text-white" />
+                  <span>{readiness === null ? t('dashboard.readiness.takeDiagnostic') : t('dashboard.readiness.continueAssessing')}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Button>
+              </Link>
+
+              <Link to="/quizzes" className="flex-1 sm:flex-none">
+                <Button
+                  variant="outline"
+                  size="md"
+                  className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-semibold rounded-xl border-border bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-center gap-2"
+                >
+                  <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <span>{t('nav.quizzes')}</span>
+                </Button>
+              </Link>
+
+              <Link to="/roadmap" className="w-full sm:w-auto">
+                <Button
+                  variant="ghost"
+                  size="md"
+                  className="w-full sm:w-auto px-4 py-2.5 text-xs sm:text-sm font-semibold text-muted-foreground hover:text-foreground flex items-center justify-center gap-2"
+                >
+                  <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <span>{t('nav.roadmap')}</span>
+                </Button>
+              </Link>
+            </div>
+
+            {/* Mini Quick-Metrics Strip */}
+            <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-muted-foreground border-t border-border/60">
+              <div className="flex items-center gap-1.5">
+                <Target className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                <span>
+                  Assessed: <strong className="text-foreground">{assessedSkills}</strong> / {totalSkills}
+                </span>
+              </div>
+              <span className="text-border">•</span>
+              <div className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                <span>
+                  Weekly Goal: <strong className="text-foreground">{weeklyHours}h</strong>
+                </span>
+              </div>
+              <span className="text-border">•</span>
+              <div className="flex items-center gap-1.5">
+                <Award className="w-3.5 h-3.5 text-amber-500" />
+                <span>
+                  Quiz Average: <strong className="text-foreground">{stats?.averageQuizScore || 0}%</strong>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: AI Generated Hero Visual with DIFFERENT Cyber-Glass Backdrop */}
+          <div className="lg:col-span-5 relative flex items-center justify-center w-full">
+            <div className="relative w-full max-w-[480px]">
+              
+              {/* Distinct High-Contrast Ambient Glow Background specifically where photo is */}
+              <div
+                aria-hidden="true"
+                className="absolute -inset-3 bg-gradient-to-tr from-cyan-500/25 via-blue-600/30 to-purple-600/25 rounded-3xl blur-2xl -z-10 pointer-events-none"
+              />
+
+              {/* Unique Showcase Frame with DIFFERENT Dark Cybernetic Background */}
+              <div className="relative rounded-3xl p-3 sm:p-4 bg-gradient-to-br from-[#060913] via-[#0D1527] to-[#181C38] border border-cyan-500/30 dark:border-cyan-400/40 shadow-2xl shadow-blue-950/60 ring-1 ring-cyan-500/20 backdrop-blur-xl overflow-hidden group">
+                
+                {/* Photo Element */}
+                <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-inner bg-slate-950">
+                  <img
+                    src="/images/ai-hero.jpg"
+                    alt="Skill Setu AI Learning Ecosystem"
+                    className="w-full h-auto object-cover block select-none transform group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none" />
+                </div>
+
+                {/* Floating Top Badge: AI Diagnostic Engine */}
+                <div className="absolute top-6 left-6 z-10 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-950/90 backdrop-blur-md border border-cyan-500/40 shadow-lg text-[11px] font-bold text-cyan-300">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>AI Skill Setu Engine</span>
+                </div>
+
+                {/* Floating Bottom Card: Real Milestone & Role Connection */}
+                <div className="absolute bottom-6 left-6 right-6 z-10 p-3 sm:p-3.5 rounded-2xl bg-slate-950/90 backdrop-blur-md border border-white/15 shadow-2xl flex items-center justify-between gap-3 text-white">
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1">
+                      <Target className="w-3 h-3 text-cyan-400" />
+                      <span>{targetRoleTitle}</span>
+                    </div>
+                    <div className="text-xs font-semibold text-slate-200 truncate mt-0.5">
+                      {totalSkills > 0 ? `${assessedSkills} of ${totalSkills} competencies mapped` : 'AI Roadmap Ready'}
+                    </div>
+                  </div>
+                  <Link to="/roadmap" className="flex-shrink-0">
+                    <span className="text-[11px] font-bold text-white bg-blue-600 hover:bg-blue-500 px-3 py-1.5 rounded-xl shadow-md flex items-center gap-1 transition-colors">
+                      <span>View</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 

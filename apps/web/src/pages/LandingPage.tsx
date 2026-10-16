@@ -243,38 +243,36 @@ export function LandingPage() {
             </div>
           </div>
 
-          {/* Right Column: Hero Learner Photo & Real Platform Data Cards */}
+          {/* Right Column: AI Hero Visual & Real Platform Data Cards */}
           <div className="lg:col-span-5 relative flex flex-col items-center lg:items-end mt-4 lg:mt-0">
             <div className="relative w-full max-w-[480px]">
-              {/* Blue-tinted ambient gradient backdrop */}
+              {/* Vibrant neon ambient gradient backdrop specifically where the photo is */}
               <div
                 aria-hidden="true"
-                className="absolute -inset-2 sm:-inset-3 bg-gradient-to-tr from-blue-600/15 via-indigo-500/10 to-sky-400/15 dark:from-blue-600/25 dark:via-indigo-950/40 dark:to-cyan-900/20 rounded-[2rem] blur-xl -z-10 pointer-events-none"
+                className="absolute -inset-3 sm:-inset-4 bg-gradient-to-tr from-blue-600/30 via-cyan-400/25 to-purple-600/30 rounded-[2.5rem] blur-2xl -z-10 pointer-events-none"
               />
 
-              {/* Photo Frame Container (Rounded shape with soft border in dark mode) */}
-              <div className="relative rounded-3xl p-2 sm:p-2.5 bg-gradient-to-b from-blue-50/50 via-slate-100/60 to-white/70 dark:from-slate-900/80 dark:via-slate-900/90 dark:to-slate-950/90 border border-slate-200/80 dark:border-white/10 dark:ring-1 dark:ring-white/10 shadow-2xl dark:shadow-blue-950/40 backdrop-blur-sm">
+              {/* Photo Frame Container with DISTINCT dark cybernetic background */}
+              <div className="relative rounded-3xl p-3 sm:p-3.5 bg-gradient-to-br from-[#060A14] via-[#0B132B] to-[#1C1F3F] border border-cyan-500/30 dark:border-cyan-400/40 ring-1 ring-cyan-400/20 shadow-2xl shadow-blue-950/60 backdrop-blur-xl group">
                 
-                {/* Photo Element (Picture element with WebP source and JPG fallback, width=548, height=444, fetchpriority="high", no lazy-load, max-w ~480px, alt="") */}
-                <div className="rounded-2xl overflow-hidden border border-slate-200/60 dark:border-white/10 bg-slate-100 dark:bg-slate-900 shadow-inner">
-                  <picture>
-                    <source srcSet="/images/hero-learner.webp" type="image/webp" />
-                    <img
-                      src="/images/hero-learner.jpg"
-                      width={548}
-                      height={444}
-                      fetchPriority="high"
-                      alt=""
-                      className="w-full h-auto object-cover block select-none"
-                    />
-                  </picture>
+                {/* Photo Element */}
+                <div className="rounded-2xl overflow-hidden border border-white/10 bg-slate-950 shadow-inner relative">
+                  <img
+                    src="/images/ai-hero.jpg"
+                    width={548}
+                    height={411}
+                    fetchPriority="high"
+                    alt="Skill Setu AI Learning Intelligence"
+                    className="w-full h-auto object-cover block select-none transform group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-transparent to-transparent pointer-events-none" />
                 </div>
 
                 {/* Floating Chip: Real fact (6 Target Career Roles) - Top-left away from face */}
-                <div className="absolute -top-3 left-2 sm:-left-3 z-10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md py-1.5 px-3 rounded-full border border-blue-200/80 dark:border-blue-900/60 shadow-md flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                  <Target className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                  <span className="text-xs font-bold text-foreground tracking-tight whitespace-nowrap">
+                <div className="absolute -top-3 left-2 sm:-left-3 z-10 bg-slate-950/90 backdrop-blur-md py-1.5 px-3 rounded-full border border-cyan-500/50 shadow-lg flex items-center gap-2 text-white">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                  <Target className="w-3.5 h-3.5 text-cyan-400" />
+                  <span className="text-xs font-bold text-white tracking-tight whitespace-nowrap">
                     {t('landing.hero.facts.roles', { defaultValue: '6 Target Career Roles' })}
                   </span>
                 </div>
